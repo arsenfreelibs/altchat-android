@@ -13,6 +13,10 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -88,7 +92,7 @@ public class WelcomeActivity extends BaseActionBarActivity
             });
 
     signUpButton.setOnClickListener(
-        (v) -> startActivity(new Intent(this, InstantOnboardingActivity.class)));
+        (v) -> showTermsOfServiceDialog());
     signInButton.setOnClickListener((v) -> signInDialog.show());
 
     registerForEvents();
@@ -111,6 +115,49 @@ public class WelcomeActivity extends BaseActionBarActivity
             });
 
     DcHelper.maybeShowMigrationError(this);
+  }
+
+  private void showTermsOfServiceDialog() {
+    int padding = (int) (16 * getResources().getDisplayMetrics().density);
+
+    WebView webView = new WebView(this);
+    webView.setWebViewClient(new WebViewClient());
+    webView.loadUrl("file:///android_asset/tos.html");
+    webView.getLayoutParams(); // ensure layout created
+    android.view.ViewGroup.LayoutParams webParams =
+        new android.view.ViewGroup.LayoutParams(
+            android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+            (int) (400 * getResources().getDisplayMetrics().density));
+    webView.setLayoutParams(webParams);
+
+    CheckBox checkBox = new CheckBox(this);
+    checkBox.setText(getString(R.string.tos_checkbox));
+    checkBox.setPadding(padding, padding / 2, padding, padding);
+
+    android.widget.LinearLayout layout = new android.widget.LinearLayout(this);
+    layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+    layout.addView(webView);
+    layout.addView(checkBox);
+
+    AlertDialog dialog = new AlertDialog.Builder(this)
+        .setTitle(R.string.tos_title)
+        .setView(layout)
+        .setPositiveButton(R.string.tos_agree, null)
+        .setNegativeButton(R.string.tos_decline, null)
+        .create();
+
+    dialog.setOnShowListener(d -> {
+      dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+        if (checkBox.isChecked()) {
+          dialog.dismiss();
+          startActivity(new Intent(this, InstantOnboardingActivity.class));
+        } else {
+          android.widget.Toast.makeText(this, R.string.tos_must_accept, android.widget.Toast.LENGTH_SHORT).show();
+        }
+      });
+    });
+
+    dialog.show();
   }
 
   private void showSignInDialogWithPermission(AlertDialog signInDialog) {

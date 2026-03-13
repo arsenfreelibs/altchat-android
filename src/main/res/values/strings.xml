@@ -1190,4 +1190,12 @@
 
     <!-- device messages for updates -->
     <string name="update_2_0">What\'s new?\n\n💯 End-to-end encryption is reliable and forever now. Padlocks 🔒 are gone!\n\n✉️ Classic email without end-to-end encryption is marked with a letter symbol\n\n😻 New enhanced profile screen for all your contacts\n\n🔲 New button for quick access to apps used in a chat\n\n❤️ Please donate to help us remain independent and continue to bring improvements: %1$s</string>
+
+    <!-- Terms of Service -->
+    <string name="tos_title">Terms of Service</string>
+    <string name="tos_text">Terms of service will be placed here.\n\nBy using Alt Chat, you agree to use the app responsibly and in accordance with applicable laws.\n\n[Placeholder — full terms of service coming soon]</string>
+    <string name="tos_checkbox">I have read and agree to the Terms of Service</string>
+    <string name="tos_agree">Agree</string>
+    <string name="tos_decline">Decline</string>
+    <string name="tos_must_accept">Please accept the Terms of Service to continue.</string>
 </resources>
