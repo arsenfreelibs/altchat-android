@@ -564,7 +564,7 @@
     <string name="multidevice_title">Rnu ibenk wis sin</string>
     <string name="multidevice_same_network_hint">Wali ma yella sin n yibenkan-a deg yiwen n uzeṭṭa Wi-Fi neɣ deg yiwen n uẓeṭṭa</string>
     <string name="multidevice_this_creates_a_qr_code">Aya ad yernu tangalt QR i yezmer ad yeḍumm ibenk wis sin akken ad yenɣel amaɣnu.\n\nḍmen d akken ula d yiwen n umnadi neɣ n tkamra ur yezmer ad iwali agdil-a.</string>
-    <string name="multidevice_install_dc_on_other_device">Sebded delta Chat ɣef yibenk-ik·im nniḍen (https://get.alt.chat)</string>
+    <string name="multidevice_install_dc_on_other_device">Sebded Alt Chat ɣef yibenk-ik·im nniḍen (https://get.alt.chat)</string>
     <!-- "I Already Have a Profile / Add as Second Device” should be the same text as defined by the keys onboarding_alternative_logins and multidevice_receiver_title -->
     <string name="multidevice_tap_scan_on_other_device">Bdu Alt Chat, sit “Sεiɣ yakan amaɣnu / Rnu am yibenk wis sin” sakin ḍumm tangalt i d-yettwaseknen dagi</string>
     <!-- Shown inside a "QR code card" with very limited space; please formulate the text as short as possible therefore. The placeholder will be replaced by the profile name eg. "Scan to set up second device for Alice" -->

@@ -505,7 +505,7 @@ public class AttachmentManager {
         Permissions.with(activity)
             .ifNecessary()
             .withRationaleDialog(
-                "To share your live location with chat members, allow Delta Chat to use your location data.\n\nTo make live location work gaplessly, location data is used even when the app is closed or not in use.",
+                "To share your live location with chat members, allow Alt Chat to use your location data.\n\nTo make live location work gaplessly, location data is used even when the app is closed or not in use.",
                 R.drawable.ic_location_on_white_24dp)
             .withPermanentDenialDialog(
                 activity.getString(R.string.perm_explain_access_to_location_denied))
