@@ -23,7 +23,9 @@ import static org.thoughtcrime.securesms.util.ShareUtil.isRelayingMessageContent
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import chat.delta.rpc.types.SecurejoinSource;
 import chat.delta.rpc.types.SecurejoinUiPath;
 import com.b44t.messenger.DcContact;
@@ -48,6 +50,29 @@ public class NewConversationActivity extends ContactSelectionActivity {
     super.onCreate(bundle, ready);
     assert getSupportActionBar() != null;
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+    BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+    bottomNav.setVisibility(View.VISIBLE);
+    bottomNav.setSelectedItemId(R.id.nav_contacts);
+    bottomNav.setOnItemSelectedListener(item -> {
+      int id = item.getItemId();
+      if (id == R.id.nav_chats) {
+        Intent intent = new Intent(this, ConversationListActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        return false;
+      } else if (id == R.id.nav_contacts) {
+        return true;
+      } else if (id == R.id.nav_settings) {
+        Intent intent = new Intent(this, ApplicationPreferencesActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        return false;
+      }
+      return false;
+    });
   }
 
   @Override

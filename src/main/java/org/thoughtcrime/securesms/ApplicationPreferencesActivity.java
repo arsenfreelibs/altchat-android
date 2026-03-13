@@ -48,6 +48,7 @@ import org.thoughtcrime.securesms.util.IntentUtils;
 import org.thoughtcrime.securesms.util.Prefs;
 import org.thoughtcrime.securesms.util.ScreenLockUtil;
 import org.thoughtcrime.securesms.util.ViewUtil;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**
  * The Activity for application preference display and management.
@@ -71,6 +72,28 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
   @Override
   protected void onCreate(Bundle icicle, boolean ready) {
     setContentView(R.layout.activity_application_preferences);
+
+    BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+    bottomNav.setSelectedItemId(R.id.nav_settings);
+    bottomNav.setOnItemSelectedListener(item -> {
+      int id = item.getItemId();
+      if (id == R.id.nav_chats) {
+        Intent intent = new Intent(this, ConversationListActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        return false;
+      } else if (id == R.id.nav_contacts) {
+        Intent intent = new Intent(this, NewConversationActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        return false;
+      } else if (id == R.id.nav_settings) {
+        return true;
+      }
+      return false;
+    });
 
     //noinspection ConstantConditions
     this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);

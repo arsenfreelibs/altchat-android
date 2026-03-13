@@ -86,6 +86,8 @@ import org.thoughtcrime.securesms.util.StorageUtil;
 import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.util.ViewUtil;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 public class ConversationListActivity extends PassphraseRequiredActionBarActivity
     implements ConversationListFragment.ConversationSelectedListener {
   private static final String TAG = ConversationListActivity.class.getSimpleName();
@@ -105,6 +107,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
   private ImageView searchAction;
   private ViewGroup fragmentContainer;
   private ViewGroup selfAvatarContainer;
+  private BottomNavigationView bottomNavigation;
 
   /**
    * used to store temporarily scanned QR to pass it back to QrCodeHandler when ScreenLockUtil is
@@ -186,6 +189,22 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     searchToolbar = findViewById(R.id.search_toolbar);
     searchAction = findViewById(R.id.search_action);
     fragmentContainer = findViewById(R.id.fragment_container);
+
+    bottomNavigation = findViewById(R.id.bottom_navigation);
+    bottomNavigation.setSelectedItemId(R.id.nav_chats);
+    bottomNavigation.setOnItemSelectedListener(item -> {
+      int id = item.getItemId();
+      if (id == R.id.nav_contacts) {
+        createChat();
+        return false; // don't change selected tab, we navigate away
+      } else if (id == R.id.nav_chats) {
+        return true;
+      } else if (id == R.id.nav_settings) {
+        startActivity(new Intent(this, ApplicationPreferencesActivity.class));
+        return false;
+      }
+      return false;
+    });
 
     // add margin to avoid content hidden behind system bars
     ViewUtil.applyWindowInsetsAsMargin(searchToolbar, true, true, true, false);
