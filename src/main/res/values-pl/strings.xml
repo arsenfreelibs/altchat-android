@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- common strings without special context -->
-    <string name="app_name">Delta Chat</string>
+    <string name="app_name">Alt Chat</string>
     <string name="ok">OK</string>
     <string name="cancel">Anuluj</string>
     <string name="clear_search">Wyczyść wyszukiwanie</string>
@@ -310,8 +310,8 @@
     <string name="share_invite_link">Udostępnij link zaproszenia</string>
     <string name="share_invite_link_explain">Każdy, kto ma ten link, może zobaczyć twój profil i rozpocząć z tobą czat. Udostępniaj go tylko osobom, którym ufasz.</string>
     <string name="invite_friends">Zaproś znajomych</string>
-    <!-- %1$s is replaced by the user's invitation link ("https://i.delta.chat/...") -->
-    <string name="invite_friends_text">Skontaktuj się ze mną przez Delta Chat:\n%1$s</string>
+    <!-- %1$s is replaced by the user's invitation link ("https://i.alt.chat/...") -->
+    <string name="invite_friends_text">Skontaktuj się ze mną przez Alt Chat:\n%1$s</string>
     <string name="menu_copy_selection_to_clipboard">Kopiuj zaznaczenie</string>
     <string name="menu_copy_link_to_clipboard">Kopiuj link</string>
     <string name="menu_copy_text_to_clipboard">Kopiuj tekst</string>
@@ -367,7 +367,7 @@
     <string name="title_share_location">Udostępnij lokalizację dla wszystki czlonków grup</string>
     <string name="device_talk">Komunikaty urządzenia</string>
     <string name="device_talk_subtitle">Wiadomości generowane lokalnie</string>
-    <string name="device_talk_explain">Wiadomości w tym czacie są generowane lokalnie przez twoją aplikację Delta Chat. Twórcy używają go do informowania o aktualizacjach aplikacji i problemach podczas użytkowania.</string>
+    <string name="device_talk_explain">Wiadomości w tym czacie są generowane lokalnie przez twoją aplikację Alt Chat. Twórcy używają go do informowania o aktualizacjach aplikacji i problemach podczas użytkowania.</string>
     <string name="device_talk_welcome_message2">Skontaktuj się!\n\n🙌 Dotknij „Kod QR” na ekranie głównym obu urządzeń. Wybierz opcję „Zeskanuj kod QR” na jednym urządzeniu i skieruj go na drugie\n\n🌍 Jeśli nie znajdujesz się w tym samym pomieszczeniu, zeskanuj kod podczas rozmowy wideo lub udostępnij link z zaproszeniem w sekcji „Zeskanuj kod QR”\n\nNastępnie: korzystaj ze zdecentralizowanego komunikatora. W przeciwieństwie do innych popularnych aplikacji bez centralnej kontroli, śledzenia lub sprzedawania Ciebie, znajomych, współpracowników lub rodziny dużym organizacjom.</string>
     <string name="edit_contact">Edytuj kontakt</string>
     <!-- Verb "to pin", making something sticky, not a noun or abbreviation for "pin number". -->
@@ -384,7 +384,7 @@
     <!-- Menu item beside an app/chat that adds an icon to the system's home screen. If the user taps that icon, the app/chat is opened directly. -->
     <string name="add_to_home_screen">Dodaj do ekranu głównego</string>
     <string name="donate">Wspomóż</string>
-    <string name="donate_device_msg">❤️ Wygląda na to, że podoba ci się Delta Chat!\n\nProsimy o przekazanie darowizny, abyśmy mogli zapewnić, że Delta Chat pozostanie darmowy dla wszystkich.\n\nChociaż Delta Chat jest darmowy i ma otwarte oprogramowanie, jego rozwój kosztuje. Pomóż nam zachować niezależność Delta Chat i uczynić go w przyszłości jeszcze lepszym.\n\nhttps://delta.chat/pl/donate</string>
+    <string name="donate_device_msg">❤️ Wygląda na to, że podoba ci się Alt Chat!\n\nProsimy o przekazanie darowizny, abyśmy mogli zapewnić, że Alt Chat pozostanie darmowy dla wszystkich.\n\nChociaż Alt Chat jest darmowy i ma otwarte oprogramowanie, jego rozwój kosztuje. Pomóż nam zachować niezależność Alt Chat i uczynić go w przyszłości jeszcze lepszym.\n\nhttps://alt.chat/pl/donate</string>
 
     <string name="mute_for_one_hour">Wyłącz na 1 godzinę</string>
     <string name="mute_for_eight_hours">Wyłącz na 8 godzin</string>
@@ -492,7 +492,7 @@
     <string name="chat_new_one_to_one_hint">Wyślij wiadomość do %1$s.</string>
     <!-- consider keeping the term "channel" as in WhatsApp or Telegram -->
     <string name="chat_new_channel_hint">Kanały są narzędziem typu „jeden do wielu” do nadawania wiadomości.</string>
-    <string name="chat_new_group_hint">Napisz pierwszą wiadomość, by inni mogli odpowiedzieć w tej grupie.\n\n• Nie ma problemu, jeśli nie wszyscy członkowie korzystają z Delta Chat.\n\n• Dostarczenie pierwszej wiadomości może chwilę potrwać.</string>
+    <string name="chat_new_group_hint">Napisz pierwszą wiadomość, by inni mogli odpowiedzieć w tej grupie.\n\n• Nie ma problemu, jeśli nie wszyscy członkowie korzystają z Alt Chat.\n\n• Dostarczenie pierwszej wiadomości może chwilę potrwać.</string>
     <string name="chat_record_slide_to_cancel">PRZESUŃ, BY ANULOWAĆ</string>
     <string name="chat_record_explain">Dotknij i przytrzymaj, aby nagrać wiadomość głosową, zwolnij, aby wysłać</string>
     <string name="chat_no_chats_yet_title">Pusta skrzynka odbiorcza.\nNaciśnij \"+\" aby rozpocząć nowy czat.</string>
@@ -599,15 +599,15 @@
     <string name="multidevice_title">Dodaj kolejne urządzenie</string>
     <string name="multidevice_same_network_hint">Upewnij się, że oba urządzenia są połączone z tym samym Wi-Fi lub siecią</string>
     <string name="multidevice_this_creates_a_qr_code">Spowoduje to utworzenie kodu QR, który kolejne urządzenie może zeskanować w celu skopiowania konta.</string>
-    <string name="multidevice_install_dc_on_other_device">Zainstaluj Delta Chat na swoim kolejnym urządzeniu (https://get.delta.chat)</string>
+    <string name="multidevice_install_dc_on_other_device">Zainstaluj Alt Chat na swoim kolejnym urządzeniu (https://get.alt.chat)</string>
     <!-- "I Already Have a Profile / Add as Second Device” should be the same text as defined by the keys onboarding_alternative_logins and multidevice_receiver_title -->
-    <string name="multidevice_tap_scan_on_other_device">Uruchom Delta Chat, dotknij „Mam już profil / Dodaj jako kolejne urządzenie” i zeskanuj pokazany tutaj kod</string>
+    <string name="multidevice_tap_scan_on_other_device">Uruchom Alt Chat, dotknij „Mam już profil / Dodaj jako kolejne urządzenie” i zeskanuj pokazany tutaj kod</string>
     <!-- Shown inside a "QR code card" with very limited space; please formulate the text as short as possible therefore. The placeholder will be replaced by the profile name eg. "Scan to set up second device for Alice" -->
     <string name="multidevice_qr_subtitle">Zeskanuj, aby skonfigurować kolejne urządzenie dla %1$s</string>
     <string name="multidevice_receiver_title">Dodaj jako kolejne urządzenie</string>
-    <string name="multidevice_open_settings_on_other_device">Na pierwszym urządzeniu uruchom Delta Chat, przejdź do „Ustawienia » Dodaj kolejne urządzenie” i zeskanuj wyświetlony tam kod</string>
+    <string name="multidevice_open_settings_on_other_device">Na pierwszym urządzeniu uruchom Alt Chat, przejdź do „Ustawienia » Dodaj kolejne urządzenie” i zeskanuj wyświetlony tam kod</string>
     <string name="multidevice_receiver_scanning_ask">Skopiować konto z innego urządzenia na to urządzenie?</string>
-    <string name="multidevice_receiver_needs_update">Profil, który chcesz zaimportować, pochodzi z nowszej wersji aplikacji Delta Chat.\n\nAby kontynuować konfigurowanie drugiego urządzenia, zaktualizuj to urządzenie do najnowszej wersji aplikacji Delta Chat.</string>
+    <string name="multidevice_receiver_needs_update">Profil, który chcesz zaimportować, pochodzi z nowszej wersji aplikacji Alt Chat.\n\nAby kontynuować konfigurowanie drugiego urządzenia, zaktualizuj to urządzenie do najnowszej wersji aplikacji Alt Chat.</string>
     <string name="multidevice_abort">Przerwać konfigurowanie kolejnego urządzenia?</string>
     <string name="multidevice_abort_will_invalidate_copied_qr">Spowoduje to unieważnienie kodu QR skopiowanego do schowka.</string>
     <string name="multidevice_transfer_done_devicemsg">ℹ️ Konto przeniesione na twoje kolejne urządzenie.</string>
@@ -716,7 +716,7 @@
     <string name="login_error_port">Podaj poprawny numer portu (1–65535)</string>
     <string name="login_error_required_fields">Podaj ważny adres e-mail i hasło</string>
     <string name="import_backup_title">Przywróć z kopii zapasowej</string>
-    <string name="import_backup_ask">Delta Chat znalazł kopię zapasową w katalogu „%1$s.\n\nCzy chcesz zaimportować i używać wszystkich danych i ustawień z tej kopii zapasowej?</string>
+    <string name="import_backup_ask">Alt Chat znalazł kopię zapasową w katalogu „%1$s.\n\nCzy chcesz zaimportować i używać wszystkich danych i ustawień z tej kopii zapasowej?</string>
     <string name="import_backup_no_backup_found">Nie znaleziono kopii zapasowej.\n\nSkopiuj kopię zapasową do katalogu „%1$s”  i spróbuj ponownie.</string>
     <!-- %1$s will be replaced by the failing address -->
     <string name="login_error_cannot_login">Nie można się zalogować jako „%1$s. Sprawdź, czy adres i hasło są poprawne.</string>
@@ -823,7 +823,7 @@
     <string name="pref_background_btn_default">Użyj domyślnego obrazu</string>
     <string name="pref_background_btn_gallery">Wybierz z galerii</string>
     <string name="pref_imap_folder_warn_disable_defaults">Jeśli wyłączysz tę opcję, upewnij się, że twój serwer i inni klienci są odpowiednio skonfigurowani.\n\nW przeciwnym razie wszystko może w ogóle nie działać.</string>
-    <!-- No need to be literal here, you can also use "Use Multiple Devices", "Support Multiple Devices" or other fitting terms. However, it should fit to the wording or your language at https://delta.chat/help  -->
+    <!-- No need to be literal here, you can also use "Use Multiple Devices", "Support Multiple Devices" or other fitting terms. However, it should fit to the wording or your language at https://alt.chat/help  -->
     <string name="pref_multidevice">Tryb wielu urządzeń</string>
     <string name="pref_multidevice_explain">Synchronizuj swoje wiadomości z innymi urządzeniami. Włączane automatycznie po dodaniu drugiego urządzenia</string>
     <string name="pref_multidevice_change_warn">Jeśli używasz tego samego profilu na wielu urządzeniach, należy włączyć tryb wielu urządzeń. Wyłącz to ustawienie tylko wtedy, gdy usuniesz ten profil ze wszystkich pozostałych urządzeń.\n\nWyłączenie trybu wielu urządzeń podczas korzystania z profilu na wielu urządzeniach spowoduje nieodebrane wiadomości i inne problemy.</string>
@@ -860,14 +860,14 @@
     <string name="pref_edit_profile">Edytuj profil</string>
     <string name="disable_imap_idle">Wyłącz IMAP IDLE</string>
     <string name="disable_imap_idle_explain">Nie używaj rozszerzenia IMAP IDLE, nawet jeśli serwer je obsługuje. Włączenie tej opcji opóźni pobieranie wiadomości, włącz ją tylko na testy.</string>
-    <string name="send_stats_to_devs">Wyślij statystyki do programistów Delta Chat</string>
-    <string name="stats_device_message">Chcesz pomóc w ulepszeniu Delta Chat i wesprzeć badania, wysyłając co tydzień anonimowe statystyki użytkowania?\n\n👉 Kliknij tutaj… 👈</string>
-    <string name="stats_confirmation_dialog">Chcesz pomóc w ulepszeniu Delta Chat i wesprzeć badania, wysyłając co tydzień anonimowe statystyki użytkowania?</string>
-    <string name="stats_thanks">Dziękujemy! Zawsze możesz wyłączyć wysyłanie w „Ustawienia » Zaawansowane”.\n\nCzy masz dodatkowo 5 minut na udział w badaniu naukowym dotyczącym bezpieczeństwa Delta Chat?</string>
+    <string name="send_stats_to_devs">Wyślij statystyki do programistów Alt Chat</string>
+    <string name="stats_device_message">Chcesz pomóc w ulepszeniu Alt Chat i wesprzeć badania, wysyłając co tydzień anonimowe statystyki użytkowania?\n\n👉 Kliknij tutaj… 👈</string>
+    <string name="stats_confirmation_dialog">Chcesz pomóc w ulepszeniu Alt Chat i wesprzeć badania, wysyłając co tydzień anonimowe statystyki użytkowania?</string>
+    <string name="stats_thanks">Dziękujemy! Zawsze możesz wyłączyć wysyłanie w „Ustawienia » Zaawansowane”.\n\nCzy masz dodatkowo 5 minut na udział w badaniu naukowym dotyczącym bezpieczeństwa Alt Chat?</string>
     <string name="stats_disable_dialog">Wysyłanie statystyk jest już włączone.\n\nChcesz je wyłączyć?</string>
     <string name="disable">Wyłącz</string>
     <string name="stats_keep_sending">Kontynuuj wysyłanie</string>
-    <string name="stats_msg_body">Załącznik zawiera anonimowe statystyki użytkowania, które pomagają nam ulepszać Delta Chat. Więcej informacji można znaleźć na: https://delta.chat/help#statssending. Dziękujemy!</string>
+    <string name="stats_msg_body">Załącznik zawiera anonimowe statystyki użytkowania, które pomagają nam ulepszać Alt Chat. Więcej informacji można znaleźć na: https://alt.chat/help#statssending. Dziękujemy!</string>
 
     <!-- Emoji picker and categories -->
     <string name="emoji_search_results">Wyniki wyszukiwania</string>
@@ -999,7 +999,7 @@
     <string name="devicemsg_storage_exceeding">⚠️ Limit pamięci u twojego dostawcy wkrótce zostanie przekroczony, wykorzystano już %1$s%%.\n\nMożesz nie być w stanie otrzymywać wiadomości, gdy pamięć jest pełna.\n\n👉 Sprawdzić, czy możesz usunąć stare dane w interfejsie internetowym dostawcy i rozważyć włączenie opcji \"Ustawienia » Czaty » Usuwanie starych wiadomości\". W dowolnym momencie możesz sprawdzić swoje bieżące wykorzystanie pamięci w \"Ustawienia » Łączność\".</string>
     <!-- %1%s will be replaced by date and time in some human-readable format -->
     <string name="devicemsg_bad_time">⚠️ Data lub godzina urządzenia wydaje się być niedokładna (%1$s).\n\nDostosuj zegar ⏰🔧, aby upewnić się, że wiadomości są prawidłowo odbierane.</string>
-    <string name="devicemsg_update_reminder">⚠️ Twoja wersja Delta Chat może być nieaktualna.\n\nMoże to powodować problemy, ponieważ Twoi partnerzy czatu korzystają z nowszych wersji, a Ty nie masz najnowszych funkcji 😳\nSprawdź aktualizacje na stronie https://get.delta.chat lub w sklepie z aplikacjami.</string>
+    <string name="devicemsg_update_reminder">⚠️ Twoja wersja Alt Chat może być nieaktualna.\n\nMoże to powodować problemy, ponieważ Twoi partnerzy czatu korzystają z nowszych wersji, a Ty nie masz najnowszych funkcji 😳\nSprawdź aktualizacje na stronie https://get.alt.chat lub w sklepie z aplikacjami.</string>
 
     <!-- Some options as "Add Second Device" or "Backup" may require the system PIN/Fingerprint/Gesture/Etc. to be entered in a system dialog. This hint is added to the system dialog, below a title as "Add Second Device" or "Backup". -->
     <string name="enter_system_secret_to_continue">Aby kontynuować, wprowadź swój tajny kod zdefiniowany w systemie.</string>
@@ -1082,12 +1082,12 @@
     <!-- permissions -->
     <string name="perm_required_title">Wymagane zezwolenie</string>
     <string name="perm_continue">Kontynuuj</string>
-    <string name="perm_explain_access_to_camera_denied">Delta Chat wymaga pozwolenia na używanie aparatu, aby robić zdjęcia lub nagrywać filmy, ale zostało ono trwale odrzucone. Przejdź do menu ustawień aplikacji, wybierz „Uprawnienia” i włącz „Aparat”.</string>
+    <string name="perm_explain_access_to_camera_denied">Alt Chat wymaga pozwolenia na używanie aparatu, aby robić zdjęcia lub nagrywać filmy, ale zostało ono trwale odrzucone. Przejdź do menu ustawień aplikacji, wybierz „Uprawnienia” i włącz „Aparat”.</string>
     <!-- give the user an idea where to find the "Microphone" option. the hint is only shown if access was initially denied by the user. pick up wordings really used on the systems, but do not be overly precise: things shift around often and there are too many system we support to track every detail and click path -->
     <string name="perm_explain_access_to_mic_denied">Aby wysyłać wiadomości audio, przejdź do ustawień aplikacji, wybierz „Uprawnienia” lub „Prywatność i bezpieczeństwo” i włącz „Mikrofon”.</string>
-    <string name="perm_explain_access_to_storage_denied">Delta Chat wymaga uprawnienia do przechowywania, aby dołączyć lub wyeksportować zdjęcia, filmy lub dźwięk, ale zostało ono trwale odrzucone. Przejdź do menu ustawień aplikacji, wybierz „Uprawnienia” i włącz „Pamięć”.</string>
-    <string name="perm_explain_access_to_location_denied">Delta Chat wymaga zezwolenia na lokalizację, aby dołączyć lokalizację, ale zostało ono trwale odrzucone. Przejdź do menu ustawień aplikacji, wybierz „Uprawnienia” i włącz „Lokalizacja”.</string>
-    <string name="perm_explain_access_to_notifications_denied">Aby odbierać powiadomienia, przejdź do „Ustawienia » Aplikacje » Delta Chat” i włącz „Powiadomienia”.</string>
+    <string name="perm_explain_access_to_storage_denied">Alt Chat wymaga uprawnienia do przechowywania, aby dołączyć lub wyeksportować zdjęcia, filmy lub dźwięk, ale zostało ono trwale odrzucone. Przejdź do menu ustawień aplikacji, wybierz „Uprawnienia” i włącz „Pamięć”.</string>
+    <string name="perm_explain_access_to_location_denied">Alt Chat wymaga zezwolenia na lokalizację, aby dołączyć lokalizację, ale zostało ono trwale odrzucone. Przejdź do menu ustawień aplikacji, wybierz „Uprawnienia” i włącz „Lokalizacja”.</string>
+    <string name="perm_explain_access_to_notifications_denied">Aby odbierać powiadomienia, przejdź do „Ustawienia » Aplikacje » Alt Chat” i włącz „Powiadomienia”.</string>
 
     <!-- ImageEditorHud -->
     <string name="ImageEditorHud_draw_anywhere_to_blur">Rysuj gdziekolwiek, aby rozmyć</string>
@@ -1100,9 +1100,9 @@
     <string name="ImageEditorHud_rotate">Obróć</string>
 
     <!-- strings introduced on desktop. we want to share strings between the os, in general, please do not add generic strings here -->
-    <string name="about_offical_app_desktop">To jest oficjalna aplikacja Delta Chat Desktop.</string>
+    <string name="about_offical_app_desktop">To jest oficjalna aplikacja Alt Chat Desktop.</string>
     <string name="about_licensed_under_desktop">To oprogramowanie jest objęte licencją GNU GPL w wersji 3, a kod źródłowy jest dostępny na GitHub.</string>
-    <string name="welcome_desktop">Witaj w Delta Chat</string>
+    <string name="welcome_desktop">Witaj w Alt Chat</string>
     <string name="global_menu_preferences_language_desktop">Wybierz język</string>
     <string name="global_menu_file_desktop">Plik</string>
     <string name="global_menu_file_quit_desktop">Zamknij</string>
@@ -1117,11 +1117,11 @@
     <string name="global_menu_view_developer_desktop">Programista</string>
     <string name="global_menu_view_developer_tools_desktop">Narzędzia Programisty</string>
     <string name="global_menu_help_desktop">Pomoc</string>
-    <string name="delta_chat_homepage">Strona Delta Chat</string>
+    <string name="delta_chat_homepage">Strona Alt Chat</string>
     <string name="contribute">Wsparcie</string>
     <string name="global_menu_help_report_desktop">Zgłoś problem</string>
-    <string name="global_menu_help_about_desktop">O Delta Chat</string>
-    <string name="global_menu_file_open_desktop">Otwórz Delta Chat</string>
+    <string name="global_menu_help_about_desktop">O Alt Chat</string>
+    <string name="global_menu_file_open_desktop">Otwórz Alt Chat</string>
     <string name="global_menu_minimize_to_tray">Minimalizuj</string>
     <string name="no_chat_selected_suggestion_desktop">Wybierz czat lub utwórz nowy czat</string>
     <string name="write_message_desktop">Napisz wiadomość</string>
@@ -1140,7 +1140,7 @@
     <string name="message_detail_received_desktop">Odebrana</string>
     <string name="menu.view.developer.open.log.folder">Otwórz folder dziennika</string>
     <string name="menu.view.developer.open.current.log.file">Otwórz bieżący plik dziennika</string>
-    <string name="explain_desktop_minimized_disabled_tray_pref" tools:ignore="TypographyDashes">Ikona w zasobniku nie może być wyłączona, ponieważ Delta Chat został uruchomiony z opcją --minimized.</string>
+    <string name="explain_desktop_minimized_disabled_tray_pref" tools:ignore="TypographyDashes">Ikona w zasobniku nie może być wyłączona, ponieważ Alt Chat został uruchomiony z opcją --minimized.</string>
     <string name="no_spellcheck_suggestions_found">Nie znaleziono propozycji pisowni.</string>
     <string name="show_window">Pokaż okno</string>
 
@@ -1180,7 +1180,7 @@
     <string name="import_device_contacts">Importuj kontakty z urządzenia</string>
     <string name="import_device_contacts_hint">Aby rozmawiać z kontaktami ze swojego urządzenia, otwórz ustawienia i włącz „Kontakty”.</string>
     <!-- iOS notification settings -->
-    <string name="disabled_in_dc">Wyłącz w Delta Chat</string>
+    <string name="disabled_in_dc">Wyłącz w Alt Chat</string>
     <string name="disabled_in_system_settings">Wyłącz w ustawieniach systemu</string>
     <string name="bg_app_refresh_disabled">„Odświeżanie aplikacji w tle” wyłączone w ustawieniach systemu</string>
     <string name="notifications_avg_minutes">Średnio co %1$d min.</string>
@@ -1193,19 +1193,19 @@
     <!-- use the same translation for "Shortcuts" as the system is using, often the term "Shortcut" stays untranslated; check eg. how the "Shortcuts" system app is called in your locale -->
     <string name="shortcuts_widget_title">Skróty</string>
     <!-- use the same translation for "Widget" as the system is using; often the term "Widget" stays untranslated -->
-    <string name="shortcuts_widget_description">Użyj „Dodaj do widżetu” w Delta Chat, aby dodać elementy</string>
+    <string name="shortcuts_widget_description">Użyj „Dodaj do widżetu” w Alt Chat, aby dodać elementy</string>
     <!-- use the same translation for "Widget" as the system is using; often the term "Widget" stays untranslated -->
     <string name="remove_from_widget">Usuń z widżetu</string>
     <!-- use the same translation for "Widget" as the system is using; often the term "Widget" stays untranslated -->
     <string name="add_to_widget">Dodaj do widżetu</string>
     <!-- iOS permissions, copy from "deltachat-ios/Info.plist", which is used on missing translations in "deltachat-ios/LANG.lproj/InfoPlist.strings" -->
-    <string name="InfoPlist_NSCameraUsageDescription">Delta Chat używa aparatu do robienia i wysyłania zdjęć i filmów oraz do skanowania kodów QR.</string>
-    <string name="InfoPlist_NSLocationAlwaysAndWhenInUseUsageDescription">Delta Chat potrzebuje pozwolenia na lokalizację, aby udostępniać twoją lokalizację w okresie, w którym włączono udostępnianie lokalizacji.</string>
-    <string name="InfoPlist_NSLocationWhenInUseUsageDescription">Delta Chat potrzebuje pozwolenia na lokalizację, aby udostępniać twoją lokalizację w okresie, w którym włączono udostępnianie lokalizacji.</string>
+    <string name="InfoPlist_NSCameraUsageDescription">Alt Chat używa aparatu do robienia i wysyłania zdjęć i filmów oraz do skanowania kodów QR.</string>
+    <string name="InfoPlist_NSLocationAlwaysAndWhenInUseUsageDescription">Alt Chat potrzebuje pozwolenia na lokalizację, aby udostępniać twoją lokalizację w okresie, w którym włączono udostępnianie lokalizacji.</string>
+    <string name="InfoPlist_NSLocationWhenInUseUsageDescription">Alt Chat potrzebuje pozwolenia na lokalizację, aby udostępniać twoją lokalizację w okresie, w którym włączono udostępnianie lokalizacji.</string>
     <string name="InfoPlist_NSMicrophoneUsageDescription">Zezwolenie na dostęp do mikrofonu pozwala nagrywać dźwięk.</string>
     <string name="InfoPlist_NSPhotoLibraryUsageDescription">Zezwolenie na dostęp do biblioteki zdjęć umożliwia przesyłanie z niej zdjęć.</string>
-    <string name="InfoPlist_NSPhotoLibraryAddUsageDescription">Delta Chat chce zapisać obrazy w twojej bibliotece zdjęć.</string>
-    <string name="InfoPlist_NSFaceIDUsageDescription">Delta Chat może używać Face ID do ochrony twojego lokalnego profilu, tworzenia kopii zapasowych i konfiguracji drugiego urządzenia.</string>
+    <string name="InfoPlist_NSPhotoLibraryAddUsageDescription">Alt Chat chce zapisać obrazy w twojej bibliotece zdjęć.</string>
+    <string name="InfoPlist_NSFaceIDUsageDescription">Alt Chat może używać Face ID do ochrony twojego lokalnego profilu, tworzenia kopii zapasowych i konfiguracji drugiego urządzenia.</string>
 
     <!-- android specific strings, developers: please take care to remove strings that are no longer used! -->
     <string name="pref_instant_delivery">Natychmiastowe dostarczenie</string>
@@ -1214,10 +1214,10 @@
     <string name="pref_reliable_service">Wymuś połączenie w tle</string>
     <string name="pref_reliable_service_explain">Powoduje trwałe powiadomienie</string>
 
-    <string name="pref_background_notifications_rationale">Aby utrzymać połączenie z i odbierać wiadomości w tle, zignoruj optymalizacje baterii w następnym kroku.\n\nDelta Chat zużywa niewiele zasobów i dba o to, aby nie wyczerpać baterii.</string>
+    <string name="pref_background_notifications_rationale">Aby utrzymać połączenie z i odbierać wiadomości w tle, zignoruj optymalizacje baterii w następnym kroku.\n\nAlt Chat zużywa niewiele zasobów i dba o to, aby nie wyczerpać baterii.</string>
     <!-- disabling "Reliable service" will hide a the maybe annoying permanent-notification with the drawback that new-message-notifications get potentially unreliable -->
-    <string name="perm_enable_bg_reminder_title">Dotknij tutaj, aby odbierać wiadomości, podczas gdy Delta Chat działa w tle.</string>
-    <string name="perm_enable_bg_already_done">Pozwolono już Delta Chat na odbieranie wiadomości w tle.\n\nJeśli wiadomości nadal nie docierają w tle, sprawdź też ustawienia systemu.</string>
+    <string name="perm_enable_bg_reminder_title">Dotknij tutaj, aby odbierać wiadomości, podczas gdy Alt Chat działa w tle.</string>
+    <string name="perm_enable_bg_already_done">Pozwolono już Alt Chat na odbieranie wiadomości w tle.\n\nJeśli wiadomości nadal nie docierają w tle, sprawdź też ustawienia systemu.</string>
 
     <!-- device messages for updates -->
     <string name="update_2_0">Co nowego?\n\n💯 Szyfrowanie end-to-end jest niezawodne i na zawsze. Kłódki 🔒 odchodzą w zapomnienie!\n\n✉️ Klasyczna poczta e-mail bez szyfrowania end-to-end jest oznaczona symbolem litery.\n\n😻 Nowy, ulepszony ekran profilu dla wszystkich kontaktów.\n\n🔲 Nowy przycisk szybkiego dostępu do aplikacji używanych na czacie.\n\n❤️ Prosimy o darowizny, które pomogą nam zachować niezależność i stale wprowadzać ulepszenia: %1$s</string>

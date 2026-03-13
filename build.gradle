@@ -30,7 +30,7 @@ android {
         versionCode 743
         versionName "2.43.0"
 
-        applicationId "com.b44t.messenger"
+        applicationId "me.altchat"
         multiDexEnabled true
 
         minSdkVersion 21
@@ -117,7 +117,7 @@ android {
         }
         gplay {
             dimension "none"
-            applicationId "chat.delta"
+            applicationId "me.altchat"
             apply plugin: "com.google.gms.google-services"
             buildConfigField "boolean", "USE_PLAY_SERVICES", "true"
         }
