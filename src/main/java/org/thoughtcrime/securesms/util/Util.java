@@ -59,7 +59,7 @@ import org.thoughtcrime.securesms.components.ComposeText;
 
 public class Util {
   private static final String TAG = Util.class.getSimpleName();
-  public static final String INVITE_DOMAIN = "i.delta.chat";
+  public static final String INVITE_DOMAIN = "altchat.me";
 
   public static final Handler handler = new Handler(Looper.getMainLooper());
 
