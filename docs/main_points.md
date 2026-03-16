@@ -273,11 +273,11 @@ https://nine.testrun.org/privacy.html
 
 Требует изменения в submodule (Rust + NDK пересборка):
 
-1. Создать email-аккаунт для бота (например `stats@altchat.me`)
+1. Создать email-аккаунт для бота (например `stats@alt-chat.me`)
 2. Сгенерировать PGP-ключ для этого email
 3. Поменять в `stats.rs`:
    ```rust
-   pub(crate) const STATISTICS_BOT_EMAIL: &str = "stats@altchat.me";
+   pub(crate) const STATISTICS_BOT_EMAIL: &str = "stats@alt-chat.me";
    ```
 4. Заменить `assets/statistics-bot.vcf` — VCF с новым именем, email и PGP-ключом
 5. Пересобрать: `export PATH="$HOME/.cargo/bin:$PATH" && export ANDROID_NDK_ROOT=~/Library/Android/sdk/ndk/27.1.12297006 && scripts/ndk-make.sh arm64-v8a`
@@ -349,4 +349,80 @@ Chatmail-серверу нужен **Firebase Server Key** (Legacy) или **Ser
 - В конфиге chatmail прописать путь к этому файлу
 
 > Точный параметр конфига зависит от версии chatmail — нужно смотреть документацию конкретной версии сервера.
+
+---
+
+## Импорт контактов с сервера по API
+
+### Задача
+
+При старте или по запросу — получать список контактов с сервера и добавлять их в локальную БД, чтобы сразу можно было переписываться с E2EE.
+
+### Что должен вернуть сервер на каждый контакт
+
+```json
+{
+  "addr": "alice@example.com",
+  "name": "Alice",
+  "fingerprint": "A1B2C3D4E5F6...",
+  "public_key": "<base64-encoded OpenPGP public key>"
+}
+```
+
+- `fingerprint` — постоянный (меняется только при сбросе аккаунта), пользователь отправляет его на сервер при регистрации
+- `public_key` — бинарный OpenPGP ключ в base64; без него сообщения пойдут без шифрования
+- Без `fingerprint` — контакт не будет верифицирован (нет зелёной галочки)
+
+### Куда писать в БД
+
+| Таблица | Колонки | Значения |
+|---|---|---|
+| `public_keys` | `fingerprint`, `public_key` | HEX fingerprint + бинарный BLOB (base64 decode) |
+| `contacts` | `addr`, `authname`, `name_normalized`, `fingerprint`, `origin` | email, имя, lowercase имя, HEX fingerprint, `16777216` (Origin::CreateChat) |
+| `contacts.verifier` | `verifier` | `1` (ContactId::SELF) — если хочешь зелёную галочку |
+
+`chats` и `chats_contacts` трогать **не нужно** — чат создаётся автоматически когда пользователь открывает переписку.
+
+### SQL операции
+
+```sql
+-- 1. Сохранить публичный ключ
+INSERT INTO public_keys (fingerprint, public_key)
+VALUES (?, ?)
+ON CONFLICT (fingerprint) DO NOTHING;
+
+-- 2. Добавить или обновить контакт
+INSERT INTO contacts (name, name_normalized, addr, fingerprint, origin, authname)
+VALUES ('', ?, ?, ?, 16777216, ?)
+ON CONFLICT (fingerprint) DO UPDATE SET
+    addr = excluded.addr,
+    authname = excluded.authname;
+
+-- 3. Верифицировать (опционально — даёт зелёную галочку)
+UPDATE contacts SET verifier = 1
+WHERE fingerprint = ? AND verifier = 0;
+```
+
+### Готовая функция в коде
+
+`jni/deltachat-core-rust/src/contact.rs` — функция `import_vcard_contact` делает именно это:
+1. Принимает `addr`, `authname`, `public_key` (base64)
+2. Вычисляет fingerprint из ключа через `public_key.dc_fingerprint().hex()`
+3. Делает `INSERT INTO public_keys`
+4. Вызывает `Contact::add_or_lookup_ex` с `Origin::CreateChat`
+
+Можно добавить новый API-метод по её образцу, принимающий JSON с сервера.
+
+### Как получить fingerprint и ключ своего пользователя для отправки на сервер
+
+```rust
+// Fingerprint
+let fp = self_fingerprint(context).await?;  // src/key.rs
+
+// Публичный ключ (base64)
+let key = load_self_public_key(context).await?;
+let key_base64 = key.to_base64();
+```
+
+На Android — через существующий JNI API: `DcContext.getSelfPublicKey()` / `getFingerprint()`.
 

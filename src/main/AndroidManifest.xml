@@ -154,7 +154,7 @@
             <category android:name="android.intent.category.DEFAULT" />
             <category android:name="android.intent.category.BROWSABLE" />
             <data android:scheme="https"
-                  android:host="altchat.me" />
+                  android:host="alt-chat.me" />
         </intent-filter>
 
         <meta-data android:name="com.sec.minimode.icon.portrait.normal"
