@@ -22,10 +22,6 @@ import org.thoughtcrime.securesms.altplatform.storage.AltPrefs;
 import org.thoughtcrime.securesms.altplatform.storage.AltTokenStorage;
 import org.thoughtcrime.securesms.connect.DcHelper;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -85,64 +81,41 @@ public class AltPlatformService {
             return RegisterResult.NETWORK_ERROR;
         }
 
-        // 2. Export keys to temp dir
-        File tempDir = createTempDir();
-        if (tempDir == null) return RegisterResult.NETWORK_ERROR;
-
+        // 2. Get keys from DC core
+        String publicKey;
+        String privateKeyArmored;
         try {
-            try {
-                rpc.exportSelfKeys(accountId, tempDir.getAbsolutePath(), "");
-            } catch (Exception e) {
-                Log.e(TAG, "exportSelfKeys failed", e);
-                return RegisterResult.NETWORK_ERROR;
-            }
-
-            // 3. Read public key
-            File pubKeyFile = findKeyFile(tempDir, "public");
-            if (pubKeyFile == null) {
-                File[] exported = tempDir.listFiles();
-                Log.e(TAG, "pubKeyFile null, exported files: " + (exported != null ? exported.length : -1));
-                if (exported != null) for (File f : exported) Log.e(TAG, "  file: " + f.getName());
-                return RegisterResult.NETWORK_ERROR;
-            }
-            byte[] pubKeyBytes = readFile(pubKeyFile);
-            String publicKey = Base64.encodeToString(pubKeyBytes, Base64.NO_WRAP);
-
-            // 4. Extract fingerprint from getEncryptionInfo
-            String fingerprint = extractFingerprint(rpc, accountId);
-
-            // 5. Read and encrypt private key
-            File[] allFiles = tempDir.listFiles();
-            if (allFiles != null) {
-                for (File f : allFiles) Log.d(TAG, "exported file: " + f.getName());
-            }
-            File privKeyFile = findKeyFile(tempDir, "secret");
-            if (privKeyFile == null) privKeyFile = findKeyFile(tempDir, "private");
-            if (privKeyFile == null) {
-                Log.e(TAG, "privKeyFile null, files: " + (allFiles != null ? allFiles.length : -1));
-                return RegisterResult.NETWORK_ERROR;
-            }
-            byte[] privKeyBytes = readFile(privKeyFile);
-            byte[] encrypted;
-            try {
-                encrypted = AltKeyCrypto.encrypt(privKeyBytes, recoveryPassword);
-            } catch (AltCryptoException e) {
-                Log.e(TAG, "Encryption failed", e);
-                return RegisterResult.NETWORK_ERROR;
-            }
-            String encryptedPrivateKey = Base64.encodeToString(encrypted, Base64.NO_WRAP);
-
-            // 6. Call API
-            RegisterRequest req = new RegisterRequest(username, email, addrs, displayName,
-                    publicKey, fingerprint, encryptedPrivateKey);
-            Log.d(TAG, "register() calling API addrs=" + addrs + " fingerprint=" + fingerprint);
-            AltApiResponse<Void> resp = api.register(req);
-            Log.d(TAG, "register() API response httpCode=" + resp.httpCode + " errorCode=" + resp.errorCode);
-            return mapRegisterResult(resp);
-
-        } finally {
-            deleteDir(tempDir);
+            publicKey = rpc.getSelfPublicKeyArmored(accountId);
+            privateKeyArmored = rpc.getSelfPrivateKeyArmored(accountId);
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to get keys from DC core", e);
+            return RegisterResult.NETWORK_ERROR;
         }
+        // public key is sent as base64
+        publicKey = Base64.encodeToString(publicKey.getBytes(), Base64.NO_WRAP);
+
+        // 3. Extract fingerprint
+        String fingerprint = extractFingerprint(rpc, accountId);
+
+        // 4. Encrypt private key
+        byte[] encrypted;
+        try {
+            encrypted = AltKeyCrypto.encrypt(privateKeyArmored.getBytes("UTF-8"), recoveryPassword);
+        } catch (AltCryptoException e) {
+            Log.e(TAG, "Encryption failed", e);
+            return RegisterResult.NETWORK_ERROR;
+        } catch (java.io.UnsupportedEncodingException e) {
+            return RegisterResult.NETWORK_ERROR;
+        }
+        String encryptedPrivateKey = Base64.encodeToString(encrypted, Base64.NO_WRAP);
+
+        // 5. Call API
+        RegisterRequest req = new RegisterRequest(username, email, addrs, displayName,
+                publicKey, fingerprint, encryptedPrivateKey);
+        Log.d(TAG, "register() calling API addrs=" + addrs + " fingerprint=" + fingerprint);
+        AltApiResponse<Void> resp = api.register(req);
+        Log.d(TAG, "register() API response httpCode=" + resp.httpCode + " errorCode=" + resp.errorCode);
+        return mapRegisterResult(resp);
     }
 
     public VerifyResult verifyEmail(String email, String code) {
@@ -198,23 +171,15 @@ public class AltPlatformService {
             return RestoreKeyResult.WRONG_PASSWORD;
         }
 
-        // 4. Write to temp dir and import
-        File tempDir = createTempDir();
-        if (tempDir == null) return RestoreKeyResult.NETWORK_ERROR;
+        // 4. Import key into DC core
         try {
-            File privKeyFile = new File(tempDir, "secret-key-default.asc");
-            try (FileOutputStream fos = new FileOutputStream(privKeyFile)) {
-                fos.write(privKeyBytes);
-            }
-
-            // 5. Import via imex (async) — wait for DC_EVENT_IMEX_PROGRESS
-            boolean success = importKeysSync(tempDir.getAbsolutePath());
-            return success ? RestoreKeyResult.SUCCESS : RestoreKeyResult.IMPORT_FAILED;
-        } catch (IOException e) {
-            Log.e(TAG, "Failed to write temp key file", e);
-            return RestoreKeyResult.NETWORK_ERROR;
-        } finally {
-            deleteDir(tempDir);
+            Rpc rpc = DcHelper.getRpc(context);
+            int accountId = DcHelper.getAccounts(context).getSelectedAccount().getAccountId();
+            rpc.importSelfKeyFromBytes(accountId, context.getCacheDir(), privKeyBytes);
+            return RestoreKeyResult.SUCCESS;
+        } catch (Exception e) {
+            Log.e(TAG, "importSelfKeyFromBytes failed", e);
+            return RestoreKeyResult.IMPORT_FAILED;
         }
     }
 
@@ -292,56 +257,6 @@ public class AltPlatformService {
             Log.e(TAG, "getContactEncryptionInfo failed", e);
         }
         return "";
-    }
-
-    private File findKeyFile(File dir, String type) {
-        File[] files = dir.listFiles();
-        if (files == null) return null;
-        for (File f : files) {
-            if (f.getName().contains(type)) return f;
-        }
-        return null;
-    }
-
-    private byte[] readFile(File file) throws RuntimeException {
-        try (FileInputStream fis = new FileInputStream(file)) {
-            byte[] data = new byte[(int) file.length()];
-            int read = fis.read(data);
-            if (read != data.length) throw new IOException("Short read");
-            return data;
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to read file", e);
-        }
-    }
-
-    private File createTempDir() {
-        File dir = new File(context.getCacheDir(), "altkeys_" + System.currentTimeMillis());
-        if (!dir.mkdirs()) {
-            Log.e(TAG, "Failed to create temp dir");
-            return null;
-        }
-        return dir;
-    }
-
-    private boolean importKeysSync(String dirPath) {
-        try {
-            Rpc rpc = DcHelper.getRpc(context);
-            int accountId = DcHelper.getAccounts(context).getSelectedAccount().getAccountId();
-            rpc.importSelfKeys(accountId, dirPath, "");
-            return true;
-        } catch (Exception e) {
-            Log.e(TAG, "importSelfKeys failed", e);
-            return false;
-        }
-    }
-
-    private void deleteDir(File dir) {
-        if (dir == null) return;
-        File[] files = dir.listFiles();
-        if (files != null) {
-            for (File f : files) f.delete();
-        }
-        dir.delete();
     }
 
     private RegisterResult mapRegisterResult(AltApiResponse<Void> resp) {

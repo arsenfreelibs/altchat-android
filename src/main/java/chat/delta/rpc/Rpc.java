@@ -339,6 +339,38 @@ public class Rpc {
   }
 
   /**
+   * Imports a private key provided as ASCII-armored string into DC core.
+   * Internally writes to a temp dir and calls importSelfKeys — the file is deleted afterwards.
+   */
+  public void importSelfKeyFromBytes(Integer accountId, java.io.File cacheDir, byte[] armoredKey) throws RpcException {
+    java.io.File tmpDir = new java.io.File(cacheDir, "dcimport_" + System.currentTimeMillis());
+    if (!tmpDir.mkdirs()) throw new RpcException("Failed to create temp dir for key import");
+    try {
+      java.io.File keyFile = new java.io.File(tmpDir, "private-key-default.asc");
+      try (java.io.FileOutputStream fos = new java.io.FileOutputStream(keyFile)) {
+        fos.write(armoredKey);
+      } catch (java.io.IOException e) {
+        throw new RpcException("Failed to write key file: " + e.getMessage());
+      }
+      importSelfKeys(accountId, tmpDir.getAbsolutePath(), "");
+    } finally {
+      java.io.File[] files = tmpDir.listFiles();
+      if (files != null) for (java.io.File f : files) f.delete();
+      tmpDir.delete();
+    }
+  }
+
+  /** Returns the ASCII-armored public key for the account, read directly from DC core DB. */
+  public String getSelfPublicKeyArmored(Integer accountId) throws RpcException {
+    return transport.callForResult(new TypeReference<String>(){}, "get_self_public_key_armored", mapper.valueToTree(accountId));
+  }
+
+  /** Returns the ASCII-armored private key for the account, read directly from DC core DB. */
+  public String getSelfPrivateKeyArmored(Integer accountId) throws RpcException {
+    return transport.callForResult(new TypeReference<String>(){}, "get_self_private_key_armored", mapper.valueToTree(accountId));
+  }
+
+  /**
    * Returns the message IDs of all _fresh_ messages of any chat.
    * Typically used for implementing notification summaries
    * or badge counters e.g. on the app icon.
