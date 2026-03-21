@@ -70,7 +70,7 @@
 **Изменения**:
 - Создать `AltApiClient.java` — строит `OkHttpClient` с таймаутами 15 с, добавляет `Authorization: Bearer <token>` если токен есть.
 - Создать `AltApiService.java` — методы для всех эндпоинтов модуля пользователей (синхронные через `OkHttp Call`, вызываются из фонового потока).
-- Создать DTO-классы в `altplatform/network/dto/`:  реквест-объекты (`RegisterRequest`, `VerifyRequest`, `ResendCodeRequest`, `RestoreRequest`) и объект ответа (`UserProfileResponse` с полями `addr`, `name`, `fingerprint`, `publicKey`).
+- Создать DTO-классы в `altplatform/network/dto/`:  реквест-объекты (`RegisterRequest`, `VerifyRequest`, `ResendCodeRequest`, `RestoreRequest`) и объект ответа (`UserProfileResponse` с полями `addrs` (List), `name`, `fingerprint`, `publicKey`).
 
 **Конфигурационные параметры**:
 | Параметр | Тип | Обязательный | Описание |
@@ -85,7 +85,7 @@
 
 **Изменения**:
 - Создать `AltPlatformService.java` — инжектируется через `ApplicationContext`:
-  - `register(username, email, addr, displayName, recoveryPassword)` — экспортирует ключи из DC core через `dcContext.imex(DC_IMEX_EXPORT_SELF_KEYS, tempDir)` (асинхронно — ждёт `DC_EVENT_IMEX_PROGRESS == 1000`), читает `public.asc` / `private.asc`, шифрует приватный ключ паролем восстановления (`AltKeyCrypto.encrypt`), вызывает `AltApiService.register()`. (`email` — почта аккаунта для верификации; `addr` — Delta Chat адрес для обмена сообщениями, берётся автоматически из `dcContext.getConfig("addr")`).
+  - `register(username, email, addrs, displayName, recoveryPassword)` — собирает все addr через `rpc.listTransports(accountId)` → `List<EnteredLoginParam>` → екстракт `param.addr` в `List<String> addrs`; экспортирует ключи через `Rpc.exportSelfKeys(accountId, tempDir, "")` (либо `dcContext.imex(DC_IMEX_EXPORT_SELF_KEYS, tempDir)` + ожидание `DC_EVENT_IMEX_PROGRESS`), читает `public-key-default.asc` / `secret-key-default.asc`, шифрует приватный ключ паролем восстановления (`AltKeyCrypto.encrypt`), вызывает `AltApiService.register()`. (`email` — почта аккаунта для верификации; `addrs` — все Delta Chat адреса аккаунта, по одному на каждый relay-транспорт).
   - `verifyEmail(email, code)` — вызывает `/v1/users/verify`, сохраняет возвращённый JWT через `AltTokenStorage`.
   - `resendCode(email)` — вызывает `/v1/users/resend-code`.
   - `restore(username, email)` — инициирует восстановление (отправка кода).
@@ -218,21 +218,26 @@
 ```
 BEGIN:VCARD
 VERSION:4.0
-FN:<displayName или addr>
-EMAIL:<addr>
+FN:<displayName или addrs[0]>
+EMAIL:<addrs[0]>
 KEY;MEDIATYPE=application/pgp-keys:<publicKey в base64, как пришёл с сервера>
 END:VCARD
 ```
 > Поле `KEY` передаётся без переносов строк. Если ключ большой — base64 без пробелов, одной строкой.
+
+> **Ограничение ядра**: `VcardContact.addr` — это `String`, не массив. Парсер в `deltachat-contact-tools/src/vcard.rs` использует `get_or_insert()` — берёт **только первый** `EMAIL` и игнорирует остальные. Поэтому сейчас передаём только `addrs.get(0)`. `addrs: List<String>` в DTO сохраняется для будущей поддержки нескольких адресов.
 
 **Пример вызова из Java** (в `AltPlatformService`, фоновый поток):
 ```java
 Rpc rpc = DcHelper.getRpc(context);
 int accountId = DcHelper.getAccounts(context).getSelectedAccountId();
 
+// TODO: DC core supports only one addr per contact (VcardContact.addr is String, not array).
+// Currently using the first addr only. When core adds multi-addr support, loop over profile.addrs.
+String primaryAddr = profile.addrs.get(0);
 String vcard = "BEGIN:VCARD\r\nVERSION:4.0\r\n"
-    + "FN:" + profile.name + "\r\n"
-    + "EMAIL:" + profile.addr + "\r\n"
+    + "FN:" + (profile.name != null ? profile.name : primaryAddr) + "\r\n"
+    + "EMAIL:" + primaryAddr + "\r\n"
     + "KEY;MEDIATYPE=application/pgp-keys:" + profile.publicKey + "\r\n"
     + "END:VCARD";
 
@@ -342,7 +347,8 @@ int chatId = rpc.createChatByContactId(accountId, contactId);
 9. **`build.gradle`** — проверить текущие зависимости: есть ли уже `okhttp3`, `gson`; какие версии `androidx.security` используются.
 10. **`docs/backend-architecture.md`** — финальный вид архитектуры Alt Backend для понимания среды, с которой интегрируется Android.
 11. **`src/main/java/org/thoughtcrime/securesms/preferences/ListSummaryPreferenceFragment.java`** — эталонный паттерн вызова `imex()`: как регистрировать observer на `DC_EVENT_IMEX_PROGRESS`, запускать операцию и ждать завершения. Именно этот паттерн нужно воспроизвести в `AltPlatformService`.
-12. **`jni/deltachat-core-rust/src/contact.rs`** — функция `import_vcard_contact` (эталон для `addContactFromAlt`); формат экспортируемых ключей — файлы `*-key-default.asc` в указанной директории.
+12. **`src/main/java/chat/delta/rpc/Rpc.java`** — методы `exportSelfKeys(accountId, path, passphrase)` и `importSelfKeys(accountId, path, passphrase)` (современная RPC-альтернатива `dcContext.imex()`), а также `listTransports(accountId)` — возвращает `List<EnteredLoginParam>` всех транспортов аккаунта; у каждого свой `addr`. `getConfig("addr")` возвращает addr основного транспорта. Alt Platform регистрирует только этот основной addr.
+13. **`jni/deltachat-core-rust/src/contact.rs`** — функция `import_vcard_contact` (эталон для `addContactFromAlt`); формат экспортируемых ключей — файлы `*-key-default.asc` в указанной директории.
 
 ---
 
@@ -355,7 +361,8 @@ DTO для `POST /v1/users/register`:
 public class RegisterRequest {
     public String username;
     public String email;             // почта аккаунта (для верификации и восстановления)
-    public String addr;              // Delta Chat адрес (для обмена сообщениями, напр. user@nine.testrun.org)
+    public List<String> addrs;       // все Delta Chat адреса аккаунта (по одному на каждый транспорт/relay);
+                                     // собираются через rpc.listTransports() → EnteredLoginParam.addr
     public String displayName;       // nullable
     public String publicKey;         // base64 OpenPGP public key
     public String fingerprint;       // HEX fingerprint
@@ -377,7 +384,7 @@ public class VerifyRequest {
 DTO ответа `GET /v1/users/search` и `GET /v1/users/{username}`:
 ```java
 public class UserProfileResponse {
-    public String addr;         // Delta Chat адрес (для vCard EMAIL и добавления контакта)
+    public List<String> addrs;  // все Delta Chat адреса пользователя (один на каждый relay)
     public String name;         // displayName
     public String username;     // никнейм
     public String fingerprint;  // HEX fingerprint PGP-ключа
@@ -445,13 +452,18 @@ public class RestoreRequest {
 
 Ключевые методы:
 
-- `RegisterResult register(Context, username, email, addr, displayName, recoveryPassword)`:
-  1. `addr` получается вызывающей стороной как `DcHelper.getContext(context).getConfig("addr")` — Delta Chat адрес текущего аккаунта.
-  2. Вызывает `dcContext.imex(DC_IMEX_EXPORT_SELF_KEYS, tempDir)` — **асинхронный** вызов ядра. Регистрирует одноразовый observer на `DC_EVENT_IMEX_PROGRESS` через `DcEventCenter`: ждёт `data1 == 1000` (успех) или `data1 == 0` (ошибка). Паттерн см. `ListSummaryPreferenceFragment.java`.
-  3. По завершении читает `tempDir/public-key-default.asc` → base64 (publicKey), HEX fingerprint из заголовка `-----BEGIN PGP PUBLIC KEY BLOCK-----` / UID-строки (или через `getContactEncrInfo(CONTACT_ID_SELF)`).
+- `RegisterResult register(Context, username, email, addrs, displayName, recoveryPassword)`:
+  1. `addrs` собираются вызывающей стороной:
+     ```java
+     List<EnteredLoginParam> transports = rpc.listTransports(accountId);
+     List<String> addrs = new ArrayList<>();
+     for (EnteredLoginParam t : transports) { if (t.addr != null) addrs.add(t.addr); }
+     ```
+  2. Экспортирует ключи: `rpc.exportSelfKeys(accountId, tempDir.getAbsolutePath(), "")` — **RPC-вызов блокирующий**, возвращается по завершении экспорта. Альтернатива: `dcContext.imex(DC_IMEX_EXPORT_SELF_KEYS, tempDir)` + observer на `DC_EVENT_IMEX_PROGRESS == 1000` (паттерн из `ListSummaryPreferenceFragment.java`).
+  3. Читает `tempDir/public-key-default.asc` → base64 (publicKey). Fingerprint: из содержимого файла или через `rpc.getEncryptionInfo(accountId, DcContact.DC_CONTACT_ID_SELF)`.
   4. Читает `tempDir/secret-key-default.asc` → `AltKeyCrypto.encrypt(privateKeyBytes, recoveryPassword)` → base64 (encryptedPrivateKey).
   5. Удаляет временную директорию.
-  6. Вызывает `AltApiService.register()` с `{ username, email, addr, displayName, publicKey, fingerprint, encryptedPrivateKey }`.
+  6. Вызывает `AltApiService.register()` с `{ username, email, addrs, displayName, publicKey, fingerprint, encryptedPrivateKey }`.
   7. Возвращает enum-результат: `SUCCESS`, `USERNAME_TAKEN`, `EMAIL_TAKEN`, `USERNAME_RESERVED`, `INVALID_USERNAME`, `NETWORK_ERROR`.
 
 - `VerifyResult verifyEmail(Context, email, code)`:
@@ -481,13 +493,13 @@ public class RestoreRequest {
 - `UserProfileResponse getProfile(Context, username)`: возвращает профиль или `null`.
 
 - `int addContactFromAlt(Context, UserProfileResponse profile)` → возвращает `contactId` созданного контакта:
-  1. Формирует vCard-строку в памяти (без записи на диск):
+  1. Формирует vCard-строку в памяти (без записи на диск). Использует `profile.addrs.get(0)` — основной (первый) addr. DC core поддерживает только один `EMAIL` на контакт (`VcardContact.addr: String`); `addrs` хранится как `List<String>` с расчётом на будущее.
      ```
      BEGIN:VCARD
      VERSION:4.0
-     FN:<profile.name или profile.addr>
-     EMAIL:<profile.addr>
-     KEY;MEDIATYPE=application/pgp-keys:<profile.publicKey>  ← base64 PGP, как пришёл с сервера
+     FN:<profile.name или profile.addrs.get(0)>
+     EMAIL:<profile.addrs.get(0)>
+     KEY;MEDIATYPE=application/pgp-keys:<profile.publicKey>
      END:VCARD
      ```
   2. Вызывает `DcHelper.getRpc(context).importVcardContents(accountId, vcardString)` — ядро:
@@ -511,7 +523,7 @@ public class RestoreRequest {
 - `EditText` для никнейма (валидация: `[a-zA-Z0-9_]{3,30}`).
 - `EditText` для email аккаунта (для верификации и восстановления).
 - `EditText` для отображаемого имени (необязательно).
-- Поле Delta Chat addr (`addr`) заполняется автоматически из `dcContext.getConfig("addr")` и показывается пользователю как read-only информация (пояснение: «Ваш адрес для обмена сообщениями на платформе»).
+- Read-only поле, показывающее список **всех Delta Chat адресов** (из `rpc.listTransports(accountId)` → `param.addr`), с пояснением: «Ваши адреса для приёма сообщений».
 - Валидация никнейма на клиенте по regex `[a-zA-Z0-9_]{3,30}` до отправки.
 - Inline-ошибка под полем никнейма при нарушении формата.
 - Отображать `ProgressDialog` во время API-вызова.
