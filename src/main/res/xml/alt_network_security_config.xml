@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <!-- Allow plaintext HTTP to the Alt Platform server -->
+        <domain includeSubdomains="false">178.160.229.225</domain>
+    </domain-config>
+</network-security-config>

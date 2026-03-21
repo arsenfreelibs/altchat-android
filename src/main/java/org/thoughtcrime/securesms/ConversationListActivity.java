@@ -381,6 +381,22 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     }
   }
 
+  private void showAltOnboardingSnackbarIfNeeded() {
+    if (!org.thoughtcrime.securesms.altplatform.storage.AltPrefs.isRegistered(this)
+            && !org.thoughtcrime.securesms.altplatform.storage.AltPrefs.wasOnboardingSnackbarShown(this)) {
+      org.thoughtcrime.securesms.altplatform.storage.AltPrefs.markOnboardingSnackbarShown(this);
+      View rootView = findViewById(android.R.id.content);
+      com.google.android.material.snackbar.Snackbar.make(
+              rootView,
+              R.string.alt_onboarding_snackbar,
+              com.google.android.material.snackbar.Snackbar.LENGTH_LONG)
+          .setAction(R.string.alt_register_button, v ->
+              startActivity(org.thoughtcrime.securesms.altplatform.registration.AltRegistrationActivity
+                      .getStartIntent(this)))
+          .show();
+    }
+  }
+
   public void refreshTitle() {
     if (isRelayingMessageContent(this)) {
       if (isForwarding(this)) {
@@ -459,6 +475,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     refreshTitle();
     invalidateOptionsMenu();
     DirectShareUtil.triggerRefreshDirectShare(this);
+    showAltOnboardingSnackbarIfNeeded();
   }
 
   @Override
@@ -551,6 +568,9 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
       return true;
     } else if (itemId == R.id.menu_proxy_settings) {
       startActivity(new Intent(this, ProxySettingsActivity.class));
+      return true;
+    } else if (itemId == R.id.menu_find_in_alt) {
+      startActivity(org.thoughtcrime.securesms.altplatform.search.AltUserSearchActivity.getStartIntent(this));
       return true;
     } else if (itemId == android.R.id.home) {
       getOnBackPressedDispatcher().onBackPressed();

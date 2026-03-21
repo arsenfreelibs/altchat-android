@@ -1198,4 +1198,61 @@
     <string name="tos_agree">Agree</string>
     <string name="tos_decline">Decline</string>
     <string name="tos_must_accept">Please accept the Terms of Service to continue.</string>
+
+    <!-- Alt Platform -->
+    <string name="network_connection_unavailable">Network connection unavailable</string>
+    <string name="alt_registration_title">Register on Alt Platform</string>
+    <string name="alt_restore_title">Restore Alt Account</string>
+    <string name="alt_find_users_title">Find Users on Alt</string>
+
+    <string name="alt_step1_title">Create your Alt account</string>
+    <string name="alt_step1_subtitle">Choose a username and enter the email address you want to use for notifications.</string>
+    <string name="alt_step2_title">Set a recovery password</string>
+    <string name="alt_step2_subtitle">This password encrypts your private key. You will need it to restore your account on another device.</string>
+    <string name="alt_step3_title">Verify your email</string>
+
+    <string name="alt_restore_step1_title">Restore your Alt account</string>
+    <string name="alt_restore_step1_subtitle">Enter your username and email to receive a verification code.</string>
+    <string name="alt_restore_step2_title">Enter verification code</string>
+    <string name="alt_restore_step3_title">Decrypt your key</string>
+    <string name="alt_restore_step3_subtitle">Enter the verification code and the recovery password you set during registration.</string>
+
+    <string name="alt_username_hint">Username (letters, digits, underscore)</string>
+    <string name="alt_display_name_hint">Display name (optional)</string>
+    <string name="alt_email_hint">Contact email</string>
+    <string name="alt_password_hint">Recovery password</string>
+    <string name="alt_password_confirm_hint">Confirm recovery password</string>
+    <string name="alt_code_hint">Verification code</string>
+    <string name="alt_search_hint">Search by username or name</string>
+
+    <string name="alt_register_button">Register</string>
+    <string name="alt_verify_button">Verify</string>
+    <string name="alt_resend_button">Resend code</string>
+    <string name="alt_restore_button">Restore key</string>
+
+    <string name="alt_dc_addrs">Your DC addresses: %1$s</string>
+    <string name="alt_no_dc_addrs">No DC accounts configured</string>
+    <string name="alt_code_sent_to">Verification code sent to %1$s</string>
+    <string name="alt_resend_in">Resend in %1$ds</string>
+    <string name="alt_code_resent">Verification code resent</string>
+    <string name="alt_rate_limited">Too many requests. Please wait.</string>
+    <string name="alt_search_empty">No users found</string>
+    <string name="alt_not_registered_banner">Register on Alt Platform to be discoverable by other users.</string>
+    <string name="alt_onboarding_snackbar">Discover users with Alt Platform</string>
+
+    <string name="alt_username_invalid">Username must be 3–32 characters: letters, digits, underscore</string>
+    <string name="alt_username_taken">This username is already taken</string>
+    <string name="alt_email_invalid">Enter a valid email address</string>
+    <string name="alt_email_taken">This email is already registered</string>
+    <string name="alt_username_reserved">This username is reserved</string>
+    <string name="alt_username_required">Username is required</string>
+    <string name="alt_password_too_short">Password must be at least 8 characters</string>
+    <string name="alt_passwords_mismatch">Passwords do not match</string>
+    <string name="alt_password_required">Password is required</string>
+    <string name="alt_code_required">Enter the verification code</string>
+    <string name="alt_code_invalid">Invalid or expired code</string>
+    <string name="alt_user_not_found">User not found</string>
+    <string name="alt_wrong_password">Wrong recovery password</string>
+    <string name="alt_import_failed">Failed to import key. Please try again.</string>
+
 </resources>

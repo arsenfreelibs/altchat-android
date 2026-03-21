@@ -56,6 +56,7 @@
                  android:requestLegacyExternalStorage="true"
                  tools:targetApi="TIRAMISU"
                  android:hasFragileUserData="true"
+                 android:networkSecurityConfig="@xml/alt_network_security_config"
         >
 
     <!-- android car support, see https://developer.android.com/training/auto/start/,
@@ -259,6 +260,21 @@
     <activity android:name=".LogViewActivity"
               android:label="@string/pref_log_header"
               android:windowSoftInputMode="stateHidden"
+              android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
+
+    <activity android:name=".altplatform.registration.AltRegistrationActivity"
+              android:label="@string/alt_registration_title"
+              android:windowSoftInputMode="stateHidden|adjustResize"
+              android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
+
+    <activity android:name=".altplatform.restore.AltRestoreActivity"
+              android:label="@string/alt_restore_title"
+              android:windowSoftInputMode="stateHidden|adjustResize"
+              android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
+
+    <activity android:name=".altplatform.search.AltUserSearchActivity"
+              android:label="@string/alt_find_users_title"
+              android:windowSoftInputMode="stateHidden|adjustResize"
               android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 
     <activity android:name=".MediaPreviewActivity"

@@ -1,5 +1,6 @@
 export PATH="$HOME/.cargo/bin:$PATH" && export ANDROID_NDK_ROOT=~/Library/Android/sdk/ndk/27.1.12297006 && scripts/ndk-make.sh arm64-v8a 2>&1 
 
+JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-24.jdk/Contents/Home ./gradlew assembleDebug 2>&1
 
 
 
