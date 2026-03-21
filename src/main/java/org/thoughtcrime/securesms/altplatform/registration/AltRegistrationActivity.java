@@ -22,6 +22,16 @@ public class AltRegistrationActivity extends BaseActionBarActivity {
         return new Intent(context, AltRegistrationActivity.class);
     }
 
+    /** Resumes registration at Step 3 (email verification) with saved data. */
+    public static Intent getResumeStep3Intent(Context context, String username, String displayName, String email) {
+        Intent intent = new Intent(context, AltRegistrationActivity.class);
+        intent.putExtra(EXTRA_USERNAME, username);
+        intent.putExtra(EXTRA_DISPLAY_NAME, displayName);
+        intent.putExtra(EXTRA_EMAIL, email);
+        intent.putExtra("resume_step3", true);
+        return intent;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,10 +44,17 @@ public class AltRegistrationActivity extends BaseActionBarActivity {
         }
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, new AltStep1Fragment())
-                    .commit();
+            if (getIntent().getBooleanExtra("resume_step3", false)) {
+                String username = getIntent().getStringExtra(EXTRA_USERNAME);
+                String displayName = getIntent().getStringExtra(EXTRA_DISPLAY_NAME);
+                String email = getIntent().getStringExtra(EXTRA_EMAIL);
+                goToStep3(username, displayName, email);
+            } else {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new AltStep1Fragment())
+                        .commit();
+            }
         }
     }
 

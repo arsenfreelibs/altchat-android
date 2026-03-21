@@ -82,6 +82,7 @@ public class AltStep3Fragment extends Fragment {
                     String username = args != null
                             ? args.getString(AltRegistrationActivity.EXTRA_USERNAME, "") : "";
                     AltPrefs.setRegistered(requireContext(), username, email);
+                    AltPrefs.clearPendingRegistration(requireContext());
                     if (getActivity() instanceof AltRegistrationActivity) {
                         ((AltRegistrationActivity) getActivity()).finishWithSuccess();
                     }

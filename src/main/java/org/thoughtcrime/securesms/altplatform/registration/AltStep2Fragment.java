@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.altplatform.AltPlatformService;
+import org.thoughtcrime.securesms.altplatform.storage.AltPrefs;
 import org.thoughtcrime.securesms.util.Util;
 
 import java.util.concurrent.ExecutorService;
@@ -87,6 +88,7 @@ public class AltStep2Fragment extends Fragment {
         AltRegistrationActivity activity = (AltRegistrationActivity) getActivity();
         switch (result) {
             case SUCCESS:
+                AltPrefs.setPendingRegistration(requireContext(), username, displayName, email);
                 activity.goToStep3(username, displayName, email);
                 break;
             case USERNAME_TAKEN:
