@@ -150,7 +150,7 @@ public class WelcomeActivity extends BaseActionBarActivity
       dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
         if (checkBox.isChecked()) {
           dialog.dismiss();
-          startActivity(new Intent(this, InstantOnboardingActivity.class));
+          startActivity(org.thoughtcrime.securesms.altplatform.registration.AltRegistrationActivity.getStartIntent(this));
         } else {
           android.widget.Toast.makeText(this, R.string.tos_must_accept, android.widget.Toast.LENGTH_SHORT).show();
         }

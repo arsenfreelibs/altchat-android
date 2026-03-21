@@ -99,7 +99,12 @@ public class AltPlatformService {
 
             // 3. Read public key
             File pubKeyFile = findKeyFile(tempDir, "public");
-            if (pubKeyFile == null) return RegisterResult.NETWORK_ERROR;
+            if (pubKeyFile == null) {
+                File[] exported = tempDir.listFiles();
+                Log.e(TAG, "pubKeyFile null, exported files: " + (exported != null ? exported.length : -1));
+                if (exported != null) for (File f : exported) Log.e(TAG, "  file: " + f.getName());
+                return RegisterResult.NETWORK_ERROR;
+            }
             byte[] pubKeyBytes = readFile(pubKeyFile);
             String publicKey = Base64.encodeToString(pubKeyBytes, Base64.NO_WRAP);
 
@@ -107,8 +112,16 @@ public class AltPlatformService {
             String fingerprint = extractFingerprint(rpc, accountId);
 
             // 5. Read and encrypt private key
+            File[] allFiles = tempDir.listFiles();
+            if (allFiles != null) {
+                for (File f : allFiles) Log.d(TAG, "exported file: " + f.getName());
+            }
             File privKeyFile = findKeyFile(tempDir, "secret");
-            if (privKeyFile == null) return RegisterResult.NETWORK_ERROR;
+            if (privKeyFile == null) privKeyFile = findKeyFile(tempDir, "private");
+            if (privKeyFile == null) {
+                Log.e(TAG, "privKeyFile null, files: " + (allFiles != null ? allFiles.length : -1));
+                return RegisterResult.NETWORK_ERROR;
+            }
             byte[] privKeyBytes = readFile(privKeyFile);
             byte[] encrypted;
             try {
@@ -122,7 +135,9 @@ public class AltPlatformService {
             // 6. Call API
             RegisterRequest req = new RegisterRequest(username, email, addrs, displayName,
                     publicKey, fingerprint, encryptedPrivateKey);
+            Log.d(TAG, "register() calling API addrs=" + addrs + " fingerprint=" + fingerprint);
             AltApiResponse<Void> resp = api.register(req);
+            Log.d(TAG, "register() API response httpCode=" + resp.httpCode + " errorCode=" + resp.errorCode);
             return mapRegisterResult(resp);
 
         } finally {

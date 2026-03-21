@@ -24,14 +24,15 @@
             android:textAppearance="?attr/textAppearanceBody2"
             android:layout_marginBottom="24dp" />
 
-        <!-- DC email addrs (read-only) -->
+        <!-- Status label: shown while creating DC account -->
         <TextView
             android:id="@+id/dc_addrs_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?attr/textAppearanceCaption"
-            android:layout_marginBottom="16dp"
-            android:alpha="0.7" />
+            android:layout_marginBottom="8dp"
+            android:alpha="0.7"
+            android:visibility="gone" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"

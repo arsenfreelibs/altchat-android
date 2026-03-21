@@ -9,6 +9,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import org.thoughtcrime.securesms.BaseActionBarActivity;
+import org.thoughtcrime.securesms.ConversationListActivity;
 import org.thoughtcrime.securesms.R;
 
 public class AltRegistrationActivity extends BaseActionBarActivity {
@@ -78,7 +79,10 @@ public class AltRegistrationActivity extends BaseActionBarActivity {
     }
 
     void finishWithSuccess() {
-        setResult(RESULT_OK);
+        Intent intent = new Intent(this, ConversationListActivity.class);
+        intent.putExtra(ConversationListActivity.FROM_WELCOME, true);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
         finish();
     }
 
