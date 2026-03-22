@@ -426,4 +426,5 @@
     <string name="write_message_desktop">Iscrie unu messàgiu</string>
     <string name="encryption_info_title_desktop">Informatziones de tzifradura</string>
     <string name="more_info_desktop">Àteras informatziones</string>
-    </resources>
+        <string name="alt_search_tab_title">Chirca</string>
+</resources>

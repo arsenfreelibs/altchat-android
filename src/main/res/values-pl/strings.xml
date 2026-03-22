@@ -1221,4 +1221,5 @@
 
     <!-- device messages for updates -->
     <string name="update_2_0">Co nowego?\n\n💯 Szyfrowanie end-to-end jest niezawodne i na zawsze. Kłódki 🔒 odchodzą w zapomnienie!\n\n✉️ Klasyczna poczta e-mail bez szyfrowania end-to-end jest oznaczona symbolem litery.\n\n😻 Nowy, ulepszony ekran profilu dla wszystkich kontaktów.\n\n🔲 Nowy przycisk szybkiego dostępu do aplikacji używanych na czacie.\n\n❤️ Prosimy o darowizny, które pomogą nam zachować niezależność i stale wprowadzać ulepszenia: %1$s</string>
+    <string name="alt_search_tab_title">Szukaj</string>
 </resources>

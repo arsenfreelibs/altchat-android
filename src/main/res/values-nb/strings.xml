@@ -636,4 +636,5 @@
     <string name="save_desktop">Lagre</string>
     <string name="name_desktop">Navn</string>
     <string name="export_backup_desktop">Eksporter sikkerhetskopi</string>
-    </resources>
+        <string name="alt_search_tab_title">Søk</string>
+</resources>

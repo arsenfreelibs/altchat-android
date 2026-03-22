@@ -249,4 +249,5 @@
     <string name="name_desktop">Ime</string>
     <string name="message_detail_sent_desktop">poslano</string>
     <string name="message_detail_received_desktop">primljeno</string>
-    </resources>
+        <string name="alt_search_tab_title">Pretraži</string>
+</resources>

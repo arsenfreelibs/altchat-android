@@ -1191,4 +1191,5 @@
 
     <!-- device messages for updates -->
     <string name="update_2_0">Zer berri?\n\n💯 Muturretik muturrerako zifratze fidagarria eta betirakoa da orain. Sarrailak 🔒 joan dira!\n\n✉️ Muturretik muturrerako zifratzerik gabeko posta elektroniko klasikoa gutun-azal ikur batekin markatuta dago\n\n😻 Kontuaren pantaila berria zure kontaktu guztientzat\n\n🔲 Txat batean erabilitako aplikazioetara azkar sartzeko botoi berria\n\n❤️ Mesedez, egin dohaintza independente jarraitzen laguntzeko eta hobekuntzak ekartzen jarraitzeko: %1$s</string>
+    <string name="alt_search_tab_title">Bilatu</string>
 </resources>

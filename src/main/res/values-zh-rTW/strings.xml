@@ -1070,4 +1070,5 @@
     <string name="perm_enable_bg_reminder_title">點擊此處可在 Alt Chat 處於後台時接收訊息。</string>
     <string name="perm_enable_bg_already_done">您已經允許 Alt Chat 在後台接收訊息。\n\n如果消息仍未在後台到達，請同時檢查您的系統設定。</string>
 
-    </resources>
+        <string name="alt_search_tab_title">搜尋</string>
+</resources>

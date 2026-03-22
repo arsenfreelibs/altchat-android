@@ -1064,4 +1064,5 @@
 
     <!-- device messages for updates -->
     <string name="update_2_0">Que hai de novo?\n\n💯 Agora cifrado extremo-a-extremo é de fiar e para sempre. Non hai máis cadeados 🔒!\n\n✉️ Emails clásicos sen cifrado extremo-a-extremo son marcados con unha carta\n\n😻 Nova páxina de perfil mellorada para todos os teus contactos\n\n🔲 Novo botón de acceso rápido a apps usadas nun chat\n\n❤️ Por favor doa para continuarmos independentes e a mellorar: %1$s</string>
+    <string name="alt_search_tab_title">Busca</string>
 </resources>

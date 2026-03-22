@@ -953,4 +953,5 @@
     <string name="perm_enable_bg_reminder_title">Докоснете тук, за да получавате съобщения, докато Alt Chat е във фонов режим.</string>
     <string name="perm_enable_bg_already_done">Вече разрешихте Alt Chat да получава съобщения във фонов режим.\n\nАко съобщенията все още не пристигат във фонов режим, моля проверете Вашите системни настройки.</string>
 
-    </resources>
+        <string name="alt_search_tab_title">Търсене</string>
+</resources>

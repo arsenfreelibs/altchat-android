@@ -827,4 +827,5 @@
     <string name="perm_enable_bg_reminder_title">Πατήστε εδώ για να λαμβάνετε μηνύματα ενώ το Alt Chat είναι στο παρασκήνιο.</string>
     <string name="perm_enable_bg_already_done">Επιτρέψατε ήδη στο Alt Chat να λαμβάνει μηνύματα στο παρασκήνιο.\n\nΕάν τα μηνύματα εξακολουθούν να μην φτάνουν στο παρασκήνιο, ελέγξτε τις ρυθμίσεις του συστήματός σας.</string>
 
-    </resources>
+        <string name="alt_search_tab_title">Αναζήτηση</string>
+</resources>

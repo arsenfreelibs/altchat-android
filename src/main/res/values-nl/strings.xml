@@ -1191,4 +1191,5 @@
 
     <!-- device messages for updates -->
     <string name="update_2_0">Wijzigingslog:\n\n💯 Eind-tot-eindversleuteling is voortaan betrouwbaarder én standaard. Slotjes 🔒 zijn verleden tijd!\n\n✉️ Klassieke e-mails zonder eind-tot-eindversleuteling worden voortaan gemarkeerd met een letter\n\n😻 Nieuwe, mooiere profielpagina\'s van al je contactpersonen\n\n🔲 Nieuwe knop voor snelle toegang tot apps in gesprekken\n\n❤️ Overweeg een donatie, zodat we onafhankelijk kunnen blijven en verbeteringen kunnen blijven aanbrengen: %1$s</string>
+    <string name="alt_search_tab_title">Zoeken</string>
 </resources>

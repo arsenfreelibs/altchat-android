@@ -425,4 +425,5 @@
     <string name="menu.view.developer.open.current.log.file">Loq-faylı açın</string>
     <!-- disabling "Reliable service" will hide a the maybe annoying permanent-notification with the drawback that new-message-notifications get potentially unreliable -->
     <string name="perm_enable_bg_reminder_title">Alt Chat arxa fonda mesajları almaq üçün bura toxunun.</string>
-    </resources>
+        <string name="alt_search_tab_title">Axtar</string>
+</resources>

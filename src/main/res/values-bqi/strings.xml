@@ -458,4 +458,5 @@
     <string name="show_window">نشووݩ داڌن نیمدری</string>
 
     <string name="open_settings">گۊشیڌن سامووا</string>
-    </resources>
+        <string name="alt_search_tab_title">Search</string>
+</resources>

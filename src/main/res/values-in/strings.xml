@@ -592,4 +592,5 @@
     <string name="a11y_background_preview_label">Pratampil latar belakang</string>
     <string name="InfoPlist_NSPhotoLibraryUsageDescription">Alt Chat akan memungkinkan Anda memilih foto dari perpustakaan Anda untuk dikirim.</string>
     <string name="InfoPlist_NSPhotoLibraryAddUsageDescription">Alt Chat ingin menyimpan gambar ke kumpulan foto anda.</string>
-    </resources>
+        <string name="alt_search_tab_title">Cari</string>
+</resources>

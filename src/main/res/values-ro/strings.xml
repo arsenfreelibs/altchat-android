@@ -556,4 +556,5 @@
     <string name="pref_read_receipts">Citiți Chitanțele</string>
     <string name="pref_read_receipts_explain">Dacă sunt dezactivate chitanțele de citire, nu veți putea vedea chitanțele de citire de la alte persoane.</string>
     <string name="pref_manage_keys">Gestionați Cheile</string>
-    </resources>
+        <string name="alt_search_tab_title">Căutare</string>
+</resources>

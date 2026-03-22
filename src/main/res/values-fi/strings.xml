@@ -966,4 +966,5 @@
     <string name="perm_enable_bg_reminder_title">Napauta vastaanottaaksesi viestejä, kun Alt Chat on taustalla.</string>
     <string name="perm_enable_bg_already_done">Annoit jo luvan viestien vastaanottamiselle taustalla.\n\nJos et saa viestejä taustalla, tarkista myös järjestelmäasetukset.</string>
 
-    </resources>
+        <string name="alt_search_tab_title">Haku</string>
+</resources>
