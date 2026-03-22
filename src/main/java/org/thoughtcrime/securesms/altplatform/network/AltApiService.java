@@ -75,14 +75,17 @@ public class AltApiService {
     private <T> AltApiResponse<T> post(String path, Object body, Class<T> clazz) {
         try {
             String json = mapper.writeValueAsString(body);
+            android.util.Log.d(TAG, "post " + path + " body=" + json);
             AltApiClient.Response resp = client.post(path, json);
             if (resp.isNetworkError()) return AltApiResponse.networkError();
+            android.util.Log.d(TAG, "post " + path + " resp=" + resp.code + " body=" + resp.body);
             if (resp.isSuccess()) {
                 T data = resp.body.isEmpty() ? null : mapper.readValue(resp.body, clazz);
                 return AltApiResponse.success(data, resp.code);
             }
             return AltApiResponse.error(resp.code, extractErrorCode(resp.body));
         } catch (Exception e) {
+            android.util.Log.e(TAG, "post " + path + " EXCEPTION: " + e.getMessage(), e);
             return AltApiResponse.networkError();
         }
     }
@@ -90,8 +93,10 @@ public class AltApiService {
     private AltApiResponse<Void> postVoid(String path, Object body) {
         try {
             String json = mapper.writeValueAsString(body);
+            android.util.Log.d(TAG, "postVoid " + path + " body=" + json);
             AltApiClient.Response resp = client.post(path, json);
             if (resp.isNetworkError()) return AltApiResponse.networkError();
+            android.util.Log.d(TAG, "postVoid " + path + " resp=" + resp.code + " body=" + resp.body);
             if (resp.isSuccess()) return AltApiResponse.success(null, resp.code);
             return AltApiResponse.error(resp.code, extractErrorCode(resp.body));
         } catch (Exception e) {

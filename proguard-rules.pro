@@ -1,5 +1,5 @@
 # native methods
--keep class com.b44t.messenger.** { * ; }
+-keep class org.thoughtcrime.securesms.altplatform.network.dto.** { *; }
 
 # Keep metadata needed by the JSON parser
 -keep class chat.delta.rpc.** { * ; }

@@ -45,6 +45,12 @@ public abstract class PassphraseRequiredActionBarActivity extends BaseActionBarA
       startActivity(intent);
       super.onCreate(savedInstanceState);
       finish();
+    } else if (!AltPrefs.isRegistered(getApplicationContext())) {
+      // DC is configured but Alt registration was never completed — restart registration
+      Intent intent = AltRegistrationActivity.getStartIntent(this);
+      startActivity(intent);
+      super.onCreate(savedInstanceState);
+      finish();
     } else {
       super.onCreate(savedInstanceState);
     }

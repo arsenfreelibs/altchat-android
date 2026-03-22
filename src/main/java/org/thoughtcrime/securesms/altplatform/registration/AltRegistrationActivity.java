@@ -11,6 +11,9 @@ import androidx.fragment.app.Fragment;
 import org.thoughtcrime.securesms.BaseActionBarActivity;
 import org.thoughtcrime.securesms.ConversationListActivity;
 import org.thoughtcrime.securesms.R;
+import org.thoughtcrime.securesms.WelcomeActivity;
+import org.thoughtcrime.securesms.altplatform.storage.AltPrefs;
+import org.thoughtcrime.securesms.connect.DcHelper;
 
 public class AltRegistrationActivity extends BaseActionBarActivity {
 
@@ -65,6 +68,45 @@ public class AltRegistrationActivity extends BaseActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // If DC is already configured, pressing back would skip Alt registration.
+        // Guard: if back stack is empty (or only Step 1 left), require confirmation.
+        int backStackCount = getSupportFragmentManager().getBackStackEntryCount();
+        boolean dcConfigured = DcHelper.isConfigured(getApplicationContext());
+
+        if (dcConfigured && backStackCount == 0) {
+            // Can't go further back — would exit to ConversationListActivity bypassing Alt setup
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.alt_cancel_registration_title)
+                    .setMessage(R.string.alt_cancel_registration_message)
+                    .setPositiveButton(R.string.alt_cancel_registration_confirm, (d, w) -> {
+                        // Delete the DC account and go back to Welcome
+                        cancelRegistrationAndGoToWelcome();
+                    })
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show();
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    private void cancelRegistrationAndGoToWelcome() {
+        AltPrefs.clearPendingRegistration(getApplicationContext());
+        new Thread(() -> {
+            try {
+                int accountId = DcHelper.getAccounts(this).getSelectedAccount().getAccountId();
+                DcHelper.getAccounts(this).removeAccount(accountId);
+            } catch (Exception ignored) {}
+            runOnUiThread(() -> {
+                Intent intent = new Intent(this, WelcomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            });
+        }).start();
     }
 
     void goToStep2(String username, String displayName, String email) {

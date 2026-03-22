@@ -76,6 +76,7 @@ public class AltPlatformService {
 
         // 1. Collect all addrs from all transports
         List<String> addrs = collectAddrs(rpc, accountId);
+        Log.d(TAG, "register() addrs=" + addrs);
         if (addrs.isEmpty()) {
             Log.e(TAG, "No transports configured");
             return RegisterResult.NETWORK_ERROR;
@@ -85,17 +86,25 @@ public class AltPlatformService {
         String publicKey;
         String privateKeyArmored;
         try {
+            Log.d(TAG, "register() calling getSelfPublicKeyArmored");
             publicKey = rpc.getSelfPublicKeyArmored(accountId);
+            Log.d(TAG, "register() publicKey len=" + (publicKey != null ? publicKey.length() : -1));
+            Log.d(TAG, "register() calling getSelfPrivateKeyArmored");
             privateKeyArmored = rpc.getSelfPrivateKeyArmored(accountId);
+            Log.d(TAG, "register() privateKey len=" + (privateKeyArmored != null ? privateKeyArmored.length() : -1));
         } catch (Exception e) {
             Log.e(TAG, "Failed to get keys from DC core", e);
             return RegisterResult.NETWORK_ERROR;
         }
-        // public key is sent as base64
-        publicKey = Base64.encodeToString(publicKey.getBytes(), Base64.NO_WRAP);
-
-        // 3. Extract fingerprint
-        String fingerprint = extractFingerprint(rpc, accountId);
+        // 3. Get fingerprint directly from DC core
+        String fingerprint;
+        try {
+            fingerprint = rpc.getSelfFingerprintHex(accountId);
+            Log.d(TAG, "register() fingerprint len=" + (fingerprint != null ? fingerprint.length() : -1));
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to get fingerprint from DC core", e);
+            return RegisterResult.NETWORK_ERROR;
+        }
 
         // 4. Encrypt private key
         byte[] encrypted;
@@ -113,6 +122,9 @@ public class AltPlatformService {
         RegisterRequest req = new RegisterRequest(username, email, addrs, displayName,
                 publicKey, fingerprint, encryptedPrivateKey);
         Log.d(TAG, "register() calling API addrs=" + addrs + " fingerprint=" + fingerprint);
+        Log.d(TAG, "register() publicKey(first80)=" + publicKey.substring(0, Math.min(80, publicKey.length())));
+        Log.d(TAG, "register() encryptedPrivateKey len=" + encryptedPrivateKey.length());
+        Log.d(TAG, "register() username=" + username + " email=" + email + " displayName=" + displayName);
         AltApiResponse<Void> resp = api.register(req);
         Log.d(TAG, "register() API response httpCode=" + resp.httpCode + " errorCode=" + resp.errorCode);
         return mapRegisterResult(resp);
@@ -239,24 +251,6 @@ public class AltPlatformService {
             Log.e(TAG, "listTransports failed", e);
         }
         return addrs;
-    }
-
-    private String extractFingerprint(Rpc rpc, int accountId) {
-        try {
-            // getContactEncryptionInfo for DC_CONTACT_ID_SELF (1) returns our own fingerprint info
-            String info = rpc.getContactEncryptionInfo(accountId, 1);
-            if (info != null) {
-                for (String line : info.split("\\n")) {
-                    if (line.toLowerCase().contains("fingerprint")) {
-                        String[] parts = line.split(":", 2);
-                        if (parts.length >= 2) return parts[1].trim().replace(" ", "");
-                    }
-                }
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "getContactEncryptionInfo failed", e);
-        }
-        return "";
     }
 
     private RegisterResult mapRegisterResult(AltApiResponse<Void> resp) {

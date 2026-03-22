@@ -1202,6 +1202,9 @@
     <!-- Alt Platform -->
     <string name="network_connection_unavailable">Network connection unavailable</string>
     <string name="alt_registration_title">Register on Alt Platform</string>
+    <string name="alt_cancel_registration_title">Cancel registration?</string>
+    <string name="alt_cancel_registration_message">Your account setup is not complete. Going back will delete the account. Continue?</string>
+    <string name="alt_cancel_registration_confirm">Delete and go back</string>
     <string name="alt_restore_title">Restore Alt Account</string>
     <string name="alt_find_users_title">Find Users on Alt</string>
 

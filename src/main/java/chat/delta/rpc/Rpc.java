@@ -370,6 +370,11 @@ public class Rpc {
     return transport.callForResult(new TypeReference<String>(){}, "get_self_private_key_armored", mapper.valueToTree(accountId));
   }
 
+  /** Returns the hex fingerprint of own public key, read directly from DC core DB. */
+  public String getSelfFingerprintHex(Integer accountId) throws RpcException {
+    return transport.callForResult(new TypeReference<String>(){}, "get_self_fingerprint_hex", mapper.valueToTree(accountId));
+  }
+
   /**
    * Returns the message IDs of all _fresh_ messages of any chat.
    * Typically used for implementing notification summaries

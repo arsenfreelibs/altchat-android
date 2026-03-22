@@ -68,9 +68,10 @@ public class AltApiClient {
                     ? conn.getInputStream()
                     : conn.getErrorStream();
             String responseBody = stream != null ? readStream(stream) : "";
+            Log.d(TAG, method + " " + path + " -> " + code + " body=" + responseBody);
             return new Response(code, responseBody);
         } catch (Exception e) {
-            Log.e(TAG, "HTTP error: " + e.getMessage(), e);
+            Log.e(TAG, method + " " + path + " -> NETWORK ERROR: " + e.getMessage(), e);
             return new Response(0, "");
         } finally {
             if (conn != null) conn.disconnect();
