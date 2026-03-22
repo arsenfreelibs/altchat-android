@@ -48,15 +48,10 @@ public class AltUserSearchAdapter extends RecyclerView.Adapter<AltUserSearchAdap
         UserProfileResponse profile = items.get(position);
         String displayName = profile.displayName();
         holder.nameLabel.setText(displayName);
-        holder.usernameLabel.setText(profile.username != null ? "@" + profile.username : "");
-        String addr = profile.primaryAddr();
-        if (addr != null && !addr.isEmpty()) {
-            holder.addrLabel.setText(" · " + addr);
-            holder.addrLabel.setVisibility(android.view.View.VISIBLE);
-        } else {
-            holder.addrLabel.setVisibility(android.view.View.GONE);
-        }
-        int color = avatarColorForString(addr != null ? addr : displayName);
+        String uname = profile.username != null && !profile.username.isEmpty() ? "@" + profile.username : "";
+        holder.usernameLabel.setText(uname);
+        holder.usernameLabel.setVisibility(uname.isEmpty() ? android.view.View.GONE : android.view.View.VISIBLE);
+        int color = avatarColorForString(profile.username != null ? profile.username : displayName);
         holder.avatar.setImageDrawable(
                 new GeneratedContactPhoto(displayName).asDrawable(holder.itemView.getContext(), color));
         holder.itemView.setOnClickListener(v -> listener.onUserClick(profile));
@@ -81,14 +76,12 @@ public class AltUserSearchAdapter extends RecyclerView.Adapter<AltUserSearchAdap
         AvatarView avatar;
         TextView nameLabel;
         TextView usernameLabel;
-        TextView addrLabel;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             avatar = itemView.findViewById(R.id.avatar);
             nameLabel = itemView.findViewById(R.id.name_label);
             usernameLabel = itemView.findViewById(R.id.username_label);
-            addrLabel = itemView.findViewById(R.id.addr_label);
         }
     }
 }

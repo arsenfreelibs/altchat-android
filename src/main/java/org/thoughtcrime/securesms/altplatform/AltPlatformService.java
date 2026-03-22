@@ -199,7 +199,9 @@ public class AltPlatformService {
 
     public List<UserProfileResponse> searchUsers(String query) {
         AltApiResponse<List<UserProfileResponse>> resp = api.search(query);
-        if (resp.isSuccess() && resp.data != null) return resp.data;
+        if (resp.isSuccess() && resp.data != null) {
+            return resp.data;
+        }
         return Collections.emptyList();
     }
 
@@ -220,7 +222,8 @@ public class AltPlatformService {
             Log.e(TAG, "addContactFromAlt: no addr in profile");
             return -1;
         }
-        String fn = (profile.name != null && !profile.name.isEmpty()) ? profile.name : primaryAddr;
+        String fn = (profile.name != null && !profile.name.isEmpty()) ? profile.name
+                : (profile.username != null && !profile.username.isEmpty()) ? profile.username : primaryAddr;
 
         try {
             Rpc rpc = DcHelper.getRpc(context);
