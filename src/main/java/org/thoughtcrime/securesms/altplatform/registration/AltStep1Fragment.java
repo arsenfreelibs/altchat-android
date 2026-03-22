@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 public class AltStep1Fragment extends Fragment {
 
     private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-z0-9_]{3,32}$");
-    private static final String DEFAULT_CHATMAIL_HOST = "nine.testrun.org";
+    private static final String DEFAULT_CHATMAIL_HOST = "alt-to.site";
 
     private EditText usernameInput;
     private EditText displayNameInput;

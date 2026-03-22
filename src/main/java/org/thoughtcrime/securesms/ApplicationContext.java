@@ -312,7 +312,9 @@ public class ApplicationContext extends MultiDexApplication {
 
     AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
+    Log.i(TAG, "[PUSH] isPushEnabled=" + Prefs.isPushEnabled(this));
     if (Prefs.isPushEnabled(this)) {
+      Log.i(TAG, "[PUSH] calling FcmReceiveService.register()");
       FcmReceiveService.register(this);
     } else {
       Log.i(TAG, "FCM disabled at build time");
