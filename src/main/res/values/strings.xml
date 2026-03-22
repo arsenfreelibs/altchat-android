@@ -1201,20 +1201,20 @@
 
     <!-- Alt Platform -->
     <string name="network_connection_unavailable">Network connection unavailable</string>
-    <string name="alt_registration_title">Register on Alt Platform</string>
+    <string name="alt_registration_title">Registration</string>
     <string name="alt_cancel_registration_title">Cancel registration?</string>
     <string name="alt_cancel_registration_message">Your account setup is not complete. Going back will delete the account. Continue?</string>
     <string name="alt_cancel_registration_confirm">Delete and go back</string>
-    <string name="alt_restore_title">Restore Alt Account</string>
+    <string name="alt_restore_title">Restore Account</string>
 
 
-    <string name="alt_step1_title">Create your Alt account</string>
+    <string name="alt_step1_title">Create your account</string>
     <string name="alt_step1_subtitle">Choose a username and enter the email address you want to use for notifications.</string>
     <string name="alt_step2_title">Set a recovery password</string>
     <string name="alt_step2_subtitle">This password encrypts your private key. You will need it to restore your account on another device.</string>
     <string name="alt_step3_title">Verify your email</string>
 
-    <string name="alt_restore_step1_title">Restore your Alt account</string>
+    <string name="alt_restore_step1_title">Restore your account</string>
     <string name="alt_restore_step1_subtitle">Enter your username and email to receive a verification code.</string>
     <string name="alt_restore_step2_title">Enter verification code</string>
     <string name="alt_restore_step3_title">Decrypt your key</string>

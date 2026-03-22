@@ -10,8 +10,18 @@ import androidx.appcompat.app.ActionBar;
 
 import org.thoughtcrime.securesms.BaseActionBarActivity;
 import org.thoughtcrime.securesms.R;
+import org.thoughtcrime.securesms.util.DynamicTheme;
 
 public class AltRestoreActivity extends BaseActionBarActivity {
+
+    @Override
+    protected void onPreCreate() {
+        dynamicTheme = new DynamicTheme() {
+            @Override protected int getLightThemeStyle() { return R.style.Theme_MaterialComponents_Light_Bridge; }
+            @Override protected int getDarkThemeStyle() { return R.style.Theme_MaterialComponents_Bridge; }
+        };
+        super.onPreCreate();
+    }
 
     static final String EXTRA_EMAIL = "extra_email";
     static final String EXTRA_USERNAME = "extra_username";

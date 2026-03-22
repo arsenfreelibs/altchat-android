@@ -1226,4 +1226,16 @@
     <!-- device messages for updates -->
     <string name="update_2_0">Что нового?\n\n💯 Сквозное шифрование стало постоянной и надёжной функцией. 🔒 Замков больше нет!\n\n✉️ Обычные письма без сквозного шифрования помечены значком конверта\n\n😻 Обновлённый экран профиля для всех контактов\n\n🔲 Новая кнопка быстрого доступа к приложениям, используемым в чате\n\n❤️ Поддержите нас финансово, чтобы мы сохранили независимость и продолжали вносить улучшения: %1$s</string>
     <string name="alt_search_tab_title">Поиск</string>
+    <string name="alt_registration_title">Регистрация</string>
+    <string name="alt_restore_title">Восстановление аккаунта</string>
+    <string name="alt_step1_title">Создайте аккаунт</string>
+    <string name="alt_step1_subtitle">Выберите имя пользователя и укажите email для уведомлений.</string>
+    <string name="alt_step2_title">Установите пароль восстановления</string>
+    <string name="alt_step2_subtitle">Этот пароль шифрует ваш приватный ключ. Он понадобится для восстановления аккаунта на другом устройстве.</string>
+    <string name="alt_step3_title">Подтвердите email</string>
+    <string name="alt_restore_step1_title">Восстановление аккаунта</string>
+    <string name="alt_restore_step1_subtitle">Введите имя пользователя и email, чтобы получить код подтверждения.</string>
+    <string name="alt_restore_step2_title">Введите код подтверждения</string>
+    <string name="alt_restore_step3_title">Расшифровка ключа</string>
+    <string name="alt_restore_step3_subtitle">Введите код подтверждения и пароль восстановления, установленный при регистрации.</string>
 </resources>
