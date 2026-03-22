@@ -274,12 +274,6 @@
               android:windowSoftInputMode="stateHidden|adjustResize"
               android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 
-    <activity android:name=".altplatform.search.AltUserSearchActivity"
-              android:label="@string/alt_find_users_title"
-              android:theme="@style/Theme.MaterialComponents.Light.Bridge"
-              android:windowSoftInputMode="stateHidden|adjustResize"
-              android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
-
     <activity android:name=".MediaPreviewActivity"
               android:label="@string/media_preview"
               android:windowSoftInputMode="stateHidden"

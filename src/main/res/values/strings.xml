@@ -1206,7 +1206,7 @@
     <string name="alt_cancel_registration_message">Your account setup is not complete. Going back will delete the account. Continue?</string>
     <string name="alt_cancel_registration_confirm">Delete and go back</string>
     <string name="alt_restore_title">Restore Alt Account</string>
-    <string name="alt_find_users_title">Find Users on Alt</string>
+
 
     <string name="alt_step1_title">Create your Alt account</string>
     <string name="alt_step1_subtitle">Choose a username and enter the email address you want to use for notifications.</string>

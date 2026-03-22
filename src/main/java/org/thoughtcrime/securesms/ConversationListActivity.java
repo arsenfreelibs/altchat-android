@@ -569,9 +569,6 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     } else if (itemId == R.id.menu_proxy_settings) {
       startActivity(new Intent(this, ProxySettingsActivity.class));
       return true;
-    } else if (itemId == R.id.menu_find_in_alt) {
-      startActivity(org.thoughtcrime.securesms.altplatform.search.AltUserSearchActivity.getStartIntent(this));
-      return true;
     } else if (itemId == android.R.id.home) {
       getOnBackPressedDispatcher().onBackPressed();
       return true;

@@ -37,8 +37,4 @@
         android:title="@string/menu_settings"
         android:id="@+id/menu_settings" />
 
-    <item
-        android:title="@string/alt_find_users_title"
-        android:id="@+id/menu_find_in_alt" />
-
 </menu>
