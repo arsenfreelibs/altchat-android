@@ -52,7 +52,7 @@ android {
         buildConfigField("String", "TEST_ADDR", buildConfigProperty("TEST_ADDR"))
         buildConfigField("String", "TEST_MAIL_PW", buildConfigProperty("TEST_MAIL_PW"))
         buildConfigField("String", "NDK_ARCH", getNdkArch())
-        buildConfigField("String", "ALT_API_BASE_URL", '"http://178.160.229.225:8080"')
+        buildConfigField("String", "ALT_API_BASE_URL", '"https://api.alt-to.online"')
     }
 
     compileOptions {

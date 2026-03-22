@@ -30,6 +30,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import org.thoughtcrime.securesms.BaseActionBarActivity;
 import org.thoughtcrime.securesms.R;
+import org.thoughtcrime.securesms.altplatform.search.AltUserSearchFragment;
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.contacts.NewContactActivity;
 import org.thoughtcrime.securesms.mms.AttachmentManager;
@@ -46,6 +47,7 @@ public class QrActivity extends BaseActionBarActivity implements View.OnClickLis
   private static final int REQUEST_CODE_IMAGE = 46243;
   private static final int TAB_SHOW = 0;
   private static final int TAB_SCAN = 1;
+  private static final int TAB_ALT_SEARCH = 2;
 
   private TabLayout tabLayout;
   private ViewPager viewPager;
@@ -130,7 +132,8 @@ public class QrActivity extends BaseActionBarActivity implements View.OnClickLis
         .setVisible(!scanRelay && !DcHelper.getContext(this).isChatmail());
 
     Util.redMenuItem(menu, R.id.withdraw);
-    if (tabLayout.getSelectedTabPosition() == TAB_SCAN) {
+    int selectedTab = tabLayout.getSelectedTabPosition();
+    if (selectedTab == TAB_SCAN || selectedTab == TAB_ALT_SEARCH) {
       menu.findItem(R.id.withdraw).setVisible(false);
     }
 
@@ -240,24 +243,19 @@ public class QrActivity extends BaseActionBarActivity implements View.OnClickLis
     @NonNull
     @Override
     public Fragment getItem(int position) {
-      Fragment fragment;
-
       switch (position) {
         case TAB_SHOW:
-          fragment = activity.qrShowFragment;
-          break;
-
+          return activity.qrShowFragment;
+        case TAB_SCAN:
+          return new QrScanFragment();
         default:
-          fragment = new QrScanFragment();
-          break;
+          return new AltUserSearchFragment();
       }
-
-      return fragment;
     }
 
     @Override
     public int getCount() {
-      return 2;
+      return scanRelay ? 2 : 3;
     }
 
     @Override
@@ -265,9 +263,10 @@ public class QrActivity extends BaseActionBarActivity implements View.OnClickLis
       switch (position) {
         case TAB_SHOW:
           return getString(R.string.qrshow_title);
-
-        default:
+        case TAB_SCAN:
           return getString(R.string.qrscan_title);
+        default:
+          return getString(R.string.alt_search_tab_title);
       }
     }
   }
