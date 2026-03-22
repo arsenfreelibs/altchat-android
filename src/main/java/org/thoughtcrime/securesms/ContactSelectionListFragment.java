@@ -21,6 +21,8 @@ import static org.thoughtcrime.securesms.util.ShareUtil.isRelayingMessageContent
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
@@ -29,6 +31,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -49,9 +53,14 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import org.thoughtcrime.securesms.altplatform.AltPlatformService;
+import org.thoughtcrime.securesms.altplatform.network.dto.UserProfileResponse;
+import org.thoughtcrime.securesms.altplatform.search.AltUserSearchAdapter;
+import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.connect.DcContactsLoader;
 import org.thoughtcrime.securesms.connect.DcEventCenter;
-import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.contacts.ContactSelectionListAdapter;
 import org.thoughtcrime.securesms.contacts.ContactSelectionListItem;
 import org.thoughtcrime.securesms.contacts.NewContactActivity;
@@ -86,6 +95,15 @@ public class ContactSelectionListFragment extends Fragment
   private ActionMode.Callback actionModeCallback;
   private ActivityResultLauncher<Intent> newContactLauncher;
 
+  // Remote Alt Platform search
+  private LinearLayout altRemoteSection;
+  private ProgressBar altRemoteProgress;
+  private TextView altRemoteEmpty;
+  private AltUserSearchAdapter altRemoteAdapter;
+  private final Handler remoteSearchHandler = new Handler(Looper.getMainLooper());
+  private Runnable remoteSearchRunnable;
+  private final ExecutorService remoteSearchExecutor = Executors.newSingleThreadExecutor();
+
   @Override
   public void onCreate(Bundle paramBundle) {
     super.onCreate(paramBundle);
@@ -111,6 +129,7 @@ public class ContactSelectionListFragment extends Fragment
   @Override
   public void onDestroy() {
     DcHelper.getEventCenter(getActivity()).removeObservers(this);
+    remoteSearchExecutor.shutdown();
     super.onDestroy();
   }
 
@@ -174,6 +193,15 @@ public class ContactSelectionListFragment extends Fragment
     DcHelper.getEventCenter(requireActivity())
         .addObserver(DcContext.DC_EVENT_CONTACTS_CHANGED, this);
     initializeCursor();
+
+    // Wire up remote Alt search section
+    altRemoteSection = view.findViewById(R.id.alt_remote_section);
+    altRemoteProgress = view.findViewById(R.id.alt_remote_progress);
+    altRemoteEmpty = view.findViewById(R.id.alt_remote_empty);
+    RecyclerView altRemoteRecycler = view.findViewById(R.id.alt_remote_recycler);
+    altRemoteAdapter = new AltUserSearchAdapter(this::onAltRemoteUserClick);
+    altRemoteRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+    altRemoteRecycler.setAdapter(altRemoteAdapter);
 
     return view;
   }
@@ -283,6 +311,73 @@ public class ContactSelectionListFragment extends Fragment
   public void setQueryFilter(String filter) {
     this.cursorFilter = filter;
     this.getLoaderManager().restartLoader(0, null, this);
+
+    // Debounced remote Alt search
+    if (remoteSearchRunnable != null) remoteSearchHandler.removeCallbacks(remoteSearchRunnable);
+    if (filter == null || filter.trim().length() < 2) {
+      if (altRemoteSection != null) altRemoteSection.setVisibility(View.GONE);
+      return;
+    }
+    final String trimmed = filter.trim();
+    remoteSearchRunnable = () -> performRemoteSearch(trimmed);
+    remoteSearchHandler.postDelayed(remoteSearchRunnable, 400);
+  }
+
+  private void performRemoteSearch(String query) {
+    if (altRemoteSection == null || !isAdded()) return;
+    altRemoteSection.setVisibility(View.VISIBLE);
+    altRemoteProgress.setVisibility(View.VISIBLE);
+    altRemoteEmpty.setVisibility(View.GONE);
+    remoteSearchExecutor.execute(() -> {
+      AltPlatformService service = new AltPlatformService(requireContext());
+      List<UserProfileResponse> results = service.searchUsers(query);
+      Util.runOnMain(() -> {
+        if (!isAdded()) return;
+        altRemoteProgress.setVisibility(View.GONE);
+        altRemoteAdapter.setItems(results);
+        if (results.isEmpty()) {
+          altRemoteEmpty.setText(getString(R.string.alt_search_remote_no_results));
+          altRemoteEmpty.setVisibility(View.VISIBLE);
+        } else {
+          altRemoteEmpty.setVisibility(View.GONE);
+        }
+      });
+    });
+  }
+
+  private void onAltRemoteUserClick(UserProfileResponse profile) {
+    remoteSearchExecutor.execute(() -> {
+      try {
+        android.util.Log.d(TAG, "onAltRemoteUserClick: addr=" + profile.primaryAddr());
+        AltPlatformService service = new AltPlatformService(requireContext());
+        int contactId = service.addContactFromAlt(profile);
+        android.util.Log.d(TAG, "onAltRemoteUserClick: contactId=" + contactId);
+        if (contactId <= 0) {
+          Util.runOnMain(() -> {
+            if (isAdded()) android.widget.Toast.makeText(requireContext(),
+                "addContactFromAlt вернул " + contactId, android.widget.Toast.LENGTH_LONG).show();
+          });
+          return;
+        }
+        int accountId = DcHelper.getAccounts(requireContext()).getSelectedAccount().getAccountId();
+        android.util.Log.d(TAG, "onAltRemoteUserClick: accountId=" + accountId + " creating chat...");
+        int chatId = DcHelper.getRpc(requireContext()).createChatByContactId(accountId, contactId);
+        android.util.Log.d(TAG, "onAltRemoteUserClick: chatId=" + chatId);
+        Util.runOnMain(() -> {
+          if (!isAdded()) return;
+          android.content.Intent intent = new android.content.Intent(requireContext(), ConversationActivity.class);
+          intent.putExtra(ConversationActivity.CHAT_ID_EXTRA, chatId);
+          intent.putExtra(ConversationActivity.ACCOUNT_ID_EXTRA, accountId);
+          startActivity(intent);
+        });
+      } catch (Exception e) {
+        android.util.Log.e(TAG, "onAltRemoteUserClick FAILED: " + e.getMessage(), e);
+        Util.runOnMain(() -> {
+          if (isAdded()) android.widget.Toast.makeText(requireContext(),
+              "Ошибка: " + e.getMessage(), android.widget.Toast.LENGTH_LONG).show();
+        });
+      }
+    });
   }
 
   @Override

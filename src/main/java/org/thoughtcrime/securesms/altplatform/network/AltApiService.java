@@ -2,9 +2,9 @@ package org.thoughtcrime.securesms.altplatform.network;
 
 import android.content.Context;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
 
 import org.thoughtcrime.securesms.BuildConfig;
 import org.thoughtcrime.securesms.altplatform.network.dto.AltApiResponse;
@@ -18,6 +18,7 @@ import org.thoughtcrime.securesms.altplatform.network.dto.VerifyResponse;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,8 +61,17 @@ public class AltApiService {
     public AltApiResponse<List<UserProfileResponse>> search(String query) {
         try {
             String encoded = URLEncoder.encode(query, "UTF-8");
-            return getList("/v1/users/search?q=" + encoded, new TypeReference<List<UserProfileResponse>>() {});
-        } catch (UnsupportedEncodingException e) {
+            AltApiClient.Response resp = client.get("/v1/users/search?q=" + encoded);
+            if (resp.isNetworkError()) return AltApiResponse.networkError();
+            if (resp.isSuccess()) {
+                CollectionType listType = mapper.getTypeFactory()
+                        .constructCollectionType(ArrayList.class, UserProfileResponse.class);
+                List<UserProfileResponse> data = mapper.readValue(resp.body, listType);
+                return AltApiResponse.success(data, resp.code);
+            }
+            return AltApiResponse.error(resp.code, extractErrorCode(resp.body));
+        } catch (Exception e) {
+            android.util.Log.e(TAG, "search failed", e);
             return AltApiResponse.networkError();
         }
     }
@@ -110,20 +120,6 @@ public class AltApiService {
             if (resp.isNetworkError()) return AltApiResponse.networkError();
             if (resp.isSuccess()) {
                 T data = resp.body.isEmpty() ? null : mapper.readValue(resp.body, clazz);
-                return AltApiResponse.success(data, resp.code);
-            }
-            return AltApiResponse.error(resp.code, extractErrorCode(resp.body));
-        } catch (Exception e) {
-            return AltApiResponse.networkError();
-        }
-    }
-
-    private <T> AltApiResponse<List<T>> getList(String path, TypeReference<List<T>> typeRef) {
-        try {
-            AltApiClient.Response resp = client.get(path);
-            if (resp.isNetworkError()) return AltApiResponse.networkError();
-            if (resp.isSuccess()) {
-                List<T> data = mapper.readValue(resp.body, typeRef);
                 return AltApiResponse.success(data, resp.code);
             }
             return AltApiResponse.error(resp.code, extractErrorCode(resp.body));

@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.altplatform.network.dto.UserProfileResponse;
+import org.thoughtcrime.securesms.components.AvatarView;
+import org.thoughtcrime.securesms.contacts.avatars.GeneratedContactPhoto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,10 +46,30 @@ public class AltUserSearchAdapter extends RecyclerView.Adapter<AltUserSearchAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         UserProfileResponse profile = items.get(position);
-        holder.nameLabel.setText(profile.displayName());
-        holder.usernameLabel.setText("@" + profile.username);
-        holder.addrLabel.setText(profile.primaryAddr());
+        String displayName = profile.displayName();
+        holder.nameLabel.setText(displayName);
+        holder.usernameLabel.setText(profile.username != null ? "@" + profile.username : "");
+        String addr = profile.primaryAddr();
+        if (addr != null && !addr.isEmpty()) {
+            holder.addrLabel.setText(" · " + addr);
+            holder.addrLabel.setVisibility(android.view.View.VISIBLE);
+        } else {
+            holder.addrLabel.setVisibility(android.view.View.GONE);
+        }
+        int color = avatarColorForString(addr != null ? addr : displayName);
+        holder.avatar.setImageDrawable(
+                new GeneratedContactPhoto(displayName).asDrawable(holder.itemView.getContext(), color));
         holder.itemView.setOnClickListener(v -> listener.onUserClick(profile));
+    }
+
+    private static int avatarColorForString(String s) {
+        // Same palette DC core uses for contact colors
+        int[] palette = {
+            0xFF3498DB, 0xFF2ECC71, 0xFFE74C3C, 0xFF9B59B6, 0xFFF39C12,
+            0xFF1ABC9C, 0xFFE67E22, 0xFF2980B9, 0xFF27AE60, 0xFF8E44AD
+        };
+        int hash = s.hashCode();
+        return palette[Math.abs(hash) % palette.length];
     }
 
     @Override
@@ -56,12 +78,14 @@ public class AltUserSearchAdapter extends RecyclerView.Adapter<AltUserSearchAdap
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
+        AvatarView avatar;
         TextView nameLabel;
         TextView usernameLabel;
         TextView addrLabel;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
+            avatar = itemView.findViewById(R.id.avatar);
             nameLabel = itemView.findViewById(R.id.name_label);
             usernameLabel = itemView.findViewById(R.id.username_label);
             addrLabel = itemView.findViewById(R.id.addr_label);

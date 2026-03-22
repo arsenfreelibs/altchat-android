@@ -7,6 +7,8 @@ import android.util.Log;
 import chat.delta.rpc.Rpc;
 import chat.delta.rpc.types.EnteredLoginParam;
 
+import com.b44t.messenger.DcContext;
+
 import org.thoughtcrime.securesms.altplatform.crypto.AltCryptoException;
 import org.thoughtcrime.securesms.altplatform.crypto.AltKeyCrypto;
 import org.thoughtcrime.securesms.altplatform.network.AltApiService;
@@ -208,30 +210,63 @@ public class AltPlatformService {
 
     /**
      * Adds a DC contact from an Alt Platform profile.
-     * Uses the primary addr (addrs[0]); DC core stores one addr per contact.
-     * TODO: When DC core supports multiple addrs per contact, loop over profile.addrs.
+     * Creates via createContact (reliable), then imports PGP key via gossip vCard if available.
      *
-     * @return contactId of the created/updated contact
+     * @return contactId of the created/updated contact, or -1 on failure
      */
     public int addContactFromAlt(UserProfileResponse profile) {
-        Rpc rpc = DcHelper.getRpc(context);
-        int accountId = DcHelper.getAccounts(context).getSelectedAccount().getAccountId();
-
         String primaryAddr = profile.primaryAddr();
+        if (primaryAddr == null || primaryAddr.isEmpty()) {
+            Log.e(TAG, "addContactFromAlt: no addr in profile");
+            return -1;
+        }
         String fn = (profile.name != null && !profile.name.isEmpty()) ? profile.name : primaryAddr;
 
-        String vcard = "BEGIN:VCARD\r\n"
-                + "VERSION:4.0\r\n"
-                + "FN:" + fn + "\r\n"
-                + "EMAIL:" + primaryAddr + "\r\n"
-                + "KEY;MEDIATYPE=application/pgp-keys:" + profile.publicKey + "\r\n"
-                + "END:VCARD";
-
         try {
-            List<Integer> ids = rpc.importVcardContents(accountId, vcard);
-            return (ids != null && !ids.isEmpty()) ? ids.get(0) : -1;
+            Rpc rpc = DcHelper.getRpc(context);
+            int accountId = DcHelper.getAccounts(context).getSelectedAccount().getAccountId();
+
+            // If we have a public key — import via vCard so DC creates a "key contact"
+            // (contact linked by fingerprint in contacts.fingerprint + key in public_keys).
+            // This is CRITICAL: DC only encrypts when the contact has a fingerprint-linked key.
+            // Do NOT call createContact() first — it creates a contact with empty fingerprint,
+            // and importVcardContents() would then create a DIFFERENT contact because
+            // DC's add_or_lookup_ex() searches contacts by fingerprint, not by addr.
+            if (profile.public_key != null && !profile.public_key.isEmpty()) {
+                try {
+                    String keyBase64 = profile.public_key
+                            .replaceAll("-----[^\r\n]*-----", "")
+                            .replaceAll("(?m)^=[A-Za-z0-9+/]{4}\\s*$", "")
+                            .replaceAll("\\s+", "");
+                    String vcard = "BEGIN:VCARD\r\n"
+                            + "VERSION:4.0\r\n"
+                            + "FN:" + fn + "\r\n"
+                            + "EMAIL:" + primaryAddr + "\r\n"
+                            + "KEY:data:application/pgp-keys;base64," + keyBase64 + "\r\n"
+                            + "END:VCARD\r\n";
+                    java.util.List<Integer> ids = rpc.importVcardContents(accountId, vcard);
+                    if (ids != null && !ids.isEmpty() && ids.get(0) > 0) {
+                        int contactId = ids.get(0);
+                        Log.d(TAG, "addContactFromAlt: key contact created id=" + contactId);
+                        return contactId;
+                    }
+                    Log.w(TAG, "addContactFromAlt: importVcardContents returned empty ids, falling back");
+                } catch (Exception e) {
+                    Log.w(TAG, "addContactFromAlt: importVcardContents failed: " + e.getMessage() + ", falling back");
+                }
+            }
+
+            // Fallback: no key, just create a regular contact
+            com.b44t.messenger.DcContext dcContext = DcHelper.getContext(context);
+            int contactId = dcContext.createContact(fn, primaryAddr);
+            if (contactId <= 0) {
+                Log.e(TAG, "addContactFromAlt: createContact returned " + contactId);
+                return -1;
+            }
+            Log.d(TAG, "addContactFromAlt: plain contact created id=" + contactId);
+            return contactId;
         } catch (Exception e) {
-            Log.e(TAG, "importVcardContents failed", e);
+            Log.e(TAG, "addContactFromAlt failed", e);
             return -1;
         }
     }
