@@ -25,8 +25,11 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.NotificationManagerCompat;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -143,6 +146,8 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
   public static class ApplicationPreferenceFragment extends CorrectedPreferenceFragment
       implements DcEventCenter.DcEventDelegate {
     private ActivityResultLauncher<Intent> screenLockLauncher;
+    private int advancedTapCount = 0;
+    private long advancedLastTapTime = 0;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -173,6 +178,7 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
           .setOnPreferenceClickListener(new CategoryClickListener(PREFERENCE_CATEGORY_MULTIDEVICE));
       this.findPreference(PREFERENCE_CATEGORY_ADVANCED)
           .setOnPreferenceClickListener(new CategoryClickListener(PREFERENCE_CATEGORY_ADVANCED));
+      this.findPreference(PREFERENCE_CATEGORY_ADVANCED).setVisible(false);
 
       this.findPreference(PREFERENCE_CATEGORY_HELP)
           .setOnPreferenceClickListener(new CategoryClickListener(PREFERENCE_CATEGORY_HELP));
@@ -190,10 +196,45 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
     public void onResume() {
       super.onResume();
       //noinspection ConstantConditions
-      ((ApplicationPreferencesActivity) getActivity())
-          .getSupportActionBar()
-          .setTitle(R.string.menu_settings);
+      ActionBar actionBar = ((ApplicationPreferencesActivity) getActivity()).getSupportActionBar();
+      if (actionBar != null) {
+        actionBar.setDisplayOptions(
+            ActionBar.DISPLAY_SHOW_CUSTOM,
+            ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
+        TextView titleView = new TextView(getActivity());
+        titleView.setText(R.string.menu_settings);
+        titleView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 18);
+        titleView.setTextColor(android.graphics.Color.WHITE);
+        titleView.setOnClickListener(v -> {
+          long now = android.os.SystemClock.elapsedRealtime();
+          if (now - advancedLastTapTime > 3000) {
+            advancedTapCount = 0;
+          }
+          advancedLastTapTime = now;
+          advancedTapCount++;
+          if (advancedTapCount >= 20) {
+            advancedTapCount = 0;
+            findPreference(PREFERENCE_CATEGORY_ADVANCED).setVisible(true);
+            Toast.makeText(getActivity(), R.string.menu_advanced, Toast.LENGTH_SHORT).show();
+          }
+        });
+        actionBar.setCustomView(titleView);
+      }
       setCategorySummaries();
+    }
+
+    @Override
+    public void onPause() {
+      super.onPause();
+      ApplicationPreferencesActivity activity = (ApplicationPreferencesActivity) getActivity();
+      if (activity != null) {
+        ActionBar actionBar = activity.getSupportActionBar();
+        if (actionBar != null) {
+          actionBar.setDisplayOptions(
+              ActionBar.DISPLAY_SHOW_TITLE,
+              ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
+        }
+      }
     }
 
     @Override
