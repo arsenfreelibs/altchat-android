@@ -182,6 +182,7 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
 
       this.findPreference(PREFERENCE_CATEGORY_HELP)
           .setOnPreferenceClickListener(new CategoryClickListener(PREFERENCE_CATEGORY_HELP));
+      this.findPreference(PREFERENCE_CATEGORY_HELP).setEnabled(false);
 
       DcHelper.getEventCenter(getActivity())
           .addObserver(DcContext.DC_EVENT_CONNECTIVITY_CHANGED, this);
