@@ -306,4 +306,88 @@ public class AltPlatformService {
                 return RegisterResult.NETWORK_ERROR;
         }
     }
+
+    // --- Quick registration (no email confirmation) ---
+
+    public enum QuickRegisterResult {
+        SUCCESS, USERNAME_TAKEN, NETWORK_ERROR
+    }
+
+    /**
+     * Registers a user on Alt Platform using the quick-register endpoint (no email confirmation).
+     * Generates username from displayName, generates recovery password, encrypts private key.
+     * Saves JWT token on success.
+     */
+    public QuickRegisterResult quickRegister(String displayName) {
+        Rpc rpc = DcHelper.getRpc(context);
+        int accountId = DcHelper.getAccounts(context).getSelectedAccount().getAccountId();
+
+        List<String> addrs = collectAddrs(rpc, accountId);
+        if (addrs.isEmpty()) {
+            Log.e(TAG, "quickRegister: no transports configured");
+            return QuickRegisterResult.NETWORK_ERROR;
+        }
+
+        String publicKey, privateKeyArmored, fingerprint;
+        try {
+            publicKey = rpc.getSelfPublicKeyArmored(accountId);
+            privateKeyArmored = rpc.getSelfPrivateKeyArmored(accountId);
+            fingerprint = rpc.getSelfFingerprintHex(accountId);
+        } catch (Exception e) {
+            Log.e(TAG, "quickRegister: failed to get keys", e);
+            return QuickRegisterResult.NETWORK_ERROR;
+        }
+
+        String password = generatePassword();
+        AltPrefs.saveRecoveryPassword(context, password);
+
+        byte[] encrypted;
+        try {
+            encrypted = AltKeyCrypto.encrypt(privateKeyArmored.getBytes("UTF-8"), password);
+        } catch (AltCryptoException e) {
+            Log.e(TAG, "quickRegister: encryption failed", e);
+            return QuickRegisterResult.NETWORK_ERROR;
+        } catch (java.io.UnsupportedEncodingException e) {
+            return QuickRegisterResult.NETWORK_ERROR;
+        }
+        String encryptedPrivateKey = Base64.encodeToString(encrypted, Base64.NO_WRAP);
+
+        String username = generateUsername(displayName);
+        RegisterRequest req = new RegisterRequest(username, null, addrs, displayName,
+                publicKey, fingerprint, encryptedPrivateKey);
+
+        AltApiResponse<VerifyResponse> resp = api.quickRegister(req);
+        Log.d(TAG, "quickRegister: httpCode=" + resp.httpCode + " errorCode=" + resp.errorCode);
+
+        if (resp.isNetworkError()) return QuickRegisterResult.NETWORK_ERROR;
+        if (resp.isSuccess()) {
+            if (resp.data != null && resp.data.token != null) {
+                AltTokenStorage.saveToken(context, resp.data.token);
+            }
+            AltPrefs.setRegistered(context, username, null);
+            return QuickRegisterResult.SUCCESS;
+        }
+        if (resp.httpCode == 409) return QuickRegisterResult.USERNAME_TAKEN;
+        return QuickRegisterResult.NETWORK_ERROR;
+    }
+
+    private String generateUsername(String displayName) {
+        String raw = displayName.toLowerCase()
+                .replaceAll("[^a-z0-9_]", "_")
+                .replaceAll("_+", "_")
+                .replaceAll("^_+|_+$", "");
+        if (raw.length() < 3) {
+            raw = raw + Long.toHexString(new java.security.SecureRandom().nextLong() & Long.MAX_VALUE).substring(0, 5);
+        }
+        if (raw.length() > 30) {
+            raw = raw.substring(0, 30);
+        }
+        return raw;
+    }
+
+    private String generatePassword() {
+        byte[] bytes = new byte[24];
+        new java.security.SecureRandom().nextBytes(bytes);
+        return Base64.encodeToString(bytes, Base64.NO_WRAP).replaceAll("[^a-zA-Z0-9]", "").substring(0, 20);
+    }
 }

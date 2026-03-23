@@ -92,6 +92,7 @@ public class InstantOnboardingActivity extends BaseActionBarActivity
 
   private @Nullable ProgressDialog progressDialog;
   private boolean cancelled;
+  private String pendingDisplayName = "";
 
   private DcContext dcContext;
 
@@ -488,16 +489,39 @@ public class InstantOnboardingActivity extends BaseActionBarActivity
   }
 
   private void progressSuccess() {
-    if (progressDialog != null) {
-      progressDialog.dismiss();
-    }
+    Util.runOnMain(() -> {
+      if (progressDialog != null) {
+        progressDialog.dismiss();
+        progressDialog = null;
+      }
+      progressDialog = new ProgressDialog(this);
+      progressDialog.setMessage(getResources().getString(R.string.one_moment));
+      progressDialog.setCancelable(false);
+      progressDialog.setCanceledOnTouchOutside(false);
+      progressDialog.show();
+    });
 
+    String displayName = pendingDisplayName;
+    executor.execute(() -> {
+      org.thoughtcrime.securesms.altplatform.AltPlatformService altService =
+          new org.thoughtcrime.securesms.altplatform.AltPlatformService(InstantOnboardingActivity.this);
+      altService.quickRegister(displayName);
+      Util.runOnMain(() -> {
+        if (progressDialog != null) {
+          progressDialog.dismiss();
+          progressDialog = null;
+        }
+        navigateToMain();
+      });
+    });
+  }
+
+  private void navigateToMain() {
     Intent intent = new Intent(getApplicationContext(), ConversationListActivity.class);
     intent.putExtra(ConversationListActivity.FROM_WELCOME, true);
     if (isContactInvitation || isGroupInvitation) {
       intent.putExtra(ConversationListActivity.FROM_WELCOME_RAW_QR, rawQrData);
     }
-
     startActivity(intent);
     finishAffinity();
   }
@@ -508,6 +532,7 @@ public class InstantOnboardingActivity extends BaseActionBarActivity
       return;
     }
     final String name = this.name.getText().toString();
+    pendingDisplayName = name;
 
     executor.execute(
         () -> {

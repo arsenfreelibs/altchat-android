@@ -87,6 +87,17 @@ public class AltPrefs {
                 .apply();
     }
 
+    private static final String KEY_RECOVERY_PASSWORD = "alt_recovery_password";
+
+    public static void saveRecoveryPassword(Context context, String password) {
+        getPrefs(context).edit().putString(KEY_RECOVERY_PASSWORD, password).apply();
+    }
+
+    @Nullable
+    public static String getRecoveryPassword(Context context) {
+        return getPrefs(context).getString(KEY_RECOVERY_PASSWORD, null);
+    }
+
     private static SharedPreferences getPrefs(Context context) {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }

@@ -42,6 +42,10 @@ public class AltApiService {
         return postVoid("/v1/users/register", req);
     }
 
+    public AltApiResponse<VerifyResponse> quickRegister(RegisterRequest req) {
+        return post("/v1/users/quick-register", req, VerifyResponse.class);
+    }
+
     public AltApiResponse<VerifyResponse> verify(VerifyRequest req) {
         return post("/v1/users/verify", req, VerifyResponse.class);
     }
