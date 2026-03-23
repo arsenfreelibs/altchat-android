@@ -32,8 +32,8 @@ public class AltApiService {
     private final AltApiClient client;
     private final ObjectMapper mapper;
 
-    public AltApiService(Context context) {
-        this.client = new AltApiClient(context, BuildConfig.ALT_API_BASE_URL);
+    public AltApiService(Context context, int accountId) {
+        this.client = new AltApiClient(context, BuildConfig.ALT_API_BASE_URL, accountId);
         this.mapper = new ObjectMapper()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }

@@ -60,10 +60,12 @@ public class AltPlatformService {
 
     private final Context context;
     private final AltApiService api;
+    private final int accountId;
 
     public AltPlatformService(Context context) {
         this.context = context.getApplicationContext();
-        this.api = new AltApiService(context);
+        this.accountId = DcHelper.getAccounts(this.context).getSelectedAccount().getAccountId();
+        this.api = new AltApiService(this.context, accountId);
     }
 
     /**
@@ -74,7 +76,6 @@ public class AltPlatformService {
     public RegisterResult register(String username, String email, String displayName,
                                    String recoveryPassword) {
         Rpc rpc = DcHelper.getRpc(context);
-        int accountId = DcHelper.getAccounts(context).getSelectedAccount().getAccountId();
 
         // 1. Collect all addrs from all transports
         List<String> addrs = collectAddrs(rpc, accountId);
@@ -136,7 +137,7 @@ public class AltPlatformService {
         AltApiResponse<VerifyResponse> resp = api.verify(new VerifyRequest(email, code));
         if (resp.isNetworkError()) return VerifyResult.NETWORK_ERROR;
         if (resp.isSuccess() && resp.data != null && resp.data.token != null) {
-            AltTokenStorage.saveToken(context, resp.data.token);
+            AltTokenStorage.saveToken(context, accountId, resp.data.token);
             return VerifyResult.SUCCESS;
         }
         if (resp.httpCode == 400) return VerifyResult.INVALID_CODE;
@@ -167,7 +168,7 @@ public class AltPlatformService {
         if (verifyResp.isNetworkError()) return RestoreKeyResult.NETWORK_ERROR;
         if (!verifyResp.isSuccess()) return RestoreKeyResult.INVALID_CODE;
         if (verifyResp.data != null && verifyResp.data.token != null) {
-            AltTokenStorage.saveToken(context, verifyResp.data.token);
+            AltTokenStorage.saveToken(context, accountId, verifyResp.data.token);
         }
 
         // 2. Download encrypted private key
@@ -188,7 +189,6 @@ public class AltPlatformService {
         // 4. Import key into DC core
         try {
             Rpc rpc = DcHelper.getRpc(context);
-            int accountId = DcHelper.getAccounts(context).getSelectedAccount().getAccountId();
             rpc.importSelfKeyFromBytes(accountId, context.getCacheDir(), privKeyBytes);
             return RestoreKeyResult.SUCCESS;
         } catch (Exception e) {
@@ -239,7 +239,6 @@ public class AltPlatformService {
 
         try {
             Rpc rpc = DcHelper.getRpc(context);
-            int accountId = DcHelper.getAccounts(context).getSelectedAccount().getAccountId();
 
             // If we have a public key — import via vCard so DC creates a "key contact"
             // (contact linked by fingerprint in contacts.fingerprint + key in public_keys).
@@ -333,7 +332,6 @@ public class AltPlatformService {
     public QuickRegisterResult quickRegister(String displayName) {
         Log.d(TAG, "quickRegister: start displayName=" + displayName);
         Rpc rpc = DcHelper.getRpc(context);
-        int accountId = DcHelper.getAccounts(context).getSelectedAccount().getAccountId();
 
         List<String> addrs = collectAddrs(rpc, accountId);
         Log.d(TAG, "quickRegister: addrs=" + addrs);
@@ -377,7 +375,7 @@ public class AltPlatformService {
         if (resp.isNetworkError()) return QuickRegisterResult.NETWORK_ERROR;
         if (resp.isSuccess()) {
             if (resp.data != null && resp.data.token != null) {
-                AltTokenStorage.saveToken(context, resp.data.token);
+                AltTokenStorage.saveToken(context, accountId, resp.data.token);
                 Log.d(TAG, "quickRegister: token saved");
             }
             AltPrefs.setRegistered(context, username, email);

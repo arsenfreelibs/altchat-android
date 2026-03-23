@@ -24,10 +24,12 @@ public class AltApiClient {
 
     private final Context context;
     private final String baseUrl;
+    private final int accountId;
 
-    public AltApiClient(Context context, String baseUrl) {
+    public AltApiClient(Context context, String baseUrl, int accountId) {
         this.context = context.getApplicationContext();
         this.baseUrl = baseUrl;
+        this.accountId = accountId;
     }
 
     public Response post(String path, String jsonBody) {
@@ -49,7 +51,7 @@ public class AltApiClient {
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("Accept", "application/json");
 
-            String token = AltTokenStorage.getToken(context);
+            String token = AltTokenStorage.getToken(context, accountId);
             if (token != null) {
                 conn.setRequestProperty("Authorization", "Bearer " + token);
             }

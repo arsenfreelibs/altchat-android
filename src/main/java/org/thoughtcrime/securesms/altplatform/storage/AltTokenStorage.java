@@ -13,19 +13,22 @@ public class AltTokenStorage {
 
     private static final String TAG = AltTokenStorage.class.getSimpleName();
     private static final String PREFS_NAME = "alt_token_prefs";
-    private static final String KEY_JWT = "jwt_token";
 
-    public static void saveToken(Context context, String token) {
-        getPrefs(context).edit().putString(KEY_JWT, token).apply();
+    private static String key(int accountId) {
+        return "jwt_token_" + accountId;
+    }
+
+    public static void saveToken(Context context, int accountId, String token) {
+        getPrefs(context).edit().putString(key(accountId), token).apply();
     }
 
     @Nullable
-    public static String getToken(Context context) {
-        return getPrefs(context).getString(KEY_JWT, null);
+    public static String getToken(Context context, int accountId) {
+        return getPrefs(context).getString(key(accountId), null);
     }
 
-    public static void clearToken(Context context) {
-        getPrefs(context).edit().remove(KEY_JWT).apply();
+    public static void clearToken(Context context, int accountId) {
+        getPrefs(context).edit().remove(key(accountId)).apply();
     }
 
     private static SharedPreferences getPrefs(Context context) {

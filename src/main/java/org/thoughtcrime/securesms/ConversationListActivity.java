@@ -382,7 +382,8 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
   }
 
   private void retryQuickRegisterIfNeeded() {
-    if (org.thoughtcrime.securesms.altplatform.storage.AltTokenStorage.getToken(this) != null) return;
+    int accountId = org.thoughtcrime.securesms.connect.DcHelper.getAccounts(this).getSelectedAccount().getAccountId();
+    if (org.thoughtcrime.securesms.altplatform.storage.AltTokenStorage.getToken(this, accountId) != null) return;
     String displayName = org.thoughtcrime.securesms.connect.DcHelper.get(this, org.thoughtcrime.securesms.connect.DcHelper.CONFIG_DISPLAY_NAME);
     if (displayName == null || displayName.isEmpty()) return;
     final String name = displayName;
