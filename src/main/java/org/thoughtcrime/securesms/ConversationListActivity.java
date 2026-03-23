@@ -382,9 +382,6 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
   }
 
   private void retryQuickRegisterIfNeeded() {
-    // If registered locally but token missing (e.g. server was down during initial attempt),
-    // make one silent attempt on each app resume.
-    if (!org.thoughtcrime.securesms.altplatform.storage.AltPrefs.isRegistered(this)) return;
     if (org.thoughtcrime.securesms.altplatform.storage.AltTokenStorage.getToken(this) != null) return;
     String displayName = org.thoughtcrime.securesms.connect.DcHelper.get(this, org.thoughtcrime.securesms.connect.DcHelper.CONFIG_DISPLAY_NAME);
     if (displayName == null || displayName.isEmpty()) return;

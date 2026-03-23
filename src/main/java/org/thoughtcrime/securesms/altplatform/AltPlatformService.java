@@ -331,10 +331,12 @@ public class AltPlatformService {
      * Saves JWT token on success.
      */
     public QuickRegisterResult quickRegister(String displayName) {
+        Log.d(TAG, "quickRegister: start displayName=" + displayName);
         Rpc rpc = DcHelper.getRpc(context);
         int accountId = DcHelper.getAccounts(context).getSelectedAccount().getAccountId();
 
         List<String> addrs = collectAddrs(rpc, accountId);
+        Log.d(TAG, "quickRegister: addrs=" + addrs);
         if (addrs.isEmpty()) {
             Log.e(TAG, "quickRegister: no transports configured");
             return QuickRegisterResult.NETWORK_ERROR;
@@ -376,10 +378,12 @@ public class AltPlatformService {
         if (resp.isSuccess()) {
             if (resp.data != null && resp.data.token != null) {
                 AltTokenStorage.saveToken(context, resp.data.token);
+                Log.d(TAG, "quickRegister: token saved");
             }
-            AltPrefs.setRegistered(context, username, null);
+            AltPrefs.setRegistered(context, username, email);
             return QuickRegisterResult.SUCCESS;
         }
+        Log.w(TAG, "quickRegister: failed httpCode=" + resp.httpCode + " errorCode=" + resp.errorCode);
         if (resp.httpCode == 409) return QuickRegisterResult.USERNAME_TAKEN;
         return QuickRegisterResult.NETWORK_ERROR;
     }

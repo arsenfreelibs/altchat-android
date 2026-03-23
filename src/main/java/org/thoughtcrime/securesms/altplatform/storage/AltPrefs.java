@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 public class AltPrefs {
 
     private static final String PREFS_NAME = "alt_platform_prefs";
-    private static final String KEY_REGISTERED = "alt_registered";
     private static final String KEY_USERNAME = "alt_username";
     private static final String KEY_EMAIL = "alt_email";
     private static final String KEY_ONBOARDING_SNACKBAR_SHOWN = "alt_onboarding_snackbar_shown";
@@ -16,13 +15,8 @@ public class AltPrefs {
     private static final String KEY_PENDING_DISPLAY_NAME = "alt_pending_display_name";
     private static final String KEY_PENDING_EMAIL = "alt_pending_email";
 
-    public static boolean isRegistered(Context context) {
-        return getPrefs(context).getBoolean(KEY_REGISTERED, false);
-    }
-
     public static void setRegistered(Context context, String username, String email) {
         getPrefs(context).edit()
-                .putBoolean(KEY_REGISTERED, true)
                 .putString(KEY_USERNAME, username)
                 .putString(KEY_EMAIL, email)
                 .apply();
