@@ -202,6 +202,18 @@ public class AltPlatformService {
         if (resp.isSuccess() && resp.data != null) {
             return resp.data;
         }
+        if (resp.httpCode == 401) {
+            String displayName = DcHelper.get(context, DcHelper.CONFIG_DISPLAY_NAME);
+            if (displayName != null && !displayName.isEmpty()) {
+                QuickRegisterResult result = quickRegister(displayName);
+                if (result == QuickRegisterResult.SUCCESS) {
+                    AltApiResponse<List<UserProfileResponse>> retry = api.search(query);
+                    if (retry.isSuccess() && retry.data != null) {
+                        return retry.data;
+                    }
+                }
+            }
+        }
         return Collections.emptyList();
     }
 
@@ -353,7 +365,8 @@ public class AltPlatformService {
         String encryptedPrivateKey = Base64.encodeToString(encrypted, Base64.NO_WRAP);
 
         String username = generateUsername(displayName);
-        RegisterRequest req = new RegisterRequest(username, null, addrs, displayName,
+        String email = addrs.get(0);
+        RegisterRequest req = new RegisterRequest(username, email, addrs, displayName,
                 publicKey, fingerprint, encryptedPrivateKey);
 
         AltApiResponse<VerifyResponse> resp = api.quickRegister(req);

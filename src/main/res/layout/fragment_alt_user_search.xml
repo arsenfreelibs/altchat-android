@@ -4,31 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- Not-registered banner -->
-    <LinearLayout
-        android:id="@+id/not_registered_banner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="12dp"
-        android:background="#F5F5F5"
-        android:visibility="gone">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/alt_not_registered_banner"
-            android:textSize="14sp"
-            android:layout_gravity="center_vertical" />
-
-        <Button
-            android:id="@+id/register_banner_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/alt_register_button" />
-    </LinearLayout>
-
     <EditText
         android:id="@+id/search_input"
         android:layout_width="match_parent"

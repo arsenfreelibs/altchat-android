@@ -3,8 +3,7 @@ package org.thoughtcrime.securesms;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import org.thoughtcrime.securesms.altplatform.registration.AltRegistrationActivity;
-import org.thoughtcrime.securesms.altplatform.storage.AltPrefs;
+
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.service.GenericForegroundService;
 
@@ -32,22 +31,6 @@ public abstract class PassphraseRequiredActionBarActivity extends BaseActionBarA
 
     if (!DcHelper.isConfigured(getApplicationContext())) {
       Intent intent = new Intent(this, WelcomeActivity.class);
-      startActivity(intent);
-      super.onCreate(savedInstanceState);
-      finish();
-    } else if (AltPrefs.hasPendingRegistration(getApplicationContext())) {
-      // DC is configured but Alt email verification not yet done — resume Step 3
-      String email = AltPrefs.getPendingEmail(getApplicationContext());
-      String username = AltPrefs.getPendingUsername(getApplicationContext());
-      String displayName = AltPrefs.getPendingDisplayName(getApplicationContext());
-      Intent intent = AltRegistrationActivity.getResumeStep3Intent(
-              this, username, displayName, email);
-      startActivity(intent);
-      super.onCreate(savedInstanceState);
-      finish();
-    } else if (!AltPrefs.isRegistered(getApplicationContext())) {
-      // DC is configured but Alt registration was never completed — restart registration
-      Intent intent = AltRegistrationActivity.getStartIntent(this);
       startActivity(intent);
       super.onCreate(savedInstanceState);
       finish();

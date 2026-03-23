@@ -489,30 +489,20 @@ public class InstantOnboardingActivity extends BaseActionBarActivity
   }
 
   private void progressSuccess() {
-    Util.runOnMain(() -> {
-      if (progressDialog != null) {
-        progressDialog.dismiss();
-        progressDialog = null;
-      }
-      progressDialog = new ProgressDialog(this);
-      progressDialog.setMessage(getResources().getString(R.string.one_moment));
-      progressDialog.setCancelable(false);
-      progressDialog.setCanceledOnTouchOutside(false);
-      progressDialog.show();
-    });
-
+    if (progressDialog != null) {
+      progressDialog.dismiss();
+      progressDialog = null;
+    }
+    // Mark as registered immediately so no registration screen appears.
+    // quickRegister runs in background; on failure the token is simply absent
+    // and will be retried silently next time.
     String displayName = pendingDisplayName;
+    org.thoughtcrime.securesms.altplatform.storage.AltPrefs.setRegistered(
+        getApplicationContext(), displayName, null);
+    navigateToMain();
     executor.execute(() -> {
-      org.thoughtcrime.securesms.altplatform.AltPlatformService altService =
-          new org.thoughtcrime.securesms.altplatform.AltPlatformService(InstantOnboardingActivity.this);
-      altService.quickRegister(displayName);
-      Util.runOnMain(() -> {
-        if (progressDialog != null) {
-          progressDialog.dismiss();
-          progressDialog = null;
-        }
-        navigateToMain();
-      });
+      new org.thoughtcrime.securesms.altplatform.AltPlatformService(getApplicationContext())
+          .quickRegister(displayName);
     });
   }
 

@@ -9,9 +9,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -25,8 +23,6 @@ import org.thoughtcrime.securesms.ConversationActivity;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.altplatform.AltPlatformService;
 import org.thoughtcrime.securesms.altplatform.network.dto.UserProfileResponse;
-import org.thoughtcrime.securesms.altplatform.registration.AltRegistrationActivity;
-import org.thoughtcrime.securesms.altplatform.storage.AltPrefs;
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.util.Util;
 
@@ -43,8 +39,6 @@ public class AltUserSearchFragment extends Fragment implements AltUserSearchAdap
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private TextView emptyLabel;
-    private LinearLayout notRegisteredBanner;
-    private Button registerBannerButton;
 
     private AltUserSearchAdapter adapter;
     private final Handler handler = new Handler(Looper.getMainLooper());
@@ -64,20 +58,10 @@ public class AltUserSearchFragment extends Fragment implements AltUserSearchAdap
         recyclerView = view.findViewById(R.id.recycler_view);
         progressBar = view.findViewById(R.id.progress_bar);
         emptyLabel = view.findViewById(R.id.empty_label);
-        notRegisteredBanner = view.findViewById(R.id.not_registered_banner);
-        registerBannerButton = view.findViewById(R.id.register_banner_button);
 
         adapter = new AltUserSearchAdapter(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter);
-
-        if (!AltPrefs.isRegistered(requireContext())) {
-            notRegisteredBanner.setVisibility(View.VISIBLE);
-            registerBannerButton.setOnClickListener(v ->
-                    startActivity(AltRegistrationActivity.getStartIntent(requireContext())));
-        } else {
-            notRegisteredBanner.setVisibility(View.GONE);
-        }
 
         searchInput.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int st, int c, int a) {}

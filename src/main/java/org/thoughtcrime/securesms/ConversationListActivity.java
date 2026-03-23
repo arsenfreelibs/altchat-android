@@ -381,20 +381,18 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     }
   }
 
-  private void showAltOnboardingSnackbarIfNeeded() {
-    if (!org.thoughtcrime.securesms.altplatform.storage.AltPrefs.isRegistered(this)
-            && !org.thoughtcrime.securesms.altplatform.storage.AltPrefs.wasOnboardingSnackbarShown(this)) {
-      org.thoughtcrime.securesms.altplatform.storage.AltPrefs.markOnboardingSnackbarShown(this);
-      View rootView = findViewById(android.R.id.content);
-      com.google.android.material.snackbar.Snackbar.make(
-              rootView,
-              R.string.alt_onboarding_snackbar,
-              com.google.android.material.snackbar.Snackbar.LENGTH_LONG)
-          .setAction(R.string.alt_register_button, v ->
-              startActivity(org.thoughtcrime.securesms.altplatform.registration.AltRegistrationActivity
-                      .getStartIntent(this)))
-          .show();
-    }
+  private void retryQuickRegisterIfNeeded() {
+    // If registered locally but token missing (e.g. server was down during initial attempt),
+    // make one silent attempt on each app resume.
+    if (!org.thoughtcrime.securesms.altplatform.storage.AltPrefs.isRegistered(this)) return;
+    if (org.thoughtcrime.securesms.altplatform.storage.AltTokenStorage.getToken(this) != null) return;
+    String displayName = org.thoughtcrime.securesms.connect.DcHelper.get(this, org.thoughtcrime.securesms.connect.DcHelper.CONFIG_DISPLAY_NAME);
+    if (displayName == null || displayName.isEmpty()) return;
+    final String name = displayName;
+    new Thread(() ->
+        new org.thoughtcrime.securesms.altplatform.AltPlatformService(getApplicationContext())
+            .quickRegister(name)
+    ).start();
   }
 
   public void refreshTitle() {
@@ -475,7 +473,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     refreshTitle();
     invalidateOptionsMenu();
     DirectShareUtil.triggerRefreshDirectShare(this);
-    showAltOnboardingSnackbarIfNeeded();
+    retryQuickRegisterIfNeeded();
   }
 
   @Override
