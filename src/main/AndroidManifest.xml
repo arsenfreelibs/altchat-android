@@ -262,12 +262,6 @@
               android:windowSoftInputMode="stateHidden"
               android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 
-    <activity android:name=".altplatform.registration.AltRegistrationActivity"
-              android:label="@string/alt_registration_title"
-              android:theme="@style/Theme.MaterialComponents.Light.Bridge"
-              android:windowSoftInputMode="stateHidden|adjustResize"
-              android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
-
     <activity android:name=".altplatform.restore.AltRestoreActivity"
               android:label="@string/alt_restore_title"
               android:theme="@style/Theme.MaterialComponents.Light.Bridge"
