@@ -100,7 +100,7 @@
         <item name="conversation_item_incoming_text_primary_color">@color/black</item>
         <item name="conversation_item_incoming_text_secondary_color">@color/gray50</item>
 
-        <item name="conversation_item_outgoing_bubble_color">@color/light_green</item>
+        <item name="conversation_item_outgoing_bubble_color">@color/outgoing_bubble_light</item>
         <!-- <item name="conversation_item_outgoing_bubble_border_color">#80efffde</item> -->
         <item name="conversation_item_outgoing_text_primary_color">@color/black</item>
         <item name="conversation_item_outgoing_text_secondary_color">@color/green</item>
@@ -187,15 +187,15 @@
         <item name="floating_mini_bg">@drawable/floating_mini_bg_dark</item>
 
         <!-- dark theme -->
-        <item name="conversation_item_incoming_bubble_color">@color/black</item>
+        <item name="conversation_item_incoming_bubble_color">@color/incoming_bubble_dark</item>
         <!-- <item name="conversation_item_incoming_bubble_border_color">#80414347</item> -->
         <item name="conversation_item_incoming_text_primary_color">@color/core_dark_05</item>
         <item name="conversation_item_incoming_text_secondary_color">@color/core_dark_05</item>
 
-        <item name="conversation_item_outgoing_bubble_color">@color/gray70</item>
+        <item name="conversation_item_outgoing_bubble_color">@color/outgoing_bubble_dark</item>
         <!-- <item name="conversation_item_outgoing_bubble_border_color">#80364e59</item> -->
         <item name="conversation_item_outgoing_text_primary_color">@color/core_dark_05</item>
-        <item name="conversation_item_outgoing_text_secondary_color">@color/light_pink</item>
+        <item name="conversation_item_outgoing_text_secondary_color">@color/core_dark_05</item>
 
         <item name="conversation_item_update_bg_color">@color/universal_overlay</item>
         <item name="conversation_item_update_text_color">@color/white</item>

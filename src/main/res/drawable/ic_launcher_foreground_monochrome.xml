@@ -7,7 +7,7 @@
 
     <!-- Speech bubble shape -->
     <path
-        android:fillColor="#546E7A"
+        android:fillColor="#FFFFFF"
         android:pathData="M 54 12 C 78 12 96 28 96 54 C 96 78 78 94 54 94 C 44 94 35 91 28 86 C 24 90 18 96 12 96 C 16 88 17 82 15 76 C 10 70 8 62 8 54 C 8 28 30 12 54 12 Z M 54 12"/>
 
     <!-- alt.chat text as paths -->

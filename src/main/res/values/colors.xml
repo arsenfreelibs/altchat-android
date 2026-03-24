@@ -1,15 +1,15 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-    <color name="delta_primary">#ff415e6b</color>
-    <color name="delta_primary_lite">#4c6e7d</color>
+    <color name="delta_primary">#ff10B981</color>
+    <color name="delta_primary_lite">#ff0D9668</color>
 
     <!-- delta_accent fits in light and in darkmode; delta_accent_darker can be used for less-covered
         areas as non-bold text -->
-    <color name="delta_accent">#42A5F5</color>
-    <color name="delta_accent_darker">#ff2090ea</color>
+    <color name="delta_accent">#10B981</color>
+    <color name="delta_accent_darker">#ff0D9668</color>
 
-    <color name="primary_alpha_focus">#882090ea</color>
-    <color name="primary_alpha33">#552090ea</color>
+    <color name="primary_alpha_focus">#8810B981</color>
+    <color name="primary_alpha33">#5510B981</color>
 
     <color name="unread_count">#ff3792fc</color>
     <color name="unread_count_muted">#b6b6bb</color>
@@ -29,6 +29,11 @@
     <color name="gray95">#ff111111</color>
     <color name="light_green">#ffefffde</color>
     <color name="green">#ff70b15c</color>
+
+    <!-- iOS brand message bubble colors -->
+    <color name="outgoing_bubble_light">#DCF8C6</color>
+    <color name="outgoing_bubble_dark">#1A5C42</color>
+    <color name="incoming_bubble_dark">#1C1C1E</color>
     <color name="light_pink">#ffcdb7b5</color>
 
     <color name="transparent_black_30">#30000000</color>
