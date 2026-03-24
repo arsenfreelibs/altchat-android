@@ -33,6 +33,10 @@ public class AudioPlaybackViewModel extends ViewModel {
   private final Set<Integer> extractionInProgress = new HashSet<>();
   private final ExecutorService extractionExecutor = Executors.newFixedThreadPool(2);
 
+  private final MutableLiveData<Map<Integer, float[]>> waveforms =
+      new MutableLiveData<>(new HashMap<>());
+  private final Set<Integer> waveformExtractionInProgress = new HashSet<>();
+
   private @Nullable MediaController mediaController;
   private final Handler handler;
   private boolean isUserSeeking = false;
@@ -89,6 +93,10 @@ public class AudioPlaybackViewModel extends ViewModel {
     return durations;
   }
 
+  public LiveData<Map<Integer, float[]>> getWaveforms() {
+    return waveforms;
+  }
+
   public void ensureDurationLoaded(Context context, int msgId, Uri audioUri) {
     // Check cache
     Map<Integer, Long> currentDurations = durations.getValue();
@@ -118,6 +126,39 @@ public class AudioPlaybackViewModel extends ViewModel {
 
           synchronized (extractionInProgress) {
             extractionInProgress.remove(msgId);
+          }
+        });
+  }
+
+  public void ensureWaveformLoaded(Context context, int msgId, Uri audioUri) {
+    // Check cache
+    Map<Integer, float[]> currentWaveforms = waveforms.getValue();
+    if (currentWaveforms != null && currentWaveforms.containsKey(msgId)) {
+      return;
+    }
+
+    // Check extracting
+    synchronized (waveformExtractionInProgress) {
+      if (waveformExtractionInProgress.contains(msgId)) {
+        return;
+      }
+      waveformExtractionInProgress.add(msgId);
+    }
+
+    // Extract in background
+    extractionExecutor.execute(
+        () -> {
+          float[] samples = AudioWaveformHelper.extractWaveform(context, audioUri);
+
+          handler.post(
+              () -> {
+                Map<Integer, float[]> updated = new HashMap<>(waveforms.getValue());
+                updated.put(msgId, samples);
+                waveforms.setValue(updated);
+              });
+
+          synchronized (waveformExtractionInProgress) {
+            waveformExtractionInProgress.remove(msgId);
           }
         });
   }
