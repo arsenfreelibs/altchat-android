@@ -364,8 +364,8 @@ public class AltPlatformService {
         }
         String encryptedPrivateKey = Base64.encodeToString(encrypted, Base64.NO_WRAP);
 
-        String username = generateUsername(displayName);
         String email = addrs.get(0);
+        String username = usernameFromAddr(email);
         RegisterRequest req = new RegisterRequest(username, email, addrs, displayName,
                 publicKey, fingerprint, encryptedPrivateKey);
 
@@ -386,8 +386,12 @@ public class AltPlatformService {
         return QuickRegisterResult.NETWORK_ERROR;
     }
 
-    private String generateUsername(String displayName) {
-        String raw = displayName.toLowerCase()
+    private String usernameFromAddr(String addr) {
+        // Use local part of the relay addr — guaranteed unique per user.
+        // e.g. "abc123@relay.example.org" → "abc123"
+        int at = addr.indexOf('@');
+        String local = at > 0 ? addr.substring(0, at) : addr;
+        String raw = local.toLowerCase()
                 .replaceAll("[^a-z0-9_]", "_")
                 .replaceAll("_+", "_")
                 .replaceAll("^_+|_+$", "");
