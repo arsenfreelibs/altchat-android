@@ -52,4 +52,6 @@
 
     <dimen name="quote_thumb_size">45dp</dimen>
 
+    <dimen name="waveform_height">32dp</dimen>
+
 </resources>

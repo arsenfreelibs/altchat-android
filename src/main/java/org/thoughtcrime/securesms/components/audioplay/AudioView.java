@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -31,7 +30,7 @@ public class AudioView extends FrameLayout {
   private final Drawable playDrawable;
   private final Drawable pauseDrawable;
   private final Animatable2Compat.AnimationCallback animationCallback;
-  private final @NonNull SeekBar seekBar;
+  private final @NonNull WaveformView waveformView;
   private final @NonNull TextView timestamp;
   private final @NonNull TextView title;
   private final @NonNull View mask;
@@ -44,6 +43,7 @@ public class AudioView extends FrameLayout {
   private AudioPlaybackViewModel viewModel;
   private final Observer<AudioPlaybackState> stateObserver = this::onPlaybackStateChanged;
   private final Observer<Map<Integer, Long>> durationObserver = this::onDurationsChanged;
+  private final Observer<Map<Integer, float[]>> waveformObserver = this::onWaveformsChanged;
   private boolean isPlaying;
 
   public AudioView(Context context) {
@@ -59,12 +59,12 @@ public class AudioView extends FrameLayout {
     inflate(context, R.layout.audio_view, this);
 
     this.playPauseButton = findViewById(R.id.play_pause);
-    this.seekBar = findViewById(R.id.seek);
+    this.waveformView = findViewById(R.id.waveform);
     this.timestamp = findViewById(R.id.timestamp);
     this.title = findViewById(R.id.title);
     this.mask = findViewById(R.id.interception_mask);
 
-    updateTimestampsAndSeekBar();
+    updateTimestamp();
 
     // Load drawables once
     this.playToPauseDrawable =
@@ -99,7 +99,32 @@ public class AudioView extends FrameLayout {
 
       viewModel.getDurations().removeObserver(durationObserver);
       viewModel.getDurations().observeForever(durationObserver);
+
+      viewModel.getWaveforms().removeObserver(waveformObserver);
+      viewModel.getWaveforms().observeForever(waveformObserver);
     }
+
+    waveformView.setSeekListener(new WaveformView.SeekListener() {
+      @Override
+      public void onSeek(float progress) {
+        // Live progress update during drag
+        AudioView.this.progress = (int) (progress * duration);
+        updateTimestamp();
+      }
+
+      @Override
+      public void onSeekStart() {
+        if (viewModel != null) viewModel.setUserSeeking(true);
+      }
+
+      @Override
+      public void onSeekEnd(float progress) {
+        if (viewModel != null) {
+          viewModel.setUserSeeking(false);
+          viewModel.seekTo((long) (progress * duration), msgId, audioUri);
+        }
+      }
+    });
 
     playPauseButton.setOnClickListener(
         v -> {
@@ -127,28 +152,6 @@ public class AudioView extends FrameLayout {
           }
         });
 
-    seekBar.setOnSeekBarChangeListener(
-        new SeekBar.OnSeekBarChangeListener() {
-          @Override
-          public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            if (fromUser) {
-              AudioView.this.progress = progress;
-              updateTimestampsAndSeekBar();
-            }
-          }
-
-          @Override
-          public void onStartTrackingTouch(SeekBar seekBar) {
-            viewModel.setUserSeeking(true);
-          }
-
-          @Override
-          public void onStopTrackingTouch(SeekBar seekBar) {
-            viewModel.setUserSeeking(false);
-            viewModel.seekTo(seekBar.getProgress(), msgId, audioUri);
-          }
-        });
-
     if (playToPauseDrawable != null) {
       playToPauseDrawable.registerAnimationCallback(animationCallback);
     }
@@ -162,6 +165,7 @@ public class AudioView extends FrameLayout {
     if (viewModel != null) {
       viewModel.getPlaybackState().removeObserver(stateObserver);
       viewModel.getDurations().removeObserver(durationObserver);
+      viewModel.getWaveforms().removeObserver(waveformObserver);
     }
     if (playToPauseDrawable != null) {
       playToPauseDrawable.clearAnimationCallbacks();
@@ -176,6 +180,7 @@ public class AudioView extends FrameLayout {
     if (this.viewModel != null) {
       this.viewModel.getPlaybackState().removeObserver(stateObserver);
       this.viewModel.getDurations().removeObserver(durationObserver);
+      this.viewModel.getWaveforms().removeObserver(waveformObserver);
     }
 
     // ViewModel is used directly for simplicity, since there is no reuse yet
@@ -184,6 +189,7 @@ public class AudioView extends FrameLayout {
     if (viewModel != null) {
       viewModel.getPlaybackState().observeForever(stateObserver);
       viewModel.getDurations().observeForever(durationObserver);
+      viewModel.getWaveforms().observeForever(waveformObserver);
     }
   }
 
@@ -192,15 +198,25 @@ public class AudioView extends FrameLayout {
     audioUri = audio.getUri();
     playPauseButton.setImageDrawable(playDrawable);
 
-    seekBar.setEnabled(true);
+    // Reset waveform for new message
+    waveformView.setSamples(null);
+    waveformView.setProgress(0f);
 
     // Get duration
     Map<Integer, Long> durations = viewModel.getDurations().getValue();
     if (durations != null && durations.containsKey(msgId)) {
       this.duration = Math.toIntExact(durations.get(msgId));
-      updateTimestampsAndSeekBar();
+      updateTimestamp();
     } else {
       viewModel.ensureDurationLoaded(getContext(), msgId, audioUri);
+    }
+
+    // Get or start loading waveform
+    Map<Integer, float[]> waveforms = viewModel.getWaveforms().getValue();
+    if (waveforms != null && waveforms.containsKey(msgId)) {
+      waveformView.setSamples(waveforms.get(msgId));
+    } else {
+      viewModel.ensureWaveformLoaded(getContext(), msgId, audioUri);
     }
 
     if (audio.asAttachment().isVoiceNote() || !audio.getFileName().isPresent()) {
@@ -265,16 +281,17 @@ public class AudioView extends FrameLayout {
     if (duration > 0) {
       this.progress = position;
       this.duration = duration;
-      updateTimestampsAndSeekBar();
+      updateTimestamp();
     }
   }
 
   public void disablePlayer(boolean disable) {
     this.mask.setVisibility(disable ? View.VISIBLE : View.GONE);
+    this.waveformView.setTouchEnabled(!disable);
   }
 
   public void getSeekBarGlobalVisibleRect(@NonNull Rect rect) {
-    seekBar.getGlobalVisibleRect(rect);
+    waveformView.getGlobalVisibleRect(rect);
   }
 
   private void togglePlayPause(boolean expectedPlaying) {
@@ -314,7 +331,8 @@ public class AudioView extends FrameLayout {
 
       // Also clear progress to avoid confusion
       this.progress = 0;
-      updateTimestampsAndSeekBar();
+      waveformView.setProgress(0f);
+      updateTimestamp();
     }
   }
 
@@ -350,18 +368,23 @@ public class AudioView extends FrameLayout {
     }
 
     Long duration = durations.get(msgId);
-    if (duration != null && seekBar.getMax() <= 100) {
+    if (duration != null) {
       this.duration = Math.toIntExact(duration);
-      updateTimestampsAndSeekBar();
-      seekBar.setMax(this.duration);
+      updateTimestamp();
     }
   }
 
-  private void updateTimestampsAndSeekBar() {
+  private void onWaveformsChanged(Map<Integer, float[]> waveforms) {
+    float[] samples = waveforms.get(msgId);
+    if (samples != null) {
+      waveformView.setSamples(samples);
+    }
+  }
+
+  private void updateTimestamp() {
     String progressText = DateUtils.getFormatedDuration(progress);
     String durationText = DateUtils.getFormatedDuration(duration);
     timestamp.setText(String.format("%s / %s", progressText, durationText));
-    seekBar.setProgress(progress);
-    seekBar.setMax(duration);
+    waveformView.setProgress(duration > 0 ? (float) progress / duration : 0f);
   }
 }
