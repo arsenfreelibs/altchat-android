@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="false"
+    android:focusable="false">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:clickable="false"
+        android:focusable="false">
+
+        <!-- Guideline at 22% from top — avatar+name info area positioned here -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/info_guideline"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.22" />
+
+        <!-- Info area: avatar + name + status (hidden during video) -->
+        <LinearLayout
+            android:id="@+id/overlay_info_area"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:clickable="false"
+            android:focusable="false"
+            app:layout_constraintTop_toBottomOf="@id/info_guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <!-- Avatar container: pulse ring behind avatar image -->
+            <FrameLayout
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:clickable="false"
+                android:focusable="false">
+
+                <View
+                    android:id="@+id/pulse_ring"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle_pulse_bg"
+                    android:clickable="false"
+                    android:focusable="false" />
+
+                <ImageView
+                    android:id="@+id/overlay_avatar"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:clipToOutline="true"
+                    android:background="@drawable/circle_avatar_bg"
+                    android:clickable="false"
+                    android:focusable="false" />
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/overlay_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:shadowColor="#88000000"
+                android:shadowRadius="8"
+                android:clickable="false"
+                android:focusable="false" />
+
+            <TextView
+                android:id="@+id/overlay_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textColor="#CCFFFFFF"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:shadowColor="#88000000"
+                android:shadowRadius="6"
+                android:clickable="false"
+                android:focusable="false" />
+
+        </LinearLayout>
+
+        <!-- Button bar at bottom -->
+        <LinearLayout
+            android:id="@+id/call_button_bar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingBottom="40dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <!-- Answer button: visible only for incoming calls -->
+            <ImageButton
+                android:id="@+id/btn_answer"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/circle_green_bg"
+                android:src="@drawable/ic_call_answer"
+                android:padding="14dp"
+                android:visibility="gone"
+                android:contentDescription="@string/call_btn_answer" />
+
+            <ImageButton
+                android:id="@+id/btn_speaker"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/circle_button_bg"
+                android:src="@drawable/ic_speaker_off"
+                android:padding="12dp"
+                android:contentDescription="@string/call_btn_speaker" />
+
+            <ImageButton
+                android:id="@+id/btn_camera"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/circle_button_bg"
+                android:src="@drawable/ic_videocam_on"
+                android:padding="12dp"
+                android:contentDescription="@string/call_btn_camera" />
+
+            <ImageButton
+                android:id="@+id/btn_mic"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/circle_button_bg"
+                android:src="@drawable/ic_mic_on"
+                android:padding="12dp"
+                android:contentDescription="@string/call_btn_mic" />
+
+            <ImageButton
+                android:id="@+id/btn_end"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/circle_red_bg"
+                android:src="@drawable/ic_call_end"
+                android:padding="12dp"
+                android:contentDescription="@string/call_btn_end" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
