@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,7 +48,17 @@ public class RegistrationQrActivity extends BaseActionBarActivity {
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     // add padding to avoid content hidden behind system bars
-    ViewUtil.applyWindowInsets(findViewById(R.id.layout_container), true, false, true, true);
+    View layoutContainer = findViewById(R.id.layout_container);
+    if (ViewUtil.isEdgeToEdgeSupported()) {
+      TypedValue tv = new TypedValue();
+      boolean resolved = getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true);
+      int actionBarHeight = resolved
+          ? TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics()) : 0;
+      layoutContainer.setPadding(layoutContainer.getPaddingLeft(),
+          layoutContainer.getPaddingTop() + actionBarHeight,
+          layoutContainer.getPaddingRight(), layoutContainer.getPaddingBottom());
+    }
+    ViewUtil.applyWindowInsets(layoutContainer, true, false, true, true);
 
     barcodeScannerView = findViewById(R.id.zxing_barcode_scanner);
     barcodeScannerView.setStatusText(getString(R.string.qrscan_hint) + "\n ");
