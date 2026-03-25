@@ -21,6 +21,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.View;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -102,7 +104,17 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
     this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     // add padding to avoid content hidden behind system bars
-    ViewUtil.applyWindowInsets(findViewById(R.id.fragment));
+    // offset by ActionBar height so the first preference item isn't hidden under it
+    View fragmentContainer = findViewById(R.id.fragment);
+    if (ViewUtil.isEdgeToEdgeSupported()) {
+      TypedValue tv = new TypedValue();
+      boolean resolved = getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true);
+      int actionBarHeight = resolved
+          ? TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics())
+          : 0;
+      fragmentContainer.setPadding(0, actionBarHeight, 0, 0);
+    }
+    ViewUtil.applyWindowInsets(fragmentContainer);
 
     if (icicle == null) {
       initFragment(R.id.fragment, new ApplicationPreferenceFragment());
