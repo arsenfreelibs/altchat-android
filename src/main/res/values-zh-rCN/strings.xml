@@ -389,6 +389,16 @@
     <string name="declined_call">已拒接的来电</string>
     <string name="canceled_call">已取消的通话</string>
     <string name="missed_call">未接来电</string>
+    <!-- Status labels shown on the call screen overlay -->
+    <string name="call_status_ringing">响铃…</string>
+    <string name="call_status_connecting">连接中…</string>
+    <string name="call_status_incoming">来电</string>
+    <!-- Accessibility labels for call screen overlay buttons -->
+    <string name="call_btn_answer">接听</string>
+    <string name="call_btn_speaker">扬声器</string>
+    <string name="call_btn_camera">摄像头</string>
+    <string name="call_btn_mic">麦克风</string>
+    <string name="call_btn_end">挂断</string>
     <!-- the first placeholder will be replaced by a date, the second placeholder by duration, example: "Thu, 08:12 pm, 2 minutes" -->
     <string name="call_date_and_duration">%1$s %2$s</string>
 

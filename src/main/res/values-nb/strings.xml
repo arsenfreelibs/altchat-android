@@ -395,6 +395,16 @@
     <string name="declined_call">Avvist anrop</string>
     <string name="canceled_call">Avbrutt anrop</string>
     <string name="missed_call">Ubesvart anrop</string>
+    <!-- Status labels shown on the call screen overlay -->
+    <string name="call_status_ringing">Ringer…</string>
+    <string name="call_status_connecting">Kobler til…</string>
+    <string name="call_status_incoming">Innkommende anrop</string>
+    <!-- Accessibility labels for call screen overlay buttons -->
+    <string name="call_btn_answer">Svar på anrop</string>
+    <string name="call_btn_speaker">Høyttaler</string>
+    <string name="call_btn_camera">Kamera</string>
+    <string name="call_btn_mic">Mikrofon</string>
+    <string name="call_btn_end">Avslutt anrop</string>
     <!-- the first placeholder will be replaced by a date, the second placeholder by duration, example: "Thu, 08:12 pm, 2 minutes" -->
     <string name="call_date_and_duration">%1$s, %2$s</string>
 

@@ -318,6 +318,16 @@
     <string name="start_call">Позови</string>
     <!-- the action "to answer" or to "accept" or to "pick up" a call. not: "the answer" -->
     <string name="answer_call">Одговори</string>
+    <!-- Status labels shown on the call screen overlay -->
+    <string name="call_status_ringing">Звони…</string>
+    <string name="call_status_connecting">Повезивање…</string>
+    <string name="call_status_incoming">Долазни позив</string>
+    <!-- Accessibility labels for call screen overlay buttons -->
+    <string name="call_btn_answer">Одговори на позив</string>
+    <string name="call_btn_speaker">Звучник</string>
+    <string name="call_btn_camera">Камера</string>
+    <string name="call_btn_mic">Микрофон</string>
+    <string name="call_btn_end">Заврши позив</string>
     <!-- the action "to decline" a call, not: "the decline" -->
     <string name="end_call">Одби</string>
     <!-- get confirmations -->

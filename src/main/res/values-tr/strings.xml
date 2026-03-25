@@ -401,6 +401,16 @@
     <string name="declined_call">Reddedilen arama</string>
     <string name="canceled_call">İptal edilen arama</string>
     <string name="missed_call">Yanıtlanmayan arama</string>
+    <!-- Status labels shown on the call screen overlay -->
+    <string name="call_status_ringing">Arıyor…</string>
+    <string name="call_status_connecting">Bağlanıyor…</string>
+    <string name="call_status_incoming">Gelen arama</string>
+    <!-- Accessibility labels for call screen overlay buttons -->
+    <string name="call_btn_answer">Aramayı yanıtla</string>
+    <string name="call_btn_speaker">Hopparlör</string>
+    <string name="call_btn_camera">Kamera</string>
+    <string name="call_btn_mic">Mikrofon</string>
+    <string name="call_btn_end">Aramayı bitir</string>
     <!-- the first placeholder will be replaced by a date, the second placeholder by duration, example: "Thu, 08:12 pm, 2 minutes" -->
     <string name="call_date_and_duration">%1$s, %2$s</string>
 

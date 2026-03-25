@@ -383,6 +383,16 @@
     <string name="incoming_audio_call">Gaunamasis garso skambutis</string>
     <string name="incoming_video_call">Gaunamasis vaizdo skambutis</string>
     <string name="missed_call">Praleistas skambutis</string>
+    <!-- Status labels shown on the call screen overlay -->
+    <string name="call_status_ringing">Skambina…</string>
+    <string name="call_status_connecting">Jungiamasi…</string>
+    <string name="call_status_incoming">Įeinantis skambutis</string>
+    <!-- Accessibility labels for call screen overlay buttons -->
+    <string name="call_btn_answer">Atsiliepto</string>
+    <string name="call_btn_speaker">Garsiakalbis</string>
+    <string name="call_btn_camera">Kamera</string>
+    <string name="call_btn_mic">Mikrofonas</string>
+    <string name="call_btn_end">Baigti skambutį</string>
     <!-- the first placeholder will be replaced by a date, the second placeholder by duration, example: "Thu, 08:12 pm, 2 minutes" -->
     <string name="call_date_and_duration">%1$s, %2$s</string>
 

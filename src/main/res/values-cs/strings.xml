@@ -419,6 +419,16 @@
     <string name="declined_call">Odmítnutý hovor</string>
     <string name="canceled_call">Zrušený hovor</string>
     <string name="missed_call">Zmeškaný hovor</string>
+    <!-- Status labels shown on the call screen overlay -->
+    <string name="call_status_ringing">Vyzvoní…</string>
+    <string name="call_status_connecting">Připojuji…</string>
+    <string name="call_status_incoming">Příchozí hovor</string>
+    <!-- Accessibility labels for call screen overlay buttons -->
+    <string name="call_btn_answer">Přijmout hovor</string>
+    <string name="call_btn_speaker">Reproduktor</string>
+    <string name="call_btn_camera">Kamera</string>
+    <string name="call_btn_mic">Mikrofon</string>
+    <string name="call_btn_end">Ukončit hovor</string>
     <!-- the first placeholder will be replaced by a date, the second placeholder by duration, example: "Thu, 08:12 pm, 2 minutes" -->
     <string name="call_date_and_duration">%1$s, %2$s</string>
 

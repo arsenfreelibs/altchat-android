@@ -413,6 +413,16 @@
     <string name="declined_call">Llamada rechazada</string>
     <string name="canceled_call">Llamada cancelada</string>
     <string name="missed_call">Llamada perdida</string>
+    <!-- Status labels shown on the call screen overlay -->
+    <string name="call_status_ringing">Llamando…</string>
+    <string name="call_status_connecting">Conectando…</string>
+    <string name="call_status_incoming">Llamada entrante</string>
+    <!-- Accessibility labels for call screen overlay buttons -->
+    <string name="call_btn_answer">Contestar llamada</string>
+    <string name="call_btn_speaker">Altavoz</string>
+    <string name="call_btn_camera">Cámara</string>
+    <string name="call_btn_mic">Micrófono</string>
+    <string name="call_btn_end">Colgar</string>
     <!-- the first placeholder will be replaced by a date, the second placeholder by duration, example: "Thu, 08:12 pm, 2 minutes" -->
     <string name="call_date_and_duration">%1$s, %2$s</string>
 

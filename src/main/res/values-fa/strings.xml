@@ -403,6 +403,16 @@
     <string name="declined_call">تماس رد شده</string>
     <string name="canceled_call">تماس لغو شده</string>
     <string name="missed_call">تماس از دست رفته</string>
+    <!-- Status labels shown on the call screen overlay -->
+    <string name="call_status_ringing">در حال زنگ زدن…</string>
+    <string name="call_status_connecting">در حال اتصال…</string>
+    <string name="call_status_incoming">تماس دریافتی</string>
+    <!-- Accessibility labels for call screen overlay buttons -->
+    <string name="call_btn_answer">پاسخ به تماس</string>
+    <string name="call_btn_speaker">بلندگو</string>
+    <string name="call_btn_camera">دوربین</string>
+    <string name="call_btn_mic">میکروفون</string>
+    <string name="call_btn_end">پایان تماس</string>
     <!-- the first placeholder will be replaced by a date, the second placeholder by duration, example: "Thu, 08:12 pm, 2 minutes" -->
     <string name="call_date_and_duration">%1$s، %2$s</string>
 

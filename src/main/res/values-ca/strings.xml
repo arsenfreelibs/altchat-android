@@ -401,6 +401,16 @@
     <string name="declined_call">Trucada rebutjada</string>
     <string name="canceled_call">Trucada cancel·lada</string>
     <string name="missed_call">Trucada perduda</string>
+    <!-- Status labels shown on the call screen overlay -->
+    <string name="call_status_ringing">Sonant…</string>
+    <string name="call_status_connecting">Connectant…</string>
+    <string name="call_status_incoming">Trucada entrant</string>
+    <!-- Accessibility labels for call screen overlay buttons -->
+    <string name="call_btn_answer">Respon la trucada</string>
+    <string name="call_btn_speaker">Altaveu</string>
+    <string name="call_btn_camera">Càmera</string>
+    <string name="call_btn_mic">Micròfon</string>
+    <string name="call_btn_end">Finalitza la trucada</string>
     <!-- the first placeholder will be replaced by a date, the second placeholder by duration, example: "Thu, 08:12 pm, 2 minutes" -->
     <string name="call_date_and_duration">%1$s, %2$s</string>
 

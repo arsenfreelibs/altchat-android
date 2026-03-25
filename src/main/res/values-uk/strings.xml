@@ -425,6 +425,16 @@
     <string name="declined_call">Відхилений дзвінок</string>
     <string name="canceled_call">Скасований дзвінок</string>
     <string name="missed_call">Пропущений дзвінок</string>
+    <!-- Status labels shown on the call screen overlay -->
+    <string name="call_status_ringing">Дзвонить…</string>
+    <string name="call_status_connecting">Зʼєднання…</string>
+    <string name="call_status_incoming">Вхідний дзвінок</string>
+    <!-- Accessibility labels for call screen overlay buttons -->
+    <string name="call_btn_answer">Відповісти на дзвінок</string>
+    <string name="call_btn_speaker">Гучний звʼязок</string>
+    <string name="call_btn_camera">Камера</string>
+    <string name="call_btn_mic">Мікрофон</string>
+    <string name="call_btn_end">Завершити дзвінок</string>
     <!-- the first placeholder will be replaced by a date, the second placeholder by duration, example: "Thu, 08:12 pm, 2 minutes" -->
     <string name="call_date_and_duration">%1$s, %2$s</string>
 

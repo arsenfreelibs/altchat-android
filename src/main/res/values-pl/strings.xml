@@ -425,6 +425,16 @@
     <string name="declined_call">Połączenie odrzucone</string>
     <string name="canceled_call">Połączenie anulowane</string>
     <string name="missed_call">Połączenie anulowane</string>
+    <!-- Status labels shown on the call screen overlay -->
+    <string name="call_status_ringing">Dzwoni…</string>
+    <string name="call_status_connecting">Łączenie…</string>
+    <string name="call_status_incoming">Połączenie przychodzące</string>
+    <!-- Accessibility labels for call screen overlay buttons -->
+    <string name="call_btn_answer">Odbierz połączenie</string>
+    <string name="call_btn_speaker">Głośnik</string>
+    <string name="call_btn_camera">Kamera</string>
+    <string name="call_btn_mic">Mikrofon</string>
+    <string name="call_btn_end">Zakończ połączenie</string>
     <!-- the first placeholder will be replaced by a date, the second placeholder by duration, example: "Thu, 08:12 pm, 2 minutes" -->
     <string name="call_date_and_duration">%1$s, %2$s</string>
 
