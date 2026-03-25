@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -179,6 +180,15 @@ public class CreateProfileActivity extends BaseActionBarActivity {
     this.statusView = ViewUtil.findById(this, R.id.status_text);
 
     // add padding to avoid content hidden behind system bars
+    if (ViewUtil.isEdgeToEdgeSupported()) {
+      TypedValue tv = new TypedValue();
+      boolean resolved = getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true);
+      int actionBarHeight = resolved
+          ? TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics())
+          : 0;
+      container.setPadding(container.getPaddingLeft(), container.getPaddingTop() + actionBarHeight,
+          container.getPaddingRight(), container.getPaddingBottom());
+    }
     ViewUtil.applyWindowInsets(container);
 
     loginSuccessText.setVisibility(View.GONE);
