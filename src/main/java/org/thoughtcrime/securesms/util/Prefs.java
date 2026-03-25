@@ -203,7 +203,7 @@ public class Prefs {
   }
 
   public static boolean isCallsEnabled(Context context) {
-    return getBooleanPreference(context, "pref_calls_enabled", false);
+    return getBooleanPreference(context, "pref_calls_enabled", true);
   }
 
   // ringtone
