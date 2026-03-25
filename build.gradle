@@ -27,8 +27,8 @@ android {
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
-        versionCode 748
-        versionName "1.0.4"
+        versionCode 750
+        versionName "1.0.5"
 
         applicationId "me.altchat"
         multiDexEnabled true
