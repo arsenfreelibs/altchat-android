@@ -45,10 +45,17 @@
         android:orientation="vertical"
         tools:visibility="gone">
 
+        <org.thoughtcrime.securesms.filters.FilterBarView
+            android:id="@+id/filter_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:paddingBottom="88dp"
             android:clipToPadding="false"
             android:scrollbars="vertical"

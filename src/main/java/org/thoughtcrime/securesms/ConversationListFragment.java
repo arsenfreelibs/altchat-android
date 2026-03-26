@@ -23,19 +23,29 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.b44t.messenger.DcChat;
 import com.b44t.messenger.DcChatlist;
 import com.b44t.messenger.DcContext;
 import com.b44t.messenger.DcEvent;
 import com.b44t.messenger.DcMsg;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import org.thoughtcrime.securesms.ConversationListAdapter.ItemClickListener;
@@ -43,6 +53,10 @@ import org.thoughtcrime.securesms.components.recyclerview.DeleteItemAnimator;
 import org.thoughtcrime.securesms.components.reminder.DozeReminder;
 import org.thoughtcrime.securesms.connect.DcEventCenter;
 import org.thoughtcrime.securesms.connect.DcHelper;
+import org.thoughtcrime.securesms.filters.ActiveFilter;
+import org.thoughtcrime.securesms.filters.ChatFilter;
+import org.thoughtcrime.securesms.filters.FilterBarView;
+import org.thoughtcrime.securesms.filters.FilterManager;
 import org.thoughtcrime.securesms.mms.GlideApp;
 import org.thoughtcrime.securesms.notifications.FcmReceiveService;
 import org.thoughtcrime.securesms.permissions.Permissions;
@@ -57,8 +71,11 @@ public class ConversationListFragment extends BaseConversationListFragment
   public static final String RELOAD_LIST = "reload_list";
 
   private static final String TAG = ConversationListFragment.class.getSimpleName();
+  private static final String STATE_FILTER_TYPE = "filter_type";
+  private static final String STATE_FILTER_ID   = "filter_id";
 
   private RecyclerView list;
+  private FilterBarView filterBar;
   private View emptyState;
   private TextView emptySearch;
   private final String queryFilter = "";
@@ -67,10 +84,27 @@ public class ConversationListFragment extends BaseConversationListFragment
   private boolean chatlistJustLoaded;
   private boolean reloadTimerInstantly;
 
+  private volatile @NonNull ActiveFilter activeFilter = ActiveFilter.ALL;
+  private volatile FilterManager filterManager;
+
   @Override
   public void onCreate(Bundle icicle) {
     super.onCreate(icicle);
     archive = getArguments().getBoolean(ARCHIVE, false);
+    if (icicle != null) {
+      String typeStr = icicle.getString(STATE_FILTER_TYPE);
+      if (typeStr != null) {
+        try {
+          ActiveFilter.Type type = ActiveFilter.Type.valueOf(typeStr);
+          String filterId = icicle.getString(STATE_FILTER_ID);
+          if (type == ActiveFilter.Type.CUSTOM && filterId != null) {
+            activeFilter = ActiveFilter.custom(filterId);
+          } else if (type == ActiveFilter.Type.UNREAD) {
+            activeFilter = ActiveFilter.UNREAD;
+          }
+        } catch (IllegalArgumentException ignored) {}
+      }
+    }
 
     DcEventCenter eventCenter = DcHelper.getEventCenter(requireActivity());
     eventCenter.addMultiAccountObserver(DcContext.DC_EVENT_INCOMING_MSG, this);
@@ -99,6 +133,7 @@ public class ConversationListFragment extends BaseConversationListFragment
     final View view = inflater.inflate(R.layout.conversation_list_fragment, container, false);
 
     list = ViewUtil.findById(view, R.id.list);
+    filterBar = ViewUtil.findById(view, R.id.filter_bar);
     fab = ViewUtil.findById(view, R.id.fab);
     emptyState = ViewUtil.findById(view, R.id.empty_state);
     emptySearch = ViewUtil.findById(view, R.id.empty_search);
@@ -130,6 +165,29 @@ public class ConversationListFragment extends BaseConversationListFragment
     setHasOptionsMenu(true);
     initializeFabClickListener(false);
     list.setAdapter(new ConversationListAdapter(requireActivity(), GlideApp.with(this), this));
+
+    if (!archive && !ShareUtil.isRelayingMessageContent(getActivity())) {
+      filterManager = new FilterManager(requireActivity());
+      filterBar.setVisibility(View.VISIBLE);
+      filterBar.setListener(new FilterBarView.Listener() {
+        @Override
+        public void onFilterSelected(@NonNull ActiveFilter filter) {
+          activeFilter = filter;
+          loadChatlistAsync();
+        }
+
+        @Override
+        public void onAddFilterTapped() {
+          promptCreateFilter();
+        }
+
+        @Override
+        public void onFilterLongPressed(@NonNull ChatFilter filter, @NonNull View sourceView) {
+          promptManageFilter(filter);
+        }
+      });
+    }
+
     loadChatlistAsync();
     chatlistJustLoaded = true;
   }
@@ -141,7 +199,7 @@ public class ConversationListFragment extends BaseConversationListFragment
     updateReminders();
 
     if (requireActivity().getIntent().getIntExtra(RELOAD_LIST, 0) == 1 && !chatlistJustLoaded) {
-      loadChatlist();
+      loadChatlistAsync();
       reloadTimerInstantly = false;
     }
     chatlistJustLoaded = false;
@@ -169,6 +227,14 @@ public class ConversationListFragment extends BaseConversationListFragment
     reloadTimerInstantly = true;
 
     fab.stopPulse();
+  }
+
+  @Override
+  public void onSaveInstanceState(@NonNull Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putString(STATE_FILTER_TYPE, activeFilter.getType().name());
+    String filterId = activeFilter.getFilterId();
+    if (filterId != null) outState.putString(STATE_FILTER_ID, filterId);
   }
 
   public void onNewIntent() {
@@ -289,14 +355,63 @@ public class ConversationListFragment extends BaseConversationListFragment
         DcHelper.getContext(context)
             .getChatlist(listflags, queryFilter.isEmpty() ? null : queryFilter, 0);
 
+    // Capture volatile fields once to ensure a consistent view for this entire background load
+    final FilterManager fm = filterManager;
+    final ActiveFilter af = activeFilter;
+
+    // Load the filter map once — shared by computeFilteredIndices and badge computation
+    final Map<String, List<Integer>> chatIdsByFilter =
+        fm != null ? fm.chatIdsByFilterId() : null;
+
+    // Compute filter indices on the background thread
+    final int[] filteredIndices = computeFilteredIndices(chatlist, context, chatIdsByFilter, fm, af);
+
+    // Compute filter bar badge data on the background thread to avoid disk I/O on the main thread
+    final List<ChatFilter> filterBarFilters;
+    final Map<String, Integer> filterBarBadges;
+    final int filterBarAllUnread;
+    final int filterBarUnreadChats;
+    if (fm != null) {
+      List<ChatFilter> filters = fm.loadCustomFilters();
+      DcContext dcCtx = DcHelper.getContext(context);
+      int allUnread = 0;
+      int unreadChats = 0;
+      for (int i = 0; i < chatlist.getCnt(); i++) {
+        int chatId = chatlist.getChatId(i);
+        if (chatId <= DcChat.DC_CHAT_ID_LAST_SPECIAL) continue;
+        int fresh = dcCtx.getFreshMsgCount(chatId);
+        if (fresh > 0) { allUnread += fresh; unreadChats++; }
+      }
+      Map<String, Integer> badges = new HashMap<>();
+      for (ChatFilter f : filters) {
+        List<Integer> chatIds = chatIdsByFilter != null ? chatIdsByFilter.get(f.getId()) : null;
+        if (chatIds == null) continue;
+        int count = 0;
+        for (int chatId : chatIds) count += dcCtx.getFreshMsgCount(chatId);
+        if (count > 0) badges.put(f.getId(), count);
+      }
+      filterBarFilters = filters;
+      filterBarBadges = badges;
+      filterBarAllUnread = allUnread;
+      filterBarUnreadChats = unreadChats;
+    } else {
+      filterBarFilters = null;
+      filterBarBadges = null;
+      filterBarAllUnread = 0;
+      filterBarUnreadChats = 0;
+    }
+
     Util.runOnMain(
         () -> {
-          if (chatlist.getCnt() <= 0 && TextUtils.isEmpty(queryFilter)) {
+          // Determine visible count for empty-state detection
+          int visibleCount = filteredIndices != null ? filteredIndices.length : chatlist.getCnt();
+
+          if (visibleCount <= 0 && TextUtils.isEmpty(queryFilter)) {
             list.setVisibility(View.INVISIBLE);
             emptyState.setVisibility(View.VISIBLE);
             emptySearch.setVisibility(View.INVISIBLE);
             fab.startPulse(3 * 1000);
-          } else if (chatlist.getCnt() <= 0 && !TextUtils.isEmpty(queryFilter)) {
+          } else if (visibleCount <= 0 && !TextUtils.isEmpty(queryFilter)) {
             list.setVisibility(View.INVISIBLE);
             emptyState.setVisibility(View.GONE);
             emptySearch.setVisibility(View.VISIBLE);
@@ -308,13 +423,178 @@ public class ConversationListFragment extends BaseConversationListFragment
             fab.stopPulse();
           }
 
-          ((ConversationListAdapter) list.getAdapter()).changeData(chatlist);
+          ((ConversationListAdapter) list.getAdapter()).changeData(chatlist, filteredIndices);
+          if (filterBarFilters != null && filterBar != null && filterBar.getVisibility() == View.VISIBLE) {
+            filterBar.configure(filterBarFilters, activeFilter, filterBarBadges, filterBarAllUnread, filterBarUnreadChats);
+          }
         });
+  }
+
+  /**
+   * Computes which chatlist indices to show for the current activeFilter.
+   * Returns null = show all (for ALL filter or archive/forwarding modes).
+   */
+  private int[] computeFilteredIndices(DcChatlist chatlist, Context context, Map<String, List<Integer>> chatIdsByFilter, FilterManager fm, ActiveFilter af) {
+    if (fm == null) return null; // archive or forwarding mode
+
+    int cnt = chatlist.getCnt();
+    DcContext dcContext = DcHelper.getContext(context);
+
+    switch (af.getType()) {
+      case ALL:
+        return null; // show all
+
+      case UNREAD: {
+        List<Integer> indices = new ArrayList<>();
+        for (int i = 0; i < cnt; i++) {
+          int chatId = chatlist.getChatId(i);
+          // Always include archived link
+          if (chatId == DcChat.DC_CHAT_ID_ARCHIVED_LINK) {
+            indices.add(i);
+            continue;
+          }
+          if (chatId <= DcChat.DC_CHAT_ID_LAST_SPECIAL) continue;
+          if (dcContext.getFreshMsgCount(chatId) > 0) {
+            indices.add(i);
+          }
+        }
+        return toIntArray(indices);
+      }
+
+      case CUSTOM: {
+        String filterId = af.getFilterId();
+        if (filterId == null) return null;
+        List<Integer> assignedIds = chatIdsByFilter != null ? chatIdsByFilter.get(filterId) : null;
+        if (assignedIds == null) return new int[0];
+        Set<Integer> chatIdSet = new HashSet<>(assignedIds);
+        List<Integer> indices = new ArrayList<>();
+        for (int i = 0; i < cnt; i++) {
+          int chatId = chatlist.getChatId(i);
+          if (chatId == DcChat.DC_CHAT_ID_ARCHIVED_LINK) {
+            indices.add(i);
+            continue;
+          }
+          if (chatId <= DcChat.DC_CHAT_ID_LAST_SPECIAL) continue;
+          if (chatIdSet.contains(chatId)) {
+            indices.add(i);
+          }
+        }
+        return toIntArray(indices);
+      }
+
+      default:
+        return null;
+    }
+  }
+
+  private static int[] toIntArray(List<Integer> list) {
+    int[] arr = new int[list.size()];
+    for (int i = 0; i < list.size(); i++) arr[i] = list.get(i);
+    return arr;
+  }
+
+  // ── filter CRUD dialogs ────────────────────────────────────────────────────
+
+  private void promptCreateFilter() {
+    if (filterManager == null) return;
+    List<ChatFilter> existing = filterManager.loadCustomFilters();
+    if (existing.size() >= FilterManager.MAX_CUSTOM_FILTERS) {
+      new AlertDialog.Builder(requireActivity())
+          .setMessage(R.string.filter_max_reached)
+          .setPositiveButton(android.R.string.ok, null)
+          .show();
+      return;
+    }
+
+    EditText input = new EditText(requireActivity());
+    input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+    input.setHint(R.string.filter_name_hint);
+
+    new AlertDialog.Builder(requireActivity())
+        .setTitle(R.string.filter_add)
+        .setView(input)
+        .setPositiveButton(
+            android.R.string.ok,
+            (dialog, which) -> {
+              String name = input.getText().toString().trim();
+              if (TextUtils.isEmpty(name)) return;
+              List<ChatFilter> filters = filterManager.loadCustomFilters();
+              filters.add(filterManager.createFilter(name));
+              filterManager.saveCustomFilters(filters);
+              loadChatlistAsync();
+            })
+        .setNegativeButton(android.R.string.cancel, null)
+        .show();
+  }
+
+  private void promptManageFilter(ChatFilter filter) {
+    new AlertDialog.Builder(requireActivity())
+        .setItems(
+            new CharSequence[] {
+              getString(R.string.filter_rename), getString(R.string.filter_delete)
+            },
+            (dialog, which) -> {
+              if (which == 0) promptRenameFilter(filter);
+              else deleteFilter(filter);
+            })
+        .setNegativeButton(android.R.string.cancel, null)
+        .show();
+  }
+
+  private void promptRenameFilter(ChatFilter filter) {
+    EditText input = new EditText(requireActivity());
+    input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+    input.setText(filter.getName());
+    input.selectAll();
+
+    new AlertDialog.Builder(requireActivity())
+        .setTitle(R.string.filter_rename)
+        .setView(input)
+        .setPositiveButton(
+            android.R.string.ok,
+            (dialog, which) -> {
+              String name = input.getText().toString().trim();
+              if (TextUtils.isEmpty(name)) return;
+              List<ChatFilter> filters = filterManager.loadCustomFilters();
+              for (ChatFilter f : filters) {
+                if (f.getId().equals(filter.getId())) {
+                  f.setName(name);
+                  break;
+                }
+              }
+              filterManager.saveCustomFilters(filters);
+              loadChatlistAsync();
+            })
+        .setNegativeButton(android.R.string.cancel, null)
+        .show();
+  }
+
+  private void deleteFilter(ChatFilter filter) {
+    if (filterManager == null) return;
+    List<ChatFilter> filters = filterManager.loadCustomFilters();
+    filters.removeIf(f -> f.getId().equals(filter.getId()));
+    filterManager.saveCustomFilters(filters);
+    filterManager.removeFilterAssignments(filter.getId());
+    if (activeFilter.getType() == ActiveFilter.Type.CUSTOM
+        && filter.getId().equals(activeFilter.getFilterId())) {
+      activeFilter = ActiveFilter.ALL;
+    }
+    loadChatlistAsync();
   }
 
   @Override
   protected boolean offerToArchive() {
     return !archive;
+  }
+
+  @Override
+  protected FilterManager getFilterManager() {
+    return filterManager;
+  }
+
+  @Override
+  protected void onFilterAssignmentChanged() {
+    loadChatlistAsync();
   }
 
   @Override

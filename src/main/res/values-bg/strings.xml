@@ -283,6 +283,16 @@
     <string name="source_code">Изходен код</string>
     <!-- Menu item beside an app/chat that adds an icon to the system's home screen. If the user taps that icon, the app/chat is opened directly. -->
     <string name="add_to_home_screen">Добавяне към началния екран</string>
+    <!-- Chat folders / filters -->
+    <string name="filter_all">Всички</string>
+    <string name="filter_unread">Непрочетени</string>
+    <string name="filter_add">Нова папка</string>
+    <string name="filter_rename">Преименуване</string>
+    <string name="filter_delete">Изтриване на папка</string>
+    <string name="filter_max_reached">Достигнат е максималният брой от 8 папки. Моля, изтрийте папка, преди да създадете нова.</string>
+    <string name="filter_name_hint">Име на папка</string>
+    <string name="filter_assign_to_folder">Добавяне към папка</string>
+    <string name="filter_remove_from_folder">Премахване от папка</string>
     <string name="donate">Дарение</string>
     <string name="mute_for_one_hour">Спиране на звука за 1 час</string>
     <string name="mute_for_eight_hours">Спиране на звука за 8 часа</string>

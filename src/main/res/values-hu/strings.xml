@@ -361,6 +361,16 @@
     <string name="source_code">Forráskód</string>
     <!-- Menu item beside an app/chat that adds an icon to the system's home screen. If the user taps that icon, the app/chat is opened directly. -->
     <string name="add_to_home_screen">Hozzáadás a kezdőképernyőhöz</string>
+    <!-- Chat folders / filters -->
+    <string name="filter_all">Összes</string>
+    <string name="filter_unread">Olvasatlan</string>
+    <string name="filter_add">Új mappa</string>
+    <string name="filter_rename">Átnevezés</string>
+    <string name="filter_delete">Mappa törlése</string>
+    <string name="filter_max_reached">Elérted a 8 mappa maximumát. Kérjük, töröljön egy mappát, mielőtt újat hoz létre.</string>
+    <string name="filter_name_hint">Mappa neve</string>
+    <string name="filter_assign_to_folder">Hozzáadás mappához</string>
+    <string name="filter_remove_from_folder">Eltávolítás mappából</string>
     <string name="donate">Adományozás</string>
     <string name="donate_device_msg">❤️ Úgy tűnik, hogy tetszik önnek a Alt Chat!\n\nFontolja meg az adományozást, hogy a Alt Chat mindenki számára ingyenes maradhasson.\n\nUgyan a Alt Chat szabadon használható és nyílt forráskódú, de a fejlesztés pénzbe kerül. Segítsen nekünk, hogy a Alt Chat független maradhasson, és a jövőben még fantasztikusabbá váljon.\n\nhttps://alt.chat/donate</string>
 

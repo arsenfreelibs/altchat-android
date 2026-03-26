@@ -344,6 +344,16 @@
     <string name="source_code">Código Fonte</string>
     <!-- Menu item beside an app/chat that adds an icon to the system's home screen. If the user taps that icon, the app/chat is opened directly. -->
     <string name="add_to_home_screen">Engadir á pantalla de Inicio</string>
+    <!-- Chat folders / filters -->
+    <string name="filter_all">Todas</string>
+    <string name="filter_unread">Non lidas</string>
+    <string name="filter_add">Novo cartafol</string>
+    <string name="filter_rename">Cambiar nome</string>
+    <string name="filter_delete">Eliminar cartafol</string>
+    <string name="filter_max_reached">Acadouse o máximo de 8 cartafoles. Elimina un cartafol antes de crear un novo.</string>
+    <string name="filter_name_hint">Nome do cartafol</string>
+    <string name="filter_assign_to_folder">Engadir ao cartafol</string>
+    <string name="filter_remove_from_folder">Eliminar do cartafol</string>
     <string name="donate">Doar</string>
     <string name="mute_for_one_hour">Acalar durante 1 h.</string>
     <string name="mute_for_eight_hours">Acalar durante 8 horas</string>

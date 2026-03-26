@@ -47,6 +47,8 @@ class ConversationListAdapter
   private final WeakReference<Context> context;
   private @NonNull DcContext dcContext;
   private @NonNull DcChatlist dcChatlist;
+  /** When non-null, only the positions listed here are shown (indices into dcChatlist). */
+  private @Nullable int[] filteredIndices;
   private final @NonNull GlideRequests glideRequests;
   private final @NonNull LayoutInflater inflater;
   private final @Nullable ItemClickListener clickListener;
@@ -63,12 +65,18 @@ class ConversationListAdapter
 
   @Override
   public int getItemCount() {
+    if (filteredIndices != null) return filteredIndices.length;
     return dcChatlist.getCnt();
+  }
+
+  /** Resolves a RecyclerView position to a DcChatlist index. */
+  private int resolveIndex(int position) {
+    return filteredIndices != null ? filteredIndices[position] : position;
   }
 
   @Override
   public long getItemId(int i) {
-    return dcChatlist.getChatId(i);
+    return dcChatlist.getChatId(resolveIndex(i));
   }
 
   ConversationListAdapter(
@@ -132,13 +140,14 @@ class ConversationListAdapter
       return;
     }
 
-    DcChat chat = dcContext.getChat(dcChatlist.getChatId(i));
-    DcLot summary = dcChatlist.getSummary(i, chat);
+    int idx = resolveIndex(i);
+    DcChat chat = dcContext.getChat(dcChatlist.getChatId(idx));
+    DcLot summary = dcChatlist.getSummary(idx, chat);
     viewHolder
         .getItem()
         .bind(
             DcHelper.getThreadRecord(context, summary, chat),
-            dcChatlist.getMsgId(i),
+            dcChatlist.getMsgId(idx),
             summary,
             glideRequests,
             batchSet,
@@ -147,7 +156,7 @@ class ConversationListAdapter
 
   @Override
   public int getItemViewType(int i) {
-    int chatId = dcChatlist.getChatId(i);
+    int chatId = dcChatlist.getChatId(resolveIndex(i));
 
     if (chatId == DcChat.DC_CHAT_ID_ARCHIVED_LINK) {
       return MESSAGE_TYPE_SWITCH_ARCHIVE;
@@ -160,8 +169,9 @@ class ConversationListAdapter
 
   @Override
   public void selectAllThreads() {
-    for (int i = 0; i < dcChatlist.getCnt(); i++) {
-      long threadId = dcChatlist.getChatId(i);
+    int count = filteredIndices != null ? filteredIndices.length : dcChatlist.getCnt();
+    for (int i = 0; i < count; i++) {
+      long threadId = dcChatlist.getChatId(resolveIndex(i));
       if (threadId > DcChat.DC_CHAT_ID_LAST_SPECIAL) {
         batchSet.add(threadId);
       }
@@ -178,14 +188,20 @@ class ConversationListAdapter
   }
 
   void changeData(@Nullable DcChatlist chatlist) {
+    changeData(chatlist, null);
+  }
+
+  void changeData(@Nullable DcChatlist chatlist, @Nullable int[] filteredIndices) {
     Context context = this.context.get();
     if (context == null) {
       return;
     }
     if (chatlist == null) {
       dcChatlist = new DcChatlist(0, 0);
+      this.filteredIndices = null;
     } else {
       dcChatlist = chatlist;
+      this.filteredIndices = filteredIndices;
       dcContext = DcHelper.getContext(context);
     }
     notifyDataSetChanged();

@@ -37,6 +37,16 @@
         app:showAsAction="never" />
 
     <item
+        android:title="@string/filter_assign_to_folder"
+        android:id="@+id/menu_add_to_filter"
+        app:showAsAction="never" />
+
+    <item
+        android:title="@string/filter_remove_from_folder"
+        android:id="@+id/menu_remove_from_filter"
+        app:showAsAction="never" />
+
+    <item
         android:title="@string/menu_select_all"
         android:id="@+id/menu_select_all"
         app:showAsAction="never" />

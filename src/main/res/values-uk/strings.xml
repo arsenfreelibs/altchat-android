@@ -383,6 +383,16 @@
     <string name="source_code">Джерельний код</string>
     <!-- Menu item beside an app/chat that adds an icon to the system's home screen. If the user taps that icon, the app/chat is opened directly. -->
     <string name="add_to_home_screen">Додати на стартовий екран</string>
+    <!-- Chat folders / filters -->
+    <string name="filter_all">Всі</string>
+    <string name="filter_unread">Непрочитані</string>
+    <string name="filter_add">Нова папка</string>
+    <string name="filter_rename">Перейменувати</string>
+    <string name="filter_delete">Видалити папку</string>
+    <string name="filter_max_reached">Досягнуто максимальну кількість (8) папок. Видаліть папку, перш ніж створювати нову.</string>
+    <string name="filter_name_hint">Назва папки</string>
+    <string name="filter_assign_to_folder">Додати до папки</string>
+    <string name="filter_remove_from_folder">Видалити з папки</string>
     <string name="donate">Задонатити</string>
     <string name="donate_device_msg">❤️ Здається, вам подобається Alt Chat!\n\nПодумайте про пожертвування, щоб допомогти забезпечити безкоштовність Alt Chat для всіх.\n\nХоча Alt Chat є безкоштовним у використанні та з відкритим вихідним кодом, розробка коштує грошей. Допоможіть нам зберегти незалежність Alt Chat і зробити його ще більш чудовим у майбутньому.\n\nhttps://alt.chat/donate</string>
 

@@ -361,6 +361,16 @@
     <string name="source_code">Kaynak Kodu</string>
     <!-- Menu item beside an app/chat that adds an icon to the system's home screen. If the user taps that icon, the app/chat is opened directly. -->
     <string name="add_to_home_screen">Ana Ekrana Ekle</string>
+    <!-- Chat folders / filters -->
+    <string name="filter_all">Tümü</string>
+    <string name="filter_unread">Okunmamış</string>
+    <string name="filter_add">Yeni Klasör</string>
+    <string name="filter_rename">Yeniden Adlandır</string>
+    <string name="filter_delete">Klasörü Sil</string>
+    <string name="filter_max_reached">Maksimum 8 klasör sınırına ulaşıldı. Yeni bir klasör oluşturmadan önce mevcut bir klasörü silin.</string>
+    <string name="filter_name_hint">Klasör adı</string>
+    <string name="filter_assign_to_folder">Klasöre Ekle</string>
+    <string name="filter_remove_from_folder">Klasörden Kaldır</string>
     <string name="donate">Bağış</string>
     <string name="donate_device_msg">❤️ Alt Chat\'in tadını çıkarıyor gibisiniz!\n\nAlt Chat\'in herkes için ücretsiz kalmasını sağlamak için lütfen bağış yapmayı düşünün.\n\nAlt Chat, kullanımı ücretsiz ve açık kaynaklıdır, geliştirme paraya mâl olur. Alt Chat\'in bağımsızlığını korumak ve onu gelecekte daha da harika yapmak için bize yardımcı olun.\n\nhttps://alt.chat/donate</string>
 

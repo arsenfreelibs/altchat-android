@@ -361,6 +361,16 @@
     <string name="source_code">Kildekode</string>
     <!-- Menu item beside an app/chat that adds an icon to the system's home screen. If the user taps that icon, the app/chat is opened directly. -->
     <string name="add_to_home_screen">Legg til på hjemmeskjermen</string>
+    <!-- Chat folders / filters -->
+    <string name="filter_all">Alle</string>
+    <string name="filter_unread">Uleste</string>
+    <string name="filter_add">Ny mappe</string>
+    <string name="filter_rename">Gi nytt navn</string>
+    <string name="filter_delete">Slett mappe</string>
+    <string name="filter_max_reached">Maksimalt 8 mapper er nådd. Slett en mappe før du oppretter en ny.</string>
+    <string name="filter_name_hint">Mappenavn</string>
+    <string name="filter_assign_to_folder">Legg til i mappe</string>
+    <string name="filter_remove_from_folder">Fjern fra mappe</string>
     <string name="donate">Doner</string>
     <string name="donate_device_msg">❤️ Det ser ut som du liker Alt Chat!\n\nVurder å donere for å holde Alt Chat gratis for alle.\n\nSelv om Alt Chat er gratis å bruke og åpen kildekode, så koster det penger å utvikle. Hjelp oss å holde Alt Chat uavhengig og gjøre det enda bedre.\n\nhttps://alt.chat/donate</string>
 

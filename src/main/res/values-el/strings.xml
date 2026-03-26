@@ -257,6 +257,16 @@
     <string name="source_code">Πηγαίος Κώδικας</string>
     <!-- Menu item beside an app/chat that adds an icon to the system's home screen. If the user taps that icon, the app/chat is opened directly. -->
     <string name="add_to_home_screen">Προσθήκη στην κεντρική οθόνη</string>
+    <!-- Chat folders / filters -->
+    <string name="filter_all">Όλα</string>
+    <string name="filter_unread">Αδιάβαστα</string>
+    <string name="filter_add">Νέος φάκελος</string>
+    <string name="filter_rename">Μετονομασία</string>
+    <string name="filter_delete">Διαγραφή φακέλου</string>
+    <string name="filter_max_reached">Επιτεύχθηκε ο μέγιστος αριθμός 8 φακέλων. Διαγράψτε έναν φάκελο πριν δημιουργήσετε νέο.</string>
+    <string name="filter_name_hint">Όνομα φακέλου</string>
+    <string name="filter_assign_to_folder">Προσθήκη σε φάκελο</string>
+    <string name="filter_remove_from_folder">Κατάργηση από φάκελο</string>
     <string name="mute_for_one_hour">Σίγαση για 1 ώρα</string>
     <string name="mute_for_eight_hours">Σίγαση για 8 ώρες</string>
     <string name="mute_for_one_day">Σίγαση για 1 ημέρα</string>

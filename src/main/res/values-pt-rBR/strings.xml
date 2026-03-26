@@ -283,6 +283,16 @@
     <string name="source_code">Código Fonte</string>
     <!-- Menu item beside an app/chat that adds an icon to the system's home screen. If the user taps that icon, the app/chat is opened directly. -->
     <string name="add_to_home_screen">Adicionar à Tela Inicial</string>
+    <!-- Chat folders / filters -->
+    <string name="filter_all">Todos</string>
+    <string name="filter_unread">Não lidas</string>
+    <string name="filter_add">Nova pasta</string>
+    <string name="filter_rename">Renomear</string>
+    <string name="filter_delete">Excluir pasta</string>
+    <string name="filter_max_reached">Máximo de 8 pastas atingido. Exclua uma pasta antes de criar uma nova.</string>
+    <string name="filter_name_hint">Nome da pasta</string>
+    <string name="filter_assign_to_folder">Adicionar à pasta</string>
+    <string name="filter_remove_from_folder">Remover da pasta</string>
     <string name="mute_for_one_hour">Silenciar por 1 hora</string>
     <string name="mute_for_eight_hours">Silenciar por 8 horas</string>
     <string name="mute_for_one_day">Silenciar por 1 dia</string>

@@ -328,6 +328,16 @@
     <string name="source_code">原始碼</string>
     <!-- Menu item beside an app/chat that adds an icon to the system's home screen. If the user taps that icon, the app/chat is opened directly. -->
     <string name="add_to_home_screen">新增至主畫面</string>
+    <!-- Chat folders / filters -->
+    <string name="filter_all">全部</string>
+    <string name="filter_unread">未讀</string>
+    <string name="filter_add">新建資料夾</string>
+    <string name="filter_rename">重新命名</string>
+    <string name="filter_delete">刪除資料夾</string>
+    <string name="filter_max_reached">最多只能有 8 個資料夾。請先刪除一個資料夾，再建立新的資料夾。</string>
+    <string name="filter_name_hint">資料夾名稱</string>
+    <string name="filter_assign_to_folder">加入資料夾</string>
+    <string name="filter_remove_from_folder">從資料夾移除</string>
     <string name="donate">捐贈</string>
     <string name="mute_for_one_hour">靜音1小時</string>
     <string name="mute_for_eight_hours">靜音8小時</string>

@@ -383,6 +383,16 @@
     <string name="source_code">Zdrojový kód</string>
     <!-- Menu item beside an app/chat that adds an icon to the system's home screen. If the user taps that icon, the app/chat is opened directly. -->
     <string name="add_to_home_screen">Přidat na domovskou obrazovku</string>
+    <!-- Chat folders / filters -->
+    <string name="filter_all">Vše</string>
+    <string name="filter_unread">Nepřečtené</string>
+    <string name="filter_add">Nová složka</string>
+    <string name="filter_rename">Přejmenovat</string>
+    <string name="filter_delete">Smazat složku</string>
+    <string name="filter_max_reached">Bylo dosaženo maximálního počtu 8 složek. Před vytvořením nové složky prosím smažte stávající.</string>
+    <string name="filter_name_hint">Název složky</string>
+    <string name="filter_assign_to_folder">Přidat do složky</string>
+    <string name="filter_remove_from_folder">Odebrat ze složky</string>
     <string name="donate">Darovat</string>
     <string name="donate_device_msg">❤️ Vypadá to, že se vám Alt Chat líbí! \n\n Prosím, zvažte možnost darování, abyste pomohli zajistit, že Alt Chat zůstane zdarma pro všechny. \n\n Ačkoli je Alt Chat zdarma a má otevřený zdrojový kód, vývoj stojí peníze. Pomozte nám udržet Alt Chat nezávislý a v budoucnu jej udělat ještě úžasnějším. \n\n https://alt.chat/donate</string>
 

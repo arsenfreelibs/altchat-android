@@ -361,6 +361,16 @@
     <string name="source_code">Lähtekood</string>
     <!-- Menu item beside an app/chat that adds an icon to the system's home screen. If the user taps that icon, the app/chat is opened directly. -->
     <string name="add_to_home_screen">Lisa avaekraanile</string>
+    <!-- Chat folders / filters -->
+    <string name="filter_all">Kõik</string>
+    <string name="filter_unread">Lugemata</string>
+    <string name="filter_add">Uus kaust</string>
+    <string name="filter_rename">Nimeta ümber</string>
+    <string name="filter_delete">Kustuta kaust</string>
+    <string name="filter_max_reached">Maksimaalne arv 8 kausta on täis. Enne uue loomist kustutage mõni kaust.</string>
+    <string name="filter_name_hint">Kausta nimi</string>
+    <string name="filter_assign_to_folder">Lisa kausta</string>
+    <string name="filter_remove_from_folder">Eemalda kaustast</string>
     <string name="donate">Toeta arendust</string>
     <string name="donate_device_msg">❤️ Tundub, et Alt Chat meeldib sulle!\n\nTagamaks, et Alt Chat jääb kõigi jaoks vabaks ning tasuta kasutatavaks, palun kaalu projekti rahalist toetamist.\n\nKuigi Alt Chat on vabalt pruugitav ja põhineb avatud lähtekoodil, siis arenduseks kulub paratamatult raha. Sinu toetus võimaldab Alt Chatil jääda sõltumatuks ning iga uue versiooniga muutuda aina paremaks.\n\nhttps://alt.chat/donate</string>
 

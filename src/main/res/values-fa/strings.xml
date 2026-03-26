@@ -363,6 +363,16 @@
     <string name="source_code">کد منبع</string>
     <!-- Menu item beside an app/chat that adds an icon to the system's home screen. If the user taps that icon, the app/chat is opened directly. -->
     <string name="add_to_home_screen">افزودن به صفحه خانه</string>
+    <!-- Chat folders / filters -->
+    <string name="filter_all">همه</string>
+    <string name="filter_unread">خوانده‌نشده</string>
+    <string name="filter_add">پوشه جدید</string>
+    <string name="filter_rename">تغییر نام</string>
+    <string name="filter_delete">حذف پوشه</string>
+    <string name="filter_max_reached">حداکثر تعداد ۸ پوشه به پایان رسید. لطفاً قبل از ایجاد پوشه جدید، یکی را حذف کنید.</string>
+    <string name="filter_name_hint">نام پوشه</string>
+    <string name="filter_assign_to_folder">افزودن به پوشه</string>
+    <string name="filter_remove_from_folder">حذف از پوشه</string>
     <string name="donate">حمایت مالی</string>
     <string name="donate_device_msg">❤️ بنظر می‌آید شما در حال لذت بردن از دلتاچت هستید!\n\nلطفا هدیه دهید تا مطمئن باشیم دلتاچت برای همه آزاد باقی می‌ماند.\n\nبا وجودی که دلتاچت برای استفاده رایگان است و یک نرم‌افزار آزاد نیز هست، توسعهٔ آن هزینه دارد. به ما کمک کنید تا دلتاچت را مستقل نگه‌داریم و در آینده حتی آن‌را خفن‌تر کنیم. هدایا از طریق رمزارز نیز پذیرفته می‌شوند.\n\nhttps://alt.chat/donate</string>
 

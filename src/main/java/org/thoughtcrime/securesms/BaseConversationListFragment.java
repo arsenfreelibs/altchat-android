@@ -32,10 +32,13 @@ import com.b44t.messenger.DcContext;
 import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.thoughtcrime.securesms.components.registration.PulsingFloatingActionButton;
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.connect.DirectShareUtil;
+import org.thoughtcrime.securesms.filters.ChatFilter;
+import org.thoughtcrime.securesms.filters.FilterManager;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.util.SendRelayedMessageUtil;
 import org.thoughtcrime.securesms.util.ShareUtil;
@@ -47,11 +50,41 @@ public abstract class BaseConversationListFragment extends Fragment implements A
   protected ActionMode actionMode;
   protected PulsingFloatingActionButton fab;
 
+  // Cached per-action-mode state for folder-assignment menu items.
+  // Populated once when action mode starts and on each selection change; avoids disk reads per tap.
+  private boolean actionModeHasFilters = false;
+  private boolean actionModeIsInFilter = false;
+  private int     actionModeSingleChatId = -1;
+
   protected abstract boolean offerToArchive();
 
   protected abstract void setFabVisibility(boolean isActionMode);
 
   protected abstract BaseConversationListAdapter getListAdapter();
+
+  protected @Nullable FilterManager getFilterManager() {
+    return null;
+  }
+
+  protected void onFilterAssignmentChanged() {}
+
+  /** Refreshes the cached filter state used by {@link #updateActionModeItems(Menu)}. */
+  private void invalidateActionModeFilterCache() {
+    FilterManager fm = getFilterManager();
+    if (fm == null) {
+      actionModeHasFilters = false;
+      actionModeIsInFilter = false;
+      actionModeSingleChatId = -1;
+      return;
+    }
+    final Set<Long> sel = getListAdapter().getBatchSelections();
+    boolean singleChat = sel.size() == 1;
+    int chatId = singleChat ? sel.iterator().next().intValue() : -1;
+    boolean isSpecial = chatId > 0 && chatId <= DcChat.DC_CHAT_ID_LAST_SPECIAL;
+    actionModeSingleChatId = chatId;
+    actionModeHasFilters   = !fm.loadCustomFilters().isEmpty();
+    actionModeIsInFilter   = singleChat && !isSpecial && fm.filterIdForChat(chatId) != null;
+  }
 
   protected void onItemClick(long chatId) {
     if (actionMode == null) {
@@ -63,6 +96,7 @@ public abstract class BaseConversationListFragment extends Fragment implements A
       if (adapter.getBatchSelections().isEmpty()) {
         actionMode.finish();
       } else {
+        invalidateActionModeFilterCache();
         updateActionModeItems(actionMode.getMenu());
         actionMode.setTitle(String.valueOf(adapter.getBatchSelections().size()));
       }
@@ -78,6 +112,7 @@ public abstract class BaseConversationListFragment extends Fragment implements A
       getListAdapter().initializeBatchMode(true);
       getListAdapter().toggleThreadInBatchSet(chatId);
       getListAdapter().notifyDataSetChanged();
+      invalidateActionModeFilterCache();
       Menu menu = actionMode.getMenu();
       if (menu != null) {
         updateActionModeItems(menu);
@@ -404,6 +439,49 @@ public abstract class BaseConversationListFragment extends Fragment implements A
         });
   }
 
+  private void handleAddToFilter() {
+    FilterManager fm = getFilterManager();
+    if (fm == null) return;
+    List<ChatFilter> filters = fm.loadCustomFilters();
+    if (filters.isEmpty()) return;
+
+    final Set<Long> addSelections = getListAdapter().getBatchSelections();
+    final int chatId = addSelections.iterator().next().intValue();
+
+    CharSequence[] names = new CharSequence[filters.size()];
+    for (int i = 0; i < filters.size(); i++) names[i] = filters.get(i).getName();
+
+    new AlertDialog.Builder(requireActivity())
+        .setTitle(R.string.filter_assign_to_folder)
+        .setItems(
+            names,
+            (dialog, which) -> {
+              fm.assignChat(chatId, filters.get(which).getId());
+              invalidateActionModeFilterCache();
+              onFilterAssignmentChanged();
+              if (actionMode != null) {
+                actionMode.finish();
+                actionMode = null;
+              }
+            })
+        .setNegativeButton(android.R.string.cancel, null)
+        .show();
+  }
+
+  private void handleRemoveFromFilter() {
+    FilterManager fm = getFilterManager();
+    if (fm == null) return;
+    final Set<Long> removeSelections = getListAdapter().getBatchSelections();
+    int chatId = removeSelections.iterator().next().intValue();
+    fm.removeChatFromFilter(chatId);
+    invalidateActionModeFilterCache();
+    onFilterAssignmentChanged();
+    if (actionMode != null) {
+      actionMode.finish();
+      actionMode = null;
+    }
+  }
+
   private void updateActionModeItems(Menu menu) {
     // We do not show action mode icons when relaying (= sharing or forwarding).
     if (!isRelayingMessageContent(requireActivity())) {
@@ -430,6 +508,23 @@ public abstract class BaseConversationListFragment extends Fragment implements A
         muteItem.setTitle(R.string.menu_mute);
       } else {
         muteItem.setTitle(R.string.menu_unmute);
+      }
+
+      // Show folder assignment items using cached state (populated in invalidateActionModeFilterCache)
+      if (getFilterManager() != null) {
+        final Set<Long> sel = getListAdapter().getBatchSelections();
+        boolean singleChat = sel.size() == 1;
+        int singleChatId   = singleChat ? sel.iterator().next().intValue() : -1;
+        boolean isSpecial  = singleChatId > 0 && singleChatId <= DcChat.DC_CHAT_ID_LAST_SPECIAL;
+        // Refresh cache if the selection changed (e.g. via select-all)
+        if (singleChatId != actionModeSingleChatId) {
+          invalidateActionModeFilterCache();
+        }
+        menu.findItem(R.id.menu_add_to_filter).setVisible(singleChat && !isSpecial && actionModeHasFilters && !actionModeIsInFilter);
+        menu.findItem(R.id.menu_remove_from_filter).setVisible(singleChat && !isSpecial && actionModeIsInFilter);
+      } else {
+        menu.findItem(R.id.menu_add_to_filter).setVisible(false);
+        menu.findItem(R.id.menu_remove_from_filter).setVisible(false);
       }
     }
   }
@@ -486,6 +581,12 @@ public abstract class BaseConversationListFragment extends Fragment implements A
       return true;
     } else if (itemId == R.id.menu_add_to_home_screen) {
       handleAddToHomeScreen();
+      return true;
+    } else if (itemId == R.id.menu_add_to_filter) {
+      handleAddToFilter();
+      return true;
+    } else if (itemId == R.id.menu_remove_from_filter) {
+      handleRemoveFromFilter();
       return true;
     }
 

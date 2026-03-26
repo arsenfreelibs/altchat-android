@@ -351,6 +351,16 @@
     <string name="source_code">Zdrojový kód</string>
     <!-- Menu item beside an app/chat that adds an icon to the system's home screen. If the user taps that icon, the app/chat is opened directly. -->
     <string name="add_to_home_screen">Pridať na domovskú obrazovku</string>
+    <!-- Chat folders / filters -->
+    <string name="filter_all">Všetky</string>
+    <string name="filter_unread">Neprečítané</string>
+    <string name="filter_add">Nový priečinok</string>
+    <string name="filter_rename">Premenovať</string>
+    <string name="filter_delete">Odstrániť priečinok</string>
+    <string name="filter_max_reached">Dosiahnutý maximálny počet 8 priečinkov. Pred vytvorením nového priečinka prosím odstráňte existujúci.</string>
+    <string name="filter_name_hint">Názov priečinka</string>
+    <string name="filter_assign_to_folder">Pridať do priečinka</string>
+    <string name="filter_remove_from_folder">Odstrániť z priečinka</string>
     <string name="donate">Prispieť</string>
     <string name="mute_for_one_hour">Stíšiť na 1 hodinu</string>
     <string name="mute_for_eight_hours">Stíšiť na 8 hodiny</string>

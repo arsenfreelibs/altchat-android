@@ -361,6 +361,16 @@
     <string name="source_code">Broncode</string>
     <!-- Menu item beside an app/chat that adds an icon to the system's home screen. If the user taps that icon, the app/chat is opened directly. -->
     <string name="add_to_home_screen">Toevoegen aan startscherm</string>
+    <!-- Chat folders / filters -->
+    <string name="filter_all">Alle</string>
+    <string name="filter_unread">Ongelezen</string>
+    <string name="filter_add">Nieuwe map</string>
+    <string name="filter_rename">Hernoemen</string>
+    <string name="filter_delete">Map verwijderen</string>
+    <string name="filter_max_reached">Maximum van 8 mappen bereikt. Verwijder een map voordat je een nieuwe aanmaakt.</string>
+    <string name="filter_name_hint">Mapnaam</string>
+    <string name="filter_assign_to_folder">Aan map toevoegen</string>
+    <string name="filter_remove_from_folder">Uit map verwijderen</string>
     <string name="donate">Doneren</string>
     <string name="donate_device_msg">❤️ Het lijkt er op dat je blij bent met Alt Chat!\n\nAls dat zo is, zouden we je vriendelijk willen vragen om een donatie, zodat Alt Chat gratis beschikbaar kan blijven.\n\n Ook al is Alt Chat gratis en opensource, de ontwikkeling ervan kost wél geld. Jouw donatie kan het verschil maken!\n\nhttps://alt.chat/donate</string>
 

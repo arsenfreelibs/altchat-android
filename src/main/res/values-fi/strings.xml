@@ -283,6 +283,16 @@
     <string name="source_code">Lähdekoodi</string>
     <!-- Menu item beside an app/chat that adds an icon to the system's home screen. If the user taps that icon, the app/chat is opened directly. -->
     <string name="add_to_home_screen">Lisää aloitusnäytölle</string>
+    <!-- Chat folders / filters -->
+    <string name="filter_all">Kaikki</string>
+    <string name="filter_unread">Lukemattomat</string>
+    <string name="filter_add">Uusi kansio</string>
+    <string name="filter_rename">Nimeä uudelleen</string>
+    <string name="filter_delete">Poista kansio</string>
+    <string name="filter_max_reached">Kansioiden enimmäismäärä (8) on saavutettu. Poista kansio ennen uuden luomista.</string>
+    <string name="filter_name_hint">Kansion nimi</string>
+    <string name="filter_assign_to_folder">Lisää kansioon</string>
+    <string name="filter_remove_from_folder">Poista kansiosta</string>
     <string name="donate">Lahjoita</string>
     <string name="mute_for_one_hour">Mykistä 1 tunniksi</string>
     <string name="mute_for_eight_hours">Mykistä 8 tunniksi</string>

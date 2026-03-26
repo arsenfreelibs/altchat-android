@@ -361,6 +361,16 @@
     <string name="source_code">Iturburu kodea</string>
     <!-- Menu item beside an app/chat that adds an icon to the system's home screen. If the user taps that icon, the app/chat is opened directly. -->
     <string name="add_to_home_screen">Gehitu hasierako pantailan</string>
+    <!-- Chat folders / filters -->
+    <string name="filter_all">Guztiak</string>
+    <string name="filter_unread">Irakurri gabe</string>
+    <string name="filter_add">Karpeta berria</string>
+    <string name="filter_rename">Izena aldatu</string>
+    <string name="filter_delete">Karpeta ezabatu</string>
+    <string name="filter_max_reached">8 karpetaren gehienezko muga iritsi da. Mesedez, ezabatu karpeta bat berri bat sortu aurretik.</string>
+    <string name="filter_name_hint">Karpetaren izena</string>
+    <string name="filter_assign_to_folder">Gehitu karpetara</string>
+    <string name="filter_remove_from_folder">Kendu karpetatik</string>
     <string name="donate">Egin dohaintza</string>
     <string name="donate_device_msg">❤️ Badirudi Alt Chat-ekin gozatzen ari zarela!\n\nMesedez, pentsatu dohaintza bat egitea Alt Chat guztiontzat doakoa izan dadin laguntzeko.\n\nAlt Chat-en erabilera doakoa eta kode irekikoa den arren, garapenak dirua balio du. Lagundu iezaguzu Alt Chat independente mantentzen eta etorkizunean are hobea egiten.\n\nhttps://alt.chat/donate</string>
 

@@ -356,6 +356,16 @@
     <string name="source_code">Kod Burim</string>
     <!-- Menu item beside an app/chat that adds an icon to the system's home screen. If the user taps that icon, the app/chat is opened directly. -->
     <string name="add_to_home_screen">Shtoje te Skena e Kreut</string>
+    <!-- Chat folders / filters -->
+    <string name="filter_all">Të gjitha</string>
+    <string name="filter_unread">Të palexuara</string>
+    <string name="filter_add">Dosje e re</string>
+    <string name="filter_rename">Riemërto</string>
+    <string name="filter_delete">Fshi dosjen</string>
+    <string name="filter_max_reached">Kufiri maksimal prej 8 dosjeve është arritur. Fshi një dosje para se të krijosh një të re.</string>
+    <string name="filter_name_hint">Emri i dosjes</string>
+    <string name="filter_assign_to_folder">Shto në dosje</string>
+    <string name="filter_remove_from_folder">Largo nga dosje</string>
     <string name="donate">Dhuroni</string>
     <string name="donate_device_msg">❤️ Duket se po ju shijon Alt Chat-i!\n\nJu lutemi, shihni mundësinë e dhurimit, si ndihmë në garantimin se Alt Chat mbetet e lirë për këdo.\n\nTeksa Alt Chat-i është falas për përdorim dhe me burim të hapët, zhvillimi kushton para. Ndihmonani ta mbajmë Alt Chat-in të pavarur dhe për ta bërë edhe më të shkëlqyer në të ardhëm.\n\nhttps://alt.chat/donate</string>
 

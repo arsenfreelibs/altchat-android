@@ -372,6 +372,16 @@
     <string name="source_code">Código fuente</string>
     <!-- Menu item beside an app/chat that adds an icon to the system's home screen. If the user taps that icon, the app/chat is opened directly. -->
     <string name="add_to_home_screen">Añadir a la pantalla principal</string>
+    <!-- Chat folders / filters -->
+    <string name="filter_all">Todos</string>
+    <string name="filter_unread">No leídos</string>
+    <string name="filter_add">Nueva carpeta</string>
+    <string name="filter_rename">Renombrar</string>
+    <string name="filter_delete">Eliminar carpeta</string>
+    <string name="filter_max_reached">Máximo de 8 carpetas alcanzado. Elimina una carpeta antes de crear una nueva.</string>
+    <string name="filter_name_hint">Nombre de carpeta</string>
+    <string name="filter_assign_to_folder">Añadir a carpeta</string>
+    <string name="filter_remove_from_folder">Eliminar de carpeta</string>
     <string name="donate">Donar</string>
     <string name="donate_device_msg">❤️ ¡Parece que disfrutas de Alt Chat!\n\nPor favor, considera donar para ayudar a garantizar que Alt Chat siga siendo gratuito para todos.\n\nAunque Alt Chat es gratuito y de código abierto, su desarrollo cuesta dinero. Ayúdanos a mantener la independencia de Alt Chat y a hacerlo aún mejor en el futuro.\n\nhttps://alt.chat/donate</string>
 

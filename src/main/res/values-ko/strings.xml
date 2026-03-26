@@ -249,6 +249,16 @@
     <string name="source_code">소스 코드</string>
     <!-- Menu item beside an app/chat that adds an icon to the system's home screen. If the user taps that icon, the app/chat is opened directly. -->
     <string name="add_to_home_screen">홈 스크린에 추가</string>
+    <!-- Chat folders / filters -->
+    <string name="filter_all">전체</string>
+    <string name="filter_unread">안 읽음</string>
+    <string name="filter_add">새 폴더</string>
+    <string name="filter_rename">이름 바꾸기</string>
+    <string name="filter_delete">폴더 삭제</string>
+    <string name="filter_max_reached">최대 8개의 폴더에 도달했습니다. 새 폴더를 만들기 전에 폴더를 삭제하세요.</string>
+    <string name="filter_name_hint">폴더 이름</string>
+    <string name="filter_assign_to_folder">폴더에 추가</string>
+    <string name="filter_remove_from_folder">폴더에서 제거</string>
     <string name="mute_for_one_hour">1시간 동안 알림 끄기</string>
     <string name="mute_for_eight_hours">8시간 동안 알림 끄기</string>
     <string name="mute_for_one_day">1일 동안 알림 끄기</string>

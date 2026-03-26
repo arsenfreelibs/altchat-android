@@ -350,6 +350,16 @@
     <string name="source_code">源代码</string>
     <!-- Menu item beside an app/chat that adds an icon to the system's home screen. If the user taps that icon, the app/chat is opened directly. -->
     <string name="add_to_home_screen">添加到主屏幕</string>
+    <!-- Chat folders / filters -->
+    <string name="filter_all">全部</string>
+    <string name="filter_unread">未读</string>
+    <string name="filter_add">新建文件夹</string>
+    <string name="filter_rename">重命名</string>
+    <string name="filter_delete">删除文件夹</string>
+    <string name="filter_max_reached">最多只能有 8 个文件夹。请先删除一个文件夹，再创建新的文件夹。</string>
+    <string name="filter_name_hint">文件夹名称</string>
+    <string name="filter_assign_to_folder">添加到文件夹</string>
+    <string name="filter_remove_from_folder">从文件夹移除</string>
     <string name="donate">捐赠</string>
     <string name="donate_device_msg">❤️ 看起来您很喜欢 Alt Chat！\n\n恳请您考虑捐款支持，让 Alt Chat 始终保持自由开放。\n\n虽然 Alt Chat 是自由且开源的，但开发仍需资金支持。请帮助我们保持 Alt Chat 的独立性，并在未来让它变得更加出色。\n\nhttps://alt.chat/donate</string>
 
