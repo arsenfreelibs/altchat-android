@@ -100,6 +100,7 @@
     <string name="cannot_save_file">نمی‌توان %1$s را ذخیره کرد.</string>
     <string name="copied_to_clipboard">در حافظه کپی شد.</string>
     <string name="chats_headline">گفتگوها</string>
+    <string name="alt_search_hint">جستجو بر اساس نام کاربری یا نام</string>
     <string name="contacts_headline">مخاطبین</string>
     <string name="email_address">نشانی رایانامه</string>
     <string name="bad_email_address">نشانی رایانامه ایراد دارد.</string>

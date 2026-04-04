@@ -96,6 +96,7 @@
     <string name="cannot_save_file">Nepodarilo sa uložiť %1$s.</string>
     <string name="copied_to_clipboard">Skopírované do schránky.</string>
     <string name="chats_headline">Chaty</string>
+    <string name="alt_search_hint">Hľadať podľa používateľského mena alebo mena</string>
     <string name="contacts_headline">Kontakty</string>
     <string name="email_address">E-mailová adresa</string>
     <string name="bad_email_address">Zlá e-mailová adresa</string>

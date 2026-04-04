@@ -81,6 +81,7 @@
     <string name="file_not_found">%1$s ei löytynyt. </string>
     <string name="copied_to_clipboard">Kopioitu leikepöydälle</string>
     <string name="chats_headline">Keskustelut</string>
+    <string name="alt_search_hint">Hae käyttäjänimellä tai nimellä</string>
     <string name="contacts_headline">Yhteystiedot</string>
     <string name="email_address">Sähköpostiosoite</string>
     <string name="bad_email_address">Virheellinen sähköpostiosoite</string>

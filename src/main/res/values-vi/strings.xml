@@ -81,6 +81,7 @@
     <string name="file_not_found">Không thể tìm thấy %1$s.</string>
     <string name="copied_to_clipboard">Đã chép vào clipboard.</string>
     <string name="chats_headline">Trò chuyện</string>
+    <string name="alt_search_hint">Tìm kiếm theo tên người dùng hoặc tên</string>
     <string name="contacts_headline">Danh bạ</string>
     <string name="email_address">Địa chỉ E-mail</string>
     <string name="bad_email_address">Địa chỉ e-mail xấu.</string>

@@ -100,6 +100,7 @@
     <string name="cannot_save_file">%1$s kaydedilemiyor.</string>
     <string name="copied_to_clipboard">Panoya kopyalandı.</string>
     <string name="chats_headline">Sohbetler</string>
+    <string name="alt_search_hint">Kullanıcı adı veya ada göre ara</string>
     <string name="contacts_headline">Kişiler</string>
     <string name="email_address">E-Posta Adresi</string>
     <string name="bad_email_address">Yanlış e-posta adresi.</string>

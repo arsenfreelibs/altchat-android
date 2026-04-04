@@ -100,6 +100,7 @@
     <string name="cannot_save_file">Impossible d\'enregistrer %1$s.</string>
     <string name="copied_to_clipboard">Copié dans le presse-papier.</string>
     <string name="chats_headline">Discussions</string>
+    <string name="alt_search_hint">Rechercher par nom d’utilisateur ou nom</string>
     <string name="contacts_headline">Contacts</string>
     <string name="email_address">Adresse de courriel</string>
     <string name="bad_email_address">Adresse de courriel incorrecte</string>

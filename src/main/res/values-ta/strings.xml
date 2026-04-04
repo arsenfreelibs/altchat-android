@@ -43,6 +43,7 @@
     <string name="error">பிழை</string>
     <string name="error_x">பிழை: %1$s</string>
     <string name="chats_headline">அரட்டைகள்</string>
+    <string name="alt_search_hint">பயனர்பெயர் முறைமை அல்லது பெயரினால் தேடு</string>
     <string name="contacts_headline">தொடர்புகள்</string>
     <string name="email_address">மின் அஞ்சல் முகவரி</string>
     <string name="bad_email_address">தவறான மின் அஞ்சல் முகவரி</string>

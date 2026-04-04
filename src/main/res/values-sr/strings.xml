@@ -88,6 +88,7 @@
     <string name="file_not_found">Не могу да нађем %1$s.</string>
     <string name="copied_to_clipboard">Копирано у клипборд.</string>
     <string name="chats_headline">Разговори</string>
+    <string name="alt_search_hint">Претражи по корисничком имену или имену</string>
     <string name="contacts_headline">Контакти</string>
     <string name="email_address">Е-адреса</string>
     <string name="bad_email_address">Лоша е-адреса.</string>

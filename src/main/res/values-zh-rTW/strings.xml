@@ -100,6 +100,7 @@
     <string name="cannot_save_file">無法儲存 %1$s。</string>
     <string name="copied_to_clipboard">已複製至剪貼簿</string>
     <string name="chats_headline">聊天</string>
+    <string name="alt_search_hint">按用戶名稱或姓名搜尋</string>
     <string name="contacts_headline">聯絡人</string>
     <string name="email_address">電子郵件位址</string>
     <string name="bad_email_address">錯誤的電子郵件位址。</string>

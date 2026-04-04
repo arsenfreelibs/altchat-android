@@ -78,6 +78,7 @@
     <string name="file_not_found">Nu a putut fi găsit %1$s.</string>
     <string name="copied_to_clipboard">Copiat în clipboard.</string>
     <string name="chats_headline">Conversații</string>
+    <string name="alt_search_hint">Caută după nume de utilizator sau nume</string>
     <string name="contacts_headline">Contacte</string>
     <string name="email_address">Adresă de e-mail</string>
     <string name="bad_email_address">Adresă de e-mail greșită.</string>

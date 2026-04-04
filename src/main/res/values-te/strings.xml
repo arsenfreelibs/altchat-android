@@ -43,6 +43,7 @@
     <string name="next">తరువాత</string>
     <string name="error">లోపం</string>
     <string name="chats_headline">చాట్లు</string>
+    <string name="alt_search_hint">వినియోగదారు పేరు లేదా పేరు ద్వారా వెతకండి</string>
     <string name="contacts_headline">కాంటాక్ట్స్</string>
     <string name="email_address">ఈమెయిల్ చిరునామా</string>
     <string name="password">పాస్వర్డ్</string>

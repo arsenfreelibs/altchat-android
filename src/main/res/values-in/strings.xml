@@ -76,6 +76,7 @@
     <string name="file_not_found">Tak bisa menemukan %1$s.</string>
     <string name="copied_to_clipboard">Sudah dikopi di papan klip.</string>
     <string name="chats_headline">Obrolan</string>
+    <string name="alt_search_hint">Cari berdasarkan nama pengguna atau nama</string>
     <string name="contacts_headline">Kontak</string>
     <string name="email_address">Alamat email</string>
     <string name="bad_email_address">Alamat surel jelek.</string>

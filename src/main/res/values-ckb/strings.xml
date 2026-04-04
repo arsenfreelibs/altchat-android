@@ -58,6 +58,7 @@
     <string name="file_not_found">%1$s نەدۆزرایەوە.</string>
     <string name="copied_to_clipboard">ڕوونووس کرا</string>
     <string name="chats_headline">چات‌ەکان</string>
+    <string name="alt_search_hint">بە ناوی بەکارەلبر یا ناو بگەڕێ</string>
     <string name="contacts_headline">بەردەنگەکان</string>
     <string name="email_address">پۆستی ئەلیکترۆنی</string>
     <string name="bad_email_address">پۆستی ئەلیکترۆنی بێکەڵک</string>

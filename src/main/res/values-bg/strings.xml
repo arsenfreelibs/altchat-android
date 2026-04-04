@@ -81,6 +81,7 @@
     <string name="file_not_found">%1$s не беше открит.</string>
     <string name="copied_to_clipboard">Копирано в клипборда.</string>
     <string name="chats_headline">Чатове</string>
+    <string name="alt_search_hint">Търсене по потребителско име или име</string>
     <string name="contacts_headline">Контакти</string>
     <string name="email_address">Адрес за електронна поща</string>
     <string name="bad_email_address">Невалиден адрес за електронна поща.</string>

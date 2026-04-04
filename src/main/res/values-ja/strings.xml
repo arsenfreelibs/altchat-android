@@ -69,6 +69,7 @@
     <string name="file_not_found">%1$sを見付けられません</string>
     <string name="copied_to_clipboard">クリップボードにコピーしました</string>
     <string name="chats_headline">チャット</string>
+    <string name="alt_search_hint">ユーザー名または名前で検索</string>
     <string name="contacts_headline">連絡先</string>
     <string name="email_address">メールアドレス</string>
     <string name="bad_email_address">メールアドレスが不正です。</string>

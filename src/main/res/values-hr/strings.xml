@@ -41,6 +41,7 @@
     <string name="file_not_found">%1$s nije pronađeno.</string>
     <string name="copied_to_clipboard">Kopirano u međuspremnik.</string>
     <string name="chats_headline">Razgovori</string>
+    <string name="alt_search_hint">Pretraži po korisničkom imenu ili imenu</string>
     <string name="contacts_headline">Kontakti</string>
     <string name="password">Lozinka</string>
     <string name="now">Sada</string>

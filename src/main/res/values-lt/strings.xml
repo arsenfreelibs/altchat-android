@@ -88,6 +88,7 @@
     <string name="cannot_save_file">Nepavyksta įrašyti %1$s.</string>
     <string name="copied_to_clipboard">Nukopijuota į iškarpinę.</string>
     <string name="chats_headline">Pokalbiai</string>
+    <string name="alt_search_hint">Ieškoti pagal naudotojo vardą arba vardą</string>
     <string name="contacts_headline">Adresatai</string>
     <string name="email_address">El. pašto adresas</string>
     <string name="bad_email_address">Blogas el. pašto adresas.</string>

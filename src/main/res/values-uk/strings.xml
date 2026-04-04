@@ -100,6 +100,7 @@
     <string name="cannot_save_file">Не можливо зберегти файл %1$s.</string>
     <string name="copied_to_clipboard">Скопійовано до буферу обміну.</string>
     <string name="chats_headline">Чати</string>
+    <string name="alt_search_hint">Пошук за іменем користувача або іменем</string>
     <string name="contacts_headline">Контактні особи</string>
     <string name="email_address">Адреса електронної пошти</string>
     <string name="bad_email_address">Неправильна адреса електронної пошти.</string>

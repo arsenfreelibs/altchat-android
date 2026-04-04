@@ -100,6 +100,7 @@
     <string name="cannot_save_file">Ezin da %1$s gorde.</string>
     <string name="copied_to_clipboard">Arbelera kopiatuta.</string>
     <string name="chats_headline">Txatak</string>
+    <string name="alt_search_hint">Bilatu erabiltzaile-izenaren edo izenaren arabera</string>
     <string name="contacts_headline">Kontaktuak</string>
     <string name="email_address">E-mail helbidea</string>
     <string name="bad_email_address">E-mail helbide okerra.</string>

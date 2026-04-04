@@ -100,6 +100,7 @@
     <string name="cannot_save_file">Ur izmir ara ad isellek %1$s.</string>
     <string name="copied_to_clipboard">Nɣel ɣer tecfawt.</string>
     <string name="chats_headline">Chats</string>
+    <string name="alt_search_hint">Nadi s isem n useqdac ne\u1e7bas isem</string>
     <string name="contacts_headline">Inermisen</string>
     <string name="email_address">Tansa imayl</string>
     <string name="bad_email_address">Yir tansa imayl</string>

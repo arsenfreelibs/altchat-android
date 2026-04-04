@@ -100,6 +100,7 @@
     <string name="cannot_save_file">Non se puido gardar %1$s.</string>
     <string name="copied_to_clipboard">Copiado ao portaretallos.</string>
     <string name="chats_headline">Conversas</string>
+    <string name="alt_search_hint">Buscar por nome de usuario ou nome</string>
     <string name="contacts_headline">Contactos</string>
     <string name="email_address">Enderezo de correo</string>
     <string name="bad_email_address">Enderezo incorrecto.</string>
