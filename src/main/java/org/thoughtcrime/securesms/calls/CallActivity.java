@@ -85,6 +85,11 @@ public class CallActivity extends WebViewActivity implements DcEventCenter.DcEve
   private Runnable timerRunnable;
   private int callSecsElapsed = 0;
 
+  @Override
+  protected boolean immersiveMode() {
+    return true;
+  }
+
   private void hideNavigationBar() {
     getWindow().getDecorView().setSystemUiVisibility(
       View.SYSTEM_UI_FLAG_LAYOUT_STABLE
