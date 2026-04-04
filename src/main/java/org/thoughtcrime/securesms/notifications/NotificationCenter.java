@@ -25,8 +25,10 @@ import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.app.Person;
 import androidx.core.app.RemoteInput;
 import androidx.core.app.TaskStackBuilder;
+import androidx.core.graphics.drawable.IconCompat;
 
 import com.b44t.messenger.DcChat;
 import com.b44t.messenger.DcContact;
@@ -44,6 +46,7 @@ import org.thoughtcrime.securesms.contacts.avatars.ContactPhoto;
 import org.thoughtcrime.securesms.mms.GlideApp;
 import org.thoughtcrime.securesms.preferences.widgets.NotificationPrivacyPreference;
 import org.thoughtcrime.securesms.recipients.Recipient;
+import org.thoughtcrime.securesms.service.CallForegroundService;
 import org.thoughtcrime.securesms.util.BitmapUtil;
 import org.thoughtcrime.securesms.util.IntentUtils;
 import org.thoughtcrime.securesms.util.JsonUtils;
@@ -222,8 +225,8 @@ public class NotificationCenter {
     public static final int ID_MSG_SUMMARY = 2;
     public static final int ID_GENERIC     = 3;
     public static final int ID_FETCH       = 4;
+    public static final int ID_CALL        = 5;
     public static final int ID_MSG_OFFSET  = 0; // msgId is added - as msgId start at 10, there are no conflicts with lower numbers
-
 
     // Notification channels
     // --------------------------------------------------------------------------------------------
@@ -428,7 +431,13 @@ public class NotificationCenter {
     // --------------------------------------------------------------------------------------------
 
     public void notifyCall(int accId, int callId, String payload) {
-      Util.runOnAnyBackgroundThread(() -> {
+      CallForegroundService.start(context, accId, callId, payload);
+    }
+
+    @WorkerThread
+    @Nullable
+    public Notification buildCallNotification(int accId, int callId, String payload) {
+      try {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         DcContext dcContext = context.getDcAccounts().getAccount(accId);
         boolean hasVideo;
@@ -445,46 +454,43 @@ public class NotificationCenter {
         String notificationChannel = getCallNotificationChannel(notificationManager, chatData, name);
 
         PendingIntent declineCallIntent = getDeclineCallIntent(chatData, callId);
-        PendingIntent openCallIntent = getOpenCallIntent(chatData, callId, payload, false, hasVideo);
+        PendingIntent answerCallIntent  = getOpenCallIntent(chatData, callId, payload, true, hasVideo);
+        PendingIntent openCallIntent    = getOpenCallIntent(chatData, callId, payload, false, hasVideo);
+
+        Bitmap bitmap = getAvatar(dcChat);
+        Person.Builder personBuilder = new Person.Builder()
+            .setName(name)
+            .setImportant(true);
+        if (bitmap != null) {
+          personBuilder.setIcon(IconCompat.createWithBitmap(bitmap));
+        }
+        Person caller = personBuilder.build();
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, notificationChannel)
           .setSmallIcon(R.drawable.icon_notification)
           .setColor(context.getResources().getColor(R.color.delta_primary))
-          .setPriority(NotificationCompat.PRIORITY_HIGH)
+          .setPriority(NotificationCompat.PRIORITY_MAX)
           .setCategory(NotificationCompat.CATEGORY_CALL)
           .setOngoing(true)
           .setOnlyAlertOnce(false)
           .setTicker(name)
           .setContentTitle(name)
+          .setContentText(context.getString(R.string.call_status_incoming))
           .setFullScreenIntent(openCallIntent, true)
           .setContentIntent(openCallIntent)
-          .setContentText("Incoming Call");
+          .setStyle(NotificationCompat.CallStyle.forIncomingCall(caller, declineCallIntent, answerCallIntent));
 
-        builder.addAction(
-          new NotificationCompat.Action.Builder(
-            R.drawable.baseline_call_end_24,
-            context.getString(R.string.end_call),
-            declineCallIntent).build());
-
-        builder.addAction(
-          new NotificationCompat.Action.Builder(
-            R.drawable.baseline_call_24,
-            context.getString(R.string.answer_call),
-            getOpenCallIntent(chatData, callId, payload, true, hasVideo)).build());
-
-        Bitmap bitmap = getAvatar(dcChat);
         if (bitmap != null) {
           builder.setLargeIcon(bitmap);
         }
 
         Notification notif = builder.build();
         notif.flags = notif.flags | Notification.FLAG_INSISTENT;
-        try {
-          notificationManager.notify("call-" + accId, callId, notif);
-        } catch (Exception e) {
-          Log.e(TAG, "cannot add notification", e);
-        }
-      });
+        return notif;
+      } catch (Exception e) {
+        Log.e(TAG, "buildCallNotification() failed", e);
+        return null;
+      }
     }
 
     public void notifyMessage(int accountId, int chatId, int msgId) {
@@ -844,9 +850,7 @@ public class NotificationCenter {
 
     public void removeCallNotification(int accountId, int callId) {
         try {
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-            String tag = "call-" + accountId;
-            notificationManager.cancel(tag, callId);
+            CallForegroundService.stop(context);
         } catch (Exception e) { Log.w(TAG, e); }
     }
 
