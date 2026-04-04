@@ -99,6 +99,7 @@
     <!-- the placeholder will be replaced by the name of a file -->
     <string name="cannot_save_file">Kan inte spara %1$s.</string>
     <string name="copied_to_clipboard">Kopierad till urklipp.</string>
+    <string name="chats_headline">Chattar</string>
     <string name="contacts_headline">Kontakter</string>
     <string name="email_address">E-postadress</string>
     <string name="bad_email_address">Felaktig e-postadress.</string>

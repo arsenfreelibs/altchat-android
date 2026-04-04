@@ -99,6 +99,7 @@
     <!-- the placeholder will be replaced by the name of a file -->
     <string name="cannot_save_file">„%1$s“ faili salvestamine ei õnnestunud.</string>
     <string name="copied_to_clipboard">Kopeeritud lõikelauale.</string>
+    <string name="chats_headline">Vestlused</string>
     <string name="contacts_headline">Kontaktid</string>
     <string name="email_address">E-posti aadressid</string>
     <string name="bad_email_address">Vigane e-posti aadress.</string>

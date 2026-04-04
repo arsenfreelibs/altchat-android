@@ -99,6 +99,7 @@
     <!-- the placeholder will be replaced by the name of a file -->
     <string name="cannot_save_file">Nem lehet menteni a következőt: %1$s.</string>
     <string name="copied_to_clipboard">Vágólapra másolva.</string>
+    <string name="chats_headline">Csevegések</string>
     <string name="contacts_headline">Névjegyek</string>
     <string name="email_address">E-mail-cím</string>
     <string name="bad_email_address">Hibás e-mail-cím.</string>

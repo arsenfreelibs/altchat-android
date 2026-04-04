@@ -87,6 +87,7 @@
     <string name="no_browser_installed">Прегледач није инсталиран.</string>
     <string name="file_not_found">Не могу да нађем %1$s.</string>
     <string name="copied_to_clipboard">Копирано у клипборд.</string>
+    <string name="chats_headline">Разговори</string>
     <string name="contacts_headline">Контакти</string>
     <string name="email_address">Е-адреса</string>
     <string name="bad_email_address">Лоша е-адреса.</string>

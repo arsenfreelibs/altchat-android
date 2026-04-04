@@ -95,6 +95,7 @@
     <!-- the placeholder will be replaced by the name of a file -->
     <string name="cannot_save_file">Nepodarilo sa uložiť %1$s.</string>
     <string name="copied_to_clipboard">Skopírované do schránky.</string>
+    <string name="chats_headline">Chaty</string>
     <string name="contacts_headline">Kontakty</string>
     <string name="email_address">E-mailová adresa</string>
     <string name="bad_email_address">Zlá e-mailová adresa</string>

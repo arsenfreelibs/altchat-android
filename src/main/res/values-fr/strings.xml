@@ -99,6 +99,7 @@
     <!-- the placeholder will be replaced by the name of a file -->
     <string name="cannot_save_file">Impossible d\'enregistrer %1$s.</string>
     <string name="copied_to_clipboard">Copié dans le presse-papier.</string>
+    <string name="chats_headline">Discussions</string>
     <string name="contacts_headline">Contacts</string>
     <string name="email_address">Adresse de courriel</string>
     <string name="bad_email_address">Adresse de courriel incorrecte</string>

@@ -99,6 +99,7 @@
     <!-- the placeholder will be replaced by the name of a file -->
     <string name="cannot_save_file">“%1$s” kan niet worden opgeslagen.</string>
     <string name="copied_to_clipboard">Gekopieerd naar het klembord.</string>
+    <string name="chats_headline">Chats</string>
     <string name="contacts_headline">Contactpersonen</string>
     <string name="email_address">E-mailadres</string>
     <string name="bad_email_address">Het e-mailadres is ongeldig.</string>

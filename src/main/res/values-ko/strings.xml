@@ -71,6 +71,7 @@
     <string name="no_browser_installed">설치된 브라우저가 없습니다.</string>
     <string name="file_not_found">%1$s 찾을 수 없음.</string>
     <string name="copied_to_clipboard">클립보드에 복사했습니다.</string>
+    <string name="chats_headline">연라</string>
     <string name="contacts_headline">연락처</string>
     <string name="email_address">이메일 주소</string>
     <string name="bad_email_address">잘못된 이메일 주소</string>

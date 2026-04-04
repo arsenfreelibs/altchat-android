@@ -97,6 +97,7 @@
     <!-- the placeholder will be replaced by the name of a file -->
     <string name="cannot_save_file">نتره %1$s ن زفت کونه.</string>
     <string name="copied_to_clipboard">من ویرگه لف گیری وابی.</string>
+    <string name="chats_headline">چاتەکان</string>
     <string name="contacts_headline">هومدنگووݩ</string>
     <string name="email_address">نشۊوی ایمیل</string>
     <string name="bad_email_address">نشۊوی ایمیل موشکل داره.</string>

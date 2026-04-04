@@ -40,6 +40,7 @@
     <string name="error_x">Greška: %1$s</string>
     <string name="file_not_found">%1$s nije pronađeno.</string>
     <string name="copied_to_clipboard">Kopirano u međuspremnik.</string>
+    <string name="chats_headline">Razgovori</string>
     <string name="contacts_headline">Kontakti</string>
     <string name="password">Lozinka</string>
     <string name="now">Sada</string>

@@ -71,6 +71,7 @@
     <string name="no_browser_installed">Δεν υπάρχει εγκατεστημένος φυλλομετρητής</string>
     <string name="file_not_found">Αδυναμία Εύρεσης %1$s.</string>
     <string name="copied_to_clipboard">Αντιγράφηκε στο πρόχειρο</string>
+    <string name="chats_headline">Συνομιλίες</string>
     <string name="contacts_headline">Επαφές</string>
     <string name="email_address">Διεύθυνση E-mail</string>
     <string name="bad_email_address">Κακή διεύθυνση e-mail.</string>

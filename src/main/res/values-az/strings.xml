@@ -45,6 +45,7 @@
     <string name="no_browser_installed">Heç bir brauzer quraşdırılıb.</string>
     <string name="file_not_found">Tapa bilmədim %1$s.</string>
     <string name="copied_to_clipboard">Panoya kopyalandı.</string>
+    <string name="chats_headline">Söhbətlər</string>
     <string name="contacts_headline">Kontaktlar</string>
     <string name="email_address">Email ünvanı</string>
     <string name="bad_email_address">Səhv e-mail ünvanı.</string>

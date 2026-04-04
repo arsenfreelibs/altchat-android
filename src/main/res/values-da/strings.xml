@@ -65,6 +65,7 @@
     <string name="no_browser_installed">Ingen browser installeret.</string>
     <string name="file_not_found">Kunne ikke finde %1$s.</string>
     <string name="copied_to_clipboard">Kopieret til udklipsholder</string>
+    <string name="chats_headline">Chats</string>
     <string name="contacts_headline">Kontakter</string>
     <string name="email_address">E-mailadresse</string>
     <string name="bad_email_address">Ugyldig e-mailadresse.</string>

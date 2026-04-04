@@ -39,6 +39,7 @@
     <string name="error">خطأ</string>
     <string name="error_x">خطأ: %1$s</string>
     <string name="copied_to_clipboard">تم نسخه إلى الحافظة.</string>
+    <string name="chats_headline">محادثات</string>
     <string name="contacts_headline">جهات الإتصا</string>
     <string name="email_address">عنوان البريد الإلكتروني</string>
     <string name="password">الكلمة السرية</string>

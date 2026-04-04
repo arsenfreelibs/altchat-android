@@ -99,6 +99,7 @@
     <!-- the placeholder will be replaced by the name of a file -->
     <string name="cannot_save_file">%1$s kaydedilemiyor.</string>
     <string name="copied_to_clipboard">Panoya kopyalandı.</string>
+    <string name="chats_headline">Sohbetler</string>
     <string name="contacts_headline">Kişiler</string>
     <string name="email_address">E-Posta Adresi</string>
     <string name="bad_email_address">Yanlış e-posta adresi.</string>

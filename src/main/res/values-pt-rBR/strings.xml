@@ -83,6 +83,7 @@
     <string name="no_browser_installed">Nenhum navegador instalado.</string>
     <string name="file_not_found">Não foi possível encontrar %1$s.</string>
     <string name="copied_to_clipboard">Salvo na área de transferência.</string>
+    <string name="chats_headline">Conversas</string>
     <string name="contacts_headline">Contatos</string>
     <string name="email_address">Endereço de email</string>
     <string name="bad_email_address">Email inválido.</string>

@@ -55,6 +55,7 @@
     <string name="no_browser_installed">Non b\'at perunu navigadore/esploradore (browser) instaladu.</string>
     <string name="file_not_found">%1$s no agatadu.</string>
     <string name="copied_to_clipboard">Copiadu in punta de billete.</string>
+    <string name="chats_headline">Chats</string>
     <string name="contacts_headline">Cuntatos</string>
     <string name="email_address">Indiritzu de posta eletrònica</string>
     <string name="bad_email_address">Indiritzu non vàlidu.</string>

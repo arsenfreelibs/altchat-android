@@ -99,6 +99,7 @@
     <!-- the placeholder will be replaced by the name of a file -->
     <string name="cannot_save_file">Невозможно сохранить %1$s.</string>
     <string name="copied_to_clipboard">Скопировано в буфер обмена.</string>
+    <string name="chats_headline">Чаты</string>
     <string name="contacts_headline">Контакты</string>
     <string name="email_address">Адрес электронной почты</string>
     <string name="bad_email_address">Неправильный адрес электронной почты.</string>

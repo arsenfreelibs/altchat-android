@@ -99,6 +99,7 @@
     <!-- the placeholder will be replaced by the name of a file -->
     <string name="cannot_save_file">No es pot desar %1$s.</string>
     <string name="copied_to_clipboard">Copiat al porta-retalls.</string>
+    <string name="chats_headline">Xats</string>
     <string name="contacts_headline">Contactes</string>
     <string name="email_address">Adreça de correu electrònic</string>
     <string name="bad_email_address">Adreça de correu electrònic errònia.</string>

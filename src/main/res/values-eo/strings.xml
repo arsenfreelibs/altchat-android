@@ -93,6 +93,7 @@
     <!-- the placeholder will be replaced by the name of a file -->
     <string name="cannot_save_file">Ne eblas konservi la dosieron %1$s.</string>
     <string name="copied_to_clipboard">Kopiita al tondujo</string>
+    <string name="chats_headline">Babiladoj</string>
     <string name="contacts_headline">Kontaktoj</string>
     <string name="email_address">Retadreso</string>
     <string name="bad_email_address">Malbona retadreso.</string>
