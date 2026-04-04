@@ -67,6 +67,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.WindowCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.media3.session.MediaController;
@@ -583,6 +584,20 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     }
 
     super.onPrepareOptionsMenu(menu);
+
+    if (DynamicTheme.isDarkTheme(this)) {
+      ActionBar supportActionBar = getSupportActionBar();
+      if (supportActionBar != null) {
+        Toolbar parent = (Toolbar) supportActionBar.getCustomView().getParent();
+        android.graphics.drawable.Drawable overflowIcon = parent.getOverflowIcon();
+        if (overflowIcon != null) {
+          overflowIcon = DrawableCompat.wrap(overflowIcon).mutate();
+          DrawableCompat.setTint(overflowIcon, ContextCompat.getColor(this, R.color.delta_primary));
+          parent.setOverflowIcon(overflowIcon);
+        }
+      }
+    }
+
     return true;
   }
 

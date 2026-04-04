@@ -33,6 +33,7 @@
         android:id="@+id/menu_start_call"
         android:title="@string/start_call"
         app:showAsAction="always"
+        app:iconTint="?attr/menu_icon_tint"
         android:icon="@drawable/baseline_call_24">
         <menu>
             <item
@@ -52,6 +53,7 @@
         android:id="@+id/menu_all_media"
         android:title="@string/apps_and_media"
         android:icon="@drawable/ic_apps_24"
+        app:iconTint="?attr/menu_icon_tint"
         app:showAsAction="always" />
 
     <item
