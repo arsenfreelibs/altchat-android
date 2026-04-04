@@ -409,7 +409,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     } else {
       boolean multiProfile = DcHelper.getAccounts(this).getAll().length > 1;
       String defText =
-          multiProfile ? DcHelper.getContext(this).getName() : getString(R.string.app_name);
+          multiProfile ? DcHelper.getContext(this).getName() : getString(R.string.chats_headline);
       title.setText(DcHelper.getConnectivitySummary(this, defText));
       // refreshTitle is called by ConversationListFragment when connectivity changes so update
       // connectivity dot here
