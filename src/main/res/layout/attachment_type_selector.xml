@@ -202,12 +202,14 @@
 
             </LinearLayout>
 
+            <!-- webxdc/Apps button hidden, restore visibility to re-enable -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <org.thoughtcrime.securesms.components.CircleColorImageView
                     android:id="@+id/webxdc_button"
@@ -215,18 +217,17 @@
                     android:layout_height="53dp"
                     android:src="@drawable/ic_apps_24"
                     android:scaleType="center"
-                    android:contentDescription="@string/webxdc_app"
-                    app:circleColor="@color/apps_icon" />
+                    android:contentDescription="@string/webxdc_apps"
+                    app:circleColor="@color/document_icon" />
 
                 <TextView
                     android:layout_marginTop="10dp"
+                    style="@style/AttachmentTypeLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/AttachmentTypeLabel"
-                    android:text="@string/webxdc_app" />
+                    android:text="@string/webxdc_apps" />
 
             </LinearLayout>
-
 
         </LinearLayout>
 
