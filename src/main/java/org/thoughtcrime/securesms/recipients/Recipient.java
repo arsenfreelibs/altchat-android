@@ -18,12 +18,20 @@
 package org.thoughtcrime.securesms.recipients;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.TextUtils;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
 import chat.delta.rpc.types.VcardContact;
 import com.b44t.messenger.DcChat;
 import com.b44t.messenger.DcContact;
@@ -33,6 +41,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.WeakHashMap;
 import org.thoughtcrime.securesms.connect.DcHelper;
+import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.contacts.avatars.ContactPhoto;
 import org.thoughtcrime.securesms.contacts.avatars.GeneratedContactPhoto;
 import org.thoughtcrime.securesms.contacts.avatars.GroupRecordContactPhoto;
@@ -175,6 +184,14 @@ public class Recipient {
     return dcChat != null && dcChat.isMultiUser();
   }
 
+  public boolean isSelfTalk() {
+    return dcChat != null && dcChat.isSelfTalk();
+  }
+
+  public boolean isDeviceTalk() {
+    return dcChat != null && dcChat.isDeviceTalk();
+  }
+
   public synchronized void addListener(RecipientModifiedListener listener) {
     listeners.add(listener);
   }
@@ -205,7 +222,37 @@ public class Recipient {
 
   public synchronized @NonNull Drawable getFallbackAvatarDrawable(
       Context context, boolean roundShape) {
+    if (dcChat != null && dcChat.isSelfTalk()) {
+      int color = ContextCompat.getColor(context, R.color.delta_primary);
+      return buildCircleIconDrawable(context, R.drawable.baseline_bookmark_24, color);
+    }
+    if (dcChat != null && dcChat.isDeviceTalk()) {
+      int color = ContextCompat.getColor(context, R.color.delta_primary);
+      return buildCircleIconDrawable(context, R.drawable.ic_launcher_fg_scaled, color, 0.01f);
+    }
     return getFallbackContactPhoto().asDrawable(context, getFallbackAvatarColor(), roundShape);
+  }
+
+  private Drawable buildCircleIconDrawable(Context context, @DrawableRes int iconRes, int bgColor) {
+    return buildCircleIconDrawable(context, iconRes, bgColor, 0.25f);
+  }
+
+  private Drawable buildCircleIconDrawable(Context context, @DrawableRes int iconRes, int bgColor, float paddingFraction) {
+    int size = context.getResources().getDimensionPixelSize(R.dimen.contact_photo_target_size);
+    Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+    Canvas canvas = new Canvas(bitmap);
+    Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    paint.setColor(bgColor);
+    canvas.drawCircle(size / 2f, size / 2f, size / 2f, paint);
+    Drawable icon = AppCompatResources.getDrawable(context, iconRes);
+    if (icon != null) {
+      icon = icon.mutate();
+      int padding = Math.round(size * paddingFraction);
+      icon.setBounds(padding, padding, size - padding, size - padding);
+      icon.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+      icon.draw(canvas);
+    }
+    return new BitmapDrawable(context.getResources(), bitmap);
   }
 
   public synchronized @NonNull GeneratedContactPhoto getFallbackContactPhoto() {
@@ -216,6 +263,9 @@ public class Recipient {
   }
 
   public synchronized @Nullable ContactPhoto getContactPhoto(Context context) {
+    if (dcChat != null && (dcChat.isSelfTalk() || dcChat.isDeviceTalk())) {
+      return null;
+    }
     LocalFileContactPhoto contactPhoto = null;
     if (dcChat != null) {
       contactPhoto = new GroupRecordContactPhoto(context, address, dcChat);
