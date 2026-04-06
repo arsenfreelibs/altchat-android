@@ -244,6 +244,10 @@ public class AudioView extends FrameLayout {
     return msgId;
   }
 
+  public void setPlayIconTint(int color) {
+    playPauseButton.setColorFilter(color, android.graphics.PorterDuff.Mode.SRC_IN);
+  }
+
   public Uri getAudioUri() {
     return audioUri;
   }

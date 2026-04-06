@@ -5,7 +5,8 @@
         android:id="@+id/audio_widget_container"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -24,6 +25,7 @@
                 android:background="@drawable/ic_circle_fill_white_48dp"
                 android:backgroundTint="@color/audio_icon"
                 android:src="@drawable/play_icon"
+                android:tint="@color/audio_play_icon_tint"
                 android:scaleType="centerInside"
                 android:contentDescription="@string/menu_play" />
 
@@ -49,7 +51,6 @@
                         android:id="@+id/timestamp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@color/audio_icon"

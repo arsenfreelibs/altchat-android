@@ -18,6 +18,7 @@ package org.thoughtcrime.securesms;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -496,6 +497,11 @@ public class ConversationItem extends BaseConversationItem
       audioViewStub.get().setPlaybackViewModel(playbackViewModel);
       audioViewStub.get().setOnActionListener(audioPlayPauseListener);
       audioViewStub.get().setAudio(new AudioSlide(context, messageRecord));
+      boolean isNightMode = (context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+      if (isNightMode) {
+        int bubbleColor = messageRecord.isOutgoing() ? outgoingBubbleColor : incomingBubbleColor;
+        audioViewStub.get().setPlayIconTint(bubbleColor);
+      }
       audioViewStub.get().setOnClickListener(passthroughClickListener);
       audioViewStub.get().setOnLongClickListener(passthroughClickListener);
       audioViewStub.get().setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);

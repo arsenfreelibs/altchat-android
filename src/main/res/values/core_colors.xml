@@ -6,8 +6,9 @@
     <color name="core_ultramarine">#2c6bed</color>
     <color name="core_grey_25">#b9b9b9</color>
 
-    <color name="audio_icon">#f68751</color>
-    <color name="audio_icon_text">#ed824e</color>
+    <color name="audio_icon">#10B981</color>
+    <color name="audio_icon_text">#10B981</color>
+    <color name="audio_play_icon_tint">#FFFFFF</color>
     <color name="document_icon">#34a0f4</color>
     <color name="document_icon_text">#34a0f4</color>
     <color name="contact_icon">#608496</color>

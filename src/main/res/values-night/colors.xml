@@ -11,4 +11,8 @@
     <color name="dummy_avatar_color">#808080</color>
 
     <color name="delete_account_item_bg">#222222</color>
+
+    <color name="audio_icon">#FFFFFF</color>
+    <color name="audio_icon_text">#FFFFFF</color>
+    <color name="audio_play_icon_tint">#10B981</color>
 </resources>
