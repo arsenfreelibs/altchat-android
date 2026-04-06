@@ -43,8 +43,18 @@ public class GeneratedContactPhoto implements FallbackContactPhoto {
   }
 
   private String getCharacter(String name) {
-    String cleanedName = PATTERN.matcher(name).replaceFirst("");
+    String[] parts = name.trim().split("\\s+");
+    String first = parts.length > 0 ? PATTERN.matcher(parts[0]).replaceAll("") : "";
+    String second = parts.length > 1 ? PATTERN.matcher(parts[parts.length - 1]).replaceAll("") : "";
 
+    if (!first.isEmpty() && !second.isEmpty()) {
+      return new StringBuilder()
+          .appendCodePoint(first.codePointAt(0))
+          .appendCodePoint(second.codePointAt(0))
+          .toString();
+    }
+
+    String cleanedName = PATTERN.matcher(name).replaceFirst("");
     if (cleanedName.isEmpty()) {
       return "#";
     } else {
