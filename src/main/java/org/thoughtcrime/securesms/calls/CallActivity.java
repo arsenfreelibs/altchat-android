@@ -15,6 +15,9 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.media.AudioDeviceInfo;
 import android.media.AudioManager;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.view.WindowManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -81,6 +84,9 @@ public class CallActivity extends WebViewActivity implements DcEventCenter.DcEve
   private ImageButton btnAnswer, btnSpeaker, btnMic, btnCamera;
   private AnimatorSet pulseAnimSet;
   private boolean speakerEnabled = false;
+  private Ringtone ringtone;
+  private boolean isIncomingRinging;
+  private Runnable ringtoneRepeater;
   private final Handler timerHandler = new Handler(Looper.getMainLooper());
   private Runnable timerRunnable;
   private int callSecsElapsed = 0;
@@ -129,6 +135,16 @@ public class CallActivity extends WebViewActivity implements DcEventCenter.DcEve
   @SuppressLint("SetJavaScriptEnabled")
   @Override
   protected void onCreate(Bundle state, boolean ready) {
+    // Wake the screen and show over the lock screen for incoming calls.
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+      setShowWhenLocked(true);
+      setTurnScreenOn(true);
+    } else {
+      getWindow().addFlags(
+          WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+          | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+          | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
     super.onCreate(state, ready);
     if (getSupportActionBar() != null) getSupportActionBar().hide();
     getWindow().setStatusBarColor(Color.TRANSPARENT);
@@ -156,13 +172,16 @@ public class CallActivity extends WebViewActivity implements DcEventCenter.DcEve
       webView.evaluateJavascript("window.__nativeToggleMic&&window.__nativeToggleMic()", null));
     btnCamera.setOnClickListener(v ->
       webView.evaluateJavascript("window.__nativeToggleVideo&&window.__nativeToggleVideo()", null));
-    btnAnswer.setOnClickListener(v ->
-      webView.evaluateJavascript("window.__nativeAcceptCall&&window.__nativeAcceptCall()", null));
+    btnAnswer.setOnClickListener(v -> {
+      stopRinging();
+      webView.evaluateJavascript("window.__nativeAcceptCall&&window.__nativeAcceptCall()", null);
+    });
 
     Bundle bundle = getIntent().getExtras();
     if (bundle == null) { finish(); return; }
     hasVideo = bundle.getBoolean(EXTRA_HAS_VIDEO, true);
     String hash = bundle.getString(EXTRA_HASH, "");
+    isIncomingRinging = hash.startsWith("#offerIncomingCall=");
     String query = hasVideo? "" : "?noOutgoingVideoInitially";
     accId = bundle.getInt(EXTRA_ACCOUNT_ID, -1);
     chatId = bundle.getInt(EXTRA_CHAT_ID, 0);
@@ -172,9 +191,32 @@ public class CallActivity extends WebViewActivity implements DcEventCenter.DcEve
 
     startPulseAnimation();
     AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-    if (am != null) am.setMode(AudioManager.MODE_IN_COMMUNICATION);
+    if (!isIncomingRinging && am != null) am.setMode(AudioManager.MODE_IN_COMMUNICATION);
 
     DcHelper.getNotificationCenter(this).removeCallNotification(accId, callId);
+
+    if (isIncomingRinging) {
+      Uri ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+      ringtone = RingtoneManager.getRingtone(this, ringtoneUri);
+      if (ringtone != null) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+          ringtone.setLooping(true);
+          ringtone.play();
+        } else {
+          // setLooping() not available before API 28 — repeat manually.
+          ringtoneRepeater = new Runnable() {
+            @Override public void run() {
+              if (ringtone != null && isIncomingRinging) {
+                ringtone.play();
+                long durationMs = 3000; // fallback repeat interval
+                timerHandler.postDelayed(this, durationMs);
+              }
+            }
+          };
+          ringtoneRepeater.run();
+        }
+      }
+    }
 
     WebSettings webSettings = webView.getSettings();
     webSettings.setJavaScriptEnabled(true);
@@ -240,8 +282,25 @@ public class CallActivity extends WebViewActivity implements DcEventCenter.DcEve
     Permissions.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
   }
 
+  private void stopRinging() {
+    if (ringtoneRepeater != null) {
+      timerHandler.removeCallbacks(ringtoneRepeater);
+      ringtoneRepeater = null;
+    }
+    if (ringtone != null) {
+      ringtone.stop();
+      ringtone = null;
+    }
+    if (isIncomingRinging) {
+      isIncomingRinging = false;
+      AudioManager ringAm = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+      if (ringAm != null) ringAm.setMode(AudioManager.MODE_IN_COMMUNICATION);
+    }
+  }
+
   @Override
   protected void onDestroy() {
+    stopRinging();
     AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
     if (am != null) {
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
