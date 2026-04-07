@@ -17,7 +17,7 @@ import org.thoughtcrime.securesms.notifications.NotificationCenter;
 import org.thoughtcrime.securesms.util.Util;
 
 /**
- * Foreground service (dataSync) that keeps the process alive during an incoming call
+ * Foreground service (phoneCall) that keeps the process alive during an incoming call
  * so Android does not kill the app.
  *
  * Lifecycle:
@@ -57,15 +57,20 @@ public class CallForegroundService extends Service {
     public void onCreate() {
         super.onCreate();
         // Must call startForeground within 5 seconds.
-        // Use a silent dataSync notification just to satisfy the FGS requirement.
-        // The visible CallStyle notification is posted separately below.
+        // Use a silent placeholder to satisfy the FGS rule immediately; the real
+        // CallStyle notification is posted in onStartCommand() on a background thread.
         Notification silent = new NotificationCompat.Builder(this, NotificationCenter.CH_GENERIC)
                 .setContentTitle(getString(R.string.call_status_incoming))
                 .setSmallIcon(R.drawable.icon_notification)
                 .setSilent(true)
                 .setOngoing(true)
                 .build();
-        startForeground(NotificationCenter.ID_CALL, silent);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            startForeground(NotificationCenter.ID_CALL, silent,
+                    android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_PHONE_CALL);
+        } else {
+            startForeground(NotificationCenter.ID_CALL, silent);
+        }
     }
 
     @Override
@@ -84,7 +89,16 @@ public class CallForegroundService extends Service {
                     .buildCallNotification(accountId, callId, payload);
             if (notification != null) {
                 try {
-                    startForeground(NotificationCenter.ID_CALL, notification);
+                    // stopForeground removes the silent placeholder; startForeground then
+                    // re-promotes with a fresh notification — the OS treats this as a new post,
+                    // firing the full-screen intent (wakes screen) and the ringtone (FLAG_INSISTENT).
+                    stopForeground(true);
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                        startForeground(NotificationCenter.ID_CALL, notification,
+                                android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_PHONE_CALL);
+                    } else {
+                        startForeground(NotificationCenter.ID_CALL, notification);
+                    }
                 } catch (Exception e) {
                     Log.e(TAG, "Failed to update call notification", e);
                 }

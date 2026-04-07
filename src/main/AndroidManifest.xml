@@ -41,6 +41,8 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL" />
+    <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
 
     <!-- force compiling emojipicker on sdk<21; runtime checks are required then -->
     <uses-sdk tools:overrideLibrary="androidx.emoji2.emojipicker"/>
@@ -365,6 +367,8 @@
     <activity android:name=".calls.CallActivity"
               android:label=""
               android:theme="@style/TextSecure.LightTheme"
+              android:showWhenLocked="true"
+              android:turnScreenOn="true"
               android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize|uiMode">
     </activity>
 
@@ -391,7 +395,16 @@
 
     <service
         android:name=".service.CallForegroundService"
-        android:foregroundServiceType="dataSync" />
+        android:foregroundServiceType="phoneCall" />
+
+    <service
+        android:name=".calls.AltChatConnectionService"
+        android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE"
+        android:exported="true">
+        <intent-filter>
+            <action android:name="android.telecom.ConnectionService" />
+        </intent-filter>
+    </service>
 
     <service
         android:name=".geolocation.LocationBackgroundService"

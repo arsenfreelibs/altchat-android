@@ -27,6 +27,7 @@ import com.b44t.messenger.DcEventChannel;
 import com.b44t.messenger.DcEventEmitter;
 import com.b44t.messenger.FFITransport;
 
+import org.thoughtcrime.securesms.calls.TelecomHelper;
 import org.thoughtcrime.securesms.connect.AccountManager;
 import org.thoughtcrime.securesms.connect.DcEventCenter;
 import org.thoughtcrime.securesms.connect.DcHelper;
@@ -236,6 +237,7 @@ public class ApplicationContext extends MultiDexApplication {
           }
           dcContext = dcAccounts.getSelectedAccount();
           notificationCenter = new NotificationCenter(this);
+          TelecomHelper.getInstance(this).registerPhoneAccount();
           dcLocationManager = new DcLocationManager(this, dcContext);
 
           isInitialized = true;
@@ -246,6 +248,7 @@ public class ApplicationContext extends MultiDexApplication {
           DcHelper.setStockTranslations(this);
 
           dcAccounts.startIo();
+          KeepAliveService.maybeStartSelf(this);
         } catch (Exception e) {
           Log.e(TAG, "Fatal error during DcAccounts initialization", e);
           // Mark as initialized even on error to avoid deadlock
