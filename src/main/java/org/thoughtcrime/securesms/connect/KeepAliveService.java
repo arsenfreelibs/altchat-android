@@ -53,7 +53,13 @@ public class KeepAliveService extends Service {
     // set self as foreground
     try {
       stopForeground(true);
-      startForeground(NotificationCenter.ID_PERMANENT, createNotification());
+      Notification notification = createNotification();
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        startForeground(NotificationCenter.ID_PERMANENT, notification,
+            android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
+      } else {
+        startForeground(NotificationCenter.ID_PERMANENT, notification);
+      }
     } catch (Exception e) {
       Log.i(TAG, "Error in onCreate()", e);
     }
@@ -82,6 +88,7 @@ public class KeepAliveService extends Service {
 
   @Override
   public void onTimeout(int startId, int fgsType) {
+    startSelf(this);
     stopSelf();
   }
 
