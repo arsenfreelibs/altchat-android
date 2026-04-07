@@ -643,6 +643,10 @@ public class ConversationListFragment extends BaseConversationListFragment
 
     } else {
       loadChatlistAsync();
+      Activity activity = getActivity();
+      if (activity instanceof ConversationListActivity) {
+        ((ConversationListActivity) activity).updateChatsTabBadge();
+      }
     }
   }
 }

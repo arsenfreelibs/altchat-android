@@ -86,6 +86,8 @@ import org.thoughtcrime.securesms.util.StorageUtil;
 import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.util.ViewUtil;
 
+import androidx.core.content.ContextCompat;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ConversationListActivity extends PassphraseRequiredActionBarActivity
@@ -465,6 +467,17 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     }
   }
 
+  void updateChatsTabBadge() {
+    int count = DcHelper.getContext(this).getFreshMsgs().length;
+    if (count > 0) {
+      BadgeDrawable badge = bottomNavigation.getOrCreateBadge(R.id.nav_chats);
+      badge.setNumber(count);
+      badge.setBackgroundColor(ContextCompat.getColor(this, R.color.unread_count));
+    } else {
+      bottomNavigation.removeBadge(R.id.nav_chats);
+    }
+  }
+
   @Override
   public void onResume() {
     super.onResume();
@@ -472,6 +485,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     invalidateOptionsMenu();
     DirectShareUtil.triggerRefreshDirectShare(this);
     retryQuickRegisterIfNeeded();
+    updateChatsTabBadge();
   }
 
   @Override

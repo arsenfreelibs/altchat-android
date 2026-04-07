@@ -53,6 +53,8 @@ import org.thoughtcrime.securesms.util.IntentUtils;
 import org.thoughtcrime.securesms.util.Prefs;
 import org.thoughtcrime.securesms.util.ScreenLockUtil;
 import org.thoughtcrime.securesms.util.ViewUtil;
+import androidx.core.content.ContextCompat;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**
@@ -61,8 +63,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  * @author Moxie Marlinspike
  */
 public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarActivity
-    implements SharedPreferences.OnSharedPreferenceChangeListener {
+    implements SharedPreferences.OnSharedPreferenceChangeListener,
+        DcEventCenter.DcEventDelegate {
   private static final String PREFERENCE_CATEGORY_PROFILE = "preference_category_profile";
+
+  private BottomNavigationView bottomNav;
   private static final String PREFERENCE_CATEGORY_NOTIFICATIONS =
       "preference_category_notifications";
   private static final String PREFERENCE_CATEGORY_APPEARANCE = "preference_category_appearance";
@@ -78,7 +83,7 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
   protected void onCreate(Bundle icicle, boolean ready) {
     setContentView(R.layout.activity_application_preferences);
 
-    BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+    bottomNav = findViewById(R.id.bottom_navigation);
     bottomNav.setSelectedItemId(R.id.nav_settings);
     bottomNav.setOnItemSelectedListener(item -> {
       int id = item.getItemId();
@@ -153,6 +158,38 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
         0, 0); // let the activity appear in the same way as the other pages (which are mostly
     // fragments)
     finishAffinity(); // see comment (**2) in BackupTransferActivity.doFinish()
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    updateChatsTabBadge();
+    DcEventCenter eventCenter = DcHelper.getEventCenter(this);
+    eventCenter.addObserver(DcContext.DC_EVENT_INCOMING_MSG, this);
+    eventCenter.addObserver(DcContext.DC_EVENT_MSGS_NOTICED, this);
+    eventCenter.addObserver(DcContext.DC_EVENT_MSGS_CHANGED, this);
+  }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    DcHelper.getEventCenter(this).removeObservers(this);
+  }
+
+  @Override
+  public void handleEvent(@NonNull DcEvent event) {
+    updateChatsTabBadge();
+  }
+
+  private void updateChatsTabBadge() {
+    int count = DcHelper.getContext(this).getFreshMsgs().length;
+    if (count > 0) {
+      BadgeDrawable badge = bottomNav.getOrCreateBadge(R.id.nav_chats);
+      badge.setNumber(count);
+      badge.setBackgroundColor(ContextCompat.getColor(this, R.color.unread_count));
+    } else {
+      bottomNav.removeBadge(R.id.nav_chats);
+    }
   }
 
   public static class ApplicationPreferenceFragment extends CorrectedPreferenceFragment
