@@ -28,7 +28,7 @@ import com.b44t.messenger.DcContext;
 import com.b44t.messenger.DcEvent;
 import java.util.Arrays;
 import org.thoughtcrime.securesms.ConnectivityActivity;
-import org.thoughtcrime.securesms.ConversationListActivity;
+import org.thoughtcrime.securesms.accounts.AccountOperationsListener;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.components.AvatarView;
 import org.thoughtcrime.securesms.connect.AccountManager;
@@ -185,16 +185,16 @@ public class AccountSelectionListFragment extends DialogFragment
   }
 
   private void onSetTag(int accountId) {
-    ConversationListActivity activity = (ConversationListActivity) requireActivity();
+    Activity rawActivity = requireActivity();
     AccountSelectionListFragment.this.dismiss();
 
-    DcContext dcContext = DcHelper.getAccounts(activity).getAccount(accountId);
-    View view = View.inflate(activity, R.layout.single_line_input, null);
+    DcContext dcContext = DcHelper.getAccounts(rawActivity).getAccount(accountId);
+    View view = View.inflate(rawActivity, R.layout.single_line_input, null);
     EditText inputField = view.findViewById(R.id.input_field);
     inputField.setHint(R.string.profile_tag_hint);
     inputField.setText(dcContext.getConfig(CONFIG_PRIVATE_TAG));
 
-    new AlertDialog.Builder(activity)
+    new AlertDialog.Builder(rawActivity)
         .setTitle(R.string.profile_tag)
         .setMessage(R.string.profile_tag_explain)
         .setView(view)
@@ -203,21 +203,22 @@ public class AccountSelectionListFragment extends DialogFragment
             (d, b) -> {
               String newTag = inputField.getText().toString().trim();
               dcContext.setConfig(CONFIG_PRIVATE_TAG, newTag);
-              AccountManager.getInstance().showSwitchAccountMenu(activity, selectOnly);
+              AccountManager.getInstance().showSwitchAccountMenu(rawActivity, selectOnly);
             })
         .setNegativeButton(
             R.string.cancel,
-            (d, b) -> AccountManager.getInstance().showSwitchAccountMenu(activity, selectOnly))
+            (d, b) -> AccountManager.getInstance().showSwitchAccountMenu(rawActivity, selectOnly))
         .show();
   }
 
   private void onDeleteProfile(int accountId) {
     AccountSelectionListFragment.this.dismiss();
-    ConversationListActivity activity = (ConversationListActivity) requireActivity();
-    DcAccounts accounts = DcHelper.getAccounts(activity);
-    Rpc rpc = DcHelper.getRpc(activity);
+    AccountOperationsListener activity = (AccountOperationsListener) requireActivity();
+    Activity ctx = requireActivity();
+    DcAccounts accounts = DcHelper.getAccounts(ctx);
+    Rpc rpc = DcHelper.getRpc(ctx);
 
-    View dialogView = View.inflate(activity, R.layout.dialog_delete_profile, null);
+    View dialogView = View.inflate(ctx, R.layout.dialog_delete_profile, null);
     AvatarView avatar = dialogView.findViewById(R.id.avatar);
     TextView nameView = dialogView.findViewById(R.id.name);
     TextView addrView = dialogView.findViewById(R.id.address);
@@ -230,7 +231,7 @@ public class AccountSelectionListFragment extends DialogFragment
       name = contact.getAddr();
     }
     Recipient recipient = new Recipient(requireContext(), contact, name);
-    avatar.setAvatar(GlideApp.with(activity), recipient, false);
+    avatar.setAvatar(GlideApp.with(ctx), recipient, false);
     nameView.setText(name);
     addrView.setText(contact.getAddr());
     Util.runOnAnyBackgroundThread(
@@ -245,16 +246,16 @@ public class AccountSelectionListFragment extends DialogFragment
             Log.e(TAG, "Error calling rpc.getAccountFileSize()", e);
           }
         });
-    description.setText(activity.getString(R.string.delete_account_explain_with_name, name));
+    description.setText(ctx.getString(R.string.delete_account_explain_with_name, name));
 
     AlertDialog dialog =
-        new AlertDialog.Builder(activity)
+        new AlertDialog.Builder(ctx)
             .setTitle(R.string.delete_account)
             .setView(dialogView)
             .setNegativeButton(
                 R.string.cancel,
                 (d, which) ->
-                    AccountManager.getInstance().showSwitchAccountMenu(activity, selectOnly))
+                    AccountManager.getInstance().showSwitchAccountMenu(ctx, selectOnly))
             .setPositiveButton(R.string.delete, (d2, w2) -> activity.onDeleteProfile(accountId))
             .show();
     Util.redPositiveButton(dialog);
@@ -272,13 +273,14 @@ public class AccountSelectionListFragment extends DialogFragment
     @Override
     public void onItemClick(AccountSelectionListItem contact) {
       AccountSelectionListFragment.this.dismiss();
-      ConversationListActivity activity = (ConversationListActivity) requireActivity();
+      Activity rawActivity = requireActivity();
+      AccountOperationsListener listener = (AccountOperationsListener) rawActivity;
       int accountId = contact.getAccountId();
       if (accountId == DC_CONTACT_ID_ADD_ACCOUNT) {
-        AccountManager.getInstance().switchAccountAndStartActivity(activity, 0);
-      } else if (accountId != DcHelper.getAccounts(activity).getSelectedAccount().getAccountId()) {
-        AccountManager.getInstance().switchAccount(activity, accountId);
-        activity.onProfileSwitched(accountId);
+        AccountManager.getInstance().switchAccountAndStartActivity(rawActivity, 0);
+      } else if (accountId != DcHelper.getAccounts(rawActivity).getSelectedAccount().getAccountId()) {
+        AccountManager.getInstance().switchAccount(rawActivity, accountId);
+        listener.onProfileSwitched(accountId);
       }
     }
   }

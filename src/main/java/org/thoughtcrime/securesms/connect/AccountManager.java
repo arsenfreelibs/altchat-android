@@ -140,9 +140,9 @@ public class AccountManager {
 
   // ui
 
-  public void showSwitchAccountMenu(ConversationListActivity activity, boolean selectOnly) {
+  public void showSwitchAccountMenu(Activity activity, boolean selectOnly) {
     AccountSelectionListFragment dialog = AccountSelectionListFragment.newInstance(selectOnly);
-    dialog.show(((FragmentActivity) activity).getSupportFragmentManager(), null);
+    dialog.show(((androidx.fragment.app.FragmentActivity) activity).getSupportFragmentManager(), null);
   }
 
   public void addAccountFromSecondDevice(Activity activity, String backupQr) {
