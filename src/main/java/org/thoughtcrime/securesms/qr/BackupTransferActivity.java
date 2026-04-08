@@ -10,11 +10,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.util.TypedValue;
+import android.view.View;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
-import org.thoughtcrime.securesms.ApplicationPreferencesActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import org.thoughtcrime.securesms.BaseActionBarActivity;
 import org.thoughtcrime.securesms.ConversationListActivity;
 import org.thoughtcrime.securesms.LogViewActivity;
@@ -102,8 +106,21 @@ public class BackupTransferActivity extends BaseActionBarActivity {
     supportActionBar.setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
     supportActionBar.setTitle(title);
 
-    // add padding to avoid content hidden behind system bars
-    ViewUtil.applyWindowInsets(findViewById(R.id.backup_provider_fragment));
+    // Fix overlap: add statusBar + actionBar height as top padding for edge-to-edge
+    if (ViewUtil.isEdgeToEdgeSupported()) {
+      View frag = findViewById(R.id.backup_provider_fragment);
+      TypedValue tv = new TypedValue();
+      int abH = getTheme().resolveAttribute(androidx.appcompat.R.attr.actionBarSize, tv, true)
+          ? TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics())
+          : 0;
+      ViewCompat.setOnApplyWindowInsetsListener(frag, (v, wi) -> {
+        Insets ins = Insets.max(wi.getInsets(WindowInsetsCompat.Type.systemBars()),
+                                wi.getInsets(WindowInsetsCompat.Type.displayCutout()));
+        v.setPaddingRelative(ins.left, ins.top + abH, ins.right, ins.bottom);
+        return wi;
+      });
+      ViewCompat.requestApplyInsets(frag);
+    }
 
     backPressedCallback =
         new OnBackPressedCallback(true) {
@@ -220,8 +237,9 @@ public class BackupTransferActivity extends BaseActionBarActivity {
       // a proper fix would maybe to not rely onNewIntent() at all - but that would require more
       // refactorings
       // and needs lots if testing in complicated areas (share ...))
-      startActivity(new Intent(getApplicationContext(), ConversationListActivity.class));
-      startActivity(new Intent(this, ApplicationPreferencesActivity.class));
+      Intent cla = new Intent(getApplicationContext(), ConversationListActivity.class);
+      cla.putExtra(ConversationListActivity.SHOW_SETTINGS_TAB, true);
+      startActivity(cla);
       overridePendingTransition(0, 0);
     }
     finish();
