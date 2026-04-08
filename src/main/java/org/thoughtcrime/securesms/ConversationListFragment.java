@@ -370,17 +370,15 @@ public class ConversationListFragment extends BaseConversationListFragment
     final List<ChatFilter> filterBarFilters;
     final Map<String, Integer> filterBarBadges;
     final int filterBarAllUnread;
-    final int filterBarUnreadChats;
     if (fm != null) {
       List<ChatFilter> filters = fm.loadCustomFilters();
       DcContext dcCtx = DcHelper.getContext(context);
       int allUnread = 0;
-      int unreadChats = 0;
       for (int i = 0; i < chatlist.getCnt(); i++) {
         int chatId = chatlist.getChatId(i);
         if (chatId <= DcChat.DC_CHAT_ID_LAST_SPECIAL) continue;
         int fresh = dcCtx.getFreshMsgCount(chatId);
-        if (fresh > 0) { allUnread += fresh; unreadChats++; }
+        if (fresh > 0) { allUnread += fresh; }
       }
       Map<String, Integer> badges = new HashMap<>();
       for (ChatFilter f : filters) {
@@ -393,12 +391,10 @@ public class ConversationListFragment extends BaseConversationListFragment
       filterBarFilters = filters;
       filterBarBadges = badges;
       filterBarAllUnread = allUnread;
-      filterBarUnreadChats = unreadChats;
     } else {
       filterBarFilters = null;
       filterBarBadges = null;
       filterBarAllUnread = 0;
-      filterBarUnreadChats = 0;
     }
 
     Util.runOnMain(
@@ -425,7 +421,7 @@ public class ConversationListFragment extends BaseConversationListFragment
 
           ((ConversationListAdapter) list.getAdapter()).changeData(chatlist, filteredIndices);
           if (filterBarFilters != null && filterBar != null && filterBar.getVisibility() == View.VISIBLE) {
-            filterBar.configure(filterBarFilters, activeFilter, filterBarBadges, filterBarAllUnread, filterBarUnreadChats);
+            filterBar.configure(filterBarFilters, activeFilter, filterBarBadges, filterBarAllUnread);
           }
         });
   }

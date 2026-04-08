@@ -43,7 +43,6 @@ public class FilterBarView extends HorizontalScrollView {
   private @NonNull List<ChatFilter> currentFilters = Collections.emptyList();
   private @NonNull Map<String, Integer> badgeCounts = Collections.emptyMap();
   private int allUnreadCount;
-  private int unreadChatsCount;
 
   public FilterBarView(@NonNull Context context) {
     super(context);
@@ -77,20 +76,17 @@ public class FilterBarView extends HorizontalScrollView {
    * @param filters custom filters for this account
    * @param active the currently active filter
    * @param badgeCounts unread counts per custom filter id
-   * @param allUnreadCount total unread message count (badge for "All")
-   * @param unreadChatsCount number of chats with unread messages (badge for "Unread")
+   * @param allUnreadCount total unread message count (badge for "All" and "Unread")
    */
   public void configure(
       @NonNull List<ChatFilter> filters,
       @NonNull ActiveFilter active,
       @NonNull Map<String, Integer> badgeCounts,
-      int allUnreadCount,
-      int unreadChatsCount) {
+      int allUnreadCount) {
     this.currentFilters = filters;
     this.activeFilter = active;
     this.badgeCounts = badgeCounts;
     this.allUnreadCount = allUnreadCount;
-    this.unreadChatsCount = unreadChatsCount;
     rebuildChips();
   }
 
@@ -99,7 +95,7 @@ public class FilterBarView extends HorizontalScrollView {
 
     addChip(
         getContext().getString(R.string.filter_all),
-        allUnreadCount,
+        0,
         activeFilter.equals(ActiveFilter.ALL),
         () -> {
           if (listener != null) listener.onFilterSelected(ActiveFilter.ALL);
@@ -108,7 +104,7 @@ public class FilterBarView extends HorizontalScrollView {
 
     addChip(
         getContext().getString(R.string.filter_unread),
-        unreadChatsCount,
+        allUnreadCount,
         activeFilter.equals(ActiveFilter.UNREAD),
         () -> {
           if (listener != null) listener.onFilterSelected(ActiveFilter.UNREAD);
