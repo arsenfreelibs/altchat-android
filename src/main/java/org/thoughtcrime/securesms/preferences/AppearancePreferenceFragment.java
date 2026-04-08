@@ -1,19 +1,23 @@
 package org.thoughtcrime.securesms.preferences;
 
+import android.content.SharedPreferences;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import java.util.Arrays;
-import org.thoughtcrime.securesms.ApplicationPreferencesActivity;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.connect.DcHelper;
+import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.Prefs;
 
 public class AppearancePreferenceFragment extends ListSummaryPreferenceFragment {
+
+  private SharedPreferences.OnSharedPreferenceChangeListener themeListener;
 
   @Override
   public void onCreate(Bundle paramBundle) {
@@ -33,15 +37,21 @@ public class AppearancePreferenceFragment extends ListSummaryPreferenceFragment 
   @Override
   public void onStart() {
     super.onStart();
+    themeListener = (sharedPreferences, key) -> {
+      if (Prefs.THEME_PREF.equals(key)) {
+        DynamicTheme.setDefaultDayNightMode(requireActivity());
+        requireActivity().recreate();
+      }
+    };
     getPreferenceScreen()
         .getSharedPreferences()
-        .registerOnSharedPreferenceChangeListener((ApplicationPreferencesActivity) getActivity());
+        .registerOnSharedPreferenceChangeListener(themeListener);
   }
 
   @Override
   public void onResume() {
     super.onResume();
-    ((ApplicationPreferencesActivity) getActivity())
+    ((AppCompatActivity) requireActivity())
         .getSupportActionBar()
         .setTitle(R.string.pref_appearance);
     String imagePath = Prefs.getBackgroundImagePath(getContext(), dcContext.getAccountId());
@@ -59,7 +69,7 @@ public class AppearancePreferenceFragment extends ListSummaryPreferenceFragment 
     super.onStop();
     getPreferenceScreen()
         .getSharedPreferences()
-        .unregisterOnSharedPreferenceChangeListener((ApplicationPreferencesActivity) getActivity());
+        .unregisterOnSharedPreferenceChangeListener(themeListener);
   }
 
   public static CharSequence getSummary(Context context) {
