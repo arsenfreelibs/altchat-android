@@ -11,16 +11,11 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:title="@string/invite_friends"
-        android:id="@+id/menu_invite_friends" />
-
-    <item
-        android:title="@string/menu_new_chat"
-        android:id="@+id/menu_new_chat" />
-
-    <item
         android:title="@string/menu_all_media"
-        android:id="@+id/menu_all_media" />
+        android:id="@+id/menu_all_media"
+        android:icon="@drawable/ic_apps_24"
+        app:iconTint="?attr/menu_icon_tint"
+        app:showAsAction="ifRoom" />
 
     <item
         android:title="@string/menu_show_global_map"
@@ -34,9 +29,5 @@
         app:iconTint="?attr/menu_icon_tint"
         app:showAsAction="always"
         android:visible="false" />
-
-    <item
-        android:title="@string/menu_settings"
-        android:id="@+id/menu_settings" />
 
 </menu>

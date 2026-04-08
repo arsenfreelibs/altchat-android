@@ -36,6 +36,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -62,6 +63,8 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import org.thoughtcrime.securesms.components.AvatarView;
 import org.thoughtcrime.securesms.components.SearchToolbar;
 import org.thoughtcrime.securesms.connect.AccountManager;
@@ -87,11 +90,16 @@ import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.util.ViewUtil;
 
 import androidx.core.content.ContextCompat;
-import com.google.android.material.badge.BadgeDrawable;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.badge.BadgeDrawable;
+import org.thoughtcrime.securesms.accounts.AccountOperationsListener;
 
 public class ConversationListActivity extends PassphraseRequiredActionBarActivity
-    implements ConversationListFragment.ConversationSelectedListener {
+    implements ConversationListFragment.ConversationSelectedListener,
+               AccountOperationsListener {
   private static final String TAG = ConversationListActivity.class.getSimpleName();
   private static final String OPENPGP4FPR = "openpgp4fpr";
   private static final String NDK_ARCH_WARNED = "ndk_arch_warned";
@@ -99,8 +107,17 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
   public static final String ACCOUNT_ID_EXTRA = "account_id";
   public static final String FROM_WELCOME = "from_welcome";
   public static final String FROM_WELCOME_RAW_QR = "from_welcome_raw_qr";
+  public static final String SHOW_SETTINGS_TAB = "show_settings_tab";
+
+  private static final String TAG_CHATS    = "tab_chats";
+  private static final String TAG_CONTACTS = "tab_contacts";
+  private static final String TAG_SETTINGS = "tab_settings";
 
   private ConversationListFragment conversationListFragment;
+  private ContactsTabFragment contactsTabFragment;
+  private SettingsTabFragment settingsTabFragment;
+  private Toolbar chatsToolbar;
+  private int activeTabId = R.id.nav_chats;
   public TextView title;
   private AvatarView selfAvatar;
   private ImageView unreadIndicator;
@@ -109,7 +126,6 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
   private ImageView searchAction;
   private ViewGroup fragmentContainer;
   private ViewGroup selfAvatarContainer;
-  private BottomNavigationView bottomNavigation;
 
   /**
    * used to store temporarily scanned QR to pass it back to QrCodeHandler when ScreenLockUtil is
@@ -182,8 +198,8 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     // create view
     setContentView(R.layout.conversation_list_activity);
 
-    Toolbar toolbar = findViewById(R.id.toolbar);
-    setSupportActionBar(toolbar);
+    chatsToolbar = findViewById(R.id.toolbar);
+    setSupportActionBar(chatsToolbar);
     selfAvatar = findViewById(R.id.self_avatar);
     selfAvatarContainer = findViewById(R.id.self_avatar_container);
     unreadIndicator = findViewById(R.id.unread_indicator);
@@ -192,30 +208,54 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     searchAction = findViewById(R.id.search_action);
     fragmentContainer = findViewById(R.id.fragment_container);
 
-    bottomNavigation = findViewById(R.id.bottom_navigation);
-    bottomNavigation.setSelectedItemId(R.id.nav_chats);
-    bottomNavigation.setOnItemSelectedListener(item -> {
-      int id = item.getItemId();
-      if (id == R.id.nav_contacts) {
-        createChat();
-        return false; // don't change selected tab, we navigate away
-      } else if (id == R.id.nav_chats) {
-        return true;
-      } else if (id == R.id.nav_settings) {
-        startActivity(new Intent(this, ApplicationPreferencesActivity.class));
-        return false;
-      }
-      return false;
-    });
-
     // add margin to avoid content hidden behind system bars
     ViewUtil.applyWindowInsetsAsMargin(searchToolbar, true, true, true, false);
 
-    Bundle bundle = new Bundle();
-    conversationListFragment =
-        initFragment(R.id.fragment_container, new ConversationListFragment(), bundle);
+    if (icicle == null) {
+      conversationListFragment = new ConversationListFragment();
+      Bundle args = new Bundle();
+      args.putBoolean(ConversationListFragment.ARCHIVE, false);
+      conversationListFragment.setArguments(args);
+      contactsTabFragment = new ContactsTabFragment();
+      settingsTabFragment = new SettingsTabFragment();
+      getSupportFragmentManager().beginTransaction()
+          .add(R.id.fragment_container, settingsTabFragment, TAG_SETTINGS)
+          .add(R.id.fragment_container, contactsTabFragment, TAG_CONTACTS)
+          .add(R.id.fragment_container, conversationListFragment, TAG_CHATS)
+          .hide(settingsTabFragment)
+          .hide(contactsTabFragment)
+          .commitNow();
+    } else {
+      conversationListFragment = (ConversationListFragment)
+          getSupportFragmentManager().findFragmentByTag(TAG_CHATS);
+      contactsTabFragment = (ContactsTabFragment)
+          getSupportFragmentManager().findFragmentByTag(TAG_CONTACTS);
+      settingsTabFragment = (SettingsTabFragment)
+          getSupportFragmentManager().findFragmentByTag(TAG_SETTINGS);
+    }
 
     initializeSearchListener();
+
+    BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+    bottomNav.setOnItemSelectedListener(item -> {
+      showTab(item.getItemId());
+      return true;
+    });
+    bottomNav.setOnItemReselectedListener(item -> {
+      if (item.getItemId() == R.id.nav_settings && settingsTabFragment != null) {
+        settingsTabFragment.getChildFragmentManager()
+            .popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+      }
+    });
+    if (icicle == null) {
+      bottomNav.setSelectedItemId(R.id.nav_chats);
+      if (getIntent().getBooleanExtra(SHOW_SETTINGS_TAB, false)) {
+        bottomNav.setSelectedItemId(R.id.nav_settings);
+      }
+      activeTabId = bottomNav.getSelectedItemId();
+    } else {
+      activeTabId = icicle.getInt("active_tab_id", R.id.nav_chats);
+    }
 
     getOnBackPressedDispatcher()
         .addCallback(
@@ -357,6 +397,10 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     if (getIntent().getIntExtra(ACCOUNT_ID_EXTRA, -1) <= 0) {
       getIntent().putExtra(ACCOUNT_ID_EXTRA, DcHelper.getContext(this).getAccountId());
     }
+    if (intent.getBooleanExtra(SHOW_SETTINGS_TAB, false)) {
+      BottomNavigationView bNav = findViewById(R.id.bottom_navigation);
+      if (bNav != null) bNav.setSelectedItemId(R.id.nav_settings);
+    }
     refresh();
     conversationListFragment.onNewIntent();
     invalidateOptionsMenu();
@@ -381,18 +425,73 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     if (isDirectSharing(this)) {
       openConversation(getDirectSharingChatId(this), -1);
     }
+    updateChatsTabBadge();
   }
 
-  private void retryQuickRegisterIfNeeded() {
-    int accountId = org.thoughtcrime.securesms.connect.DcHelper.getAccounts(this).getSelectedAccount().getAccountId();
-    if (org.thoughtcrime.securesms.altplatform.storage.AltTokenStorage.getToken(this, accountId) != null) return;
-    String displayName = org.thoughtcrime.securesms.connect.DcHelper.get(this, org.thoughtcrime.securesms.connect.DcHelper.CONFIG_DISPLAY_NAME);
-    if (displayName == null || displayName.isEmpty()) return;
-    final String name = displayName;
-    new Thread(() ->
-        new org.thoughtcrime.securesms.altplatform.AltPlatformService(getApplicationContext())
-            .quickRegister(name)
-    ).start();
+  private void showTab(int tabId) {
+    activeTabId = tabId;
+    androidx.fragment.app.FragmentManager fm = getSupportFragmentManager();
+    androidx.fragment.app.Fragment chats    = fm.findFragmentByTag(TAG_CHATS);
+    androidx.fragment.app.Fragment contacts = fm.findFragmentByTag(TAG_CONTACTS);
+    androidx.fragment.app.Fragment settings = fm.findFragmentByTag(TAG_SETTINGS);
+    if (chats == null) return;
+    androidx.fragment.app.FragmentTransaction tx = fm.beginTransaction();
+    if (tabId == R.id.nav_chats) {
+      tx.show(chats);
+      if (contacts != null) tx.hide(contacts);
+      if (settings != null) tx.hide(settings);
+    } else if (tabId == R.id.nav_contacts) {
+      tx.hide(chats);
+      if (contacts != null) tx.show(contacts);
+      if (settings != null) tx.hide(settings);
+    } else {
+      tx.hide(chats);
+      if (contacts != null) tx.hide(contacts);
+      if (settings != null) tx.show(settings);
+    }
+    tx.commit();
+    if (tabId == R.id.nav_chats) {
+      if (chatsToolbar != null) chatsToolbar.setVisibility(View.VISIBLE);
+      fragmentContainer.setPadding(0, 0, 0, 0);
+      fragmentContainer.setBackground(null);
+      setSupportActionBar(chatsToolbar);
+      refreshTitle();
+      invalidateOptionsMenu();
+    } else {
+      if (chatsToolbar != null) chatsToolbar.setVisibility(View.GONE);
+      TypedValue tv = new TypedValue();
+      getTheme().resolveAttribute(android.R.attr.colorPrimary, tv, true);
+      fragmentContainer.setBackgroundColor(tv.data);
+      // Defer padding until insets are available — on recreate() (theme change)
+      // getRootWindowInsets() may return null synchronously before the window
+      // has re-applied insets, which would reset padding to 0 and shift content.
+      fragmentContainer.post(() -> {
+        WindowInsetsCompat wi = ViewCompat.getRootWindowInsets(fragmentContainer);
+        int sbHeight = wi != null ? wi.getInsets(WindowInsetsCompat.Type.statusBars()).top : 0;
+        fragmentContainer.setPadding(0, sbHeight, 0, 0);
+      });
+      // onHiddenChanged(false) is not triggered when fragment state is already
+      // restored by FragmentManager during recreate() — reattach toolbar explicitly.
+      if (tabId == R.id.nav_contacts && contactsTabFragment != null) {
+        contactsTabFragment.reattachToolbar();
+      } else if (tabId == R.id.nav_settings && settingsTabFragment != null) {
+        settingsTabFragment.reattachToolbar();
+      }
+      invalidateOptionsMenu();
+    }
+  }
+
+  public void updateChatsTabBadge() {
+    BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+    if (bottomNav == null) return;
+    int count = DcHelper.getContext(this).getFreshMsgs().length;
+    if (count > 0) {
+      BadgeDrawable badge = bottomNav.getOrCreateBadge(R.id.nav_chats);
+      badge.setNumber(count);
+      badge.setBackgroundColor(ContextCompat.getColor(this, R.color.unread_count));
+    } else {
+      bottomNav.removeBadge(R.id.nav_chats);
+    }
   }
 
   public void refreshTitle() {
@@ -407,7 +506,8 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
           title.setText(R.string.chat_share_with_title);
         }
       }
-      getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+      androidx.appcompat.app.ActionBar ab = getSupportActionBar();
+      if (ab != null) ab.setDisplayHomeAsUpEnabled(true);
     } else {
       boolean multiProfile = DcHelper.getAccounts(this).getAll().length > 1;
       String defText =
@@ -416,7 +516,8 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
       // refreshTitle is called by ConversationListFragment when connectivity changes so update
       // connectivity dot here
       selfAvatar.setConnectivity(DcHelper.getContext(this).getConnectivity());
-      getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+      androidx.appcompat.app.ActionBar ab = getSupportActionBar();
+      if (ab != null) ab.setDisplayHomeAsUpEnabled(false);
     }
   }
 
@@ -467,29 +568,35 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     }
   }
 
-  void updateChatsTabBadge() {
-    int count = DcHelper.getContext(this).getFreshMsgs().length;
-    if (count > 0) {
-      BadgeDrawable badge = bottomNavigation.getOrCreateBadge(R.id.nav_chats);
-      badge.setNumber(count);
-      badge.setBackgroundColor(ContextCompat.getColor(this, R.color.unread_count));
-    } else {
-      bottomNavigation.removeBadge(R.id.nav_chats);
-    }
+  @Override
+  public void onSaveInstanceState(@NonNull Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putInt("active_tab_id", activeTabId);
   }
 
   @Override
   public void onResume() {
     super.onResume();
-    refreshTitle();
+    // Re-apply tab state after recreate() (theme change): FragmentManager restores
+    // show/hide state silently without calling onHiddenChanged, so chatsToolbar
+    // visibility and the action bar need to be re-synced.
+    showTab(activeTabId);
+    // refreshTitle manages the chats toolbar state (title, DisplayHomeAsUpEnabled).
+    // Calling it on non-chats tabs overwrites the back arrow set by reattachToolbar().
+    if (activeTabId == R.id.nav_chats) {
+      refreshTitle();
+    }
     invalidateOptionsMenu();
     DirectShareUtil.triggerRefreshDirectShare(this);
-    retryQuickRegisterIfNeeded();
     updateChatsTabBadge();
   }
 
   @Override
   public boolean onPrepareOptionsMenu(Menu menu) {
+    if (activeTabId != R.id.nav_chats) {
+      menu.clear();
+      return true;
+    }
     MenuInflater inflater = this.getMenuInflater();
     menu.clear();
 
@@ -559,16 +666,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     super.onOptionsItemSelected(item);
 
     int itemId = item.getItemId();
-    if (itemId == R.id.menu_new_chat) {
-      createChat();
-      return true;
-    } else if (itemId == R.id.menu_invite_friends) {
-      shareInvite();
-      return true;
-    } else if (itemId == R.id.menu_settings) {
-      startActivity(new Intent(this, ApplicationPreferencesActivity.class));
-      return true;
-    } else if (itemId == R.id.menu_qr) {
+    if (itemId == R.id.menu_qr) {
       Intent intent =
           new IntentIntegrator(this).setCaptureActivity(QrActivity.class).createScanIntent();
       qrScannerLauncher.launch(intent);
