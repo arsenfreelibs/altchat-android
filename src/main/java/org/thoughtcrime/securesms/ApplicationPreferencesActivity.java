@@ -53,9 +53,6 @@ import org.thoughtcrime.securesms.util.IntentUtils;
 import org.thoughtcrime.securesms.util.Prefs;
 import org.thoughtcrime.securesms.util.ScreenLockUtil;
 import org.thoughtcrime.securesms.util.ViewUtil;
-import androidx.core.content.ContextCompat;
-import com.google.android.material.badge.BadgeDrawable;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**
  * The Activity for application preference display and management.
@@ -67,7 +64,6 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
         DcEventCenter.DcEventDelegate {
   private static final String PREFERENCE_CATEGORY_PROFILE = "preference_category_profile";
 
-  private BottomNavigationView bottomNav;
   private static final String PREFERENCE_CATEGORY_NOTIFICATIONS =
       "preference_category_notifications";
   private static final String PREFERENCE_CATEGORY_APPEARANCE = "preference_category_appearance";
@@ -78,32 +74,9 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
   private static final String PREFERENCE_CATEGORY_HELP = "preference_category_help";
 
   public static final int REQUEST_CODE_SET_BACKGROUND = 11;
-
   @Override
   protected void onCreate(Bundle icicle, boolean ready) {
     setContentView(R.layout.activity_application_preferences);
-
-    bottomNav = findViewById(R.id.bottom_navigation);
-    bottomNav.setSelectedItemId(R.id.nav_settings);
-    bottomNav.setOnItemSelectedListener(item -> {
-      int id = item.getItemId();
-      if (id == R.id.nav_chats) {
-        Intent intent = new Intent(this, ConversationListActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
-        return false;
-      } else if (id == R.id.nav_contacts) {
-        Intent intent = new Intent(this, NewConversationActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
-        return false;
-      } else if (id == R.id.nav_settings) {
-        return true;
-      }
-      return false;
-    });
 
     //noinspection ConstantConditions
     this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -163,33 +136,16 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
   @Override
   public void onResume() {
     super.onResume();
-    updateChatsTabBadge();
-    DcEventCenter eventCenter = DcHelper.getEventCenter(this);
-    eventCenter.addObserver(DcContext.DC_EVENT_INCOMING_MSG, this);
-    eventCenter.addObserver(DcContext.DC_EVENT_MSGS_NOTICED, this);
-    eventCenter.addObserver(DcContext.DC_EVENT_MSGS_CHANGED, this);
   }
 
   @Override
   public void onPause() {
     super.onPause();
-    DcHelper.getEventCenter(this).removeObservers(this);
   }
 
   @Override
   public void handleEvent(@NonNull DcEvent event) {
-    updateChatsTabBadge();
-  }
-
-  private void updateChatsTabBadge() {
-    int count = DcHelper.getContext(this).getFreshMsgs().length;
-    if (count > 0) {
-      BadgeDrawable badge = bottomNav.getOrCreateBadge(R.id.nav_chats);
-      badge.setNumber(count);
-      badge.setBackgroundColor(ContextCompat.getColor(this, R.color.unread_count));
-    } else {
-      bottomNav.removeBadge(R.id.nav_chats);
-    }
+    // no-op: badge handling is in ConversationListActivity.updateChatsTabBadge()
   }
 
   public static class ApplicationPreferenceFragment extends CorrectedPreferenceFragment

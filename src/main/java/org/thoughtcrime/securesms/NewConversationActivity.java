@@ -24,19 +24,14 @@ import static org.thoughtcrime.securesms.util.ShareUtil.isRelayingMessageContent
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import chat.delta.rpc.types.SecurejoinSource;
 import chat.delta.rpc.types.SecurejoinUiPath;
 import com.b44t.messenger.DcContact;
 import com.b44t.messenger.DcContext;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import com.b44t.messenger.DcEvent;
-import com.google.android.material.badge.BadgeDrawable;
-import org.thoughtcrime.securesms.connect.DcEventCenter;
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.qr.QrActivity;
 import org.thoughtcrime.securesms.qr.QrCodeHandler;
@@ -46,72 +41,25 @@ import org.thoughtcrime.securesms.qr.QrCodeHandler;
  *
  * @author Moxie Marlinspike
  */
-public class NewConversationActivity extends ContactSelectionActivity
-    implements DcEventCenter.DcEventDelegate {
+public class NewConversationActivity extends ContactSelectionActivity {
 
   private static final String TAG = NewConversationActivity.class.getSimpleName();
-  private BottomNavigationView bottomNav;
 
   @Override
   public void onCreate(Bundle bundle, boolean ready) {
     super.onCreate(bundle, ready);
     assert getSupportActionBar() != null;
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-    bottomNav = findViewById(R.id.bottom_navigation);
-    bottomNav.setVisibility(View.VISIBLE);
-    bottomNav.setSelectedItemId(R.id.nav_contacts);
-    bottomNav.setOnItemSelectedListener(item -> {
-      int id = item.getItemId();
-      if (id == R.id.nav_chats) {
-        Intent intent = new Intent(this, ConversationListActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
-        return false;
-      } else if (id == R.id.nav_contacts) {
-        return true;
-      } else if (id == R.id.nav_settings) {
-        Intent intent = new Intent(this, ApplicationPreferencesActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
-        return false;
-      }
-      return false;
-    });
   }
 
   @Override
   public void onResume() {
     super.onResume();
-    updateChatsTabBadge();
-    DcEventCenter eventCenter = DcHelper.getEventCenter(this);
-    eventCenter.addObserver(DcContext.DC_EVENT_INCOMING_MSG, this);
-    eventCenter.addObserver(DcContext.DC_EVENT_MSGS_NOTICED, this);
-    eventCenter.addObserver(DcContext.DC_EVENT_MSGS_CHANGED, this);
   }
 
   @Override
   public void onPause() {
     super.onPause();
-    DcHelper.getEventCenter(this).removeObservers(this);
-  }
-
-  @Override
-  public void handleEvent(@NonNull DcEvent event) {
-    updateChatsTabBadge();
-  }
-
-  private void updateChatsTabBadge() {
-    int count = DcHelper.getContext(this).getFreshMsgs().length;
-    if (count > 0) {
-      BadgeDrawable badge = bottomNav.getOrCreateBadge(R.id.nav_chats);
-      badge.setNumber(count);
-      badge.setBackgroundColor(ContextCompat.getColor(this, R.color.unread_count));
-    } else {
-      bottomNav.removeBadge(R.id.nav_chats);
-    }
   }
 
   @Override
