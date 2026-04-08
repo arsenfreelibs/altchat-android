@@ -1,6 +1,13 @@
 package org.thoughtcrime.securesms.qr;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,7 +19,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
+import java.io.ByteArrayOutputStream;
 import com.b44t.messenger.DcBackupProvider;
 import com.b44t.messenger.DcContext;
 import com.b44t.messenger.DcEvent;
@@ -82,7 +92,7 @@ public class BackupProviderFragment extends Fragment implements DcEventCenter.Dc
                     topText.setVisibility(View.VISIBLE);
                     try {
                       SVG svg =
-                          SVG.getFromString(QrShowFragment.fixSVG(dcBackupProvider.getQrSvg()));
+                          SVG.getFromString(injectAppIconCenter(getActivity(), QrShowFragment.fixSVG(dcBackupProvider.getQrSvg())));
                       qrImageView.setSVG(svg);
                       qrImageView.setVisibility(View.VISIBLE);
                     } catch (SVGParseException e) {
@@ -209,5 +219,53 @@ public class BackupProviderFragment extends Fragment implements DcEventCenter.Dc
 
   private BackupTransferActivity getTransferActivity() {
     return (BackupTransferActivity) getActivity();
+  }
+
+  // TODO: This is a workaround. Ideally the QR code SVG should be generated with the correct
+  //  logo by the Rust core (deltachat-core-rust/src/qr_code_generator.rs), so that all platforms
+  //  benefit and no Android-side SVG surgery is needed.
+  private static String injectAppIconCenter(Context context, String svg) {
+    // Locate the delta logo <g> by finding unique path data from qr_overlay_delta.svg-part,
+    // then searching backwards to the enclosing <g. Robust against float formatting.
+    int contentMarker = svg.indexOf("m 24.015419");
+    if (contentMarker < 0) {
+      Log.w(TAG, "injectAppIconCenter: delta logo marker not found in SVG");
+      return svg;
+    }
+    int logoStart = svg.lastIndexOf("<g", contentMarker);
+    if (logoStart < 0) {
+      Log.w(TAG, "injectAppIconCenter: logo <g> not found");
+      return svg;
+    }
+    Log.d(TAG, "injectAppIconCenter: replacing logo group at index " + logoStart);
+
+    int size = 192;
+    Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+    Canvas canvas = new Canvas(bitmap);
+
+    Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    paint.setColor(Color.WHITE);
+    canvas.drawCircle(size / 2f, size / 2f, size / 2f, paint);
+
+    Drawable raw = ContextCompat.getDrawable(context, R.mipmap.ic_launcher_foreground);
+    if (raw != null) {
+      Drawable icon = DrawableCompat.wrap(raw.mutate());
+      DrawableCompat.setTint(icon, Color.BLACK);
+      int inset = Math.round(size * 0.15f);
+      icon.setBounds(inset, inset, size - inset, size - inset);
+      icon.draw(canvas);
+    }
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+    String base64 = Base64.encodeToString(baos.toByteArray(), Base64.NO_WRAP);
+    bitmap.recycle();
+
+    String elements =
+        "<circle cx=\"256\" cy=\"256\" r=\"48\" style=\"fill:#ffffff\"/>"
+        + "<image x=\"208\" y=\"208\" width=\"96\" height=\"96\" "
+        + "xlink:href=\"data:image/png;base64," + base64 + "\"/>";
+
+    return svg.substring(0, logoStart) + elements + "\n</svg>";
   }
 }
