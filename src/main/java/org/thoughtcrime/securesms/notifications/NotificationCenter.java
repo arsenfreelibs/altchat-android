@@ -23,8 +23,10 @@ import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.app.Person;
 import androidx.core.app.RemoteInput;
 import androidx.core.app.TaskStackBuilder;
+import androidx.core.graphics.drawable.IconCompat;
 import com.b44t.messenger.DcChat;
 import com.b44t.messenger.DcContact;
 import com.b44t.messenger.DcContext;
@@ -39,6 +41,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import org.json.JSONObject;
 import org.thoughtcrime.securesms.ApplicationContext;
+import org.thoughtcrime.securesms.calls.CallActivity;
 import org.thoughtcrime.securesms.ConversationActivity;
 import org.thoughtcrime.securesms.ConversationListActivity;
 import org.thoughtcrime.securesms.R;
@@ -53,6 +56,7 @@ import org.thoughtcrime.securesms.util.Pair;
 import org.thoughtcrime.securesms.util.Prefs;
 import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.service.CallForegroundService;
+import chat.delta.rpc.RpcException;
 
 public class NotificationCenter {
   private static final String TAG = NotificationCenter.class.getSimpleName();
@@ -182,6 +186,7 @@ public class NotificationCenter {
   public static final int ID_MSG_SUMMARY = 2;
   public static final int ID_GENERIC = 3;
   public static final int ID_FETCH = 4;
+  public static final int ID_CALL = 5;
   public static final int ID_MSG_OFFSET =
       0; // msgId is added - as msgId start at 10, there are no conflicts with lower numbers
 
@@ -492,6 +497,22 @@ public class NotificationCenter {
           maybeAddNotification(
               accountId, dcChat, msgId, shortLine, shortLine, false, dcChat.isMultiUser());
         });
+  }
+
+  public PendingIntent getOpenCallIntent(ChatData chatData, int callId, String payload, boolean autoAccept, boolean hasVideo) {
+    Intent intent = new Intent(context, CallActivity.class);
+    intent.setAction(autoAccept ? CallActivity.ACTION_ANSWER_CALL : Intent.ACTION_VIEW);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    return PendingIntent.getActivity(context, autoAccept ? 0 : 2, intent,
+        PendingIntent.FLAG_UPDATE_CURRENT | IntentUtils.FLAG_MUTABLE());
+  }
+
+  public PendingIntent getDeclineCallIntent(ChatData chatData, int callId) {
+    Intent intent = new Intent(context, CallActivity.class);
+    intent.setAction(CallActivity.ACTION_DECLINE_CALL);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    return PendingIntent.getActivity(context, 1, intent,
+        PendingIntent.FLAG_UPDATE_CURRENT | IntentUtils.FLAG_MUTABLE());
   }
 
   public void notifyCall(int accId, int callId, String payload) {
