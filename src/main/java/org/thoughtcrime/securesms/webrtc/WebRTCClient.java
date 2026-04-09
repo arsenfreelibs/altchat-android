@@ -307,6 +307,11 @@ public class WebRTCClient {
       if (state == PeerConnection.IceGatheringState.COMPLETE) {
         isIceGatheringComplete = true;
         iceGatheringLatch.countDown();
+        // No more candidates will arrive after COMPLETE — unblock relay/srflx waits immediately
+        // instead of burning the full timeout. If a relay/srflx candidate arrived earlier, its
+        // latch was already counted down; if not, there is no point waiting further.
+        if (relayCandidateLatch != null) relayCandidateLatch.countDown();
+        if (srflxCandidateLatch != null) srflxCandidateLatch.countDown();
       }
     }
 

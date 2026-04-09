@@ -176,6 +176,7 @@ public class CallService extends Service implements WebRTCClient.Callbacks {
             }
 
             Log.d(TAG, "Media capture complete, ready for call");
+            callCoordinator.signalMediaReady();
           }
 
           @Override

@@ -211,18 +211,14 @@ public class DcEventCenter {
         break;
 
       case DcContext.DC_EVENT_INCOMING_CALL:
-        DcHelper.getNotificationCenter(context).notifyCall(accountId, event.getData1Int(), event.getData2Str());
-        TelecomHelper.getInstance(context).onIncomingCall(accountId, event.getData1Int());
+        // CallCoordinator subscribes to this event directly via DcEventCenter and handles
+        // all Telecom registration through Jetpack CallsManager. No extra work needed here.
         break;
 
       case DcContext.DC_EVENT_INCOMING_CALL_ACCEPTED:
-        DcHelper.getNotificationCenter(context).removeCallNotification(accountId, event.getData1Int());
-        TelecomHelper.getInstance(context).onCallAccepted(accountId, event.getData1Int());
         break;
 
       case DcContext.DC_EVENT_CALL_ENDED:
-        DcHelper.getNotificationCenter(context).removeCallNotification(accountId, event.getData1Int());
-        TelecomHelper.getInstance(context).onCallEnded(accountId, event.getData1Int());
         break;
 
       case DcContext.DC_EVENT_MSGS_NOTICED:

@@ -88,6 +88,7 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
   private final MutableLiveData<VideoTrack> remoteVideoTrack = new MutableLiveData<>();
   private final MutableLiveData<Boolean> localAudioEnabled = new MutableLiveData<>(true);
   private final MutableLiveData<Boolean> localVideoEnabled = new MutableLiveData<>(true);
+  private final MutableLiveData<Boolean> mediaReady = new MutableLiveData<>(false);
   private final MutableLiveData<Boolean> remoteAudioEnabled = new MutableLiveData<>(true);
   private final MutableLiveData<Boolean> remoteVideoEnabled = new MutableLiveData<>(true);
   private final MutableLiveData<Boolean> isRelayUsed = new MutableLiveData<>(false);
@@ -119,6 +120,7 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
   private String pendingOfferSdp;
   private boolean hasNotifiedBackend = false;
   private boolean hasAutoSelectedEarpiece = false;
+  private boolean hasAnsweredLocally = false;
 
   private CallControlScope activeCallControlScope;
   private CallViewModel activeCallViewModel;
@@ -353,6 +355,15 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
     localVideoTrack.postValue(track);
   }
 
+  public void signalMediaReady() {
+    Log.d(TAG, "signalMediaReady");
+    mediaReady.postValue(true);
+  }
+
+  public LiveData<Boolean> getMediaReady() {
+    return mediaReady;
+  }
+
   public void updateRemoteVideoTrack(VideoTrack track) {
     Log.d(TAG, "updateRemoteVideoTrack: " + (track != null));
     remoteVideoTrack.postValue(track);
@@ -431,6 +442,7 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
 
   public void answerWebRTC() {
     Log.d(TAG, "answerWebRTC");
+    hasAnsweredLocally = true;
 
     if (!isIncomingCall) {
       Log.w(TAG, "Not an incoming call");
@@ -904,9 +916,14 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
   }
 
   private synchronized void onIncomingCallAccepted(int callId, boolean fromThisDevice) {
-    Log.d(TAG, "onIncomingCallAccepted: callId=" + callId + ", fromThisDevice=" + fromThisDevice);
+    Log.d(TAG, "onIncomingCallAccepted: callId=" + callId + ", fromThisDevice=" + fromThisDevice + ", hasAnsweredLocally=" + hasAnsweredLocally);
 
     if (!fromThisDevice) {
+      if (hasAnsweredLocally) {
+        // Multi-device echo of our own Accept message — ignore to avoid false "answered elsewhere".
+        Log.d(TAG, "Ignoring answered-elsewhere event: this device already answered");
+        return;
+      }
       onCallAnsweredOnOtherDevice();
       return;
     }
@@ -1113,6 +1130,7 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
     this.pendingOfferSdp = null;
     this.hasNotifiedBackend = false;
     this.hasAutoSelectedEarpiece = false;
+    this.hasAnsweredLocally = false;
 
     mainHandler.removeCallbacks(outgoingRingtoneRunnable);
 
@@ -1186,6 +1204,7 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
     remoteVideoTrack.postValue(null);
     localAudioEnabled.postValue(true);
     localVideoEnabled.postValue(true);
+    mediaReady.postValue(false);
     remoteAudioEnabled.postValue(true);
     remoteVideoEnabled.postValue(true);
     isRelayUsed.postValue(false);
@@ -1357,14 +1376,11 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
       }
     }
 
-    // Check full screen intent permission on Android 14+
-    boolean canUseFullScreen = false;
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-      canUseFullScreen = canUseFullScreenIntent();
-      if (!canUseFullScreen) {
-        Log.w(TAG, "Full screen intent permission not granted, notification will appear normally");
-      }
-    }
+    // CallForegroundService holds FOREGROUND_SERVICE_TYPE_PHONE_CALL which grants an automatic
+    // USE_FULL_SCREEN_INTENT exemption on Android 14+. NotificationManager.canUseFullScreenIntent()
+    // does NOT reflect this exemption, so we skip that check and always use the full-screen path
+    // on Android 12+ (minimum for CallStyle notifications).
+    boolean canUseFullScreen = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
 
     // Answer intent
     Intent answerIntent = new Intent(this.appContext, CallActivity.class);

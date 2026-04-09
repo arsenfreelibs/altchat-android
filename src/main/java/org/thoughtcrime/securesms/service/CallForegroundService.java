@@ -75,35 +75,10 @@ public class CallForegroundService extends Service {
 
     @Override
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
-        if (intent == null) return START_NOT_STICKY;
-        int accountId  = intent.getIntExtra(EXTRA_ACCOUNT_ID, 0);
-        int callId     = intent.getIntExtra(EXTRA_CALL_ID, 0);
-        String payload = intent.getStringExtra(EXTRA_PAYLOAD);
-        if (accountId == 0) return START_NOT_STICKY;
-
-        // Build the full CallStyle notification on a background thread.
-        // startForeground() called a second time replaces the silent placeholder
-        // in the same slot — so only one notification is ever visible.
-        Util.runOnAnyBackgroundThread(() -> {
-            Notification notification = DcHelper.getNotificationCenter(this)
-                    .buildCallNotification(accountId, callId, payload);
-            if (notification != null) {
-                try {
-                    // stopForeground removes the silent placeholder; startForeground then
-                    // re-promotes with a fresh notification — the OS treats this as a new post,
-                    // firing the full-screen intent (wakes screen) and the ringtone (FLAG_INSISTENT).
-                    stopForeground(true);
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-                        startForeground(NotificationCenter.ID_CALL, notification,
-                                android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_PHONE_CALL);
-                    } else {
-                        startForeground(NotificationCenter.ID_CALL, notification);
-                    }
-                } catch (Exception e) {
-                    Log.e(TAG, "Failed to update call notification", e);
-                }
-            }
-        });
+        // This service exists solely to hold a FOREGROUND_SERVICE_TYPE_PHONE_CALL token.
+        // On Android 14+ that grants the entire process the USE_FULL_SCREEN_INTENT privilege,
+        // which CallCoordinator needs to show a full-screen incoming call UI.
+        // CallCoordinator owns the actual visible notification via CallService.
         return START_NOT_STICKY;
     }
 
