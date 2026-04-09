@@ -12,7 +12,6 @@
     <string name="off">Pois</string>
     <string name="def">Oletus</string>
     <string name="default_value">Oletus (%1$s)</string>
-    <string name="default_value_as_above">Oletus (sama kuin yllä)</string>
     <string name="custom">Mukautettu</string>
     <string name="none">Ei mitään</string>
     <string name="automatic">Automaattinen</string>
@@ -98,7 +97,7 @@
     <string name="last_month">Viime kuussa</string>
     <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by date or time, resulting in "Last seen at 12:13 AM" or "Last seen Nov 12" -->
     <string name="last_seen_at">Nähty viimeksi %1$s</string>
-    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages)-->
+    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages) -->
     <string name="last_seen_relative">Nähty viimeksi %1$s</string>
     <string name="last_seen_unknown">Nähty viimeksi: ei tiedossa</string>
     <!-- Shown beside messages that are "N minutes old". Prefer short strings, or well-known abbreviations. -->
@@ -202,8 +201,6 @@
     <string name="menu_new_chat">Uusi keskustelu</string>
     <string name="menu_new_group">Uusi ryhmä</string>
     <string name="clone_chat">Kloonaa keskustelu</string>
-    <!-- deprecated -->
-    <string name="add_recipients">Lisää vastaanottajia</string>
     <string name="menu_send">Lähetä</string>
     <string name="menu_toggle_keyboard">Näytä emoji-näppäimistö</string>
     <string name="menu_edit_group">Muokkaa ryhmää</string>
@@ -264,7 +261,6 @@
     <string name="menu_more_options">Lisää asetuksia</string>
     <string name="menu_learn_spelling">Opi tavaus</string>
     <string name="jump_to_message">Siirry viestiin</string>
-    <string name="copy_json">Kopioi JSON</string>
     <string name="replace_draft">Korvaa luonnos</string>
     <string name="title_share_location">Jaa sijainti kaikille ryhmän jäsenille</string>
     <string name="device_talk">Laitteen viestit</string>
@@ -330,11 +326,9 @@
     <string name="ask_remove_members">Poista %1$s ryhmästä?</string>
     <string name="open_url_confirmation">Haluatko avata tämän linkin?</string>
 
-
     <!-- contact list -->
     <string name="contacts_title">Yhteystiedot</string>
     <string name="contacts_type_email_above">Kirjoita sähköpostiosoite ylle</string>
-
 
     <!-- chatlist and chat view -->
     <plurals name="chat_archived">
@@ -392,21 +386,13 @@
     <string name="send_file_to">Lähetä \"%1$s\" kohteeseen...</string>
     <!-- title shown above a list contacts where one should be selected (eg. when a webxdc attempts to send a message to a chat) -->
     <string name="send_message_to">Lähetä viesti kohteeseen...</string>
-    <!-- map -->
-    <string name="filter_map_on_time">Näytä sijainnit aikajanalla</string>
-    <string name="show_location_traces">Näytä jäljet</string>
-    <string name="add_poi">Lähetä erikseen valittu piste</string>
-
 
     <!-- punycode warning / labeled links -->
-    <!-- placeholder is domain/hostname that should be trusted -->
-    <string name="open_external_url_trust_domain">Älä kysy enää osoitteelle %1$s</string>
     <string name="puny_code_warning_header">Epäilyttävä linkki havaittu</string>
     <!-- placeholder contains the hostname converted to ascii -->
     <string name="puny_code_warning_question">Haluatko varmasti vierailla osoitteessa %1$s?</string>
     <!-- this message is shown whenever a link with non-latin characters is clicked. first placeholder is original hostname with special chars, second placeholder is hostname encoded in ascii -->
     <string name="puny_code_warning_description">Seurasit linkkiä, joka saattaa näyttää toisten aakkostojen merkkejä huijaussivustolle johtamiseen. Linkin teksti %1$s johtaa osoitteeseen %2$s, mikä on tavallista ei-latinalaisille merkistöille. Jos et odottanut tätä, tämä linkki voi olla vahingollinen.</string>
-
 
     <!-- search -->
     <string name="search">Etsi</string>
@@ -473,8 +459,6 @@
     <string name="incoming_messages">Saapuvat viestit</string>
     <!-- Headline for the "Outbox" eg. in the "Connectivity" view -->
     <string name="outgoing_messages">Lähtevät viestit</string>
-    <!-- deprecated -->
-    <string name="storage_on_domain">Tallennustila palvelimella %1$s</string>
     <string name="connectivity">Yhteys</string>
     <!-- Shown in the title bar if the app is "Not connected"; prefer short strings. -->
     <string name="connectivity_not_connected">Ei yhdistetty</string>
@@ -492,11 +476,10 @@
     <!-- Used for describing resource usage, resulting string will be eg. "1.2 GiB of 3 GiB used" -->
     <string name="part_of_total_used">%1$s / %2$s käytössä</string>
 
-
     <!-- welcome and login -->
     <!-- Primary button on the welcome screen, allows to create an instant profile -->
     <string name="onboarding_create_instant_account">Luo uusi profiili</string>
-    <!-- Secondary button on the welcome screen, allows to "Add as Second Device", "Restore from Backup"  -->
+    <!-- Secondary button on the welcome screen, allows to "Add as Second Device", "Restore from Backup" -->
     <string name="onboarding_alternative_logins">Minulla on jo profiili</string>
     <!-- This is a button and a title, allowing to use existing, classic email, setting ports, passwords and so on -->
     <string name="manual_account_setup_option">Tavanomainen sähköpostikirjautuminen</string>
@@ -565,10 +548,7 @@
     <string name="share_text_multiple_chats">Lähetä tämä teksti %1$d keskusteluun?\n\n\"%2$s\"</string>
     <string name="share_abort">Jakaminen keskeytetty puuttuvien käyttöoikeuksien vuoksi.</string>
 
-
     <!-- preferences -->
-    <string name="pref_using_custom">Käytetään mukautettua: %s</string>
-    <string name="pref_using_default">Käytetään oletusta: %s</string>
     <string name="pref_profile_info_headline">Profiilisi</string>
     <string name="pref_profile_photo">Profiilikuva</string>
     <string name="pref_blocked_contacts">Estetyt yhteystiedot</string>
@@ -598,8 +578,6 @@
     <string name="pref_sound">Ääni</string>
     <string name="pref_silent">Äänetön</string>
     <string name="pref_privacy">Yksityisyys</string>
-    <!-- deprecated, use pref_chats -->
-    <string name="pref_chats_and_media">Keskustelut ja media</string>
     <string name="pref_system_default">Järjestelmän oletus</string>
     <!-- Translators: as in "opposite of dark" -->
     <string name="pref_light_theme">Vaalea</string>
@@ -744,10 +722,6 @@
     <string name="ephemeral_timer_seconds_by_you">Katoavien viestien ajastin asetettu %1$s sekuntiin minun toimestani.</string>
     <!-- %1$s will be replaced by the number of seconds (always >1) the timer is set to, %2$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_seconds_by_other">Katoavien viestien ajastin asetettu %1$s sekuntiin käyttäjän %2$s toimesta.</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_you">Katoavien viestien ajastin asetettu 1 minuuttiin minun toimestani.</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_other">Katoavien viestien ajastin asetettu 1 minuuttiin käyttäjän %1$s toimesta.</string>
     <string name="ephemeral_timer_1_hour_by_you">Katoavien viestien ajastin asetettu 1 tuntiin minun toimestani.</string>
     <!-- %1$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_1_hour_by_other">Katoavien viestien ajastin asetettu 1 tuntiin käyttäjän %1$s toimesta.</string>
@@ -833,14 +807,12 @@
     <!-- Shown in contact profile. The placeholder will be replaced by the name of the contact that introduced the contact. -->
     <string name="verified_by">%1$s lisäsi</string>
     <string name="verified_by_you">Lisäämäni</string>
-    <!-- deprecated -->
-    <string name="verified_contact_required_explain">Päästä-päähän -salauksen takaamiseksi, voit lisätä ryhmään ainoastaan yhteystietoja joilla on vihreä \"oikein\" -merkki.\n\nVoit tavata yhteystietoja kasvotusten ja skannata heidän QR -koodinsa niin saat lisättyä salauksen käyttöön</string>
     <string name="mailto_dialog_header_select_chat">Valitse keskustelu viestien lähettämiseen</string>
     <!-- first placeholder is the name of the chat -->
     <string name="confirm_replace_draft">Keskustelussa %1$s on jo luonnos. Haluatko korvata sen?</string>
     <string name="mailto_link_could_not_be_decoded">mailto-linkkiä ei voitu selvittää: %1$s</string>
 
-    <!-- notifications  -->
+    <!-- notifications -->
     <string name="notify_reply_button">Vastaa</string>
     <string name="notify_new_message">Uusi viesti</string>
     <string name="notify_background_connection_enabled">Yhteys käynnissä taustalla</string>
@@ -854,7 +826,6 @@
     <!-- Body text for a generic "New messages" notification. Shown if we do not have more information about a new messages. Note, that the string is also referenced at https://github.com/deltachat/notifiers -->
     <string name="new_messages_body">Sinulle on uusia viestejä</string>
     <string name="n_messages_in_m_chats">%1$d viestiä %2$d:ssä keskustelussa</string>
-
 
     <!-- permissions -->
     <string name="perm_required_title">Pääsylupa vaaditaan</string>

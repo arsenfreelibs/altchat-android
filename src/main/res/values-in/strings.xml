@@ -12,7 +12,6 @@
     <string name="off">Mati</string>
     <string name="def">Default</string>
     <string name="default_value">Default (%1$s)</string>
-    <string name="default_value_as_above">Default (sama seperti di atas)</string>
     <string name="custom">Menurut pesanan</string>
     <string name="none">Tidak ada</string>
     <string name="automatic">Otomatis</string>
@@ -93,7 +92,7 @@
     <string name="last_month">Bulan lalu</string>
     <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by date or time, resulting in "Last seen at 12:13 AM" or "Last seen Nov 12" -->
     <string name="last_seen_at">Terakhir terlihat di %1$s</string>
-    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages)-->
+    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages) -->
     <string name="last_seen_relative">Terakhir terlihat %1$s</string>
     <string name="last_seen_unknown">Terakhir terlihat: Tidak diketahui</string>
     <!-- Shown beside messages that are "N minutes old". Prefer short strings, or well-known abbreviations. -->
@@ -183,8 +182,6 @@
     <string name="menu_new_contact">Kontak baru</string>
     <string name="menu_new_chat">Obrolan baru</string>
     <string name="menu_new_group">Grup baru</string>
-    <!-- deprecated -->
-    <string name="add_recipients">Tambahkan Penerima</string>
     <string name="menu_send">Terkirim</string>
     <string name="menu_toggle_keyboard">Tekan tombol emoji keyboard</string>
     <string name="menu_edit_group">Edit grup</string>
@@ -240,7 +237,6 @@
     <string name="menu_more_options">Opsi Lainnya</string>
     <string name="menu_learn_spelling">Belajar Ejaan</string>
     <string name="jump_to_message">Lompat ke Pesan</string>
-    <string name="copy_json">Salin JSON</string>
     <string name="title_share_location">Bagikan lokasi kepada seluruh anggota grup</string>
     <string name="device_talk">Pesan perangkat</string>
     <string name="device_talk_subtitle">Pesan-pesan buatan lokal</string>
@@ -287,11 +283,9 @@
     <string name="ask_remove_members">Hapus %1$s dari grup?</string>
     <string name="open_url_confirmation">Apakah anda ingin membuka pranala ini?</string>
 
-
     <!-- contact list -->
     <string name="contacts_title">Kontak</string>
     <string name="contacts_type_email_above">Ketik alamat email di atas</string>
-
 
     <!-- chatlist and chat view -->
     <plurals name="chat_archived">
@@ -326,12 +320,6 @@
     <string name="retry_send">Coba lagi mengirim pesan</string>
     <string name="cannot_display_unsuported_file_type">Tidak dapat menampilkan tipe berkas ini: %s</string>
     <string name="attachment_failed_to_load">Gagal memuat lampiran</string>
-    <!-- map -->
-    <string name="filter_map_on_time">Tunjukkan lokasi dalam jangka waktu</string>
-    <string name="show_location_traces">Tunjukkan jejak</string>
-    <string name="add_poi">Kirim titik menarik</string>
-
-
     <!-- search -->
     <string name="search">Cari</string>
     <string name="search_explain">Mencari obrolan, kontak dan pesan</string>
@@ -395,10 +383,7 @@
     <string name="forward_to">Diteruskan ke…</string>
     <string name="share_abort">Pembagian dibatalkan karena tidak ada izin.</string>
 
-
     <!-- preferences -->
-    <string name="pref_using_custom">Menggunakan custom: %s</string>
-    <string name="pref_using_default">Menggunakan default: %s</string>
     <string name="pref_profile_info_headline">Info profil Anda</string>
     <string name="pref_profile_photo">Gambar profil</string>
     <string name="pref_blocked_contacts">Kontak yang diblokir</string>
@@ -425,8 +410,6 @@
     <string name="pref_sound">Suara</string>
     <string name="pref_silent">Sunyi</string>
     <string name="pref_privacy">Privasi</string>
-    <!-- deprecated, use pref_chats -->
-    <string name="pref_chats_and_media">Obrolan dan media</string>
     <!-- Translators: as in "opposite of dark" -->
     <string name="pref_light_theme">Cahaya</string>
     <string name="pref_dark_theme">Gelap</string>
@@ -515,7 +498,7 @@
     <string name="qrscan_title">Pindah kode QR</string>
     <string name="qrscan_hint">Pegang kamera Anda di atas kode QR.</string>
     <string name="qrscan_ask_join_group">Apakah anda ingin bergabung dengan grup \"%1$s\"?</string>
-    <string name="qrscan_contains_text">Kode QR yang dipindai  text:\n\n%1$s</string>
+    <string name="qrscan_contains_text">Kode QR yang dipindai text:\n\n%1$s</string>
     <string name="qrscan_contains_url">Kode QR yang dipindai URL:\n\n%1$s</string>
     <string name="qrscan_fingerprint_label">Sidik jari</string>
     <string name="qrshow_title">Kode undangan QR</string>
@@ -532,7 +515,7 @@
     <string name="qraccount_ask_create_and_login">Buat alamat email baru di \"%1$s\" dan login di sana?</string>
     <string name="qraccount_qr_code_cannot_be_used">Kode QR yang dipindai tidak dapat digunakan untuk mengatur akun baru.</string>
     <string name="contact_verified">%1$sdiverifikasi.</string>
-    <!-- notifications  -->
+    <!-- notifications -->
     <string name="notify_reply_button">Balasan</string>
     <string name="notify_new_message">Pesan baru</string>
     <string name="notify_background_connection_enabled">Koneksi latar diaktifkan</string>

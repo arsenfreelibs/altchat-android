@@ -12,7 +12,6 @@
     <string name="off">切</string>
     <string name="def">標準</string>
     <string name="default_value">初期値（%1$s）</string>
-    <string name="default_value_as_above">初期値（同上）</string>
     <string name="custom">カスタム</string>
     <string name="none">無し</string>
     <string name="automatic">自動</string>
@@ -205,7 +204,6 @@
     <string name="menu_zoom_out">縮小</string>
     <string name="menu_save_log">ログ保存</string>
     <string name="jump_to_message">メッセージへ移動</string>
-    <string name="copy_json">JSONをコピー</string>
     <string name="title_share_location">現在地を全員に公開する</string>
     <string name="device_talk">デバイスのメッセージ</string>
     <string name="device_talk_subtitle">ローカルで生成されたメッセージ</string>
@@ -250,11 +248,9 @@
     <string name="ask_remove_members">%1$sをグループから排除しますか</string>
     <string name="open_url_confirmation">このリンクを開きますか？</string>
 
-
     <!-- contact list -->
     <string name="contacts_title">連絡先一覧</string>
     <string name="contacts_type_email_above">上にメールアドレスを入力してください。</string>
-
 
     <!-- chatlist and chat view -->
     <plurals name="chat_archived">
@@ -295,10 +291,7 @@
     <!-- mailing lists -->
     <string name="mailing_list">メーリングリスト</string>
 
-    <string name="show_location_traces">トレースを表示する</string>
-    <string name="add_poi">指定位置を送る</string>
-
-
+    <!-- punycode warning / labeled links -->
     <string name="puny_code_warning_header">疑わしいリンクが検出された</string>
     <!-- search -->
     <string name="search">検索</string>
@@ -375,10 +368,7 @@
     <string name="share_text_multiple_chats">%2$sを%1$d個のチャットに送りますか。</string>
     <string name="share_abort">権限エラー：共有が一時中断されました。</string>
 
-
     <!-- preferences -->
-    <string name="pref_using_custom">カスタムを使う：%s</string>
-    <string name="pref_using_default">デフォルトを使う：%s</string>
     <string name="pref_profile_info_headline">ユーザープロファイル</string>
     <string name="pref_profile_photo">アイコン画像</string>
     <string name="pref_blocked_contacts">ブロックされた人</string>
@@ -408,8 +398,6 @@
     <string name="pref_sound">通知音</string>
     <string name="pref_silent">無音</string>
     <string name="pref_privacy">機密保護</string>
-    <!-- deprecated, use pref_chats -->
-    <string name="pref_chats_and_media">チャットと写真･動画･音楽</string>
     <string name="pref_system_default">システム既定</string>
     <!-- Translators: as in "opposite of dark" -->
     <string name="pref_light_theme">白</string>
@@ -513,10 +501,6 @@
     <string name="ephemeral_timer_seconds_by_you">自分から消えるメッセージを%1$s秒にしました。</string>
     <!-- %1$s will be replaced by the number of seconds (always >1) the timer is set to, %2$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_seconds_by_other">%2$sから消えるメッセージを%1$s秒にしました。</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_you">自分から消えるメッセージを1分にしました。</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_other">%1$sから消えるメッセージを1分にしました。</string>
     <string name="ephemeral_timer_1_hour_by_you">自分から消えるメッセージを1時間にしました。</string>
     <!-- %1$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_1_hour_by_other">%1$sから消えるメッセージを1時間にしました。</string>
@@ -564,7 +548,7 @@
     <string name="qrshow_join_contact_no_connection_toast">インターネットに接続されていないので、QRコードの設定ができません。</string>
     <string name="qraccount_ask_create_and_login">%1$sに新しいメールアドレスを作ってログしますか。</string>
     <string name="contact_verified">%1$sを確認しました。</string>
-    <!-- notifications  -->
+    <!-- notifications -->
     <string name="notify_reply_button">返信</string>
     <string name="notify_new_message">新規メッセージ</string>
     <string name="notify_priority_high">高</string>

@@ -12,7 +12,6 @@
     <string name="off">Fra</string>
     <string name="def">Standard</string>
     <string name="default_value">Standardindstilling (%1$s)</string>
-    <string name="default_value_as_above">Standardindstilling ()</string>
     <string name="custom">Tilpasset</string>
     <string name="none">Ingen</string>
     <string name="automatic">Automatisk</string>
@@ -208,7 +207,6 @@
     <string name="menu_zoom_in">Forstør</string>
     <string name="menu_zoom_out">Formindsk</string>
     <string name="menu_save_log">Gem log</string>
-    <string name="copy_json">Kopier JSON</string>
     <string name="title_share_location">Del placering med alle gruppemedlemmer</string>
     <string name="device_talk">Enhedsbeskeder</string>
     <string name="device_talk_subtitle">Lokalt genererede beskeder</string>
@@ -258,11 +256,9 @@
     <string name="ask_remove_members">Fjern %1$s fra gruppe?</string>
     <string name="open_url_confirmation">Vil du åbne dette link?</string>
 
-
     <!-- contact list -->
     <string name="contacts_title">Kontakter</string>
     <string name="contacts_type_email_above">Indtast e-mailadresse ovenover</string>
-
 
     <!-- chatlist and chat view -->
     <plurals name="chat_archived">
@@ -300,16 +296,10 @@
     <string name="retry_send">Forsøg igen at sende besked</string>
     <string name="cannot_display_unsuported_file_type">Kan ikke vise denne filtype: 1%s</string>
     <string name="attachment_failed_to_load">Visning af vedhæftede fil mislykkedes</string>
-    <!-- map -->
-    <string name="filter_map_on_time">Vis placeringer i tidsramme</string>
-    <string name="show_location_traces">Vis spor</string>
-    <string name="add_poi">Send interessepunkt</string>
-
-
     <!-- search -->
     <string name="search">Søg</string>
     <string name="search_explain">Søg efter samtaler, kontakter og beskeder</string>
-    <string name="search_no_result_for_x">Ingen resultater fundet for  \"%s\"</string>
+    <string name="search_no_result_for_x">Ingen resultater fundet for \"%s\"</string>
     <!-- create/edit groups, contact/group profile -->
     <string name="group_name">Gruppenavn</string>
     <string name="group_avatar">Gruppeikon</string>
@@ -351,7 +341,6 @@
     <!-- Used for describing resource usage, resulting string will be eg. "1.2 GiB of 3 GiB used" -->
     <string name="part_of_total_used">%1$s af %2$s brugt</string>
 
-
     <string name="login_title">Login</string>
     <string name="login_inbox">Indbakke</string>
     <string name="login_imap_login">IMAP logind navn</string>
@@ -373,7 +362,7 @@
     <string name="import_backup_ask">Sikkerhedskopi fundet hos \"%1$s\".\n\nVil du Importere og bruge al data og opsætning fra den?</string>
     <string name="import_backup_no_backup_found">Ingen sikkerhedskopi fundet.\n\nKopier sikkerhedskopi til \"%1$s\" og prøv igen.</string>
     <!-- %1$s will be replaced by the failing address -->
-    <string name="login_error_cannot_login">Kan ikke logge ind som  \"%1$s\". Kontroller om e-mailadresse og adgangskode er korrekt.</string>
+    <string name="login_error_cannot_login">Kan ikke logge ind som \"%1$s\". Kontroller om e-mailadresse og adgangskode er korrekt.</string>
     <!-- TLS certificate checks -->
     <string name="accept_invalid_certificates">Acceptér ugyldige certifikater</string>
     <string name="switch_account">Skift konto</string>
@@ -393,10 +382,7 @@
     <string name="share_text_multiple_chats">Send denne tekst til %1$d samtaler?\n\n\"%2$s\"</string>
     <string name="share_abort">Deling afbrudt på grund af manglende tilladelser.</string>
 
-
     <!-- preferences -->
-    <string name="pref_using_custom">Bruger tilpasset: %s</string>
-    <string name="pref_using_default">Bruger standard: %s</string>
     <string name="pref_profile_info_headline">Profil information</string>
     <string name="pref_profile_photo">Profilbillede</string>
     <string name="pref_blocked_contacts">Blokerede kontakter</string>
@@ -426,8 +412,6 @@
     <string name="pref_sound">Lyd</string>
     <string name="pref_silent">Stille</string>
     <string name="pref_privacy">Privatliv</string>
-    <!-- deprecated, use pref_chats -->
-    <string name="pref_chats_and_media">Samtaler og medie</string>
     <string name="pref_system_default">Systemstandard</string>
     <!-- Translators: as in "opposite of dark" -->
     <string name="pref_light_theme">Lys</string>
@@ -536,10 +520,6 @@
     <string name="ephemeral_timer_seconds_by_you">Tidsudløb for beskeder sat til %1$s s af mig.</string>
     <!-- %1$s will be replaced by the number of seconds (always >1) the timer is set to, %2$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_seconds_by_other">Tidsudløb for beskeder sat til %1$s s af %2$s.</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_you">Tidsudløb for beskeder sat til 1 minut af mig.</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_other">Tidsudløb for beskeder sat til 1 minut af %1$s.</string>
     <string name="ephemeral_timer_1_hour_by_you">Tidsudløb for beskeder sat til 1 time af mig.</string>
     <!-- %1$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_1_hour_by_other">Tidsudløb for beskeder sat til 1 time af %1$s.</string>
@@ -593,7 +573,7 @@
     <string name="qraccount_ask_create_and_login">Opret ny e-mail adresse på \"%1$s\" og log ind der?</string>
     <string name="qraccount_qr_code_cannot_be_used">Den skannede QR-kode kan ikke bruges til at opsætte en ny konto.</string>
     <string name="contact_verified">%1$s bekræftet.</string>
-    <!-- notifications  -->
+    <!-- notifications -->
     <string name="notify_reply_button">Svar</string>
     <string name="notify_new_message">Ny besked</string>
     <string name="notify_background_connection_enabled">Baggrundsforbindelse aktiveret</string>

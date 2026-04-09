@@ -16,7 +16,6 @@
     <string name="off">خاموش</string>
     <string name="def">پیش‌فرض</string>
     <string name="default_value">پیش‌فرض (%1$s)</string>
-    <string name="default_value_as_above">پیش‌فرض (مانند بالا)</string>
     <string name="custom">سفارشی</string>
     <string name="none">هیچ‌کدام</string>
     <string name="automatic">خودکار</string>
@@ -34,8 +33,6 @@
     <string name="update">به‌‌روزرسانی</string>
     <string name="emoji">شکلک</string>
     <string name="attachment">پیوست</string>
-    <!-- the placeholder will be replaced by the name of the image or file to attach -->
-    <string name="ask_attach">پیوست کردن «%1$s»؟</string>
     <string name="back">بازگشت</string>
     <string name="close">بستن</string>
     <string name="close_window">بستن پنجره</string>
@@ -117,19 +114,9 @@
     <string name="last_month">ماه گذشته</string>
     <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by date or time, resulting in "Last seen at 12:13 AM" or "Last seen Nov 12" -->
     <string name="last_seen_at">آخرین بار در %1$s دیده شده</string>
-    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages)-->
+    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages) -->
     <string name="last_seen_relative">آخرین بار دیده‌شده در %1$s</string>
     <string name="last_seen_unknown">آخرین زمان مشاهده: نامشخص</string>
-    <!-- Shown in call duration. Avoid abbreviations, prefer full words ex. "N seconds". -->
-    <plurals name="n_seconds_ext">
-        <item quantity="one">%d ثانیه</item>
-        <item quantity="other">%dثانیه</item>
-    </plurals>
-    <!-- Shown in call duration. Avoid abbreviations, prefer full words ex. "N minutes". -->
-    <plurals name="n_minutes_ext">
-        <item quantity="one">%d دقیقه</item>
-        <item quantity="other">%d دقیقه</item>
-    </plurals>
     <!-- Shown beside messages that are "N minutes old". Prefer short strings, or well-known abbreviations. -->
     <plurals name="n_minutes">
         <item quantity="one">%d دقیقه</item>
@@ -168,7 +155,7 @@
     <!-- Short form for "N Items Selected" -->
     <plurals name="n_selected">
         <item quantity="one">تعداد %d انتخاب شده است</item>
-        <item quantity="other">تعداد  %dانتخاب شده است</item>
+        <item quantity="other">تعداد %dانتخاب شده است</item>
     </plurals>
     <string name="selected_colon">انتخاب شده‌ها:</string>
     <string name="self">من</string>
@@ -261,8 +248,6 @@
     <string name="channels">کانال‌ها</string>
     <!-- consider keeping the term "channel" as in WhatsApp or Telegram -->
     <string name="new_channel">کانال جدید</string>
-    <!-- deprecated -->
-    <string name="add_recipients">افزودن دنبال‌کننده</string>
     <!-- consider keeping the term "channel" as in WhatsApp or Telegram -->
     <string name="channel_name">نام کانال</string>
     <string name="email">رایانامه</string>
@@ -342,15 +327,12 @@
     <string name="menu_more_options">گزینه‌های بیشتر</string>
     <string name="menu_learn_spelling">یادگرفتن املا </string>
     <string name="jump_to_message">رفتن به پیام</string>
-    <string name="jump_to_original_message">پرش به پیام اصلی</string>
-    <string name="copy_json">JSON رونوشت برداری از </string>
     <string name="replace_draft">جایگزین کردن پیش‌نویس</string>
     <string name="title_share_location">اشتراک موقعیت مکانی با همه اعضای گروه</string>
     <string name="device_talk">پیام‌های دستگاه</string>
-    <string name="device_talk_subtitle">پیام‌های  داخلی</string>
+    <string name="device_talk_subtitle">پیام‌های داخلی</string>
     <string name="device_talk_explain">پیام‌ها در این گپ به صورت داخلی و توسط نرم‌افزار دلتاچت تولید شده‌اند. سازنده‌ها از این محل برای اعلان به روز‌رسانی‌ها و مشکلات پیش آمده حین کار استفاده می‌کنند. </string>
-    <string name="device_talk_welcome_message2">مکالمه برقرار کنید!\n\n
-روی «کد کیوآر» در صفحهٔ اصلی هر دو دستگاه بزنید. روی یکی از دستگاه‌ها «اسکن کد کیوآر» را انتخاب کنید و با آن روی دستگاه دیگر بگیرید\n\nاگر در یک مکان نیستید، از طریق تماس تصویری اسکن کنید یا این‌که یک پیوند دعوت از «اسکن کد کیوآر» به اشتراک بگذارید.\n\n.سپس از تجربه کردن پیام‌رسان بر روی بزرگ‌ترین شبکهٔ نامتمرکزی که تا به حال وجود داشته یعنی رایانامه لذت ببرید. در مقایسه با دیگر پیام‌رسان‌های محبوب، دلتاچت هیچ کنترل مرکزی‌ای ندارد.  شما، دوست‌هایتان، همکارهایتان یا خانواده‌هایتان را ردیابی نمی‌کند یا این‌که داده‌هایتان را به سازمان‌های بزرگ نمی‌فروشد.</string>
+    <string name="device_talk_welcome_message2">مکالمه برقرار کنید!\n\n روی «کد کیوآر» در صفحهٔ اصلی هر دو دستگاه بزنید. روی یکی از دستگاه‌ها «اسکن کد کیوآر» را انتخاب کنید و با آن روی دستگاه دیگر بگیرید\n\nاگر در یک مکان نیستید، از طریق تماس تصویری اسکن کنید یا این‌که یک پیوند دعوت از «اسکن کد کیوآر» به اشتراک بگذارید.\n\n.سپس از تجربه کردن پیام‌رسان بر روی بزرگ‌ترین شبکهٔ نامتمرکزی که تا به حال وجود داشته یعنی رایانامه لذت ببرید. در مقایسه با دیگر پیام‌رسان‌های محبوب، دلتاچت هیچ کنترل مرکزی‌ای ندارد. شما، دوست‌هایتان، همکارهایتان یا خانواده‌هایتان را ردیابی نمی‌کند یا این‌که داده‌هایتان را به سازمان‌های بزرگ نمی‌فروشد.</string>
     <string name="edit_contact">ویرایش مخاطب</string>
     <!-- Verb "to pin", making something sticky, not a noun or abbreviation for "pin number". -->
     <string name="pin_chat">سنجاق کردن گپ</string>
@@ -394,23 +376,25 @@
         <item quantity="one">ارسال این پرونده به %s؟</item>
         <item quantity="other">ارسال این %d پرونده به %s؟</item>
     </plurals>
-    <string name="file_saved_to">پرونده  در «%1$s» ذخیره شد.</string>
+    <string name="file_saved_to">پرونده در «%1$s» ذخیره شد.</string>
 
     <!-- the action "to call someone", used as a tooltip for the "phone" icon. not: "the call" -->
     <string name="start_call">تماس</string>
+    <!-- Menu item to start an audio call; verbs as "start" are probably superfluous in many translations -->
     <string name="start_audio_call">تماس صوتی</string>
+    <!-- Menu item to start a video call; verbs as "start" are probably superfluous in many translations -->
     <string name="start_video_call">تماس تصویری</string>
     <!-- the action "to answer" or to "accept" or to "pick up" a call. not: "the answer" -->
     <string name="answer_call">جواب دادن</string>
     <!-- the action "to decline" a call, not: "the decline" -->
     <string name="end_call">رد کردن</string>
-    <!-- deprecated, use outgoing_audio_call or outgoing_video_call instead -->
-    <string name="outgoing_call">تماس خروجی</string>
+    <!-- deprecated, use "Audio call" instead -->
     <string name="outgoing_audio_call">تماس صوتی خروجی</string>
+    <!-- deprecated, use "Video call" instead -->
     <string name="outgoing_video_call">تماس تصویری خروجی</string>
-    <!-- deprecated, use incoming_audio_call or incoming_video_call instead -->
-    <string name="incoming_call">تماس ورودی</string>
+    <!-- deprecated, use "Audio call" instead -->
     <string name="incoming_audio_call">تماس صوتی ورودی</string>
+    <!-- deprecated, use "Video call" instead -->
     <string name="incoming_video_call">تماس تصویری ورودی</string>
     <string name="declined_call">تماس رد شده</string>
     <string name="canceled_call">تماس لغو شده</string>
@@ -444,9 +428,7 @@
     <string name="ask_forward">پیام‌ها به %1$s هدایت شوند؟</string>
     <string name="ask_forward_multiple">انتقال پیام‌ها به %1$d گپ؟</string>
     <string name="ask_export_attachment">ضمیمه صادر شود؟ صادر کردن ضمیمه باعث می‌شود دیگر نرم‌افزارهای روی دستگاه شما بتوانند به آن دسترسی داشته باشند. \n\nادامه می‌دهید؟</string>
-    <string name="ask_block_contact">مخاطب مسدود شود؟\n\n
-شما دیگر پیامی به صورت مستقیم از این مخاطب دریافت نخواهید کرد. همچنین گروه‌های ایجاد شده توسط این مخاطب نمایش داده نخواهند شد.\n\n
-با این وجود، گروه‌هایی که این مخاطب در آن حضور دارند نمایش داده خواهد شد.</string>
+    <string name="ask_block_contact">مخاطب مسدود شود؟\n\n شما دیگر پیامی به صورت مستقیم از این مخاطب دریافت نخواهید کرد. همچنین گروه‌های ایجاد شده توسط این مخاطب نمایش داده نخواهند شد.\n\n با این وجود، گروه‌هایی که این مخاطب در آن حضور دارند نمایش داده خواهد شد.</string>
     <string name="ask_unblock_contact">رفع مسدودیت این مخاطب؟</string>
     <string name="ask_delete_contacts">مخاطب‌ها حذف شوند؟\n\nمخاطب‌هایی که گپ فعال دارند را نمی‌توان به صورت دائمی حذف کرد. </string>
     <string name="ask_delete_contact">حذف مخاطب %1$s؟ \n\nمخاطب‌ها با گپ فعال و مخاطب‌هایی که در دفتر تلفن سامانه هستند را نمی‌توان به صورت دائمی حذف کرد. </string>
@@ -457,11 +439,9 @@
     <string name="ask_remove_from_channel">حذف %1$s از کانال؟</string>
     <string name="open_url_confirmation">آیا می‌خواهید این لینک را باز کنید؟</string>
 
-
     <!-- contact list -->
     <string name="contacts_title">مخاطبین</string>
     <string name="contacts_type_email_above">نشانی رایانامه را در بخش بالا وارد کنید</string>
-
 
     <!-- chatlist and chat view -->
     <plurals name="chat_archived">
@@ -495,7 +475,7 @@
     <string name="chat_request_label">درخواست</string>
     <string name="chat_request_label_explain">حساب کردن درخواست‌ها در شمارنده‌ها و اعلان‌ها</string>
     <string name="chat_no_messages">پیامی نیست. </string>
-    <string name="chat_self_talk_subtitle">پیام‌هایی که برای خودم  ارسال کرده‌ام. </string>
+    <string name="chat_self_talk_subtitle">پیام‌هایی که برای خودم ارسال کرده‌ام. </string>
     <string name="archive_empty_hint">اگر گپ‌ها را بایگانی کنید در اینجا نمایش داده می‌شوند. </string>
     <!-- Action to add a message to "Saved Messages". The longer form (instead of "Save" only) is needed esp. on desktop to make clear this is not about saving a file to disk -->
     <string name="save_message">ذخیره پیام</string>
@@ -522,24 +502,13 @@
     <string name="send_file_to">ارسال \"%1$s\" به...</string>
     <!-- title shown above a list contacts where one should be selected (eg. when a webxdc attempts to send a message to a chat) -->
     <string name="send_message_to">ارسال پیام به...</string>
-    <string name="enable_realtime">برنامه‌های بلادرنگ</string>
-    <string name="enable_realtime_explain">فعال‌سازی اتصال‌های بلادرنگ برای برنامه‌های به اشتراک گذاشته‌شده در گپ‌ها. در صورت فعال‌سازی، زمانی که برنامه را باز می‌کنید، دیگر اعضای گپ ممکن است بتوانند نشانی اینترنتی شما را شناسایی کنند.</string>
-
-    <!-- map -->
-    <string name="filter_map_on_time">نمایش موقعیت‌های مکانی در چارچوب زمان</string>
-    <string name="show_location_traces">نمایش ردپاها</string>
-    <string name="add_poi">ارسال نقطه توجه</string>
-
 
     <!-- punycode warning / labeled links -->
-    <!-- placeholder is domain/hostname that should be trusted -->
-    <string name="open_external_url_trust_domain">دوباره درمورد %1$s سوال نشود</string>
     <string name="puny_code_warning_header">لینک مشکوک شناسایی شد</string>
     <!-- placeholder contains the hostname converted to ascii -->
     <string name="puny_code_warning_question">مطمئن هستید می‌خواهید به %1$s مراجعه کنید؟</string>
     <!-- this message is shown whenever a link with non-latin characters is clicked. first placeholder is original hostname with special chars, second placeholder is hostname encoded in ascii -->
     <string name="puny_code_warning_description">شما لینکی را دنبال کرده‌اید که با نمایش حروفی که از نظر ظاهری شباهت دارند ممکن است شما را به جای دیگری ببرد. دنبال کردن لینک با برچسب %1$s شما را به %2$s خواهد برد که حالت عادی برای حروف انگلیسی است. اگر انتظار این حروف را نداشتید ممکن است لینک مورد نظر مضر باشد. </string>
-
 
     <!-- search -->
     <string name="search">جستجو</string>
@@ -549,7 +518,6 @@
     <string name="search_no_result_for_x">نتیجه‌ای برای \"%s\" پیدا نشد</string>
     <!-- Adjective, as in "Show Unread Messages" -->
     <string name="search_unread">خوانده نشده</string>
-
 
     <!-- create/edit groups, contact/group profile -->
     <string name="group_name">نام گروه</string>
@@ -599,8 +567,7 @@
     <string name="multidevice_receiver_title">افزودن به عنوان دستگاه دوم</string>
     <string name="multidevice_open_settings_on_other_device">در دستگاه اول، به \"تنظیم‌ها / افزودن دستگاه دوم\" بروید و کد نشان داده شده در آنجا را اسکن کنید</string>
     <string name="multidevice_receiver_scanning_ask">از حساب دستگاه دیگر رونوشتی برای این دستگاه گرفته شود؟</string>
-    <string name="multidevice_receiver_needs_update">نمایه‌ای که می‌خواهید وارد کنید از یک نسخهٔ جدید‌تر دلتاچت است.\n\n
-برای پیکره‌بندی یک دستگاه دوم، لطفا این دستگاه را به جدیدترین نسخهٔ دلتاچت بروزرسانی کنید.</string>
+    <string name="multidevice_receiver_needs_update">نمایه‌ای که می‌خواهید وارد کنید از یک نسخهٔ جدید‌تر دلتاچت است.\n\n برای پیکره‌بندی یک دستگاه دوم، لطفا این دستگاه را به جدیدترین نسخهٔ دلتاچت بروزرسانی کنید.</string>
     <string name="multidevice_abort">راه اندازی دستگاه دوم لغو شود؟</string>
     <string name="multidevice_abort_will_invalidate_copied_qr">این کار رمزینهٔ پاس رونوشت شده در تخته‌گیره را باطل می کند.</string>
     <string name="multidevice_transfer_done_devicemsg">ℹ️ حساب به دستگاه دوم شما منتقل شد.</string>
@@ -615,8 +582,6 @@
     <string name="incoming_messages">پیام‌های ورودی</string>
     <!-- Headline for the "Outbox" eg. in the "Connectivity" view -->
     <string name="outgoing_messages">پیام‌های خروجی</string>
-    <!-- deprecated -->
-    <string name="storage_on_domain">ذخیره کردن در %1$s</string>
     <string name="connectivity">اتصال‌ها</string>
     <!-- Shown in the title bar if the app is "Not connected"; prefer short strings. -->
     <string name="connectivity_not_connected">متصل نیست</string>
@@ -634,11 +599,10 @@
     <!-- Used for describing resource usage, resulting string will be eg. "1.2 GiB of 3 GiB used" -->
     <string name="part_of_total_used">مقدار %1$s از %2$s استفاده شده است. </string>
 
-
     <!-- welcome and login -->
     <!-- Primary button on the welcome screen, allows to create an instant profile -->
     <string name="onboarding_create_instant_account">ایجاد حساب کاربری جدید</string>
-    <!-- Secondary button on the welcome screen, allows to "Add as Second Device", "Restore from Backup"  -->
+    <!-- Secondary button on the welcome screen, allows to "Add as Second Device", "Restore from Backup" -->
     <string name="onboarding_alternative_logins">از قبل یک حساب کاربری دارم</string>
     <!-- This is a button and a title, allowing to use existing, classic email, setting ports, passwords and so on -->
     <string name="manual_account_setup_option">استفاده از رایانامه معمولی به عنوان رله</string>
@@ -700,9 +664,6 @@
     <!-- shown if a QR code was scanned that can be used as a relay -->
     <string name="confirm_add_transport">اضافه کردن این رله؟</string>
     <string name="invalid_transport_qr">کیو‌آر کد اسکن شده دارای یک رلهٔ معتبر نیست.</string>
-    <!-- placeholder will be replaced by a relay server name -->
-    <string name="confirm_remove_transport">حذف کردن رلهٔ «%1$s»؟\n\n مخاطب‌های شما تنها در صورتی می‌توانند با شما ارتباط برقرار کنند که قبلا از طریق یک رلهٔ دیگر با آن‌ها تماس داشته‌اید.\n\n در صورت تردید، این رله را بعدا حذف کنید.</string>
-
     <string name="login_certificate_checks">بررسی‌های گواهینامه</string>
     <string name="login_error_mail">لطفاً یک نشانی رایانامهٔ معتبر وارد کنید</string>
     <string name="login_error_server">لطفا یک کارساز / نشانی آی‌پی صحیح وارد کنید</string>
@@ -743,10 +704,7 @@
     <string name="share_text_multiple_chats">ارسال این متن به %1$d گپ؟n/n/«%2$s»</string>
     <string name="share_abort">اشتراک گذاری به دلیل نبود مجوز‌ها متوقف شد.</string>
 
-
     <!-- preferences -->
-    <string name="pref_using_custom">استفاده از ترجیحی: %s</string>
-    <string name="pref_using_default">استفاده از پیش‌فرض: %s</string>
     <string name="pref_profile_info_headline">اطلاعات نمایهٔ شما</string>
     <string name="pref_profile_photo">تصویر نمایه</string>
     <string name="pref_blocked_contacts">مخاطبین مسدود شده</string>
@@ -778,8 +736,6 @@
     <string name="pref_sound">صدا</string>
     <string name="pref_silent">سکوت</string>
     <string name="pref_privacy">حریم خصوصی</string>
-    <!-- deprecated, use pref_chats -->
-    <string name="pref_chats_and_media">گپ‌ها و رسانه</string>
     <string name="pref_system_default">پیش‌فرض سیستم</string>
     <!-- Translators: as in "opposite of dark" -->
     <string name="pref_light_theme">روشن</string>
@@ -805,7 +761,7 @@
     <string name="pref_other">دیگر</string>
     <string name="pref_backup">نسخه پشتیبان</string>
     <string name="pref_backup_explain">تهیهٔ پشتیبان از گپ‌ها در ذخیره‌گاه خارجی</string>
-    <string name="pref_backup_export_explain">تهیهٔ پشتیبان به شما  کمک می‌کند روی این دستگاه یا دستگاه دیگر نرم‌افزار را دوباره نصب کنید.\n\nپشتیبان حاوی تمام پیام‌ها، مخاطبین، گپ‌ها و برپاسازی اتوکریپت سرتاسر شما خواهد بود. پروندهٔ پشتیبانی را در یک جای امن نگه دارید و در اسرع وقت آن را پاک کنید.</string>
+    <string name="pref_backup_export_explain">تهیهٔ پشتیبان به شما کمک می‌کند روی این دستگاه یا دستگاه دیگر نرم‌افزار را دوباره نصب کنید.\n\nپشتیبان حاوی تمام پیام‌ها، مخاطبین، گپ‌ها و برپاسازی اتوکریپت سرتاسر شما خواهد بود. پروندهٔ پشتیبانی را در یک جای امن نگه دارید و در اسرع وقت آن را پاک کنید.</string>
     <string name="pref_backup_export_this">برون‌ریزی این نمایه</string>
     <!-- the placeholder will be replaced by the number of profiles to export; the number is always larger than 1 -->
     <string name="pref_backup_export_all">برون‌ریزی همه%1$d حساب ها</string>
@@ -844,15 +800,11 @@
     <string name="n_bytes_message">پیام %1$s </string>
     <!-- %1$s will be replaced by human-readable date and time -->
     <string name="download_max_available_until">سقف دانلود تا %1$s فعال خواهد بود</string>
-    <!-- deprecated -->
-    <string name="select_profile">انتخاب نمایه</string>
     <string name="profile_image_select">انتخاب تصویر نمایه</string>
     <string name="select_your_new_profile_image">تصویر نمایهٔ جدیدتان را برگزینید</string>
     <string name="profile_image_delete">حذف تصویر نمایه</string>
     <string name="pref_show_tray_icon">نمایش نمادک در زیر صفحه</string>
     <string name="pref_edit_profile">ویرایش نمایه</string>
-    <string name="disable_imap_idle">غیر فعال‌سازی IMAP IDLE</string>
-    <string name="disable_imap_idle_explain">استفاده نکردن از افزونهٔ IMAP IDLE حتی در صورتی که ارائه‌دهنده از آن پشتیبانی می‌کند. فعال‌سازی این گزینه باعث می‌شوند دریافت پیام‌ها به تاخیر بیوفتد. تنها برای آزمایش آن را فعال کنید.</string>
     <string name="send_stats_to_devs">ارسال آمار برای توسعه‌دهندگان دلتاچت</string>
     <string name="stats_device_message">آیا می‌خواهید با فرستادن آمار استفادهٔ هفتگی به بهبود دلتاچت کمک کنید؟ 👈این‌جا را بزنید...👉</string>
     <string name="stats_confirmation_dialog">می‌خواهید با فرستادن گزارش‌های ناشناس استفادهٔ هفتگی به بهبود دلتاچت کمک کنید؟</string>
@@ -867,8 +819,8 @@
     <string name="emoji_not_found">شکلکی پیدا نشد</string>
     <string name="emoji_recent">اخیرا استفاده شده</string>
     <string name="emoji_people">افراد و بدن</string>
-    <string name="emoji_nature">حیوانات و  طبیعت</string>
-    <string name="emoji_foods">غذا و  نوشیدنی</string>
+    <string name="emoji_nature">حیوانات و طبیعت</string>
+    <string name="emoji_foods">غذا و نوشیدنی</string>
     <string name="emoji_activity">فعالیت</string>
     <string name="emoji_places">مسافرت و مکان‌ها</string>
     <string name="emoji_objects">اشیاء</string>
@@ -889,9 +841,9 @@
     <string name="autodel_device_title">پاک کردن پیام‌ها از دستگاه</string>
     <string name="autodel_server_title">پاک کردن پیام‌ها از سرور</string>
     <!-- %1$d will be replaced by the number of messages, you can assume plural/lots here. %2$s will be replaced by a timespan option. -->
-    <string name="autodel_device_ask">آیا می‌خواهید %1$d پیام جدید و دریافت شده را در زمان%2$s در آینده پاک کنید؟\n\n• این شامل همه رسانه‌ها هم می‌شود\n\n•  پیام‌ها جدای از اینکه دیده شده باشند یا نه پاک می‌شوند. \"پیام های ذخیره شده\" شامل این پاک کردن محلی نمی‌شوند. </string>
+    <string name="autodel_device_ask">آیا می‌خواهید %1$d پیام جدید و دریافت شده را در زمان%2$s در آینده پاک کنید؟\n\n• این شامل همه رسانه‌ها هم می‌شود\n\n• پیام‌ها جدای از اینکه دیده شده باشند یا نه پاک می‌شوند. \"پیام های ذخیره شده\" شامل این پاک کردن محلی نمی‌شوند. </string>
     <!-- %1$d will be replaced by the number of messages, you can assume plural/lots here. %2$s will be replaced by a timespan option. -->
-    <string name="autodel_server_ask">آیا می‌خواهید %1$d پیام را اکنون و تمام پیام‌های آیندهٔ «%2$s»  را پاک کنید؟/n/n⚠️ این شامل رایانامه‌ها، رسانه و «پیام‌های ذخیره شده» در همه پوشه‌های کارساز(سرور) می‌شود/n/n⚠️ اگر می‌خواهید داده‌ها در کارساز باقی بمانند از این قابلیت استفاده نکنید/n/n⚠️ اگر به‌جز دلتاچت از دیگر نرم‌افزارهای رایانامه هم استفاده می‌کنید این قابلیت را به کار نگیرید.</string>
+    <string name="autodel_server_ask">آیا می‌خواهید %1$d پیام را اکنون و تمام پیام‌های آیندهٔ «%2$s» را پاک کنید؟/n/n⚠️ این شامل رایانامه‌ها، رسانه و «پیام‌های ذخیره شده» در همه پوشه‌های کارساز(سرور) می‌شود/n/n⚠️ اگر می‌خواهید داده‌ها در کارساز باقی بمانند از این قابلیت استفاده نکنید/n/n⚠️ اگر به‌جز دلتاچت از دیگر نرم‌افزارهای رایانامه هم استفاده می‌کنید این قابلیت را به کار نگیرید.</string>
     <!-- shown below enabled autodel_server-option, should be a summary of autodel_server_ask and remind about the impact -->
     <string name="autodel_server_enabled_hint">این شامل رایانامه‌ها، رسانه‌ها و «پیام‌های ذخیره شده» در تمام پوشه‌های کارساز(سرور) می‌شود. اگر می‌خواهید داده‌ها را در کارساز نگه دارید از این قابلیت استفاده نکنید. اگر از دیگر نرم‌افزارهای رایانامه به‌جز دلتاچت استفاده می‌کنید هم از این قابلیت استفاده نکنید.</string>
     <string name="autodel_server_warn_multi_device_title">فعال‌سازی حذف بلافاصله</string>
@@ -901,7 +853,7 @@
     <string name="autodel_at_once">یک بار بعد از بارگیری</string>
     <string name="after_5_minutes">بعد از ۵ دقیقه</string>
     <string name="autodel_after_1_hour">بعد از ۱ ساعت</string>
-    <string name="autodel_after_1_day">بعد از ۱  روز</string>
+    <string name="autodel_after_1_day">بعد از ۱ روز</string>
     <string name="autodel_after_1_week">بعد از ۱ هفته</string>
     <string name="after_5_weeks">بعد از ۵ هفته</string>
     <string name="autodel_after_1_year">بعد از ۱ سال</string>
@@ -910,7 +862,7 @@
     <string name="systemmsg_subject_for_new_contact">پیام از %1$s</string>
     <string name="systemmsg_failed_sending_to">ارسال ناموفق پیام به %1$s.</string>
     <!-- %1$s will be replaced by the old group name, %2$s will be replaced by the new group name -->
-    <string name="group_name_changed_by_you">شما نام گروه را از «%1$s» به «%2$s»  تغییر دادید. </string>
+    <string name="group_name_changed_by_you">شما نام گروه را از «%1$s» به «%2$s» تغییر دادید. </string>
     <!-- %1$s will be replaced by the old group name, %2$s will be replaced by the new group name, %3$s will be replaced by name and address of the contact who did the action. -->
     <string name="group_name_changed_by_other">نام گروه توسط %3$s از «%1$s» به «%2$s » تغییر کرد. </string>
     <string name="group_image_changed_by_you">شما تصویر گروه را تغییر دادید. </string>
@@ -948,10 +900,6 @@
     <string name="ephemeral_timer_seconds_by_you">زمان‌سنج ناپدید شدن پیام‌ها را روی %1$s ثانیه تنظیم کردید</string>
     <!-- %1$s will be replaced by the number of seconds (always >1) the timer is set to, %2$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_seconds_by_other">زمان‌سنج ناپدید شدن پیام‌ها توسط %2$s روی %1$s ثانیه تنظیم شد.</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_you">زمان‌سنج ناپدید شدن پیام‌ها را روی 1 دقیقه تنظیم کرده‌اید.</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_other">زمان‌سنج ناپدید شدن پیام‌ها توسط %1$s روی 1 دقیقه تنظیم شد.</string>
     <string name="ephemeral_timer_1_hour_by_you">زمان‌سنج ناپدید شدن پیام‌ها را روی 1 ساعت تنظیم کرده‌اید.</string>
     <!-- %1$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_1_hour_by_other">زمان‌سنج ناپدید شدن پیام‌ها توسط %1$s روی 1 ساعت تنظیم شد.</string>
@@ -989,7 +937,7 @@
 
     <string name="devicemsg_self_deleted">شما گپ «پیام‌های ذخیره شده» را پاک کردید.\n\nℹ️ برای استفادهٔ دوباره از «پیام‌های ذخیره شده» کافی است یک گپ جدید با خودتان درست کنید. </string>
     <!-- %1$s will be replaced by the amount of storage already used, sth. as '500 MB'. If you want to use a percentage sign, type in two of them, eg. %1$s %% -->
-    <string name="devicemsg_storage_exceeding"> ⚠️ میزان فضای در دسترس کارساز رایانامه شما در حال تمام شدن است. %1$s از %% استفاده شده است. اگر فضا کاملا پر شده باشد دیگر امکان دریافت پیام را نخواهید داشت.  👈 لطفا پیام‌های قدیمی در رایانامه خود را از طریق نسخهٔ وب رایانامه پاک کنید. همچنین می‌توانید گزینه پاک کردن پیام‌های قدیمی در دلتاچت را فعال نمایید. هروقت خواستید می‌توانید فضای در دسترس را از «تنظیم‌ها / اتصال‌ها» بررسی کنید. </string>
+    <string name="devicemsg_storage_exceeding"> ⚠️ میزان فضای در دسترس کارساز رایانامه شما در حال تمام شدن است. %1$s از %% استفاده شده است. اگر فضا کاملا پر شده باشد دیگر امکان دریافت پیام را نخواهید داشت. 👈 لطفا پیام‌های قدیمی در رایانامه خود را از طریق نسخهٔ وب رایانامه پاک کنید. همچنین می‌توانید گزینه پاک کردن پیام‌های قدیمی در دلتاچت را فعال نمایید. هروقت خواستید می‌توانید فضای در دسترس را از «تنظیم‌ها / اتصال‌ها» بررسی کنید. </string>
     <!-- %1%s will be replaced by date and time in some human-readable format -->
     <string name="devicemsg_bad_time">هشدار⚠️ به نظر می‌رسد زمان و تاریخ دستگاه شما دقیق نیست(%1$s).
 ساعت دستگاه خود را تنظیم کنید ⏰🔧 تا پیام‌ها به درستی دریافت شوند. </string>
@@ -1039,8 +987,7 @@
     <!-- the placeholder will be replaced by the address of the profile -->
     <string name="qrlogin_ask_login">آیا به \"%1$s\" وارد شوید؟</string>
     <!-- first placeholder will be replaced by name of the inviter, second placeholder will be replaced by the name of the inviter. -->
-    <string name="secure_join_started">کاربر %1$s شما را دعوت کرده است تا عضو این گروه شوید.
-در انتظار دستگاه %2$s برای پاسخگویی...</string>
+    <string name="secure_join_started">کاربر %1$s شما را دعوت کرده است تا عضو این گروه شوید. در انتظار دستگاه %2$s برای پاسخگویی...</string>
     <!-- first placeholder will be replaced by name of the inviter, second placeholder will be replaced by the name of the inviter. -->
     <string name="secure_join_channel_started">%1$sشما را به این کانال دعوت کرده است.\n\n منتظر دستگاه %2$s برای پاسخ‌دادن هستیم...</string>
     <!-- placeholder will be replaced by the name of the inviter. -->
@@ -1052,14 +999,12 @@
     <string name="verified_by">احراز هویت شده توسط %1$s</string>
     <string name="verified_by_you">تأیید شده توسط من</string>
     <string name="verified_by_unknown">معرفی شده</string>
-    <!-- deprecated -->
-    <string name="verified_contact_required_explain">برای تضمین رمزنگاری سراسری شما تنها می‌توانید مخاطب‌هایی که یک تیک سبز دارند به این گروه اضافه کنید.\n\nمی‌توانید با مخاطب‌هایتان حضوری ملاقات کنید و برای معرفی، کد QR آن‌ها را اسکن کنید.</string>
     <string name="mailto_dialog_header_select_chat">گپ را برای ارسال پیام انتخاب کنید</string>
     <!-- first placeholder is the name of the chat -->
     <string name="confirm_replace_draft">%1$s هم‌اکنون هم یک پیام پیش‌نویس دارد؛ آیا می‌خواهید آن را جایگزین کنید؟</string>
     <string name="mailto_link_could_not_be_decoded">امکان کدگشایی پیوند mailto وجود ندارد: %1$s</string>
 
-    <!-- notifications  -->
+    <!-- notifications -->
     <string name="notify_reply_button">پاسخ</string>
     <string name="notify_new_message">پیام جدید</string>
     <string name="notify_background_connection_enabled">اتصال‌ها پیش زمینه فعال شد</string>
@@ -1075,27 +1020,14 @@
     <string name="new_messages_body">شما پیام‌های جدیدی دارید</string>
     <string name="n_messages_in_m_chats">%1$d پیام در %2$d گفتگو</string>
 
-
     <!-- permissions -->
     <string name="perm_required_title">مجوز لازم است</string>
     <string name="perm_continue">ادامه</string>
-    <string name="perm_explain_access_to_camera_denied">برای گرفتن فیلم و عکس به
- app settings 
-بروید و 
-\"Permissions\"  
-را انتخاب کرده و 
-\"Camera\" 
-را فعال کنید.  </string>
+    <string name="perm_explain_access_to_camera_denied">برای گرفتن فیلم و عکس به app settings بروید و \"Permissions\" را انتخاب کرده و \"Camera\" را فعال کنید. </string>
     <!-- give the user an idea where to find the "Microphone" option. the hint is only shown if access was initially denied by the user. pick up wordings really used on the systems, but do not be overly precise: things shift around often and there are too many system we support to track every detail and click path -->
-    <string name="perm_explain_access_to_mic_denied">برای ارسال پیام صوتی به تنظیم‌های نرم‌افزار یا سیستم رفته و پس از انتخاب «دسترسی‌ها» یا «اجازه‌ها»
- گزینه «میکروفن»
- را فعال نمایید. </string>
+    <string name="perm_explain_access_to_mic_denied">برای ارسال پیام صوتی به تنظیم‌های نرم‌افزار یا سیستم رفته و پس از انتخاب «دسترسی‌ها» یا «اجازه‌ها» گزینه «میکروفن» را فعال نمایید. </string>
     <string name="perm_explain_access_to_storage_denied">برای دریافت یا ارسال پرونده به تنظیم‌های برنامه بروید، «اجازه‌ها» را برگزینید و «ذخیره‌گاه» را به کار بیندازید.</string>
-    <string name="perm_explain_access_to_location_denied">برای افزودن موقعیت مکانی به تنظیم‌های نرم‌افزار رفته و از 
-«دسترسی‌ها» 
-گزینه
-«موقعیت مکانی» 
-را فعال نمایید.</string>
+    <string name="perm_explain_access_to_location_denied">برای افزودن موقعیت مکانی به تنظیم‌های نرم‌افزار رفته و از «دسترسی‌ها» گزینه «موقعیت مکانی» را فعال نمایید.</string>
     <string name="perm_explain_access_to_notifications_denied">برای دریافت اعلان‌ها به «تنظیمات دستگاه > برنامه‌ها > دلتاچت» بروید و «اعلان‌ها» را فعال کنید.</string>
 
     <!-- ImageEditorHud -->
@@ -1103,18 +1035,11 @@
     <string name="ImageEditorHud_add_text">افزودن متن</string>
     <string name="ImageEditorHud_blur">مات کردن</string>
     <string name="ImageEditorHud_brush_marker">قلم‌ علامت گذاری</string>
-    <string name="ImageEditorHud_brush_highlight">قلم  هایلایت</string>
+    <string name="ImageEditorHud_brush_highlight">قلم هایلایت</string>
     <string name="ImageEditorHud_crop">بریدن</string>
     <string name="ImageEditorHud_flip">برعکس کردن</string>
     <string name="ImageEditorHud_rotate">چرخاندن</string>
 
-    <!-- strings introduced on desktop. we want to share strings between the os, in general, please do not add generic strings here -->
-    <string name="about_offical_app_desktop">این نرم‌افزار رسمی دلتاچت در محیط رایانه است.</string>
-    <string name="about_licensed_under_desktop">این نرم افزار تحت مجوز 
-GNU GPL ورژن ۳
- منتشر شده و کد منبع در
- GitHub
- در دسترس است.</string>
     <string name="welcome_desktop">به دلتاچت خوش‌آمدید</string>
     <string name="global_menu_preferences_language_desktop">زبان</string>
     <string name="global_menu_file_desktop">پرونده</string>
@@ -1154,6 +1079,7 @@ GNU GPL ورژن ۳
     <string name="menu.view.developer.open.log.folder">پوشه گزارش را باز کن</string>
     <string name="menu.view.developer.open.current.log.file">پوشه گزارش فعلی را باز کن</string>
     <string name="explain_desktop_minimized_disabled_tray_pref" tools:ignore="TypographyDashes">چون دلتاچت با تنظیم‌ها --زیرصفحه شروع به کار کرده است نمی‌توان نمادک زیر صفحه را غیر فعال کرد. </string>
+    <!-- deprecated, used on desktop although there is not spell checker -->
     <string name="no_spellcheck_suggestions_found">هیچ پیشنهادی برای املا پیدا نشد</string>
     <string name="show_window">نمایش پنجره</string>
 
@@ -1213,7 +1139,7 @@ GNU GPL ورژن ۳
     <string name="add_to_widget">اضافه کردن به ابزارک</string>
     <!-- iOS permissions, copy from "deltachat-ios/Info.plist", which is used on missing translations in "deltachat-ios/LANG.lproj/InfoPlist.strings" -->
     <string name="InfoPlist_NSCameraUsageDescription">دلتاچت برای گرفتن و ارسال عکس و فیلم و برای اسکن کردن کیوآر کد از دوربین شما استفاده می‌کند. </string>
-    <string name="InfoPlist_NSLocationAlwaysAndWhenInUseUsageDescription">دلتاچت برای  هم‌رسانی مکان شما در زمانی که آن به کار انداخته‌اید، به مجوز نیاز دارد. </string>
+    <string name="InfoPlist_NSLocationAlwaysAndWhenInUseUsageDescription">دلتاچت برای هم‌رسانی مکان شما در زمانی که آن به کار انداخته‌اید، به مجوز نیاز دارد. </string>
     <string name="InfoPlist_NSLocationWhenInUseUsageDescription">دلتاچت برای اشتراک موقعیت مکانی شما در زمانی که اشتراک موقعیت مکانی را فعال کرده‌ باشید به مجوز نیاز دارد. </string>
     <string name="InfoPlist_NSMicrophoneUsageDescription">دلتاچت از میکروفون برای ذخیره و ارسال پیام صوتی یا فیلم دارای صدا استفاده می‌کند.</string>
     <string name="InfoPlist_NSPhotoLibraryUsageDescription">دلتاچت به شما اجازه می دهد تصویر موردنظر برای ارسال را انتخاب کنید.</string>

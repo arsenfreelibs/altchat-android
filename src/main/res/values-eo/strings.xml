@@ -28,8 +28,6 @@
     <string name="update">Ĝisdatigi</string>
     <string name="emoji">Emoji</string>
     <string name="attachment">Aldonaĵo</string>
-    <!-- the placeholder will be replaced by the name of the image or file to attach -->
-    <string name="ask_attach">Ĉu alkroĉi \"%1$s\"?</string>
     <string name="back">Reen</string>
     <string name="close">Fermi</string>
     <string name="close_window">Fermi fenestron</string>
@@ -111,19 +109,9 @@
     <string name="last_month">Pasint-monate</string>
     <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by date or time, resulting in "Last seen at 12:13 AM" or "Last seen Nov 12" -->
     <string name="last_seen_at">Laste vidita je%1$s</string>
-    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages)-->
+    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages) -->
     <string name="last_seen_relative">Laste vidita %1$s</string>
     <string name="last_seen_unknown">Laste vidita: nedisponebla informo</string>
-    <!-- Shown in call duration. Avoid abbreviations, prefer full words ex. "N seconds". -->
-    <plurals name="n_seconds_ext">
-        <item quantity="one">%d sekundo</item>
-        <item quantity="other">%d sekundoj</item>
-    </plurals>
-    <!-- Shown in call duration. Avoid abbreviations, prefer full words ex. "N minutes". -->
-    <plurals name="n_minutes_ext">
-        <item quantity="one">%d minuto</item>
-        <item quantity="other">%d minutoj</item>
-    </plurals>
     <!-- Shown beside messages that are "N minutes old". Prefer short strings, or well-known abbreviations. -->
     <plurals name="n_minutes">
         <item quantity="one">%d min</item>
@@ -223,8 +211,6 @@
     <string name="menu_new_contact">Nova kontakto</string>
     <string name="menu_new_chat">Nova babilo</string>
     <string name="menu_new_group">Nova grupo</string>
-    <!-- deprecated -->
-    <string name="add_recipients">Aldoni Ricevantojn</string>
     <string name="menu_send">Sendi</string>
     <string name="menu_toggle_keyboard">Baskuligi emoĝian klavaron</string>
     <string name="menu_edit_group">Redakti grupon</string>
@@ -281,7 +267,6 @@
     <string name="menu_more_options">Pli da ebloj</string>
     <string name="menu_learn_spelling">Lernu la ortografion</string>
     <string name="jump_to_message">Iru al mesaĝo</string>
-    <string name="copy_json">Kopiu JSON</string>
     <string name="title_share_location">Konigi lokon al ĉiuj grupanoj</string>
     <string name="device_talk">Aparataj mesaĝoj</string>
     <string name="device_talk_subtitle">Loke generitaj mesaĝoj</string>
@@ -317,7 +302,6 @@
     <string name="contacts_title">Kontaktoj</string>
     <string name="contacts_type_email_above">Enigu retadreson supren</string>
 
-
     <!-- chatlist and chat view -->
     <plurals name="chat_archived">
         <item quantity="one">%d babilo enarĥivigita</item>
@@ -347,10 +331,6 @@
     <string name="save_message">Konservi</string>
     <string name="saved_messages">Konservitaj mesaĝoj</string>
     <string name="retry_send">Reprovi sendi mesaĝon</string>
-    <string name="show_location_traces">Montri spurojn</string>
-    <string name="add_poi">Sendi punkton de intereso</string>
-
-
     <!-- search -->
     <string name="search">Serĉi</string>
     <string name="search_explain">Serĉi babilojn, kontaktojn, kaj mesaĝojn</string>
@@ -400,7 +380,6 @@
     <string name="forward_to">Plusendi al…</string>
     <string name="share_abort">Kunhavigado ĉesis pro manko de permesoj.</string>
 
-
     <string name="pref_profile_photo">Profilbildo</string>
     <string name="pref_blocked_contacts">Blokitaj kontaktoj</string>
     <string name="pref_your_name">Via nomo</string>
@@ -418,8 +397,6 @@
     <string name="pref_sound">Sono</string>
     <string name="pref_silent">Silenta</string>
     <string name="pref_privacy">Privateco</string>
-    <!-- deprecated, use pref_chats -->
-    <string name="pref_chats_and_media">Interparoloj kaj aŭdvidaĵoj</string>
     <string name="pref_system_default">Sistema defaŭlto</string>
     <!-- Translators: as in "opposite of dark" -->
     <string name="pref_light_theme">Hela</string>
@@ -449,7 +426,7 @@
     <string name="pref_background_btn_default">Uzi defaŭltan bildon</string>
     <string name="pref_background_btn_gallery">Elekti el galerio</string>
     <string name="pref_show_emails_all">Ĉiuj</string>
-    <!-- notifications  -->
+    <!-- notifications -->
     <string name="notify_reply_button">Respondi</string>
     <string name="notify_new_message">Nova mesaĝo</string>
     <string name="notify_priority_high">Alta</string>

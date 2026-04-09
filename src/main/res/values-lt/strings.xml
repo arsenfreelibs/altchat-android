@@ -15,7 +15,6 @@
     <string name="off">Išjungta</string>
     <string name="def">Pagal numatymą</string>
     <string name="default_value">Numatytasis (%1$s)</string>
-    <string name="default_value_as_above">Numatytasis (toks pats kaip aukščiau)</string>
     <string name="custom">Tinkintas</string>
     <string name="none">Nėra</string>
     <string name="automatic">Automatinis</string>
@@ -33,8 +32,6 @@
     <string name="update">Atnaujinti</string>
     <string name="emoji">Šypsniukas</string>
     <string name="attachment">Priedas</string>
-    <!-- the placeholder will be replaced by the name of the image or file to attach -->
-    <string name="ask_attach">Pridėti „%1$s“?</string>
     <string name="back">Atgal</string>
     <string name="close">Užverti</string>
     <string name="close_window">Užverti langą</string>
@@ -105,23 +102,9 @@
     <string name="last_month">Praeitą mėnesį</string>
     <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by date or time, resulting in "Last seen at 12:13 AM" or "Last seen Nov 12" -->
     <string name="last_seen_at">Adresatas paskutinį kartą matytas %1$s</string>
-    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages)-->
+    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages) -->
     <string name="last_seen_relative">Adresatas paskutinį kartą matytas %1$s</string>
     <string name="last_seen_unknown">Adresatas paskutinį kartą matytas: Nežinoma</string>
-    <!-- Shown in call duration. Avoid abbreviations, prefer full words ex. "N seconds". -->
-    <plurals name="n_seconds_ext">
-        <item quantity="one">%d sekundė</item>
-        <item quantity="few">%d sekundės</item>
-        <item quantity="many">%d sekundžių</item>
-        <item quantity="other">%d sekundė</item>
-    </plurals>
-    <!-- Shown in call duration. Avoid abbreviations, prefer full words ex. "N minutes". -->
-    <plurals name="n_minutes_ext">
-        <item quantity="one">%d minutė</item>
-        <item quantity="few">%d minutės</item>
-        <item quantity="many">%d minučių</item>
-        <item quantity="other">%d minutė</item>
-    </plurals>
     <!-- Shown beside messages that are "N minutes old". Prefer short strings, or well-known abbreviations. -->
     <plurals name="n_minutes">
         <item quantity="one">%d min.</item>
@@ -256,8 +239,6 @@
     <string name="channels">Kanalai</string>
     <!-- consider keeping the term "channel" as in WhatsApp or Telegram -->
     <string name="new_channel">Naujas kanalas</string>
-    <!-- deprecated -->
-    <string name="add_recipients">Pridėti gavėjus</string>
     <!-- consider keeping the term "channel" as in WhatsApp or Telegram -->
     <string name="channel_name">Kanalo pavadinimas</string>
     <string name="email">El. paštas</string>
@@ -332,8 +313,6 @@
     <string name="menu_save_log">Įrašyti žurnalą</string>
     <string name="menu_more_options">Daugiau parinkčių</string>
     <string name="jump_to_message">Peršokti į žinutę</string>
-    <string name="jump_to_original_message">Peršokti į pradinę žinutę</string>
-    <string name="copy_json">Kopijuoti JSON</string>
     <string name="replace_draft">Pakeisti juodraštį</string>
     <string name="title_share_location">Bendrinti savo vietą su visais grupės dalyviais</string>
     <string name="device_talk">Įrenginio žinutės</string>
@@ -370,19 +349,21 @@
 
     <!-- the action "to call someone", used as a tooltip for the "phone" icon. not: "the call" -->
     <string name="start_call">Skambinti</string>
+    <!-- Menu item to start an audio call; verbs as "start" are probably superfluous in many translations -->
     <string name="start_audio_call">Garso skambutis</string>
+    <!-- Menu item to start a video call; verbs as "start" are probably superfluous in many translations -->
     <string name="start_video_call">Vaizdo skambutis</string>
     <!-- the action "to answer" or to "accept" or to "pick up" a call. not: "the answer" -->
     <string name="answer_call">Atsiliepti</string>
     <!-- the action "to decline" a call, not: "the decline" -->
     <string name="end_call">Atmesti</string>
-    <!-- deprecated, use outgoing_audio_call or outgoing_video_call instead -->
-    <string name="outgoing_call">Išsiunčiamasis skambutis</string>
+    <!-- deprecated, use "Audio call" instead -->
     <string name="outgoing_audio_call">Išsiunčiamasis garso skambutis</string>
+    <!-- deprecated, use "Video call" instead -->
     <string name="outgoing_video_call">Išsiunčiamasis vaizdo skambutis</string>
-    <!-- deprecated, use incoming_audio_call or incoming_video_call instead -->
-    <string name="incoming_call">Gaunamasis skambutis</string>
+    <!-- deprecated, use "Audio call" instead -->
     <string name="incoming_audio_call">Gaunamasis garso skambutis</string>
+    <!-- deprecated, use "Video call" instead -->
     <string name="incoming_video_call">Gaunamasis vaizdo skambutis</string>
     <string name="missed_call">Praleistas skambutis</string>
     <!-- Status labels shown on the call screen overlay -->
@@ -426,11 +407,9 @@
     <string name="ask_remove_from_channel">Pašalinti %1$s iš kanalo?</string>
     <string name="open_url_confirmation">Ar norite atverti šią nuorodą?</string>
 
-
     <!-- contact list -->
     <string name="contacts_title">Adresatai</string>
     <string name="contacts_type_email_above">Aukščiau įrašykite el. pašto adresą</string>
-
 
     <!-- chatlist and chat view -->
     <plurals name="chat_archived">
@@ -485,13 +464,12 @@
     <!-- webxdc -->
     <!-- "Start..." button for an app -->
     <string name="start_app">Pradėti…</string>
-    <string name="enable_realtime">Tikralaikės programėlės</string>
+    <!-- punycode warning / labeled links -->
     <string name="puny_code_warning_header">Aptikta įtartina nuoroda</string>
     <!-- placeholder contains the hostname converted to ascii -->
     <string name="puny_code_warning_question">Ar tikrai norite apsilankyti %1$s?</string>
     <!-- this message is shown whenever a link with non-latin characters is clicked. first placeholder is original hostname with special chars, second placeholder is hostname encoded in ascii -->
     <string name="puny_code_warning_description">Ši nuoroda gali iškreipti simbolius atvaizduodama juos kaip panašius simbolius iš kitų abėcėlių. Ši nuoroda, pavadinimu %1$s nukreips į %2$s kas savo ruožtu yra normalu ne lotynų simboliams. Jei tokių simbolių nesitikėjote, gali būti, jog ši nuoroda yra kenksminga.</string>
-
 
     <!-- search -->
     <string name="search">Ieškoti</string>
@@ -555,8 +533,6 @@
     <string name="incoming_messages">Gaunamosios žinutės</string>
     <!-- Headline for the "Outbox" eg. in the "Connectivity" view -->
     <string name="outgoing_messages">Išsiunčiamosios žinutės</string>
-    <!-- deprecated -->
-    <string name="storage_on_domain">Saugykla ties %1$s</string>
     <string name="connectivity">Jungiamumas</string>
     <!-- Shown in the title bar if the app is "Not connected"; prefer short strings. -->
     <string name="connectivity_not_connected">Neprisijungta</string>
@@ -574,11 +550,10 @@
     <!-- Used for describing resource usage, resulting string will be eg. "1.2 GiB of 3 GiB used" -->
     <string name="part_of_total_used">Panaudota %1$s iš %2$s</string>
 
-
     <!-- welcome and login -->
     <!-- Primary button on the welcome screen, allows to create an instant profile -->
     <string name="onboarding_create_instant_account">Sukurti naują profilį</string>
-    <!-- Secondary button on the welcome screen, allows to "Add as Second Device", "Restore from Backup"  -->
+    <!-- Secondary button on the welcome screen, allows to "Add as Second Device", "Restore from Backup" -->
     <string name="onboarding_alternative_logins">Aš jau turiu profilį</string>
     <!-- This is a button and a title, allowing to use existing, classic email, setting ports, passwords and so on -->
     <string name="manual_account_setup_option">Naudoti klasikinį el. paštą kaip retransliavimą</string>
@@ -637,9 +612,6 @@
     <!-- shown if a QR code was scanned that can be used as a relay -->
     <string name="confirm_add_transport">Pridėti šį retransliavimą?</string>
     <string name="invalid_transport_qr">Nuskenuotame QR kode nėra tinkamo retransliavimo.</string>
-    <!-- placeholder will be replaced by a relay server name -->
-    <string name="confirm_remove_transport">Šalinti retransliavimą „%1$s“?\n\nJūsų adresatai galės su jumis susisiekti tik tuo atveju, jei anksčiau buvote su jais susisiekę per kitą retransliavimą.\n\nJei abejojate, pašalinkite retransliavimą vėliau.</string>
-
     <string name="login_certificate_checks">Liudijimų patikrinimai</string>
     <string name="login_error_mail">Įveskite teisingą el. pašto adresą.</string>
     <string name="login_error_server">Įveskite teisingą serverį / IP adresą</string>
@@ -674,7 +646,7 @@
     <string name="forward_to">Kam persiųsti …</string>
     <string name="share_abort">Bendrinimas nutrauktas dėl trūkstamų leidimų.</string>
 
-
+    <!-- preferences -->
     <string name="pref_profile_info_headline">Jūsų profilis</string>
     <string name="pref_profile_photo">Profilio nuotrauka</string>
     <string name="pref_blocked_contacts">Užblokuoti adresatai</string>
@@ -706,8 +678,6 @@
     <string name="pref_led_color">Šviesos diodo spalva</string>
     <string name="pref_sound">Garsas</string>
     <string name="pref_privacy">Privatumas</string>
-    <!-- deprecated, use pref_chats -->
-    <string name="pref_chats_and_media">Pokalbiai ir medija</string>
     <string name="pref_system_default">Sistemos numatytoji</string>
     <!-- Translators: as in "opposite of dark" -->
     <string name="pref_light_theme">Šviesus</string>
@@ -823,6 +793,9 @@
     <string name="group_image_changed_by_you">Jūs pakeitėte grupės paveikslą.</string>
     <!-- %1$s will be replaced by name of the contact who did the action -->
     <string name="group_image_changed_by_other">%1$s pakeitė grupės paveikslą.</string>
+    <string name="chat_description_changed_by_you">Jūs pakeitėte pokalbio aprašą.</string>
+    <!-- %1$s will be replaced by name of the contact who did the action -->
+    <string name="chat_description_changed_by_other">%1$s pakeitė pokalbio aprašą.</string>
     <!-- %1$s will be replaced by name of the contact removed from the group; this string is used when it's unclear who did the action -->
     <string name="member_x_removed">Dalyvis %1$s pašalintas.</string>
     <!-- "left" in the meaning of "exited". -->
@@ -842,10 +815,6 @@
     <string name="ephemeral_timer_seconds_by_you">Jūs nustatėte išnykstančių žinučių laikmatį į %1$s sek.</string>
     <!-- %1$s will be replaced by the number of seconds (always >1) the timer is set to, %2$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_seconds_by_other">%2$s nustatė išnykstančių žinučių laikmatį į %1$s sek.</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_you">Jūs nustatėte išnykstančių žinučių laikmatį į 1 minutę.</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_other">%1$s nustatė išnykstančių žinučių laikmatį į 1 minutę. </string>
     <string name="ephemeral_timer_1_hour_by_you">Jūs nustatėte išnykstančių žinučių laikmatį į 1 valandą.</string>
     <!-- %1$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_1_hour_by_other">%1$s nustatė išnykstančių žinučių laikmatį į 1 valandą.</string>
@@ -933,7 +902,7 @@
     <string name="confirm_replace_draft">Pokalbyje „%1$s“ jau yra žinutės juodraštis. Ar norite jį pakeisti?</string>
     <string name="mailto_link_could_not_be_decoded">nepavyko dekoduoti mailto nuorodos: %1$s</string>
 
-    <!-- notifications  -->
+    <!-- notifications -->
     <string name="notify_reply_button">Atsakyti</string>
     <string name="notify_new_message">Nauja žinutė</string>
     <string name="notify_background_connection_enabled">Foninis ryšys įjungtas</string>

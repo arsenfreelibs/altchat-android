@@ -16,7 +16,6 @@
     <string name="off">Выкл.</string>
     <string name="def">По умолчанию</string>
     <string name="default_value">По умолчанию (%1$s)</string>
-    <string name="default_value_as_above">По умолчанию (так же, как выше)</string>
     <string name="custom">Персональная настройка</string>
     <string name="none">Не задано</string>
     <string name="automatic">Автоматически</string>
@@ -34,8 +33,6 @@
     <string name="update">Обновить</string>
     <string name="emoji">Эмодзи</string>
     <string name="attachment">Вложение</string>
-    <!-- the placeholder will be replaced by the name of the image or file to attach -->
-    <string name="ask_attach">Прикрепить \"%1$s\"?</string>
     <string name="back">Назад</string>
     <string name="close">Закрыть</string>
     <string name="close_window">Закрыть окно</string>
@@ -72,13 +69,15 @@
     <string name="mark_as_read">Отметить как прочитанное</string>
     <!-- Shortest text for "Mark as being read". In english, this could be "Read" (past tense of "to read"), in german, this could be "Gelesen". -->
     <string name="mark_as_read_short">Прочитано</string>
+    <!-- Shortest text for "Mark as being unread". In english, this could be "Unread" (past tense of "to unread"), in german, this could be "Ungelesen". -->
+    <string name="mark_as_unread_short">Не прочитано</string>
     <!-- Placeholder text when something is loading -->
     <string name="loading">Загрузка…</string>
     <string name="hide">Скрыть</string>
     <string name="activate">Активировать</string>
     <string name="load_remote_content">Загрузка изображений из внешних источников</string>
     <!-- Possible answers to the question are: Never, Always, Once -->
-    <string name="load_remote_content_ask">Изображения, размещенные на внешних источниках, могут быть использованы для слежки за вами.\n\nЭта настройка также позволяет загружать шрифты и другое содержимое. Если она отключена, вы сможете видеть встроенные или кешированные изображения.\n\nРазрешить загрузку из внешних источников?</string>
+    <string name="load_remote_content_ask">Изображения, размещенные на внешних источниках, могут быть использованы для слежки за вами.\n\nЭта настройка также позволяет загружать шрифты и другой контент. Если она отключена, вы сможете видеть встроенные или кешированные изображения.\n\nРазрешить загрузку из внешних источников?</string>
     <string name="always">Всегда</string>
     <string name="always_load_remote_images">Всегда загружать изображения из внешних источников</string>
     <string name="once">Только сейчас</string>
@@ -117,23 +116,18 @@
     <string name="last_month">Прошлый месяц</string>
     <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by date or time, resulting in "Last seen at 12:13 AM" or "Last seen Nov 12" -->
     <string name="last_seen_at">Последнее посещение: %1$s</string>
-    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages)-->
+    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages) -->
     <string name="last_seen_relative">Последнее посещение: %1$s</string>
     <string name="last_seen_unknown">Последнее посещение: Неизвестно</string>
-    <!-- Shown in call duration. Avoid abbreviations, prefer full words ex. "N seconds". -->
-    <plurals name="n_seconds_ext">
-        <item quantity="one">%d секунда</item>
-        <item quantity="few">%d секунды</item>
-        <item quantity="many">%d секунд</item>
-        <item quantity="other">%d секунд</item>
+    <!-- Call duration as shown in the call bubbles. There is some risk to mix with the sending time, so the word "Duration" may be helpful. Might also be "Duration: %d minutes", "%d-minute duration", "%d-minute length" or "%d-minute call" -->
+    <plurals name="call_duration_minutes">
+        <item quantity="one">Длительность: %d минута</item>
+        <item quantity="few">Длительность: %d минуты</item>
+        <item quantity="many">Длительность: %d минут</item>
+        <item quantity="other">Длительность: %d минут</item>
     </plurals>
-    <!-- Shown in call duration. Avoid abbreviations, prefer full words ex. "N minutes". -->
-    <plurals name="n_minutes_ext">
-        <item quantity="one">%d минута</item>
-        <item quantity="few">%d минуты</item>
-        <item quantity="many">%d минут</item>
-        <item quantity="other">%d минут</item>
-    </plurals>
+    <!-- Call duration as shown in the call bubbles in case the call is less than one minute. If the context is not clear enough, one may want to add the word "Duration". -->
+    <string name="call_duration_less_than_a_minute">Менее 1 минуты</string>
     <!-- Shown beside messages that are "N minutes old". Prefer short strings, or well-known abbreviations. -->
     <plurals name="n_minutes">
         <item quantity="one">%d минуту</item>
@@ -193,6 +187,7 @@
         <item quantity="other">%d выбрано</item>
     </plurals>
     <string name="selected_colon">Выбрано:</string>
+    <string name="selected">Выбрано</string>
     <string name="self">Я</string>
     <string name="draft">Черновик</string>
     <string name="image">Изображение</string>
@@ -202,8 +197,11 @@
     <!-- "Stickers" as known from other messengers; in some languages, the English "Sticker" is fine. -->
     <string name="sticker">Стикер</string>
     <string name="add_to_sticker_collection">Добавить в коллекцию стикеров</string>
-    <string name="add_stickers_instructions">Для добавления стикеров, нажмите \"Открыть папку стикеров\", создайте подпапку для набора ваших стикеров и перетащите туда изображения и файлы стикеров</string>
+    <string name="add_stickers_instructions">Для добавления стикеров, нажмите \"Открыть папку стикеров\", создайте в ней подпапку для вашего набора стикеров и перетащите туда файлы изображений и стикеров</string>
     <string name="open_sticker_folder">Открыть папку стикеров</string>
+    <string name="ask_add_sticker_to_collection">Добавить этот стикер в коллекцию?</string>
+    <string name="ask_delete_sticker">Удалить этот стикер?</string>
+    <string name="sticker_picker_empty_hint">Нажмите на стикер, чтобы добавить его сюда.</string>
     <string name="images">Изображения</string>
     <!-- a noun, used for "Music" and other "Audio" files -->
     <string name="audio">Аудио</string>
@@ -283,10 +281,15 @@
     <string name="channels">Каналы</string>
     <!-- consider keeping the term "channel" as in WhatsApp or Telegram -->
     <string name="new_channel">Новый канал</string>
-    <!-- deprecated -->
-    <string name="add_recipients">Добавить получателей</string>
     <!-- consider keeping the term "channel" as in WhatsApp or Telegram -->
     <string name="channel_name">Название канала</string>
+    <!-- The number of times a message is shown in channels. Use what other messengers are using here, smth. as "N-times seen" or "1 Aufruf" (german) work as well, where "1 impression" or "1 hit" may sound too formal and may be more marketing slang. -->
+    <plurals name="n_views">
+        <item quantity="one">%d просмотр</item>
+        <item quantity="few">%d просмотра</item>
+        <item quantity="many">%d просмотров</item>
+        <item quantity="other">%d просмотров</item>
+    </plurals>
     <string name="email">Электронная почта</string>
     <!-- "New" as in "Create New Email"; shown together with "New Group" and "New Channel" -->
     <string name="new_email">Новое письмо</string>
@@ -302,6 +305,7 @@
     <string name="menu_add_attachment">Добавить вложение</string>
     <string name="menu_leave_group">Покинуть группу</string>
     <string name="menu_leave_channel">Покинуть канал</string>
+    <string name="menu_leave_and_delete">Покинуть и удалить для меня</string>
     <string name="menu_delete_chat">Удалить чат</string>
     <!-- Command to delete all messages in a chat. The chat itself will not be deleted but will be empty afterwards, so make sure to be different from "Delete Chat" here. "Clear" is a verb here, "Empty Chat" would also be fine (eg. in German "Chat leeren") -->
     <string name="clear_chat">Очистить чат</string>
@@ -363,14 +367,12 @@
     <string name="menu_more_options">Дополнительно</string>
     <string name="menu_learn_spelling">Запоминать правописание</string>
     <string name="jump_to_message">Перейти к сообщению</string>
-    <string name="jump_to_original_message">Перейти к исходному сообщению</string>
-    <string name="copy_json">Копировать JSON</string>
     <string name="replace_draft">Заменить черновик</string>
     <string name="title_share_location">Делиться местоположением со всеми участниками группы</string>
     <string name="device_talk">Сообщения устройства</string>
     <string name="device_talk_subtitle">Сообщения, созданные устройством</string>
-    <string name="device_talk_explain">Сообщения в этом чате создаются локально на вашем устройстве для уведомления о обновлениях и проблемах при использовании приложения.</string>
-    <string name="device_talk_welcome_message2">Оставайтесь на связи!\n\n🙌 Нажмите \"QR-код\" на главном экране обоих устройств. Выберите \"Сканировать QR-код\" на одном устройстве и покажите его на другом.\n\n🌍 Если вы не находитесь в одном помещении, отсканируйте код с помощью видеозвонка или поделитесь ссылкой-приглашением из раздела \"Сканировать QR-код\"\n\nЗатем: Наслаждайтесь децентрализованным мессенджером. В отличие от других популярных приложений, он работает без центрального управления, отслеживания и продажи ваших данных, а также данных ваших друзей, коллег или семьи крупным организациям.</string>
+    <string name="device_talk_explain">Сообщения в этом чате генерируются локально на вашем устройстве чтобы информировать об обновлениях и проблемах при использовании приложения.</string>
+    <string name="device_talk_welcome_message2">Оставайтесь на связи!\n\n🙌 Нажмите \"QR-код\" на главном экране обоих устройств. На одном устройстве выберите \"Сканировать QR-код\" и направьте камеру на другое устройство.\n\n🌍 Если устройства находятся в разных местах, отсканируйте код с помощью видеозвонка или поделитесь ссылкой-приглашением из раздела \"Сканировать QR-код\"\n\nЗатем: Наслаждайтесь децентрализованным мессенджером. В отличие от других популярных приложений, он не имеет центра управления и не отслеживает ваши действия, а также не продаёт данные о вас, ваших друзьях, коллегах или членах семьи крупным организациям.</string>
     <string name="edit_contact">Редактировать контакт</string>
     <!-- Verb "to pin", making something sticky, not a noun or abbreviation for "pin number". -->
     <string name="pin_chat">Закрепить чат</string>
@@ -420,19 +422,31 @@
 
     <!-- the action "to call someone", used as a tooltip for the "phone" icon. not: "the call" -->
     <string name="start_call">Позвонить</string>
+    <!-- Menu item to start an audio call; verbs as "start" are probably superfluous in many translations -->
     <string name="start_audio_call">Аудиозвонок</string>
+    <!-- Menu item to start a video call; verbs as "start" are probably superfluous in many translations -->
     <string name="start_video_call">Видеозвонок</string>
     <!-- the action "to answer" or to "accept" or to "pick up" a call. not: "the answer" -->
     <string name="answer_call">Ответить</string>
     <!-- the action "to decline" a call, not: "the decline" -->
     <string name="end_call">Отклонить</string>
-    <!-- deprecated, use outgoing_audio_call or outgoing_video_call instead -->
-    <string name="outgoing_call">Исходящий звонок</string>
+    <!-- Used in call bubbles, summaries, notifications -->
+    <string name="audio_call">Аудиозвонок</string>
+    <!-- Used in call bubbles, summaries, notifications -->
+    <string name="video_call">Видеозвонок</string>
+    <string name="call_initializing">Инициализация...</string>
+    <string name="call_incoming">Входящий звонок</string>
+    <string name="call_ringing">Звонок...</string>
+    <string name="call_reconnecting">Переподключение...</string>
+    <string name="call_ended">Звонок завершен</string>
+    <string name="call_failed">Звонок не удался</string>
+    <!-- deprecated, use "Audio call" instead -->
     <string name="outgoing_audio_call">Исходящий аудиозвонок</string>
+    <!-- deprecated, use "Video call" instead -->
     <string name="outgoing_video_call">Исходящий видеозвонок</string>
-    <!-- deprecated, use incoming_audio_call or incoming_video_call instead -->
-    <string name="incoming_call">Входящий звонок</string>
+    <!-- deprecated, use "Audio call" instead -->
     <string name="incoming_audio_call">Входящий аудиозвонок</string>
+    <!-- deprecated, use "Video call" instead -->
     <string name="incoming_video_call">Входящий видеозвонок</string>
     <string name="declined_call">Отклонённый звонок</string>
     <string name="canceled_call">Отменённый звонок</string>
@@ -449,6 +463,7 @@
     <string name="call_btn_end">Завершить звонок</string>
     <!-- the first placeholder will be replaced by a date, the second placeholder by duration, example: "Thu, 08:12 pm, 2 minutes" -->
     <string name="call_date_and_duration">%1$s, %2$s</string>
+    <string name="already_in_call">Вызов уже идёт</string>
 
     <!-- get confirmations -->
     <!-- confirmation for leaving groups or channels. If a subject is needed, "Are you sure you want to leave the chat?" would work as well -->
@@ -469,11 +484,11 @@
     </plurals>
     <string name="ask_forward">Переслать сообщения для %1$s?</string>
     <string name="ask_forward_multiple">Переслать сообщения в %1$d чата(ов)?</string>
-    <string name="ask_export_attachment">Экспорт вложений позволит любому приложению на вашем устройстве получить к ним доступ.\n\nПродолжить?</string>
-    <string name="ask_block_contact">Заблокировать этот контакт?\n\nЗаблокированные контакты не будут показаны в личных сообщениях или группах, созданных ими.\n\nВ других группах сообщения заблокированных контактов будут по-прежнему доступны.</string>
+    <string name="ask_export_attachment">Экспорт вложений позволит другим приложениям на вашем устройстве получить к ним доступ.\n\nПродолжить?</string>
+    <string name="ask_block_contact">Заблокировать этот контакт?\n\nЗаблокированные контакты не будут показаны в личных сообщениях или группах, созданных ими.\n\nВ других группах сообщения заблокированных контактов, по-прежнему будут видны.</string>
     <string name="ask_unblock_contact">Разблокировать этот контакт?</string>
-    <string name="ask_delete_contacts">Удалить контакты?\n\nКонтакты из действующих чатов не могут быть удалены навсегда.</string>
-    <string name="ask_delete_contact">Удалить контакт %1$s?\n\nКонтакты из действующих чатов не могут быть удалены навсегда.</string>
+    <string name="ask_delete_contacts">Удалить контакты?\n\nКонтакты из действующих чатов нельзя удалить безвозвратно.</string>
+    <string name="ask_delete_contact">Удалить контакт %1$s?\n\nКонтакты из действующих чатов нельзя удалить безвозвратно.</string>
     <string name="ask_start_chat_with">Создать чат с %1$s?</string>
     <!-- %1$s is replaced by a comma-separated list of names -->
     <string name="ask_remove_members">Удалить %1$s из группы?</string>
@@ -481,11 +496,9 @@
     <string name="ask_remove_from_channel">Удалить %1$s из канала?</string>
     <string name="open_url_confirmation">Вы хотите открыть эту ссылку?</string>
 
-
     <!-- contact list -->
     <string name="contacts_title">Контакты</string>
     <string name="contacts_type_email_above">Введите адрес электронной почты выше</string>
-
 
     <!-- chatlist and chat view -->
     <plurals name="chat_archived">
@@ -530,7 +543,7 @@
     <!-- Action to add a message to "Saved Messages". The longer form (instead of "Save" only) is needed esp. on desktop to make clear this is not about saving a file to disk -->
     <string name="save_message">Сохранить сообщение</string>
     <string name="saved_messages">Сохранённые сообщения</string>
-    <string name="saved_messages_explain">• Пересылайте сообщения сюда для быстрого доступа\n\n• Создайте текстовые или голосовые заметки\n\n• Прикрепляйте медиафайлы, чтобы сохранить их</string>
+    <string name="saved_messages_explain">• Пересылайте сообщения сюда для быстрого доступа\n\n• Делайте заметки или записывайте голосовые сообщения\n\n• Прикрепляйте медиафайлы, чтобы сохранить их</string>
     <!-- Should match "Saved" from "Saved messages" -->
     <string name="saved">Сохранено</string>
     <string name="save_as">Сохранить как…</string>
@@ -552,24 +565,13 @@
     <string name="send_file_to">Отправить \"%1$s\" …</string>
     <!-- title shown above a list contacts where one should be selected (eg. when a webxdc attempts to send a message to a chat) -->
     <string name="send_message_to">Отправить сообщение…</string>
-    <string name="enable_realtime">Приложения реального времени</string>
-    <string name="enable_realtime_explain">Включить соединения в реальном времени для приложений, которыми вы делитесь в чатах. Если этот параметр включен, собеседники по чату смогут узнать ваш IP-адрес при запуске приложения.</string>
-
-    <!-- map -->
-    <string name="filter_map_on_time">Показать местоположения с интервалом времени</string>
-    <string name="show_location_traces">Показывать маршруты</string>
-    <string name="add_poi">Поделиться точкой на карте</string>
-
 
     <!-- punycode warning / labeled links -->
-    <!-- placeholder is domain/hostname that should be trusted -->
-    <string name="open_external_url_trust_domain">Больше не спрашивать %1$s</string>
     <string name="puny_code_warning_header">Обнаружена подозрительная ссылка</string>
     <!-- placeholder contains the hostname converted to ascii -->
     <string name="puny_code_warning_question">Вы уверены, что хотите посетить %1$s?</string>
     <!-- this message is shown whenever a link with non-latin characters is clicked. first placeholder is original hostname with special chars, second placeholder is hostname encoded in ascii -->
-    <string name="puny_code_warning_description">Эта ссылка может искажать символы, представляя их похожими на символы из других алфавитов. Переход по ссылке отмеченной %1$s приведет к %2$s, что является нормальным для нелатинских символов. Если вы не ожидали увидеть такие символы, эта ссылка может быть опасной.</string>
-
+    <string name="puny_code_warning_description">Эта ссылка может искажать символы, заменяя их похожими символами из других алфавитов. Переход по ссылке отмеченной %1$s приведет к %2$s, что является нормальным для нелатинских символов. Если вы не ожидали увидеть такие символы, эта ссылка может быть опасной.</string>
 
     <!-- search -->
     <string name="search">Поиск</string>
@@ -579,7 +581,6 @@
     <string name="search_no_result_for_x">Ничего не найдено по запросу \"%s\"</string>
     <!-- Adjective, as in "Show Unread Messages" -->
     <string name="search_unread">Не прочитано</string>
-
 
     <!-- create/edit groups, contact/group profile -->
     <string name="group_name">Название группы</string>
@@ -644,8 +645,6 @@
     <string name="incoming_messages">Входящие сообщения</string>
     <!-- Headline for the "Outbox" eg. in the "Connectivity" view -->
     <string name="outgoing_messages">Исходящие сообщения</string>
-    <!-- deprecated -->
-    <string name="storage_on_domain">Хранилище на %1$s</string>
     <string name="connectivity">Соединение</string>
     <!-- Shown in the title bar if the app is "Not connected"; prefer short strings. -->
     <string name="connectivity_not_connected">Нет соединения</string>
@@ -663,11 +662,10 @@
     <!-- Used for describing resource usage, resulting string will be eg. "1.2 GiB of 3 GiB used" -->
     <string name="part_of_total_used">%1$s из %2$s используется</string>
 
-
     <!-- welcome and login -->
     <!-- Primary button on the welcome screen, allows to create an instant profile -->
     <string name="onboarding_create_instant_account">Создать новый профиль</string>
-    <!-- Secondary button on the welcome screen, allows to "Add as Second Device", "Restore from Backup"  -->
+    <!-- Secondary button on the welcome screen, allows to "Add as Second Device", "Restore from Backup" -->
     <string name="onboarding_alternative_logins">У меня уже есть профиль</string>
     <!-- This is a button and a title, allowing to use existing, classic email, setting ports, passwords and so on -->
     <string name="manual_account_setup_option">Использовать электронную почту как релей</string>
@@ -720,18 +718,22 @@
     <string name="proxy_share_explain">Ваши друзья могут добавить этот прокси, отсканировав QR-код.</string>
     <string name="proxy_share_link">Поделиться ссылкой</string>
     <string name="proxy_enabled">Прокси включен</string>
-    <string name="proxy_enabled_hint">Вы используете прокси. При проблемах с подключением, попробуйте другой прокси.</string>
+    <string name="proxy_enabled_hint">Вы используете прокси. При проблемах с подключением, попробуйте использовать другой прокси-сервер.</string>
     <!-- "Relay" refers to the relay servers used; please chose a common term in your language, no need to be literal. If in doubt, stay with "Relay" -->
     <string name="transports">Релеи</string>
     <string name="add_transport">Добавить релей</string>
     <string name="remove_transport">Удалить релей</string>
     <string name="edit_transport">Редактировать релей</string>
+    <string name="used_for_sending">Используется для отправки</string>
+    <string name="hide_from_contacts">Скрыть из контактов</string>
+    <string name="hidden_from_contacts">Скрыт из контактов</string>
+    <!-- Hint for the list of relays -->
+    <string name="transport_list_hint">Сообщения поступают на все релеи.\n\n⚠️ Если вы что-либо измените здесь, убедитесь, что все ваши устройства работают как минимум на версии 2.47.0. В противном случае старые устройства могут пропускать сообщения.</string>
     <!-- shown if a QR code was scanned that can be used as a relay -->
     <string name="confirm_add_transport">Добавить этот релей?</string>
     <string name="invalid_transport_qr">Отсканированный QR-код не содержит корректный релей.</string>
     <!-- placeholder will be replaced by a relay server name -->
-    <string name="confirm_remove_transport">Удалить транспорт \"%1$s\"?\n\nВаши контакты смогут связаться с вами, только если вы ранее связывались с ними через другой релей.\n\nЕсли сомневаетесь, удалите релей позже.</string>
-
+    <string name="confirm_remove_or_hide_transport_x">Удалить релей \"%1$s\"?\n\nКонтакты, знающие только этот релей, могут потерять связь с вами, пока вы не напишете им снова.\n\nЕсли сомневаетесь, лучше скрыть его, а не удалять.</string>
     <string name="login_certificate_checks">Проверки сертификатов</string>
     <string name="login_error_mail">Введите корректный адрес электронной почты</string>
     <string name="login_error_server">Введите корректный адрес сервера / IP-адрес</string>
@@ -772,10 +774,7 @@
     <string name="share_text_multiple_chats">Отправить текст в %1$d чата(ов)?\n\n\"%2$s\"</string>
     <string name="share_abort">Общий доступ прерван из-за отсутствия необходимых разрешений.</string>
 
-
     <!-- preferences -->
-    <string name="pref_using_custom">Использовать персональное: %s</string>
-    <string name="pref_using_default">Используется по умолчанию: %s</string>
     <string name="pref_profile_info_headline">Ваш профиль</string>
     <string name="pref_profile_photo">Изображение профиля</string>
     <string name="pref_blocked_contacts">Заблокированные контакты</string>
@@ -789,6 +788,7 @@
     <string name="pref_enter_sends">Отправка по Enter</string>
     <string name="pref_enter_sends_explain">Нажатие клавиши Enter отправит текстовые сообщения</string>
     <string name="pref_outgoing_media_quality">Качество отправляемых медиафайлов</string>
+    <string name="pref_outgoing_media_quality_hint">Чтобы отправить файлы в оригинальном качестве, прикрепляйте их как \"Файл\". Это потребует больше трафика для вас и ваших получателей.</string>
     <string name="pref_outgoing_balanced">Сбалансированное</string>
     <string name="pref_outgoing_worse">Низкое качество, малый размер</string>
     <string name="pref_vibrate">Вибрация</string>
@@ -799,6 +799,10 @@
     <string name="pref_notifications">Уведомления</string>
     <string name="pref_mention_notifications">Упоминания</string>
     <string name="pref_mention_notifications_explain">В группах с отключенными уведомлениями, оповещать о сообщениях, адресованных вам, например об ответах или реакциях</string>
+    <!-- Title for the "Calls" notification setting. This is a plural noun, not a verb. -->
+    <string name="pref_calls">Звонки</string>
+    <!-- Details about what the "Calls" notification setting does -->
+    <string name="pref_calls_explain">Показывать экран входящего вызова</string>
     <string name="pref_notifications_show">Показывать</string>
     <string name="pref_notifications_priority">Приоритет</string>
     <string name="pref_notifications_explain">Включить системные уведомления для новых сообщений</string>
@@ -808,8 +812,6 @@
     <string name="pref_sound">Звук</string>
     <string name="pref_silent">Беззвучный</string>
     <string name="pref_privacy">Конфиденциальность</string>
-    <!-- deprecated, use pref_chats -->
-    <string name="pref_chats_and_media">Чаты и медиафайлы</string>
     <string name="pref_system_default">По умолчанию</string>
     <!-- Translators: as in "opposite of dark" -->
     <string name="pref_light_theme">Светлая</string>
@@ -874,8 +876,6 @@
     <string name="n_bytes_message">%1$s сообщение</string>
     <!-- %1$s will be replaced by human-readable date and time -->
     <string name="download_max_available_until">Максимальная загрузка доступна до %1$s</string>
-    <!-- deprecated -->
-    <string name="select_profile">Выбрать профиль</string>
     <string name="profile_image_select">Выбрать изображение профиля</string>
     <string name="select_your_new_profile_image">Выбрать новое изображение профиля</string>
     <string name="profile_image_delete">Удалить изображение профиля</string>
@@ -981,10 +981,6 @@
     <string name="ephemeral_timer_seconds_by_you">Вы включили автоудаление сообщений через %1$s сек</string>
     <!-- %1$s will be replaced by the number of seconds (always >1) the timer is set to, %2$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_seconds_by_other">%2$s включает автоудаление сообщений через %1$s сек</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_you">Вы включили автоудаление сообщений через 1 минуту.</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_other">%1$s включает автоудаление сообщений через 1 минуту.</string>
     <string name="ephemeral_timer_1_hour_by_you">Вы включили автоудаление сообщений через 1 час.</string>
     <!-- %1$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_1_hour_by_other">%1$s включает автоудаление сообщений через 1 час.</string>
@@ -1014,15 +1010,16 @@
     <!-- %1$s will be replaced by the number of weeks (always >1) the timer is set to, %2$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_weeks_by_other">%2$s включает автоудаление сообщений через %1$s недель.</string>
     <string name="chat_unencrypted_explanation">Сообщения в этом чате используют обычную электронную почту и не зашифрованы сквозным шифрованием.</string>
+    <string name="messages_are_e2ee">Сообщения защищены сквозным шифрованием.</string>
     <string name="chat_protection_enabled_tap_to_learn_more">Сообщения защищены сквозным шифрованием. Нажмите, чтобы узнать больше.</string>
     <string name="chat_protection_enabled_explanation">Все сообщения в этом чате зашифрованы сквозным шифрованием.\n\nСквозное шифрование обеспечивает конфиденциальность переписки между вами и вашими собеседниками. Ни серверы, ни провайдеры, ни релеи не смогут прочитать сообщения.</string>
     <string name="invalid_unencrypted_tap_to_learn_more">⚠️ %1$s требуется сквозное шифрование, которое ещё не настроено для данного чата. Нажмите, чтобы узнать больше.</string>
     <string name="invalid_unencrypted_explanation">Чтобы установить сквозное шифрование, вы можете встретиться с контактами лично и отсканировать их QR-код, чтобы подтвердить их личность.</string>
     <string name="learn_more">Узнать больше</string>
 
-    <string name="devicemsg_self_deleted">Вы удалили чат \"Сохраненные сообщения\".\n\nℹ️ Чтобы снова использовать функцию \"Сохраненные сообщения\", создайте новый чат с самим собой.</string>
+    <string name="devicemsg_self_deleted">Вы удалили чат \"Сохраненные сообщения\".\n\nℹ️ Чтобы снова использовать функцию \"Сохраненные сообщения\", создайте новый чат с собой.</string>
     <!-- %1$s will be replaced by the amount of storage already used, sth. as '500 MB'. If you want to use a percentage sign, type in two of them, eg. %1$s %% -->
-    <string name="devicemsg_storage_exceeding">⚠️ Хранилище вашего провайдера почти заполнено: %1$s%% уже использовано.\n\nЕсли хранилище полностью заполнено, вы не сможете получать сообщения.\n\n👉 Проверьте, можно ли удалить старые данные в веб-интерфейсе провайдера, и подумайте об включении \"Настройки / Чаты / Удалить старые сообщения\". Текущее использование хранилища можно проверить в любое время в разделе \"Настройки / Соединение\".</string>
+    <string name="devicemsg_storage_exceeding">⚠️ Место на сервере вашего провайдера скоро закончится, уже использовано: %1$s%%.\n\nЕсли место на сервере будет полностью заполнено, вы не сможете получать сообщения.\n\n👉 Проверьте, можно ли удалить старые данные через веб-интерфейс вашего провайдера, и подумайте о включении опции \"Настройки / Чаты / Удалить старые сообщения\". Вы всегда можете проверить текущее использование места на сервере в разделе \"Настройки / Соединение\".</string>
     <!-- %1%s will be replaced by date and time in some human-readable format -->
     <string name="devicemsg_bad_time">⚠️ Вероятно, дата или время на вашем устройстве неточные (%1$s).\n\nУстановите правильное время ⏰🔧 чтобы обеспечить правильное получение сообщений.</string>
     <string name="devicemsg_update_reminder">⚠️ Вероятно, ваша версия Alt Chat устарела.\n\nЭто может привести к проблемам, поскольку ваши собеседники используют более новые версии, а вы не имеете доступа к последним функциям 😳\nПроверьте https://get.alt.chat или магазин приложений на наличие обновлений.</string>
@@ -1040,12 +1037,12 @@
     <string name="qrscan_ask_join_group">Вы хотите присоединиться к группе \"%1$s\"?</string>
     <string name="qrscan_ask_join_channel">Вы хотите присоединиться к каналу \"%1$s\"?</string>
     <string name="qrscan_fingerprint_mismatch">Отсканированный отпечаток не совпадает с последним известным отпечатком %1$s.</string>
-    <string name="qrscan_no_addr_found">QR-код содержит отпечаток ключа, но не содержит адрес электронной почты.\n\nДля проверки подлинности с использованием альтернативного канала связи следует сначала установить с получателем защищённое соединение.</string>
+    <string name="qrscan_no_addr_found">Этот QR-код содержит отпечаток ключа, но не содержит адрес.\n\nДля проверки подлинности с использованием альтернативного канала связи следует сначала установить с получателем защищённое соединение.</string>
     <string name="qrscan_contains_text">Текст из QR-кода:\n\n%1$s</string>
     <string name="qrscan_contains_url">URL из QR-кода:\n\n%1$s</string>
     <string name="qrscan_fingerprint_label">Отпечаток</string>
-    <string name="withdraw_verifycontact_explain">Этот QR-код могут сканировать другие люди, чтобы связаться с вами.\n\nВы можете сбросить его, чтобы существующий QR-код или ссылка-приглашение больше не работали.</string>
-    <string name="withdraw_verifygroup_explain">Этот QR-код могут сканировать другие люди, чтобы присоединиться к группе \"%1$s\".\n\nВы можете сбросить его, чтобы существующий QR-код или ссылка-приглашение больше не работали.</string>
+    <string name="withdraw_verifycontact_explain">Этот QR-код можно отсканировать, чтобы связаться с вами.\n\nВы можете сбросить его и тогда существующий QR-код или ссылка-приглашение перестанут работать</string>
+    <string name="withdraw_verifygroup_explain">Этот QR-код можно отсканировать, чтобы присоединиться к группе \"%1$s\".\n\nВы можете сбросить его и тогда существующий QR-код или ссылка-приглашение перестанут работать</string>
     <string name="withdraw_joinbroadcast_explain">Этот QR-код могут сканировать другие пользователи для присоединения к каналу \"%1$s\".\n\nВы можете сбросить его, чтобы существующий QR-код или пригласительная ссылка перестали работать.</string>
     <string name="withdraw_qr_code">Сбросить QR-код</string>
     <string name="revive_verifycontact_explain">Этот QR-код был сброшен и больше не работает.</string>
@@ -1069,9 +1066,9 @@
     <!-- the placeholder will be replaced by the address of the profile -->
     <string name="qrlogin_ask_login">Авторизоваться в \"%1$s\"?</string>
     <!-- first placeholder will be replaced by name of the inviter, second placeholder will be replaced by the name of the inviter. -->
-    <string name="secure_join_started">%1$s приглашает вас в группу.\n\nОжидаем ответ от %2$s…</string>
+    <string name="secure_join_started">%1$s приглашает вас присоединиться к этой группе.\n\nОжидаем ответа от устройства %2$s…</string>
     <!-- first placeholder will be replaced by name of the inviter, second placeholder will be replaced by the name of the inviter. -->
-    <string name="secure_join_channel_started">%1$s приглашает вас присоединиться к этому каналу.\n\nОжидаем ответа устройства %2$s…</string>
+    <string name="secure_join_channel_started">%1$s приглашает вас присоединиться к этому каналу.\n\nОжидаем ответа от устройства %2$s...</string>
     <!-- placeholder will be replaced by the name of the inviter. -->
     <string name="secure_join_replies">%1$s ответил(а), ожидаем добавления в группу…</string>
     <string name="secure_join_wait">Устанавливается соединение, пожалуйста, подождите…</string>
@@ -1081,14 +1078,12 @@
     <string name="verified_by">Подтверждён: %1$s</string>
     <string name="verified_by_you">Подтверждён: Лично</string>
     <string name="verified_by_unknown">Подтверждён</string>
-    <!-- deprecated -->
-    <string name="verified_contact_required_explain">Чтобы обеспечить сквозное шифрование, вы можете добавлять в эту группу только контакты с зеленой галочкой.\n\nВы можете встретиться с контактами лично и отсканировать их QR-код, чтобы подтвердить их личность.</string>
     <string name="mailto_dialog_header_select_chat">Выберите чат, чтобы отправить сообщение</string>
     <!-- first placeholder is the name of the chat -->
     <string name="confirm_replace_draft">%1$s уже имеет черновик, вы хотите его заменить?</string>
     <string name="mailto_link_could_not_be_decoded">ссылка mailto не может быть обработана: %1$s</string>
 
-    <!-- notifications  -->
+    <!-- notifications -->
     <string name="notify_reply_button">Ответить</string>
     <string name="notify_new_message">Новое сообщение</string>
     <string name="notify_background_connection_enabled">Соединение в фоновом режиме включено</string>
@@ -1103,7 +1098,6 @@
     <!-- Body text for a generic "New messages" notification. Shown if we do not have more information about a new messages. Note, that the string is also referenced at https://github.com/deltachat/notifiers -->
     <string name="new_messages_body">Есть новые сообщения</string>
     <string name="n_messages_in_m_chats">%1$d сообщений в %2$d чатах</string>
-
 
     <!-- permissions -->
     <string name="perm_required_title">Требуется разрешение</string>
@@ -1236,7 +1230,7 @@
     <!-- android specific strings, developers: please take care to remove strings that are no longer used! -->
     <string name="pref_instant_delivery">Мгновенная доставка</string>
     <string name="pref_background_notifications">Использовать соединение в фоновом режиме</string>
-    <string name="pref_background_notifications_explain">Требуется отключение оптимизации батареи, используйте, если уведомления не приходят вовремя.</string>
+    <string name="pref_background_notifications_explain">Требуется отключение оптимизации батареи, используйте, если уведомления приходят с задержкой</string>
     <string name="pref_reliable_service">Принудительное соединение в фоновом режиме</string>
     <string name="pref_reliable_service_explain">Активирует постоянное уведомление</string>
 
