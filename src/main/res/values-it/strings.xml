@@ -16,7 +16,6 @@
     <string name="off">Spento</string>
     <string name="def">Predefinito</string>
     <string name="default_value">Predefinito (%1$s)</string>
-    <string name="default_value_as_above">Predefinito (come sopra)</string>
     <string name="custom">Personalizzato</string>
     <string name="none">Nessuno</string>
     <string name="automatic">Automatico</string>
@@ -34,8 +33,6 @@
     <string name="update">Aggiorna</string>
     <string name="emoji">Emoji</string>
     <string name="attachment">Allegato</string>
-    <!-- the placeholder will be replaced by the name of the image or file to attach -->
-    <string name="ask_attach">Allega \"%1$s\"?</string>
     <string name="back">Indietro</string>
     <string name="close">Chiudi</string>
     <string name="close_window">Chiudi Finestra</string>
@@ -72,6 +69,8 @@
     <string name="mark_as_read">Segna come Letto</string>
     <!-- Shortest text for "Mark as being read". In english, this could be "Read" (past tense of "to read"), in german, this could be "Gelesen". -->
     <string name="mark_as_read_short">Segna Letto</string>
+    <!-- Shortest text for "Mark as being unread". In english, this could be "Unread" (past tense of "to unread"), in german, this could be "Ungelesen". -->
+    <string name="mark_as_unread_short">Non Letto</string>
     <!-- Placeholder text when something is loading -->
     <string name="loading">Caricamento…</string>
     <string name="hide">Nascondi</string>
@@ -117,21 +116,17 @@
     <string name="last_month">Ultimo mese</string>
     <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by date or time, resulting in "Last seen at 12:13 AM" or "Last seen Nov 12" -->
     <string name="last_seen_at">Ultimo accesso alle %1$s</string>
-    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages)-->
+    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages) -->
     <string name="last_seen_relative"> Ultimo accesso %1$s</string>
     <string name="last_seen_unknown">Ultimo accesso: sconosciuto</string>
-    <!-- Shown in call duration. Avoid abbreviations, prefer full words ex. "N seconds". -->
-    <plurals name="n_seconds_ext">
-        <item quantity="one">%d secondo</item>
-        <item quantity="many">%d secondi</item>
-        <item quantity="other">%d secondi</item>
+    <!-- Call duration as shown in the call bubbles. There is some risk to mix with the sending time, so the word "Duration" may be helpful. Might also be "Duration: %d minutes", "%d-minute duration", "%d-minute length" or "%d-minute call" -->
+    <plurals name="call_duration_minutes">
+        <item quantity="one">%d minuto di durata</item>
+        <item quantity="many">%d minuti di durata</item>
+        <item quantity="other">%d minuti di durata</item>
     </plurals>
-    <!-- Shown in call duration. Avoid abbreviations, prefer full words ex. "N minutes". -->
-    <plurals name="n_minutes_ext">
-        <item quantity="one">%d minuto</item>
-        <item quantity="many">%d minuti</item>
-        <item quantity="other">%d minuti</item>
-    </plurals>
+    <!-- Call duration as shown in the call bubbles in case the call is less than one minute. If the context is not clear enough, one may want to add the word "Duration". -->
+    <string name="call_duration_less_than_a_minute">Meno di 1 minuto</string>
     <!-- Shown beside messages that are "N minutes old". Prefer short strings, or well-known abbreviations. -->
     <plurals name="n_minutes">
         <item quantity="one">%d min</item>
@@ -182,6 +177,7 @@
         <item quantity="other">%d selezionati</item>
     </plurals>
     <string name="selected_colon">Selezionato:</string>
+    <string name="selected">Selezionato</string>
     <string name="self">Io</string>
     <string name="draft">Bozza</string>
     <string name="image">Immagine</string>
@@ -193,6 +189,9 @@
     <string name="add_to_sticker_collection">Aggiungi alla Raccolta Adesivi</string>
     <string name="add_stickers_instructions">Per aggiungere adesivi, tocca \"Apri Cartella Adesivi\", crea una sottocartella per il tuo pacchetto di adesivi e trascina lì i file di immagini e adesivi</string>
     <string name="open_sticker_folder">Apri Cartella Adesivi</string>
+    <string name="ask_add_sticker_to_collection">Aggiungere questo adesivo alla tua collezione?</string>
+    <string name="ask_delete_sticker">Eliminare questo adesivo?</string>
+    <string name="sticker_picker_empty_hint">Tocca un adesivo per aggiungerlo qui.</string>
     <string name="images">Immagini</string>
     <!-- a noun, used for "Music" and other "Audio" files -->
     <string name="audio">Audio</string>
@@ -272,10 +271,14 @@
     <string name="channels">Canali</string>
     <!-- consider keeping the term "channel" as in WhatsApp or Telegram -->
     <string name="new_channel">Nuovo Canale</string>
-    <!-- deprecated -->
-    <string name="add_recipients">Aggiungi Destinatari</string>
     <!-- consider keeping the term "channel" as in WhatsApp or Telegram -->
     <string name="channel_name">Nome Canale</string>
+    <!-- The number of times a message is shown in channels. Use what other messengers are using here, smth. as "N-times seen" or "1 Aufruf" (german) work as well, where "1 impression" or "1 hit" may sound too formal and may be more marketing slang. -->
+    <plurals name="n_views">
+        <item quantity="one">%d visualizzazione</item>
+        <item quantity="many">%d visualizzazioni</item>
+        <item quantity="other">%d visualizzazioni</item>
+    </plurals>
     <string name="email">E-Mail</string>
     <!-- "New" as in "Create New Email"; shown together with "New Group" and "New Channel" -->
     <string name="new_email">Nuova E-Mail</string>
@@ -291,6 +294,7 @@
     <string name="menu_add_attachment">Aggiungi Allegato</string>
     <string name="menu_leave_group">Abbandona Gruppo</string>
     <string name="menu_leave_channel">Abbandona Canale</string>
+    <string name="menu_leave_and_delete">Lascia &amp; Cancella per Me</string>
     <string name="menu_delete_chat">Elimina Chat</string>
     <!-- Command to delete all messages in a chat. The chat itself will not be deleted but will be empty afterwards, so make sure to be different from "Delete Chat" here. "Clear" is a verb here, "Empty Chat" would also be fine (eg. in German "Chat leeren") -->
     <string name="clear_chat">Cancella Messaggi</string>
@@ -352,8 +356,6 @@
     <string name="menu_more_options">Più Opzioni</string>
     <string name="menu_learn_spelling">Impara l\'Ortografia</string>
     <string name="jump_to_message">Vai al Messaggio</string>
-    <string name="jump_to_original_message">Vai al Messaggio Originale</string>
-    <string name="copy_json">Copia JSON</string>
     <string name="replace_draft">Sostituisci Bozza</string>
     <string name="title_share_location">Condividi posizione con tutti i membri del guppo</string>
     <string name="device_talk">Messaggi Dispositivo</string>
@@ -408,19 +410,31 @@
 
     <!-- the action "to call someone", used as a tooltip for the "phone" icon. not: "the call" -->
     <string name="start_call">Chiama</string>
+    <!-- Menu item to start an audio call; verbs as "start" are probably superfluous in many translations -->
     <string name="start_audio_call">Chiamata Audio</string>
+    <!-- Menu item to start a video call; verbs as "start" are probably superfluous in many translations -->
     <string name="start_video_call">Chiamata Video</string>
     <!-- the action "to answer" or to "accept" or to "pick up" a call. not: "the answer" -->
     <string name="answer_call">Rispondi</string>
     <!-- the action "to decline" a call, not: "the decline" -->
     <string name="end_call">Rifiuta</string>
-    <!-- deprecated, use outgoing_audio_call or outgoing_video_call instead -->
-    <string name="outgoing_call">Chiamata in uscita</string>
+    <!-- Used in call bubbles, summaries, notifications -->
+    <string name="audio_call">Chiamata audio</string>
+    <!-- Used in call bubbles, summaries, notifications -->
+    <string name="video_call">Videochiamata</string>
+    <string name="call_initializing">Inizializzazione...</string>
+    <string name="call_incoming">Chiamata in arrivo</string>
+    <string name="call_ringing">Squilla…</string>
+    <string name="call_reconnecting">Riconnessione…</string>
+    <string name="call_ended">Chiamata terminata</string>
+    <string name="call_failed">Chiamata non riuscita</string>
+    <!-- deprecated, use "Audio call" instead -->
     <string name="outgoing_audio_call">Chiamata in uscita</string>
+    <!-- deprecated, use "Video call" instead -->
     <string name="outgoing_video_call">Videochiamata in uscita</string>
-    <!-- deprecated, use incoming_audio_call or incoming_video_call instead -->
-    <string name="incoming_call">Chiamata in arrivo</string>
+    <!-- deprecated, use "Audio call" instead -->
     <string name="incoming_audio_call">Chiamata in arrivo</string>
+    <!-- deprecated, use "Video call" instead -->
     <string name="incoming_video_call">Videochiamata in arrivo</string>
     <string name="declined_call">Chiamata rifiutata</string>
     <string name="canceled_call">Chiamata annullata</string>
@@ -437,6 +451,7 @@
     <string name="call_btn_end">Termina chiamata</string>
     <!-- the first placeholder will be replaced by a date, the second placeholder by duration, example: "Thu, 08:12 pm, 2 minutes" -->
     <string name="call_date_and_duration">%1$s, %2$s</string>
+    <string name="already_in_call">Già in chiamata</string>
 
     <!-- get confirmations -->
     <!-- confirmation for leaving groups or channels. If a subject is needed, "Are you sure you want to leave the chat?" would work as well -->
@@ -467,11 +482,9 @@
     <string name="ask_remove_from_channel">Rimuovere %1$s dal canale?</string>
     <string name="open_url_confirmation">Vuoi aprire questo collegamento?</string>
 
-
     <!-- contact list -->
     <string name="contacts_title">Contatti</string>
     <string name="contacts_type_email_above">Inserisci sopra l\'indirizzo e-mail</string>
-
 
     <!-- chatlist and chat view -->
     <plurals name="chat_archived">
@@ -535,24 +548,13 @@
     <string name="send_file_to">Invia \"%1$s\" a…</string>
     <!-- title shown above a list contacts where one should be selected (eg. when a webxdc attempts to send a message to a chat) -->
     <string name="send_message_to">Invia Messaggio a...</string>
-    <string name="enable_realtime">App in Tempo Reale</string>
-    <string name="enable_realtime_explain">Abilita connessioni in tempo reale per apps condivise nelle chat. Se abilitato, i partner della chat potrebbero essere in grado di scoprire il tuo indirizzo IP quando avvii un\'app.</string>
-
-    <!-- map -->
-    <string name="filter_map_on_time">Mostra le posizioni nell\'intervallo di tempo</string>
-    <string name="show_location_traces">Mostra tracce</string>
-    <string name="add_poi">Invia punto di interesse</string>
-
 
     <!-- punycode warning / labeled links -->
-    <!-- placeholder is domain/hostname that should be trusted -->
-    <string name="open_external_url_trust_domain">Non chiedere di nuovo per %1$s</string>
     <string name="puny_code_warning_header">Rilevato collegamento sospetto</string>
     <!-- placeholder contains the hostname converted to ascii -->
     <string name="puny_code_warning_question">Sei sicuro di voler visitare %1$s?</string>
     <!-- this message is shown whenever a link with non-latin characters is clicked. first placeholder is original hostname with special chars, second placeholder is hostname encoded in ascii -->
     <string name="puny_code_warning_description">Questo collegamento potrebbe rappresentare in modo errato i caratteri dall\'aspetto simile ad alfabeti diversi. Se si segue il collegamento con l\'etichetta %1$s si arriva a %2$s che è normale per i caratteri non latini. Se non ti aspettavi tali caratteri, questo collegamento potrebbe essere dannoso.</string>
-
 
     <!-- search -->
     <string name="search">Cerca</string>
@@ -562,7 +564,6 @@
     <string name="search_no_result_for_x">Nessun risultato trovato per \"%s\"</string>
     <!-- Adjective, as in "Show Unread Messages" -->
     <string name="search_unread">Non Letto</string>
-
 
     <!-- create/edit groups, contact/group profile -->
     <string name="group_name">Nome Gruppo</string>
@@ -627,8 +628,6 @@
     <string name="incoming_messages">Messaggi in Arrivo</string>
     <!-- Headline for the "Outbox" eg. in the "Connectivity" view -->
     <string name="outgoing_messages">Messaggi in Uscita</string>
-    <!-- deprecated -->
-    <string name="storage_on_domain">Spazio su %1$s</string>
     <string name="connectivity">Connettività</string>
     <!-- Shown in the title bar if the app is "Not connected"; prefer short strings. -->
     <string name="connectivity_not_connected">Non connesso</string>
@@ -646,11 +645,10 @@
     <!-- Used for describing resource usage, resulting string will be eg. "1.2 GiB of 3 GiB used" -->
     <string name="part_of_total_used">%1$s di %2$s usati</string>
 
-
     <!-- welcome and login -->
     <!-- Primary button on the welcome screen, allows to create an instant profile -->
     <string name="onboarding_create_instant_account">Crea Nuovo Profilo</string>
-    <!-- Secondary button on the welcome screen, allows to "Add as Second Device", "Restore from Backup"  -->
+    <!-- Secondary button on the welcome screen, allows to "Add as Second Device", "Restore from Backup" -->
     <string name="onboarding_alternative_logins">Ho Già un Profilo</string>
     <!-- This is a button and a title, allowing to use existing, classic email, setting ports, passwords and so on -->
     <string name="manual_account_setup_option">Accesso E-Mail Classico</string>
@@ -709,12 +707,16 @@
     <string name="add_transport">Aggiungi Trasporto</string>
     <string name="remove_transport">Rimuovi Trasporto</string>
     <string name="edit_transport">Modifica Trasporto</string>
+    <string name="used_for_sending">Utilizzato per l\'invio</string>
+    <string name="hide_from_contacts">Nascondi dai Contatti</string>
+    <string name="hidden_from_contacts">Nascosto dai contatti</string>
+    <!-- Hint for the list of relays -->
+    <string name="transport_list_hint">I messaggi vengono ricevuti su tutti i ripetitori.\n\n⚠️ Se modifichi qualcosa qui, assicurati che tutti i tuoi dispositivi abbiano almeno la versione 2.47.0. Altrimenti i dispositivi più vecchi potrebbero non ricevere i messaggi.</string>
     <!-- shown if a QR code was scanned that can be used as a relay -->
     <string name="confirm_add_transport">Aggiungere questo trasporto?</string>
     <string name="invalid_transport_qr">Il codice QR scansionato non contiene un mezzo di trasporto valido.</string>
     <!-- placeholder will be replaced by a relay server name -->
-    <string name="confirm_remove_transport">Rimuovere il trasporto \"%1$s\"?\n\nI tuoi contatti potranno contattarti solo se li hai contattati in precedenza tramite un altro mezzo di trasporto.\n\nIn caso di dubbio, rimuovi il mezzo di trasporto in un secondo momento.</string>
-
+    <string name="confirm_remove_or_hide_transport_x">Rimuovo ripetitore \"%1$s\"?\n\nI contatti che conoscono solo questo relay potrebbero non raggiungerti finché non invierai loro un altro messaggio. In caso di dubbio, nascondilo invece di rimuoverlo.</string>
     <string name="login_certificate_checks">Controlli Certificato</string>
     <string name="login_error_mail">Per piacere Inserisci un indirizzo e-mail valido</string>
     <string name="login_error_server">Per piacere inserisci un server / indirizzo IP valido</string>
@@ -755,10 +757,7 @@
     <string name="share_text_multiple_chats">Invia questo testo a %1$d chat?\n\n\"%2$s\"</string>
     <string name="share_abort">Condivisione annullata per permessi mancanti.</string>
 
-
     <!-- preferences -->
-    <string name="pref_using_custom">Personalizzazione in uso: %s</string>
-    <string name="pref_using_default">Usa predefinito: %s</string>
     <string name="pref_profile_info_headline">Il tuo Profilo</string>
     <string name="pref_profile_photo">Immagine Profilo</string>
     <string name="pref_blocked_contacts">Contatti Bloccati</string>
@@ -772,6 +771,7 @@
     <string name="pref_enter_sends">Spedisci con Invio</string>
     <string name="pref_enter_sends_explain">Premendo il tasto Invio invierà i messaggi</string>
     <string name="pref_outgoing_media_quality">Qualità Media in Uscita</string>
+    <string name="pref_outgoing_media_quality_hint">Per inviare contenuti in qualità originale, allega i file multimediali come \"File\". Questo comporta un consumo di dati significativamente maggiore sia per te che per i destinatari.</string>
     <string name="pref_outgoing_balanced">Bilanciata</string>
     <string name="pref_outgoing_worse">Qualità peggiore, dimensione ridotta</string>
     <string name="pref_vibrate">Vibra</string>
@@ -782,6 +782,10 @@
     <string name="pref_notifications">Notifiche</string>
     <string name="pref_mention_notifications">Menzioni</string>
     <string name="pref_mention_notifications_explain">Nei gruppi silenziati notifica i messaggi indirizzati a te, come risposte o reazioni</string>
+    <!-- Title for the "Calls" notification setting. This is a plural noun, not a verb. -->
+    <string name="pref_calls">Chiamate</string>
+    <!-- Details about what the "Calls" notification setting does -->
+    <string name="pref_calls_explain">Mostra la schermata delle chiamate in arrivo</string>
     <string name="pref_notifications_show">Mostra</string>
     <string name="pref_notifications_priority">Priorità</string>
     <string name="pref_notifications_explain">Abilita le notifiche di sistema per i nuovi messaggi</string>
@@ -791,8 +795,6 @@
     <string name="pref_sound">Suono</string>
     <string name="pref_silent">Silenzia</string>
     <string name="pref_privacy">Riservatezza</string>
-    <!-- deprecated, use pref_chats -->
-    <string name="pref_chats_and_media">Chat e Media</string>
     <string name="pref_system_default">Predefinito di sistema</string>
     <!-- Translators: as in "opposite of dark" -->
     <string name="pref_light_theme">Chiaro</string>
@@ -857,8 +859,6 @@
     <string name="n_bytes_message">%1$s messaggio</string>
     <!-- %1$s will be replaced by human-readable date and time -->
     <string name="download_max_available_until">Scaricamento disponibile massimo fino a %1$s</string>
-    <!-- deprecated -->
-    <string name="select_profile">Seleziona il Profilo</string>
     <string name="profile_image_select">Seleziona Immagine Profilo</string>
     <string name="select_your_new_profile_image">Seleziona la tua nuova immagine profilo</string>
     <string name="profile_image_delete">Elimina Immagine Profilo</string>
@@ -964,10 +964,6 @@
     <string name="ephemeral_timer_seconds_by_you">Hai impostato il timer dei messaggi a scomparsa su %1$s secondi</string>
     <!-- %1$s will be replaced by the number of seconds (always >1) the timer is set to, %2$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_seconds_by_other">Timer messaggi a scomparsa impostato su %1$s secondi da %2$s.</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_you">Hai impostato il timer dei messaggi a scomparsa su 1 minuto.</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_other">Timer messaggi a scomparsa impostato su 1 minuto da %1$s.</string>
     <string name="ephemeral_timer_1_hour_by_you">Hai impostato il timer dei messaggi a scomparsa su 1 ora.</string>
     <!-- %1$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_1_hour_by_other">Timer messaggi a scomparsa impostato su 1 ora da %1$s.</string>
@@ -985,7 +981,7 @@
     <!-- %1$s will be replaced by the number of minutes (always >1) the timer is set to, %2$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_minutes_by_other">Timer messaggi a scomparsa impostato su %1$s minuti da %2$s.</string>
     <!-- %1$s will be replaced by the number of hours (always >1) the timer is set to -->
-    <string name="ephemeral_timer_hours_by_you">Hai impostato il timer dei messaggi a scomparsa su  %1$s ore.</string>
+    <string name="ephemeral_timer_hours_by_you">Hai impostato il timer dei messaggi a scomparsa su %1$s ore.</string>
     <!-- %1$s will be replaced by the number of hours (always >1) the timer is set to, %2$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_hours_by_other">Timer messaggi a scomparsa impostato su %1$s ore da %2$s.</string>
     <!-- %1$s will be replaced by the number of days (always >1) the timer is set to -->
@@ -997,6 +993,7 @@
     <!-- %1$s will be replaced by the number of weeks (always >1) the timer is set to, %2$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_weeks_by_other">Timer messaggi a scomparsa impostato su %1$s settimane da %2$s.</string>
     <string name="chat_unencrypted_explanation">I messaggi in questa chat utilizzano l\' e-mail classica e non sono crittografati end-to-end.</string>
+    <string name="messages_are_e2ee">I messaggi sono crittografati end-to-end.</string>
     <string name="chat_protection_enabled_tap_to_learn_more">I messaggi sono crittografati end-to-end. Tocca per saperne di più.</string>
     <string name="chat_protection_enabled_explanation">Tutti i messaggi in questa chat sono crittografati end-to-end. La crittografia end-to-end mantiene privati i messaggi tra te e i tuoi interlocutori. Nemmeno servers, providers o relays possono leggerli.</string>
     <string name="invalid_unencrypted_tap_to_learn_more">⚠️ %1$s richiede la crittografia end-to-end che non è ancora configurata per questa chat. Tocca per saperne di più.</string>
@@ -1064,14 +1061,12 @@
     <string name="verified_by">Introdotto da %1$s</string>
     <string name="verified_by_you">Introdotto da me</string>
     <string name="verified_by_unknown">Introdotto</string>
-    <!-- deprecated -->
-    <string name="verified_contact_required_explain">Per garantire la crittografia end-to-end, puoi aggiungere a questo gruppo solo i contatti con un segno di spunta verde.\n\nPuoi incontrare i contatti di persona e scansionare il loro Codice QR per verificarli.</string>
     <string name="mailto_dialog_header_select_chat">Seleziona la chat a cui inviare il messaggio</string>
     <!-- first placeholder is the name of the chat -->
     <string name="confirm_replace_draft">%1$s ha già una bozza di messaggio, vuoi sostituirla?</string>
     <string name="mailto_link_could_not_be_decoded">Il collegamento mailto non può essere decodificato: %1$s</string>
 
-    <!-- notifications  -->
+    <!-- notifications -->
     <string name="notify_reply_button">Rispondi</string>
     <string name="notify_new_message">Nuovo messaggio</string>
     <string name="notify_background_connection_enabled">Connessione in secondo piano abilitata</string>
@@ -1087,13 +1082,12 @@
     <string name="new_messages_body">Hai nuovi messaggi</string>
     <string name="n_messages_in_m_chats">%1$d messaggi in %2$d chat</string>
 
-
     <!-- permissions -->
     <string name="perm_required_title">Autorizzazione richiesta</string>
     <string name="perm_continue">Continua</string>
     <string name="perm_explain_access_to_camera_denied">Per scattare foto o registrare video, vai alle impostazioni dell\'app, seleziona \"Autorizzazioni\" e abilita \"Fotocamera\".</string>
     <!-- give the user an idea where to find the "Microphone" option. the hint is only shown if access was initially denied by the user. pick up wordings really used on the systems, but do not be overly precise: things shift around often and there are too many system we support to track every detail and click path -->
-    <string name="perm_explain_access_to_mic_denied">Per inviare messaggi audio, vai nelle impostazioni di sistema o dell\'app, seleziona \"Autorizzazioni\" o \"Privacy  &amp; Sicurezza\" e abilita \"Microfono\".</string>
+    <string name="perm_explain_access_to_mic_denied">Per inviare messaggi audio, vai nelle impostazioni di sistema o dell\'app, seleziona \"Autorizzazioni\" o \"Privacy &amp; Sicurezza\" e abilita \"Microfono\".</string>
     <string name="perm_explain_access_to_storage_denied">Per ricevere o inviare file, vai alle impostazioni dell\'app, seleziona \"Autorizzazioni\" e abilita \"Archiviazione\".</string>
     <string name="perm_explain_access_to_location_denied">Per allegare una posizione, vai alle impostazioni dell\'app, seleziona \"Autorizzazioni\" e abilita \"Posizione\".</string>
     <string name="perm_explain_access_to_notifications_denied">Per ricevere le notifiche, vai su \"Impostazioni di Sistema / App / Alt Chat\" e attiva \"Notifiche\".</string>

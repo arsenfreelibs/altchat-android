@@ -16,7 +16,6 @@
     <string name="off">Uit</string>
     <string name="def">Standaard</string>
     <string name="default_value">Standaard (%1$s)</string>
-    <string name="default_value_as_above">Standaard (zoals hierboven)</string>
     <string name="custom">Aangepast</string>
     <string name="none">Geen</string>
     <string name="automatic">Automatisch</string>
@@ -34,8 +33,6 @@
     <string name="update">Bijwerken</string>
     <string name="emoji">Emoji</string>
     <string name="attachment">Bijlage</string>
-    <!-- the placeholder will be replaced by the name of the image or file to attach -->
-    <string name="ask_attach">Wil je ‘%1$s’ bijvoegen?</string>
     <string name="back">Terug</string>
     <string name="close">Sluiten</string>
     <string name="close_window">Venster sluiten</string>
@@ -72,6 +69,8 @@
     <string name="mark_as_read">Markeren als gelezen</string>
     <!-- Shortest text for "Mark as being read". In english, this could be "Read" (past tense of "to read"), in german, this could be "Gelesen". -->
     <string name="mark_as_read_short">Gelezen</string>
+    <!-- Shortest text for "Mark as being unread". In english, this could be "Unread" (past tense of "to unread"), in german, this could be "Ungelesen". -->
+    <string name="mark_as_unread_short">Ongelezen</string>
     <!-- Placeholder text when something is loading -->
     <string name="loading">Bezig met laden…</string>
     <string name="hide">Verbergen</string>
@@ -117,19 +116,16 @@
     <string name="last_month">Vorige maand</string>
     <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by date or time, resulting in "Last seen at 12:13 AM" or "Last seen Nov 12" -->
     <string name="last_seen_at">Laatst gezien om %1$s</string>
-    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages)-->
+    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages) -->
     <string name="last_seen_relative">Laatst gezien: %1$s</string>
     <string name="last_seen_unknown">Laatst gezien: onbekend</string>
-    <!-- Shown in call duration. Avoid abbreviations, prefer full words ex. "N seconds". -->
-    <plurals name="n_seconds_ext">
-        <item quantity="one">%d seconde</item>
-        <item quantity="other">%d seconden</item>
+    <!-- Call duration as shown in the call bubbles. There is some risk to mix with the sending time, so the word "Duration" may be helpful. Might also be "Duration: %d minutes", "%d-minute duration", "%d-minute length" or "%d-minute call" -->
+    <plurals name="call_duration_minutes">
+        <item quantity="one">Duur: %d minuut</item>
+        <item quantity="other">Duur: %d minuten</item>
     </plurals>
-    <!-- Shown in call duration. Avoid abbreviations, prefer full words ex. "N minutes". -->
-    <plurals name="n_minutes_ext">
-        <item quantity="one">%d minuut</item>
-        <item quantity="other">%d minuten</item>
-    </plurals>
+    <!-- Call duration as shown in the call bubbles in case the call is less than one minute. If the context is not clear enough, one may want to add the word "Duration". -->
+    <string name="call_duration_less_than_a_minute">Minder dan een minuut</string>
     <!-- Shown beside messages that are "N minutes old". Prefer short strings, or well-known abbreviations. -->
     <plurals name="n_minutes">
         <item quantity="one">%d minuut</item>
@@ -171,6 +167,7 @@
         <item quantity="other">%d geselecteerd</item>
     </plurals>
     <string name="selected_colon">Gekozen:</string>
+    <string name="selected">Gekozen</string>
     <string name="self">Ik</string>
     <string name="draft">Concept</string>
     <string name="image">Afbeelding</string>
@@ -182,6 +179,9 @@
     <string name="add_to_sticker_collection">Toevoegen aan stickerverzameling</string>
     <string name="add_stickers_instructions">Stickers toevoegen kan als volgt: druk op ‘Stickermap openen’, maak een onderliggende map aan voor je pakket en plaats afbeeldings- en stickerbestanden in de map.</string>
     <string name="open_sticker_folder">Stickermap openen</string>
+    <string name="ask_add_sticker_to_collection">Wil je deze sticker toevoegen aan je verzameling?</string>
+    <string name="ask_delete_sticker">Wil je deze sticker verwijderen?</string>
+    <string name="sticker_picker_empty_hint">Druk op een sticker om die hier toe te voegen.</string>
     <string name="images">Afbeeldingen</string>
     <!-- a noun, used for "Music" and other "Audio" files -->
     <string name="audio">Audio</string>
@@ -261,10 +261,13 @@
     <string name="channels">Kanalen</string>
     <!-- consider keeping the term "channel" as in WhatsApp or Telegram -->
     <string name="new_channel">Nieuw kanaal</string>
-    <!-- deprecated -->
-    <string name="add_recipients">Ontvangers toevoegen</string>
     <!-- consider keeping the term "channel" as in WhatsApp or Telegram -->
     <string name="channel_name">Kanaalnaam</string>
+    <!-- The number of times a message is shown in channels. Use what other messengers are using here, smth. as "N-times seen" or "1 Aufruf" (german) work as well, where "1 impression" or "1 hit" may sound too formal and may be more marketing slang. -->
+    <plurals name="n_views">
+        <item quantity="one">%d keer gelezen</item>
+        <item quantity="other">%d keer gelezen</item>
+    </plurals>
     <string name="email">E-mail</string>
     <!-- "New" as in "Create New Email"; shown together with "New Group" and "New Channel" -->
     <string name="new_email">Nieuwe e-mail</string>
@@ -280,6 +283,7 @@
     <string name="menu_add_attachment">Bijlage toevoegen</string>
     <string name="menu_leave_group">Groep verlaten</string>
     <string name="menu_leave_channel">Kanaal verlaten</string>
+    <string name="menu_leave_and_delete">Vertalen en verwijderen voor mij</string>
     <string name="menu_delete_chat">Gesprek verwijderen</string>
     <!-- Command to delete all messages in a chat. The chat itself will not be deleted but will be empty afterwards, so make sure to be different from "Delete Chat" here. "Clear" is a verb here, "Empty Chat" would also be fine (eg. in German "Chat leeren") -->
     <string name="clear_chat">Ale berichten wissen</string>
@@ -341,8 +345,6 @@
     <string name="menu_more_options">Meer opties</string>
     <string name="menu_learn_spelling">Spelling leren</string>
     <string name="jump_to_message">Ga naar bericht</string>
-    <string name="jump_to_original_message">Ga naar oorspronkelijk bericht</string>
-    <string name="copy_json">Json-gegevens kopiëren</string>
     <string name="replace_draft">Concept vervangen</string>
     <string name="title_share_location">Locatie delen met alle groepsleden</string>
     <string name="device_talk">Berichten op apparaat</string>
@@ -396,19 +398,31 @@
 
     <!-- the action "to call someone", used as a tooltip for the "phone" icon. not: "the call" -->
     <string name="start_call">Bellen</string>
+    <!-- Menu item to start an audio call; verbs as "start" are probably superfluous in many translations -->
     <string name="start_audio_call">Audiogesprek</string>
+    <!-- Menu item to start a video call; verbs as "start" are probably superfluous in many translations -->
     <string name="start_video_call">Videogesprek</string>
     <!-- the action "to answer" or to "accept" or to "pick up" a call. not: "the answer" -->
     <string name="answer_call">Aanvaarden</string>
     <!-- the action "to decline" a call, not: "the decline" -->
     <string name="end_call">Weigeren</string>
-    <!-- deprecated, use outgoing_audio_call or outgoing_video_call instead -->
-    <string name="outgoing_call">Uitgaande oproep</string>
+    <!-- Used in call bubbles, summaries, notifications -->
+    <string name="audio_call">Audiogesprek</string>
+    <!-- Used in call bubbles, summaries, notifications -->
+    <string name="video_call">Videogesprek</string>
+    <string name="call_initializing">Bezig met alles opzetten…</string>
+    <string name="call_incoming">Inkomende oproep</string>
+    <string name="call_ringing">Bezig met oproep…</string>
+    <string name="call_reconnecting">Bezig met herverbinden…</string>
+    <string name="call_ended">Gesprek beëindigd</string>
+    <string name="call_failed">Gesprek mislukt</string>
+    <!-- deprecated, use "Audio call" instead -->
     <string name="outgoing_audio_call">Uitgaand audiogesprek</string>
+    <!-- deprecated, use "Video call" instead -->
     <string name="outgoing_video_call">Uitgaand videogesprek</string>
-    <!-- deprecated, use incoming_audio_call or incoming_video_call instead -->
-    <string name="incoming_call">Inkomende oproep</string>
+    <!-- deprecated, use "Audio call" instead -->
     <string name="incoming_audio_call">Inkomend audiogesprek</string>
+    <!-- deprecated, use "Video call" instead -->
     <string name="incoming_video_call">Inkomend videogesprek</string>
     <string name="declined_call">Geweigerde oproep</string>
     <string name="canceled_call">Afgebroken oproep</string>
@@ -425,6 +439,7 @@
     <string name="call_btn_end">Gesprek beëindigen</string>
     <!-- the first placeholder will be replaced by a date, the second placeholder by duration, example: "Thu, 08:12 pm, 2 minutes" -->
     <string name="call_date_and_duration">%1$s %2$s</string>
+    <string name="already_in_call">Reeds in gesprek</string>
 
     <!-- get confirmations -->
     <!-- confirmation for leaving groups or channels. If a subject is needed, "Are you sure you want to leave the chat?" would work as well -->
@@ -445,7 +460,7 @@
     <string name="ask_block_contact">Wil je deze contactpersoon blokkeren? Hij/zij kan je geen berichten meer sturen.</string>
     <string name="ask_unblock_contact">Wil je deze contactpersoon deblokkeren? Hij/zij kan je wederom berichten sturen.</string>
     <string name="ask_delete_contacts">Wil je de geselecteerde contactpersonen permanent verwijderen?\n\nPersonen met actieve gesprekken en personen afkomstig uit je adresboek kunnen niet permanent worden verwijderd.</string>
-    <string name="ask_delete_contact">Wil je de contactpersoon %1$s permanent verwijderen?\n\nPersonen met actieve gesprekken en personen afkomstig uit je adresboek kunnen niet permanent worden verwijderd.</string>
+    <string name="ask_delete_contact">Wil je ‘%1$s’ permanent verwijderen?\n\nPersonen met actieve gesprekken en personen afkomstig uit je adresboek kunnen niet permanent worden verwijderd.</string>
     <string name="ask_start_chat_with">Wil je een gesprek voeren met %1$s?</string>
     <!-- %1$s is replaced by a comma-separated list of names -->
     <string name="ask_remove_members">Wil je %1$s verwijderen uit de groep?</string>
@@ -453,11 +468,9 @@
     <string name="ask_remove_from_channel">Weet je zeker dat je %1$s van het kanaal wilt verwijderen?</string>
     <string name="open_url_confirmation">Weet je zeker dat je deze link wilt openen?</string>
 
-
     <!-- contact list -->
     <string name="contacts_title">Contactpersonen</string>
     <string name="contacts_type_email_above">Typ hierboven het e-mailadres</string>
-
 
     <!-- chatlist and chat view -->
     <plurals name="chat_archived">
@@ -518,24 +531,13 @@
     <string name="send_file_to">“%1$s” versturen naar…</string>
     <!-- title shown above a list contacts where one should be selected (eg. when a webxdc attempts to send a message to a chat) -->
     <string name="send_message_to">Bericht versturen naar…</string>
-    <string name="enable_realtime">Real-timeapps</string>
-    <string name="enable_realtime_explain">Laat apps een real-timeverbinding gebruiken in gedeelde gesprekken. Let op: gesprekspartners kunnen hierdoor mogelijk je ip-adres zien.</string>
-
-    <!-- map -->
-    <string name="filter_map_on_time">Locaties tonen in tijdsbeeld</string>
-    <string name="show_location_traces">Sporen tonen</string>
-    <string name="add_poi">Afspraaklocatie versturen</string>
-
 
     <!-- punycode warning / labeled links -->
-    <!-- placeholder is domain/hostname that should be trusted -->
-    <string name="open_external_url_trust_domain">Niet meer vragen bij %1$s</string>
     <string name="puny_code_warning_header">Verdachte link aangetroffen</string>
     <!-- placeholder contains the hostname converted to ascii -->
     <string name="puny_code_warning_question">Weet je zeker dat je %1$s wilt openen?</string>
     <!-- this message is shown whenever a link with non-latin characters is clicked. first placeholder is original hostname with special chars, second placeholder is hostname encoded in ascii -->
     <string name="puny_code_warning_description">Je hebt op een link gedrukt welke niet-overeenkomende tekens bevat uit andere talen. Door %1$s te openen kom je op %2$s terecht, welke niet-Latijnse tekens bevat. Als je deze tekens niet verwachtte, dan is de site mogelijk niet te vertrouwen.</string>
-
 
     <!-- search -->
     <string name="search">Zoeken</string>
@@ -545,7 +547,6 @@
     <string name="search_no_result_for_x">Er zijn geen resultaten voor “%s”</string>
     <!-- Adjective, as in "Show Unread Messages" -->
     <string name="search_unread">Ongelezen</string>
-
 
     <!-- create/edit groups, contact/group profile -->
     <string name="group_name">Groepsnaam</string>
@@ -610,8 +611,6 @@
     <string name="incoming_messages">Inkomende berichten</string>
     <!-- Headline for the "Outbox" eg. in the "Connectivity" view -->
     <string name="outgoing_messages">Uitgaande berichten</string>
-    <!-- deprecated -->
-    <string name="storage_on_domain">Opslag op %1$s</string>
     <string name="connectivity">Verbindingen</string>
     <!-- Shown in the title bar if the app is "Not connected"; prefer short strings. -->
     <string name="connectivity_not_connected">Niet verbonden</string>
@@ -629,11 +628,10 @@
     <!-- Used for describing resource usage, resulting string will be eg. "1.2 GiB of 3 GiB used" -->
     <string name="part_of_total_used">%1$s van %2$s in gebruik</string>
 
-
     <!-- welcome and login -->
     <!-- Primary button on the welcome screen, allows to create an instant profile -->
     <string name="onboarding_create_instant_account">Account aanmaken</string>
-    <!-- Secondary button on the welcome screen, allows to "Add as Second Device", "Restore from Backup"  -->
+    <!-- Secondary button on the welcome screen, allows to "Add as Second Device", "Restore from Backup" -->
     <string name="onboarding_alternative_logins">Ik heb al een account</string>
     <!-- This is a button and a title, allowing to use existing, classic email, setting ports, passwords and so on -->
     <string name="manual_account_setup_option">Inloggen met eigen e-mailadres</string>
@@ -692,12 +690,16 @@
     <string name="add_transport">Server toevoegen</string>
     <string name="remove_transport">Server verwijderen</string>
     <string name="edit_transport">Server bewerken</string>
+    <string name="used_for_sending">Wordt gebruikt voor versturen</string>
+    <string name="hide_from_contacts">Verbergen op contactpersonenlijst</string>
+    <string name="hidden_from_contacts">Verborgen op contactpersonenlijst</string>
+    <!-- Hint for the list of relays -->
+    <string name="transport_list_hint">Berichten worden op alle relays ontvangen.\n\n⚠️ Als je hier iets wijzigt, doe dat dan alléén als ál je apparaten gebruikmaken van versie 2.47.0, anders kunnen er berichten ontbreken.</string>
     <!-- shown if a QR code was scanned that can be used as a relay -->
     <string name="confirm_add_transport">Wil je deze server toevoegen?</string>
     <string name="invalid_transport_qr">De gescande QR-code bevat geen geldige overdrachtsserver.</string>
     <!-- placeholder will be replaced by a relay server name -->
-    <string name="confirm_remove_transport">Weet je zeker dat je de overdrachtsserver ‘%1$s’ wilt verwijderen?\n\nJe contactpersonen kunnen dan alleen nog contact met je opnemen als je ze al eerder bericht hebt via een andere server.\n\nStel bij twijfel het verwijderen uit.</string>
-
+    <string name="confirm_remove_or_hide_transport_x">Wil je ‘%1$s’ verwijderen?\n\nContactpersonen die deze relay niet kennen, kunnen je zo niet bereiken.\n\nBij twijfel verbergen in plaats van verwijderen.</string>
     <string name="login_certificate_checks">Certificaatcontrole</string>
     <string name="login_error_mail">Voer een geldig e-mailadres in</string>
     <string name="login_error_server">Voer een geldig(e) ip-adres/server in</string>
@@ -738,10 +740,7 @@
     <string name="share_text_multiple_chats">Wil je deze tekst versturen naar %1$d gesprekken?\n\n“%2$s”</string>
     <string name="share_abort">Het delen is afgebroken wegens ontbrekende rechten.</string>
 
-
     <!-- preferences -->
-    <string name="pref_using_custom">Aangepast wordt gebruikt: %s</string>
-    <string name="pref_using_default">Standaard wordt gebruikt: %s</string>
     <string name="pref_profile_info_headline">Mijn profiel</string>
     <string name="pref_profile_photo">Profielfoto</string>
     <string name="pref_blocked_contacts">Geblokkeerde contactpersonen</string>
@@ -755,6 +754,7 @@
     <string name="pref_enter_sends">Versturen met enter</string>
     <string name="pref_enter_sends_explain">Druk op de entertoets om tekstberichten te versturen</string>
     <string name="pref_outgoing_media_quality">Kwaliteit van verstuurde media</string>
+    <string name="pref_outgoing_media_quality_hint">Als je de oorspronkelijke kwaliteit wilt behouden, verstuur het dan als bestand. De huidige methode verbruikt meer data bij zowel jou als de ontvangers.</string>
     <string name="pref_outgoing_balanced">Normaal</string>
     <string name="pref_outgoing_worse">Lagere kwaliteit, kleinere bestanden</string>
     <string name="pref_vibrate">Trillen</string>
@@ -765,6 +765,10 @@
     <string name="pref_notifications">Meldingen</string>
     <string name="pref_mention_notifications">Vermeldingen</string>
     <string name="pref_mention_notifications_explain">Toon berichten gericht aan jou in genegeerde groepen</string>
+    <!-- Title for the "Calls" notification setting. This is a plural noun, not a verb. -->
+    <string name="pref_calls">Oproepen</string>
+    <!-- Details about what the "Calls" notification setting does -->
+    <string name="pref_calls_explain">Belscherm tonen bij inkomende oproepen</string>
     <string name="pref_notifications_show">Tonen</string>
     <string name="pref_notifications_priority">Prioriteit</string>
     <string name="pref_notifications_explain">Systeemmeldingen tonen bij nieuwe berichten</string>
@@ -774,8 +778,6 @@
     <string name="pref_sound">Geluid</string>
     <string name="pref_silent">Stil</string>
     <string name="pref_privacy">Privacy</string>
-    <!-- deprecated, use pref_chats -->
-    <string name="pref_chats_and_media">Gesprekken en media</string>
     <string name="pref_system_default">Systeemstandaard</string>
     <!-- Translators: as in "opposite of dark" -->
     <string name="pref_light_theme">Licht</string>
@@ -840,8 +842,6 @@
     <string name="n_bytes_message">%1$s bericht</string>
     <!-- %1$s will be replaced by human-readable date and time -->
     <string name="download_max_available_until">Maximaal downloaden tot en met een aantal van %1$s</string>
-    <!-- deprecated -->
-    <string name="select_profile">Kies een profiel</string>
     <string name="profile_image_select">Profielfoto kiezen</string>
     <string name="select_your_new_profile_image">Kies een nieuwe profielfoto</string>
     <string name="profile_image_delete">Profielfoto verwijderen</string>
@@ -947,10 +947,6 @@
     <string name="ephemeral_timer_seconds_by_you">Je hebt de tijdklok van verdwijnende berichten ingesteld op %1$s sec.</string>
     <!-- %1$s will be replaced by the number of seconds (always >1) the timer is set to, %2$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_seconds_by_other">De tijdklok van verdwijnende berichten is door %2$s ingesteld op %1$s sec.</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_you">Je hebt de tijdklok van verdwijnende berichten ingesteld op 1 minuut.</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_other">De tijdklok van verdwijnende berichten is door %1$s ingesteld op 1 minuut.</string>
     <string name="ephemeral_timer_1_hour_by_you">Je hebt de tijdklok van verdwijnende berichten ingesteld op 1 uur.</string>
     <!-- %1$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_1_hour_by_other">De tijdklok van verdwijnende berichten is door %1$s ingesteld op 1 uur.</string>
@@ -980,6 +976,7 @@
     <!-- %1$s will be replaced by the number of weeks (always >1) the timer is set to, %2$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_weeks_by_other">De tijdklok van verdwijnende berichten is door %2$s ingesteld op %1$s weken.</string>
     <string name="chat_unencrypted_explanation">Berichten in dit gesprek maken gebruik van traditionele e-mailcommunicatie - eind-tot-endversleuteling is daarom niet gegarandeerd.</string>
+    <string name="messages_are_e2ee">Berichten zijn van eind-tot-eindversleuteling voorzien.</string>
     <string name="chat_protection_enabled_tap_to_learn_more">Berichten zijn gegarandeerd van eind-tot-eindversleuteling voorzien. Druk hier voor meer informatie.</string>
     <string name="chat_protection_enabled_explanation">Alle berichten in dit gesprek zijn gegarandeerd van eind-tot-eindversleuteling voorzien.\n\nMet behulp van deze versleuteling blijven berichten tussen jou en je gesprekspartners geheim - zelfs je e-mailprovider kan ze niet uitlezen.</string>
     <string name="invalid_unencrypted_tap_to_learn_more">⚠️ Voor %1$s is eind-tot-eindversleuteling vereist, maar dit is nog niet ingesteld in het huidige gesprek. Druk voor meer informatie.</string>
@@ -1047,14 +1044,12 @@
     <string name="verified_by">Geïntroduceerd door %1$s</string>
     <string name="verified_by_you">Geïntroduceerd door mij</string>
     <string name="verified_by_unknown">Geïntroduceerd</string>
-    <!-- deprecated -->
-    <string name="verified_contact_required_explain">Om de eind-tot-eindversleuteling te garanderen, kun je alleen contactpersonen met een groen vinkje toevoegen aan deze groep.\n\nVan niet-goedgekeurde contactpersonen kun je de QR-code scannen om ze goed te keuren.</string>
     <string name="mailto_dialog_header_select_chat">Kies in welk gesprek je dit bericht wilt delen</string>
     <!-- first placeholder is the name of the chat -->
     <string name="confirm_replace_draft">%1$s bevat al een concept. Wil je dit vervangen?</string>
     <string name="mailto_link_could_not_be_decoded">De mailto-link kan niet worden ontcijferd: %1$s</string>
 
-    <!-- notifications  -->
+    <!-- notifications -->
     <string name="notify_reply_button">Beantwoorden</string>
     <string name="notify_new_message">Nieuw bericht</string>
     <string name="notify_background_connection_enabled">Achtergrondverbinding ingeschakeld</string>
@@ -1069,7 +1064,6 @@
     <!-- Body text for a generic "New messages" notification. Shown if we do not have more information about a new messages. Note, that the string is also referenced at https://github.com/deltachat/notifiers -->
     <string name="new_messages_body">Je hebt nieuwe berichten</string>
     <string name="n_messages_in_m_chats">%1$d berichten in %2$d gesprekken</string>
-
 
     <!-- permissions -->
     <string name="perm_required_title">Recht vereist</string>

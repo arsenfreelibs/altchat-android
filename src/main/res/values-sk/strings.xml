@@ -16,7 +16,6 @@
     <string name="off">Vypnúť</string>
     <string name="def">Štandardné nastavenie</string>
     <string name="default_value">Štandardné nastavenie (%1$s)</string>
-    <string name="default_value_as_above">Predvolené (rovnaké ako vyššie)</string>
     <string name="custom">Vlastný</string>
     <string name="none">Nie je</string>
     <string name="automatic">Automatický</string>
@@ -34,8 +33,6 @@
     <string name="update">Aktualizovať</string>
     <string name="emoji">Smajlíci</string>
     <string name="attachment">Príloha</string>
-    <!-- the placeholder will be replaced by the name of the image or file to attach -->
-    <string name="ask_attach">Priložiť „%1$s“?</string>
     <string name="back">Späť</string>
     <string name="close">Zatvoriť</string>
     <string name="close_window">Zavrieť okno</string>
@@ -113,7 +110,7 @@
     <string name="last_month">Minulý mesiac</string>
     <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by date or time, resulting in "Last seen at 12:13 AM" or "Last seen Nov 12" -->
     <string name="last_seen_at">Naposledy videné o%1$s</string>
-    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages)-->
+    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages) -->
     <string name="last_seen_relative">Naposledy online %1$s</string>
     <string name="last_seen_unknown">Naposledy videné: Neznáme</string>
     <!-- Shown beside messages that are "N minutes old". Prefer short strings, or well-known abbreviations. -->
@@ -253,8 +250,6 @@
     <string name="channels">Kanály</string>
     <!-- consider keeping the term "channel" as in WhatsApp or Telegram -->
     <string name="new_channel">Nový kanál</string>
-    <!-- deprecated -->
-    <string name="add_recipients">Pridať Príjemcov</string>
     <!-- consider keeping the term "channel" as in WhatsApp or Telegram -->
     <string name="channel_name">Názov kanálu</string>
     <string name="email">E-mail</string>
@@ -332,8 +327,6 @@
     <string name="menu_more_options">Ďalšie možnosti</string>
     <string name="menu_learn_spelling">Naučiť sa pravopis</string>
     <string name="jump_to_message">Prejsť na správu</string>
-    <string name="jump_to_original_message">Zobraziť pôvodnú správu</string>
-    <string name="copy_json">Kopírovať JSON</string>
     <string name="replace_draft">Nahradiť koncept</string>
     <string name="title_share_location">Zdieľať polohu so všetkými členmi skupiny</string>
     <string name="device_talk">Správy zariadenia</string>
@@ -412,11 +405,9 @@
     <string name="ask_remove_from_channel">Odstrániť %1$s z kanálu?</string>
     <string name="open_url_confirmation">Chcete otvoriť tento odkaz?</string>
 
-
     <!-- contact list -->
     <string name="contacts_title">Kontakty</string>
     <string name="contacts_type_email_above">Vyššie zadajte e-mailovú adresu</string>
-
 
     <!-- chatlist and chat view -->
     <plurals name="chat_archived">
@@ -480,21 +471,13 @@
     <string name="send_file_to">Poslať \"%1$s\"...</string>
     <!-- title shown above a list contacts where one should be selected (eg. when a webxdc attempts to send a message to a chat) -->
     <string name="send_message_to">Poslať správu...</string>
-    <!-- map -->
-    <string name="filter_map_on_time">Zobraziť polohy v časovom rámci</string>
-    <string name="show_location_traces">Zobraziť stopy</string>
-    <string name="add_poi">Pošlite zaujímavé miesto</string>
-
 
     <!-- punycode warning / labeled links -->
-    <!-- placeholder is domain/hostname that should be trusted -->
-    <string name="open_external_url_trust_domain">Nepýtať sa znovu %1$s</string>
     <string name="puny_code_warning_header">Zistené podozrivé prepojenie</string>
     <!-- placeholder contains the hostname converted to ascii -->
     <string name="puny_code_warning_question">Naozaj chcete navštíviť %1$s?</string>
     <!-- this message is shown whenever a link with non-latin characters is clicked. first placeholder is original hostname with special chars, second placeholder is hostname encoded in ascii -->
     <string name="puny_code_warning_description">Sledovali ste odkaz, ktorý by mohol skresľovať znaky použitím podobne vyzerajúcich znakov z rôznych abecied. Sledovanie odkazu označeného %1$s povedie k %2$s, čo je normálne pre znaky mimo latinky. Ak ste takéto znaky nečakali, tento odkaz môže byť škodlivý</string>
-
 
     <!-- search -->
     <string name="search">Vyhľadávanie</string>
@@ -504,7 +487,6 @@
     <string name="search_no_result_for_x">Neboli nájdené žiadne výsledky pre \"%s\"</string>
     <!-- Adjective, as in "Show Unread Messages" -->
     <string name="search_unread">Neprečítané</string>
-
 
     <!-- create/edit groups, contact/group profile -->
     <string name="group_name">Názov skupiny</string>
@@ -560,8 +542,6 @@ Ak chcete pokračovať, aktualizujte toto zariadenie na najnovšiu verziu Alt Ch
     <string name="incoming_messages">Prichádzajúce Správy</string>
     <!-- Headline for the "Outbox" eg. in the "Connectivity" view -->
     <string name="outgoing_messages">Odchádzajúce Správy</string>
-    <!-- deprecated -->
-    <string name="storage_on_domain">Dáta o %1$s</string>
     <string name="connectivity">Pripojenie</string>
     <!-- Shown in the title bar if the app is "Not connected"; prefer short strings. -->
     <string name="connectivity_not_connected">Nepripojené</string>
@@ -579,11 +559,10 @@ Ak chcete pokračovať, aktualizujte toto zariadenie na najnovšiu verziu Alt Ch
     <!-- Used for describing resource usage, resulting string will be eg. "1.2 GiB of 3 GiB used" -->
     <string name="part_of_total_used">%1$s z %2$svyužitých </string>
 
-
     <!-- welcome and login -->
     <!-- Primary button on the welcome screen, allows to create an instant profile -->
     <string name="onboarding_create_instant_account">Nový účet</string>
-    <!-- Secondary button on the welcome screen, allows to "Add as Second Device", "Restore from Backup"  -->
+    <!-- Secondary button on the welcome screen, allows to "Add as Second Device", "Restore from Backup" -->
     <string name="onboarding_alternative_logins">Existujúci účet</string>
     <!-- This is a button and a title, allowing to use existing, classic email, setting ports, passwords and so on -->
     <string name="manual_account_setup_option">Použiť bežné e-mailové konto</string>
@@ -657,10 +636,7 @@ Ak chcete pokračovať, aktualizujte toto zariadenie na najnovšiu verziu Alt Ch
     <string name="share_text_multiple_chats">Odoslať tento text d %1$d konverzácií?\n\n \"%2$s\"</string>
     <string name="share_abort">Zdieľanie bolo prerušené z dôvodu chýbajúcich povolení.</string>
 
-
     <!-- preferences -->
-    <string name="pref_using_custom">Používa sa vlastné: %s</string>
-    <string name="pref_using_default">Používa sa predvolené nastavenie: %s</string>
     <string name="pref_profile_info_headline">Informácie o vašom účte</string>
     <string name="pref_profile_photo">Profilový obrázok</string>
     <string name="pref_blocked_contacts">Blokované kontakty</string>
@@ -690,8 +666,6 @@ Ak chcete pokračovať, aktualizujte toto zariadenie na najnovšiu verziu Alt Ch
     <string name="pref_sound">Zvuk</string>
     <string name="pref_silent">Ticho</string>
     <string name="pref_privacy">Ochrana osobných údajov</string>
-    <!-- deprecated, use pref_chats -->
-    <string name="pref_chats_and_media">Konverzácie a médiá</string>
     <string name="pref_system_default">Predvolené nastavenie</string>
     <!-- Translators: as in "opposite of dark" -->
     <string name="pref_light_theme">Svetlo</string>
@@ -750,8 +724,6 @@ Ak chcete pokračovať, aktualizujte toto zariadenie na najnovšiu verziu Alt Ch
     <string name="n_bytes_message">%1$s správa</string>
     <!-- %1$s will be replaced by human-readable date and time -->
     <string name="download_max_available_until">Maximálny počet stiahnutí k dispozícii do %1$s</string>
-    <!-- deprecated -->
-    <string name="select_profile">Vybrať účet</string>
     <string name="profile_image_select">Vyberte profilový obrázok</string>
     <string name="select_your_new_profile_image">Vyberte svoj nový profilový obrázok</string>
     <string name="profile_image_delete">Odstrániť profilový obrázok</string>
@@ -835,10 +807,6 @@ Ak chcete pokračovať, aktualizujte toto zariadenie na najnovšiu verziu Alt Ch
     <string name="ephemeral_timer_seconds_by_you">Časovač zmiznutia správ nastavený na %1$s s mnou.</string>
     <!-- %1$s will be replaced by the number of seconds (always >1) the timer is set to, %2$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_seconds_by_other">Časovač zmiznutia správ nastavený na %1$s s od %2$s.</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_you">Časovač zmiznutia správ bol nastavený na 1 minútu mnou.</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_other">Časovač zmiznutia správ bol nastavený na 1 minútu od %1$s.</string>
     <string name="ephemeral_timer_1_hour_by_you">Časovač zmiznutia správ bol nastavený na 1 hodinu mnou.</string>
     <!-- %1$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_1_hour_by_other">Časovač zmiznutia správ bol nastavený na 1 hodinu od %1$s.</string>
@@ -869,7 +837,7 @@ Ak chcete pokračovať, aktualizujte toto zariadenie na najnovšiu verziu Alt Ch
 
     <string name="devicemsg_self_deleted">Odstránili ste konverzáciu \"Uložené správy\".\n\nℹ️ Aby ste využili funkciu \"Uložené správy\" znova, vytvorte novú konverzáciu so sebou.</string>
     <!-- %1$s will be replaced by the amount of storage already used, sth. as '500 MB'. If you want to use a percentage sign, type in two of them, eg. %1$s %% -->
-    <string name="devicemsg_storage_exceeding">⚠️ Úložisko vašeho poskytovateľa čoskoro prekročí limit, už%1$s%%  sú využité.\n\n Je možné, že nebudete môcť prijímať správy, ak bude úložisko 100 %% využité.\n\n👉 Prosím skontrolujte, či môžete vo webovom rozhraní poskytovateľa vymazať staré údaje, a zvážte aktiváciu „Nastavenia / Odstrániť Staré Správy“. Aktuálne využitie úložiska si môžete kedykoľvek skontrolovať v časti „Nastavenia / Pripojenie“. </string>
+    <string name="devicemsg_storage_exceeding">⚠️ Úložisko vašeho poskytovateľa čoskoro prekročí limit, už%1$s%% sú využité.\n\n Je možné, že nebudete môcť prijímať správy, ak bude úložisko 100 %% využité.\n\n👉 Prosím skontrolujte, či môžete vo webovom rozhraní poskytovateľa vymazať staré údaje, a zvážte aktiváciu „Nastavenia / Odstrániť Staré Správy“. Aktuálne využitie úložiska si môžete kedykoľvek skontrolovať v časti „Nastavenia / Pripojenie“. </string>
     <!-- %1%s will be replaced by date and time in some human-readable format -->
     <string name="devicemsg_bad_time">Zdá sa, že dátum alebo čas vášho zariadenia je nepresný (%1$s).\n\nUpravte si hodiny ⏰🔧, aby ste zaistili správne prijímanie správ. </string>
     <string name="devicemsg_update_reminder">⚠️ Vaša verzia Alt Chat-u môže byť zastaraná.\n\nMôže to spôsobiť problémy, pretože vaši chatový partneri používajú novšie verzie – a vám chýbajú najnovšie funkcie 😳\nAktualizácie nájdete na https://get.alt.chat alebo obchode s aplikáciami . </string>
@@ -921,7 +889,7 @@ Ak chcete pokračovať, aktualizujte toto zariadenie na najnovšiu verziu Alt Ch
     <string name="confirm_replace_draft">%1$s už má koncept správy, chcete ho nahradiť?</string>
     <string name="mailto_link_could_not_be_decoded">prepojenie mailto sa nepodarilo dekódovať: %1$s</string>
 
-    <!-- notifications  -->
+    <!-- notifications -->
     <string name="notify_reply_button">Odpovedať</string>
     <string name="notify_new_message">Nová správa</string>
     <string name="notify_background_connection_enabled">Pripojenie na pozadí je povolené</string>

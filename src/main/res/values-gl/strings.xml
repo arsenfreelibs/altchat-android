@@ -16,7 +16,6 @@
     <string name="off">Off</string>
     <string name="def">Por omisión</string>
     <string name="default_value">Por omisión (%1$s)</string>
-    <string name="default_value_as_above">Por omisión (igual que arriba)</string>
     <string name="custom">Personalizado</string>
     <string name="none">Ningún</string>
     <string name="automatic">Automático</string>
@@ -34,8 +33,6 @@
     <string name="update">Actualizar</string>
     <string name="emoji">Emoji</string>
     <string name="attachment">Anexo</string>
-    <!-- the placeholder will be replaced by the name of the image or file to attach -->
-    <string name="ask_attach">Anexar \"%1$s\"?</string>
     <string name="back">Atrás</string>
     <string name="close">Pechar</string>
     <string name="close_window">Fechar xanalela</string>
@@ -117,7 +114,7 @@
     <string name="last_month">Último mes</string>
     <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by date or time, resulting in "Last seen at 12:13 AM" or "Last seen Nov 12" -->
     <string name="last_seen_at">Última conexión: %1$s</string>
-    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages)-->
+    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages) -->
     <string name="last_seen_relative">Último acceso %1$s</string>
     <string name="last_seen_unknown">Última conexión: Descoñecido</string>
     <!-- Shown beside messages that are "N minutes old". Prefer short strings, or well-known abbreviations. -->
@@ -245,8 +242,6 @@
     <string name="channels">Canles</string>
     <!-- consider keeping the term "channel" as in WhatsApp or Telegram -->
     <string name="new_channel">Nova Canle</string>
-    <!-- deprecated -->
-    <string name="add_recipients">Engadir correspondentes</string>
     <!-- consider keeping the term "channel" as in WhatsApp or Telegram -->
     <string name="channel_name">Nome da Canle</string>
     <string name="email">Email</string>
@@ -325,8 +320,6 @@
     <string name="menu_more_options">Máis opcións</string>
     <string name="menu_learn_spelling">Aprender palabras</string>
     <string name="jump_to_message">Ir á mensaxe</string>
-    <string name="jump_to_original_message">Ir á mensaxe orixinal</string>
-    <string name="copy_json">Copiar JSON</string>
     <string name="replace_draft">Substituír borrador</string>
     <string name="title_share_location">Compartir localización cos membros do grupo</string>
     <string name="device_talk">Mensaxes do dispositivo</string>
@@ -397,16 +390,14 @@
     <string name="ask_delete_contact">Eliminar contacto %1$s?\n\nOs contactos con conversas activas e os contactos da libreta de enderezos do sistema non se poden eliminar de xeito definitivo.</string>
     <string name="ask_start_chat_with">Conversa con %1$s?</string>
     <!-- %1$s is replaced by a comma-separated list of names -->
-    <string name="ask_remove_members">Eliminar  %1$s do grupo?</string>
+    <string name="ask_remove_members">Eliminar %1$s do grupo?</string>
     <!-- %1$s is replaced by a comma-separated list of names -->
     <string name="ask_remove_from_channel">Eliminar %1$s da canle?</string>
     <string name="open_url_confirmation">Queres abrir esta ligazón?</string>
 
-
     <!-- contact list -->
     <string name="contacts_title">Contactos</string>
     <string name="contacts_type_email_above">Escribir arriba o enderezo de correo</string>
-
 
     <!-- chatlist and chat view -->
     <plurals name="chat_archived">
@@ -466,24 +457,13 @@
     <string name="send_file_to">Enviar \"%1$s\" a…</string>
     <!-- title shown above a list contacts where one should be selected (eg. when a webxdc attempts to send a message to a chat) -->
     <string name="send_message_to">Enviar mensaxe a…</string>
-    <string name="enable_realtime">Apps en tempo real</string>
-    <string name="enable_realtime_explain">Activar conexións en tempo real para apps compartidas nas conversas. Se está activo as persoas da conversa poderían coñecer o teu enderezo IP cando inicias unha app.</string>
-
-    <!-- map -->
-    <string name="filter_map_on_time">Mostrar localizacións no marco temporal</string>
-    <string name="show_location_traces">Mostrar trazas</string>
-    <string name="add_poi">Enviar punto de interese</string>
-
 
     <!-- punycode warning / labeled links -->
-    <!-- placeholder is domain/hostname that should be trusted -->
-    <string name="open_external_url_trust_domain">Non solicitar de novo para %1$s</string>
     <string name="puny_code_warning_header">Detectada ligazón sospeitosa</string>
     <!-- placeholder contains the hostname converted to ascii -->
     <string name="puny_code_warning_question">Tes a certeza de querer visitar %1$s?</string>
     <!-- this message is shown whenever a link with non-latin characters is clicked. first placeholder is original hostname with special chars, second placeholder is hostname encoded in ascii -->
     <string name="puny_code_warning_description">Seguiches unha ligazón que podería intentar confundirte utilizando caracteres que semellan parecidos en diferentes alfabetos. Premendo na ligazón %1$s vaite levar a %2$s que é nonrmal para carateres non-Latinos. Se non esperabas estos caracteres a ligazón podería ser maliciosa</string>
-
 
     <!-- search -->
     <string name="search">Buscar</string>
@@ -493,7 +473,6 @@
     <string name="search_no_result_for_x">Non hai resultados para \"%s\"</string>
     <!-- Adjective, as in "Show Unread Messages" -->
     <string name="search_unread">Sen ler</string>
-
 
     <!-- create/edit groups, contact/group profile -->
     <string name="group_name">Nome do grupo</string>
@@ -558,8 +537,6 @@
     <string name="incoming_messages">Mensaxes entrantes</string>
     <!-- Headline for the "Outbox" eg. in the "Connectivity" view -->
     <string name="outgoing_messages">Mensaxes saíntes</string>
-    <!-- deprecated -->
-    <string name="storage_on_domain">Almacenar en %1$s</string>
     <string name="connectivity">Conectividade</string>
     <!-- Shown in the title bar if the app is "Not connected"; prefer short strings. -->
     <string name="connectivity_not_connected">Non conectado</string>
@@ -577,11 +554,10 @@
     <!-- Used for describing resource usage, resulting string will be eg. "1.2 GiB of 3 GiB used" -->
     <string name="part_of_total_used">Utilizado %1$s de %2$s</string>
 
-
     <!-- welcome and login -->
     <!-- Primary button on the welcome screen, allows to create an instant profile -->
     <string name="onboarding_create_instant_account">Crear novo perfil</string>
-    <!-- Secondary button on the welcome screen, allows to "Add as Second Device", "Restore from Backup"  -->
+    <!-- Secondary button on the welcome screen, allows to "Add as Second Device", "Restore from Backup" -->
     <string name="onboarding_alternative_logins">Xa teño un perfil</string>
     <!-- This is a button and a title, allowing to use existing, classic email, setting ports, passwords and so on -->
     <string name="manual_account_setup_option">Acceso clásido con correo</string>
@@ -664,10 +640,7 @@
     <string name="share_text_multiple_chats">Enviar este texto a %1$d conversas?\n\n\"%2$s\"</string>
     <string name="share_abort">Cancelouse a compartición debido a falta de permisos.</string>
 
-
     <!-- preferences -->
-    <string name="pref_using_custom">Utilizar personalizado: %s</string>
-    <string name="pref_using_default">Utilizando por omisión: %s</string>
     <string name="pref_profile_info_headline">Info do teu perfil</string>
     <string name="pref_profile_photo">Imaxe de perfil</string>
     <string name="pref_blocked_contacts">Contactos bloqueados</string>
@@ -699,8 +672,6 @@
     <string name="pref_sound">Son</string>
     <string name="pref_silent">Mudo</string>
     <string name="pref_privacy">Intimidade</string>
-    <!-- deprecated, use pref_chats -->
-    <string name="pref_chats_and_media">Conversas e medios</string>
     <string name="pref_system_default">Por omsión no sistema</string>
     <!-- Translators: as in "opposite of dark" -->
     <string name="pref_light_theme">Claro</string>
@@ -758,8 +729,6 @@
     <string name="n_bytes_message">%1$s mensaxe</string>
     <!-- %1$s will be replaced by human-readable date and time -->
     <string name="download_max_available_until">Descarga o máximo dispoñible ata %1$s</string>
-    <!-- deprecated -->
-    <string name="select_profile">Seleccionar Perfil</string>
     <string name="profile_image_select">Elixe imaxe de perfil</string>
     <string name="select_your_new_profile_image">Elixe a túa nova imaxe de perfil</string>
     <string name="profile_image_delete">Elimina a imaxe de perfil</string>
@@ -837,13 +806,9 @@
     <!-- %1$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_disabled_by_other">Temporizador da eliminación de mensaxes descativado por %1$s.</string>
     <!-- %1$s will be replaced by the number of seconds (always >1) the timer is set to -->
-    <string name="ephemeral_timer_seconds_by_you">Estableceches que as mensaxes desaparezan en  %1$s s</string>
+    <string name="ephemeral_timer_seconds_by_you">Estableceches que as mensaxes desaparezan en %1$s s</string>
     <!-- %1$s will be replaced by the number of seconds (always >1) the timer is set to, %2$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_seconds_by_other">O temporizador de desaparición de mensaxes establecido en %1$s segundos por %2$s.</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_you">Puxeches en 1 minuto o temporizador de desaparición de mensaxes.</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_other">Temporizador de desaparición de mensaxes definido en 1 minuto por %1$s.</string>
     <string name="ephemeral_timer_1_hour_by_you">Definiches o temporizador de desaparición de mensaxes en 1 hora.</string>
     <!-- %1$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_1_hour_by_other">Temporizador de desaparición de mensaxes definido en 1 hora por %1$s.</string>
@@ -923,14 +888,12 @@
     <string name="verified_by">Introducido/a por %1$s</string>
     <string name="verified_by_you">Introducido/a por min</string>
     <string name="verified_by_unknown">Introducido/a</string>
-    <!-- deprecated -->
-    <string name="verified_contact_required_explain">Para garantir cifrado extremo-a-extremo, só podes adicionar contactos com un visto verde a este grupo.\n\nPodes encontrarche con contactos en persoa e escanear os seus códigos QR para os introducir.</string>
     <string name="mailto_dialog_header_select_chat">Elexir chat ao que enviar a mensaxe</string>
     <!-- first placeholder is the name of the chat -->
     <string name="confirm_replace_draft">%1$s xa ten un borrador, queres susbstituílo?</string>
     <string name="mailto_link_could_not_be_decoded">a ligazón mailto non se puido descodificar: %1$s</string>
 
-    <!-- notifications  -->
+    <!-- notifications -->
     <string name="notify_reply_button">Responder</string>
     <string name="notify_new_message">Nova mensaxe</string>
     <string name="notify_background_connection_enabled">Conexión en segundo plano establecida</string>
@@ -944,7 +907,6 @@
     <!-- Body text for a generic "New messages" notification. Shown if we do not have more information about a new messages. Note, that the string is also referenced at https://github.com/deltachat/notifiers -->
     <string name="new_messages_body">Tes novas mensaxes</string>
     <string name="n_messages_in_m_chats">%1$dmensaxes en %2$d conversas </string>
-
 
     <!-- permissions -->
     <string name="perm_required_title">Permiso requerido</string>

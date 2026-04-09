@@ -16,7 +16,6 @@
     <string name="off">Вимкнено</string>
     <string name="def">За замовчуванням</string>
     <string name="default_value">За замовчуванням (%1$s)</string>
-    <string name="default_value_as_above">За замовчуванням (так, як вище зазначено)</string>
     <string name="custom">На користувацький вибір</string>
     <string name="none">Не задано</string>
     <string name="automatic">Автоматично</string>
@@ -34,8 +33,6 @@
     <string name="update">Оновити</string>
     <string name="emoji">Емодзі</string>
     <string name="attachment">Вкладення</string>
-    <!-- the placeholder will be replaced by the name of the image or file to attach -->
-    <string name="ask_attach">Прикріпити \"%1$s\"?</string>
     <string name="back">Назад</string>
     <string name="close">Закрити</string>
     <string name="close_window">Закрити вікно</string>
@@ -117,23 +114,9 @@
     <string name="last_month">Останнього місяця</string>
     <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by date or time, resulting in "Last seen at 12:13 AM" or "Last seen Nov 12" -->
     <string name="last_seen_at">Востаннє %1$s</string>
-    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages)-->
+    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages) -->
     <string name="last_seen_relative">Останній раз бачили %1$s</string>
     <string name="last_seen_unknown">Останній раз бачили: Невідомо.</string>
-    <!-- Shown in call duration. Avoid abbreviations, prefer full words ex. "N seconds". -->
-    <plurals name="n_seconds_ext">
-        <item quantity="one">%d секунда</item>
-        <item quantity="few">%d секунди</item>
-        <item quantity="many">%d секунд </item>
-        <item quantity="other">%d секунд</item>
-    </plurals>
-    <!-- Shown in call duration. Avoid abbreviations, prefer full words ex. "N minutes". -->
-    <plurals name="n_minutes_ext">
-        <item quantity="one">%d хвилина</item>
-        <item quantity="few">%d хвилини</item>
-        <item quantity="many">%d хвилин</item>
-        <item quantity="other">%d хвилин</item>
-    </plurals>
     <!-- Shown beside messages that are "N minutes old". Prefer short strings, or well-known abbreviations. -->
     <plurals name="n_minutes">
         <item quantity="one">%d хвилину</item>
@@ -283,8 +266,6 @@
     <string name="channels">Канали</string>
     <!-- consider keeping the term "channel" as in WhatsApp or Telegram -->
     <string name="new_channel">Новий Канал</string>
-    <!-- deprecated -->
-    <string name="add_recipients">Додати одержувачів</string>
     <!-- consider keeping the term "channel" as in WhatsApp or Telegram -->
     <string name="channel_name">Назва Каналу</string>
     <string name="email">E-Mail</string>
@@ -363,8 +344,6 @@
     <string name="menu_more_options">Більше опцій</string>
     <string name="menu_learn_spelling">Вчити правопис</string>
     <string name="jump_to_message">Перейти до повідомлення</string>
-    <string name="jump_to_original_message">Перейти до оригінального повідомлення</string>
-    <string name="copy_json">Копіювати JSON</string>
     <string name="replace_draft">Замінити чернетку</string>
     <string name="title_share_location">Поділитися місцеперебуванням з усіма учасниками групи</string>
     <string name="device_talk">Повідомлення пристрою</string>
@@ -420,19 +399,21 @@
 
     <!-- the action "to call someone", used as a tooltip for the "phone" icon. not: "the call" -->
     <string name="start_call">Дзвонити</string>
+    <!-- Menu item to start an audio call; verbs as "start" are probably superfluous in many translations -->
     <string name="start_audio_call">Аудіовиклик</string>
+    <!-- Menu item to start a video call; verbs as "start" are probably superfluous in many translations -->
     <string name="start_video_call">Відеовиклик</string>
     <!-- the action "to answer" or to "accept" or to "pick up" a call. not: "the answer" -->
     <string name="answer_call">Відповісти</string>
     <!-- the action "to decline" a call, not: "the decline" -->
     <string name="end_call">Відхилити</string>
-    <!-- deprecated, use outgoing_audio_call or outgoing_video_call instead -->
-    <string name="outgoing_call">Вихідний дзвінок</string>
+    <!-- deprecated, use "Audio call" instead -->
     <string name="outgoing_audio_call">Вихідний аудіовиклик</string>
+    <!-- deprecated, use "Video call" instead -->
     <string name="outgoing_video_call">Вихідний відеовиклик</string>
-    <!-- deprecated, use incoming_audio_call or incoming_video_call instead -->
-    <string name="incoming_call">Вхідний дзвінок</string>
+    <!-- deprecated, use "Audio call" instead -->
     <string name="incoming_audio_call">Вхідний аудіовиклик</string>
+    <!-- deprecated, use "Video call" instead -->
     <string name="incoming_video_call">Вхідний відеовиклик</string>
     <string name="declined_call">Відхилений дзвінок</string>
     <string name="canceled_call">Скасований дзвінок</string>
@@ -481,11 +462,9 @@
     <string name="ask_remove_from_channel">Видалити %1$s з каналу?</string>
     <string name="open_url_confirmation">Ви впевнені, що хочете відкрити це посилання?</string>
 
-
     <!-- contact list -->
     <string name="contacts_title">Контактні особи</string>
     <string name="contacts_type_email_above">Введіть адресу електронної пошти вище</string>
-
 
     <!-- chatlist and chat view -->
     <plurals name="chat_archived">
@@ -552,24 +531,13 @@
     <string name="send_file_to">Послати «%1$s» комусь…</string>
     <!-- title shown above a list contacts where one should be selected (eg. when a webxdc attempts to send a message to a chat) -->
     <string name="send_message_to">Послати повідомлення комусь…</string>
-    <string name="enable_realtime">Додатки реального часу</string>
-    <string name="enable_realtime_explain">Увімкніть з\'єднання в режимі реального часу для додатків, прикріплених до чатів. Якщо увімкнено, учасники чату можуть дізнатися вашу IP-адресу, коли ви запускаєте додаток.</string>
-
-    <!-- map -->
-    <string name="filter_map_on_time">Показати місця у часовому проміжку</string>
-    <string name="show_location_traces">Показати треки</string>
-    <string name="add_poi">Послати географійні координати</string>
-
 
     <!-- punycode warning / labeled links -->
-    <!-- placeholder is domain/hostname that should be trusted -->
-    <string name="open_external_url_trust_domain">Не запитувати знову для %1$s</string>
     <string name="puny_code_warning_header">Виявлено підозріле посилання</string>
     <!-- placeholder contains the hostname converted to ascii -->
     <string name="puny_code_warning_question">Ви впевнені, що хочете відвідати %1$s?</string>
     <!-- this message is shown whenever a link with non-latin characters is clicked. first placeholder is original hostname with special chars, second placeholder is hostname encoded in ascii -->
     <string name="puny_code_warning_description">Це посилання може спотворювати символи, використовуючи подібні до них символи з різних алфавітів. Перехід за посиланням %1$s приведе на %2$s, що є нормальним для нелатинських символів. Якщо Ви не очікували таких символів, це посилання може бути шкідливим</string>
-
 
     <!-- search -->
     <string name="search">Пошук</string>
@@ -579,7 +547,6 @@
     <string name="search_no_result_for_x">Запит \"%s\" не дав результатів</string>
     <!-- Adjective, as in "Show Unread Messages" -->
     <string name="search_unread">Непрочитане</string>
-
 
     <!-- create/edit groups, contact/group profile -->
     <string name="group_name">Назва групи</string>
@@ -644,8 +611,6 @@
     <string name="incoming_messages">Вхідні повідомлення</string>
     <!-- Headline for the "Outbox" eg. in the "Connectivity" view -->
     <string name="outgoing_messages">Вихідні повідомлення</string>
-    <!-- deprecated -->
-    <string name="storage_on_domain">Сховище на %1$s</string>
     <string name="connectivity">Підключення</string>
     <!-- Shown in the title bar if the app is "Not connected"; prefer short strings. -->
     <string name="connectivity_not_connected">Не з\'єднано</string>
@@ -663,11 +628,10 @@
     <!-- Used for describing resource usage, resulting string will be eg. "1.2 GiB of 3 GiB used" -->
     <string name="part_of_total_used">Використано %1$s з %2$s</string>
 
-
     <!-- welcome and login -->
     <!-- Primary button on the welcome screen, allows to create an instant profile -->
     <string name="onboarding_create_instant_account">Створити новий профіль</string>
-    <!-- Secondary button on the welcome screen, allows to "Add as Second Device", "Restore from Backup"  -->
+    <!-- Secondary button on the welcome screen, allows to "Add as Second Device", "Restore from Backup" -->
     <string name="onboarding_alternative_logins">У мене вже є профіль</string>
     <!-- This is a button and a title, allowing to use existing, classic email, setting ports, passwords and so on -->
     <string name="manual_account_setup_option">Використовувати класичну пошту як транспортний сервер</string>
@@ -729,9 +693,6 @@
     <!-- shown if a QR code was scanned that can be used as a relay -->
     <string name="confirm_add_transport">Додати цей транспортний сервер?</string>
     <string name="invalid_transport_qr">Відсканований QR-код не містить дійсного транспортного сервера.</string>
-    <!-- placeholder will be replaced by a relay server name -->
-    <string name="confirm_remove_transport">Видаліть транспортний сервер \"%1$s\"?\n\nВаш контакти можуть зв\'язатися з вами, тільки якщо ви раніше зв\'язалися з ними через інший транспортний сервер.\n\nЯкщо ви сумніваєтеся, видаліть транспортний сервер пізніше.</string>
-
     <string name="login_certificate_checks">Перевірки сертифікатів</string>
     <string name="login_error_mail">Вкажіть дійсну адресу електронної пошти</string>
     <string name="login_error_server">Вкажіть дійсний сервер / IP-адресу</string>
@@ -772,10 +733,7 @@
     <string name="share_text_multiple_chats">Надіслати це́й текст у %1$d чат·и·ів?\n\n«%2$s»</string>
     <string name="share_abort">Надсилання обірване через відсутність дозволів.</string>
 
-
     <!-- preferences -->
-    <string name="pref_using_custom">Використовувати персоналізовано: %s</string>
-    <string name="pref_using_default">Використовувати за замовчуванням: %s</string>
     <string name="pref_profile_info_headline">Ваш профіль</string>
     <string name="pref_profile_photo">Зображення профілю</string>
     <string name="pref_blocked_contacts">Заблоковані контакти</string>
@@ -808,8 +766,6 @@
     <string name="pref_sound">Звук</string>
     <string name="pref_silent">Беззвучний</string>
     <string name="pref_privacy">Конфіденційність</string>
-    <!-- deprecated, use pref_chats -->
-    <string name="pref_chats_and_media">Чати й медіа</string>
     <string name="pref_system_default">За замовчуванням системи</string>
     <!-- Translators: as in "opposite of dark" -->
     <string name="pref_light_theme">Світла</string>
@@ -874,8 +830,6 @@
     <string name="n_bytes_message">Повідомлення розміром %1$s\'</string>
     <!-- %1$s will be replaced by human-readable date and time -->
     <string name="download_max_available_until">Доступний для завантаження максимум до %1$s</string>
-    <!-- deprecated -->
-    <string name="select_profile">Вибрати Профіль</string>
     <string name="profile_image_select">Вибрати зображення профілю</string>
     <string name="select_your_new_profile_image">Вибрати ваше нове зображення профілю</string>
     <string name="profile_image_delete">Видалити зображення профілю</string>
@@ -981,10 +935,6 @@
     <string name="ephemeral_timer_seconds_by_you">Ви встановили таймер зникнення повідомлень на %1$s сек.</string>
     <!-- %1$s will be replaced by the number of seconds (always >1) the timer is set to, %2$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_seconds_by_other">%2$s встановив (-ла) таймер повідомлень, що зникають на %1$s сек.</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_you">Ви встановили таймер зникнення повідомлень на 1 хвилину.</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_other">%1$s встановив (-ла) таймер зникнення повідомлень на 1 хвилину.</string>
     <string name="ephemeral_timer_1_hour_by_you">Ви встановили таймер зникнення повідомлень на 1 годину.</string>
     <!-- %1$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_1_hour_by_other">%1$s встановив (-ла) таймер зникнення повідомлень на 1 годину.</string>
@@ -1081,14 +1031,12 @@
     <string name="verified_by">Представни·ця: %1$s</string>
     <string name="verified_by_you">Представлено мною</string>
     <string name="verified_by_unknown">Представлено</string>
-    <!-- deprecated -->
-    <string name="verified_contact_required_explain">Аби наскрізне шифрування лишалося ґарантованим, у цю групу можна додавати лише контактних осіб із зеленою галочкою.\n\nМожна зустрітись із контактною особою та відсканувати баркод із її пристрою, щоби представити її.</string>
     <string name="mailto_dialog_header_select_chat">Виберіть чат, куди потрібно надіслати повідомлення</string>
     <!-- first placeholder is the name of the chat -->
     <string name="confirm_replace_draft">%1$s уже містить чернетку повідомлення, бажаєте її замінити?</string>
     <string name="mailto_link_could_not_be_decoded">неможливо декодувати посилання mailto: %1$s</string>
 
-    <!-- notifications  -->
+    <!-- notifications -->
     <string name="notify_reply_button">Відповісти</string>
     <string name="notify_new_message">Нове повідомлення</string>
     <string name="notify_background_connection_enabled">З\'єднання у фоновому режимі ввімкнено</string>
@@ -1103,7 +1051,6 @@
     <!-- Body text for a generic "New messages" notification. Shown if we do not have more information about a new messages. Note, that the string is also referenced at https://github.com/deltachat/notifiers -->
     <string name="new_messages_body">У вас нові повідомлення</string>
     <string name="n_messages_in_m_chats">%1$d повідомлень в %2$d чатах</string>
-
 
     <!-- permissions -->
     <string name="perm_required_title">Потрібен дозвіл</string>

@@ -185,7 +185,6 @@
     <string name="contacts_title">Kontaktlar</string>
     <string name="contacts_type_email_above">E-poçt ünvanını yazın</string>
 
-
     <!-- chatlist and chat view -->
     <plurals name="chat_archived">
         <item quantity="one">%d çat arxiv olundu</item>
@@ -217,12 +216,6 @@
     <string name="save_message">Saxla</string>
     <string name="saved_messages">Saxlanılmış mesajlar</string>
     <string name="retry_send">Mesaji yenidən göndərməyə cəht et</string>
-    <!-- map -->
-    <string name="filter_map_on_time">Vaxt məhdudiyyəti ilə yerləşmə yerləri göstərin</string>
-    <string name="show_location_traces">İzləri göstərmək</string>
-    <string name="add_poi">Maraq nöqtəsini göndərin</string>
-
-
     <!-- search -->
     <string name="search">Axtarış</string>
     <string name="search_explain">Çatlar, kontaktlar və mesajlar axtar</string>
@@ -271,10 +264,7 @@
     <string name="forward_to">İrəli ...</string>
     <string name="share_abort">İcazə olmadığına görə göndərmə kəsildi</string>
 
-
     <!-- preferences -->
-    <string name="pref_using_custom">:Xüsusi istifadə %s</string>
-    <string name="pref_using_default">Varsayılan istifadə: %s</string>
     <string name="pref_profile_info_headline">Profil məlumatınız</string>
     <string name="pref_profile_photo">Profil şəkili</string>
     <string name="pref_blocked_contacts">Bloklanmış kontaktlar</string>
@@ -300,8 +290,6 @@
     <string name="pref_sound">Səs</string>
     <string name="pref_silent">Səssiz</string>
     <string name="pref_privacy">Gizlilik</string>
-    <!-- deprecated, use pref_chats -->
-    <string name="pref_chats_and_media">Çatlar və faillar</string>
     <!-- Translators: as in "opposite of dark" -->
     <string name="pref_light_theme">Açıq</string>
     <string name="pref_dark_theme">Tünd</string>
@@ -378,7 +366,7 @@
     <string name="qrshow_join_contact_hint">%1$silə əlaqə qurmaq üçün bunu skan edin</string>
     <string name="qrshow_join_contact_no_connection_toast">İnternet bağlantısı yoxdur, QR kodunu qura bilmir.</string>
     <string name="contact_verified">%1$s yoxlanıldı.</string>
-    <!-- notifications  -->
+    <!-- notifications -->
     <string name="notify_reply_button">Cavab ver</string>
     <string name="notify_new_message">Yeni mesaj</string>
     <string name="notify_background_connection_enabled">Arxa fon əlaqəsi aktivdir</string>

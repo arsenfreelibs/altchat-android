@@ -16,7 +16,6 @@
     <string name="off">Wyłączone</string>
     <string name="def">Domyślne</string>
     <string name="default_value">Domyślny (%1$s)</string>
-    <string name="default_value_as_above">Domyślna (taka sama jak powyżej)</string>
     <string name="custom">Własne</string>
     <string name="none">Brak</string>
     <string name="automatic">Automatyczne</string>
@@ -34,8 +33,6 @@
     <string name="update">Aktualizacja</string>
     <string name="emoji">Emoji</string>
     <string name="attachment">Załącznik</string>
-    <!-- the placeholder will be replaced by the name of the image or file to attach -->
-    <string name="ask_attach">Załączyć „%1$s”?</string>
     <string name="back">Wróć</string>
     <string name="close">Zamknij</string>
     <string name="close_window">Zamknij okno</string>
@@ -117,23 +114,9 @@
     <string name="last_month">Ostatni miesiąc</string>
     <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by date or time, resulting in "Last seen at 12:13 AM" or "Last seen Nov 12" -->
     <string name="last_seen_at">Ostatnio widziano %1$s</string>
-    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages)-->
+    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages) -->
     <string name="last_seen_relative">Ostatnio widziano %1$s</string>
     <string name="last_seen_unknown">Ostatnio widziano: nie wiadomo</string>
-    <!-- Shown in call duration. Avoid abbreviations, prefer full words ex. "N seconds". -->
-    <plurals name="n_seconds_ext">
-        <item quantity="one">%d sekunda</item>
-        <item quantity="few">%d sekundy</item>
-        <item quantity="many">%d sekund</item>
-        <item quantity="other">%d sekundy</item>
-    </plurals>
-    <!-- Shown in call duration. Avoid abbreviations, prefer full words ex. "N minutes". -->
-    <plurals name="n_minutes_ext">
-        <item quantity="one">%d minuta</item>
-        <item quantity="few">%d minuty </item>
-        <item quantity="many">%d minut</item>
-        <item quantity="other">%d minuty</item>
-    </plurals>
     <!-- Shown beside messages that are "N minutes old". Prefer short strings, or well-known abbreviations. -->
     <plurals name="n_minutes">
         <item quantity="one">%d min</item>
@@ -283,8 +266,6 @@
     <string name="channels">Kanały</string>
     <!-- consider keeping the term "channel" as in WhatsApp or Telegram -->
     <string name="new_channel">Nowy kanał</string>
-    <!-- deprecated -->
-    <string name="add_recipients">Dodaj subskrybentów</string>
     <!-- consider keeping the term "channel" as in WhatsApp or Telegram -->
     <string name="channel_name">Nazwa kanału</string>
     <string name="email">E-mail</string>
@@ -363,8 +344,6 @@
     <string name="menu_more_options">Więcej opcji</string>
     <string name="menu_learn_spelling">Naucz się pisowni</string>
     <string name="jump_to_message">Przejdź do wiadomości</string>
-    <string name="jump_to_original_message">Przejdź do oryginalnej wiadomości</string>
-    <string name="copy_json">Kopiuj JSON</string>
     <string name="replace_draft">Zastąp szkic</string>
     <string name="title_share_location">Udostępnij lokalizację dla wszystki czlonków grup</string>
     <string name="device_talk">Komunikaty urządzenia</string>
@@ -420,19 +399,21 @@
 
     <!-- the action "to call someone", used as a tooltip for the "phone" icon. not: "the call" -->
     <string name="start_call">Zadzwoń</string>
+    <!-- Menu item to start an audio call; verbs as "start" are probably superfluous in many translations -->
     <string name="start_audio_call">Połączenie audio</string>
+    <!-- Menu item to start a video call; verbs as "start" are probably superfluous in many translations -->
     <string name="start_video_call">Połączenie wideo</string>
     <!-- the action "to answer" or to "accept" or to "pick up" a call. not: "the answer" -->
     <string name="answer_call">Odbierz</string>
     <!-- the action "to decline" a call, not: "the decline" -->
     <string name="end_call">Odrzuć</string>
-    <!-- deprecated, use outgoing_audio_call or outgoing_video_call instead -->
-    <string name="outgoing_call">Połączenie wychodzące</string>
+    <!-- deprecated, use "Audio call" instead -->
     <string name="outgoing_audio_call">Wychodzące połączenie audio</string>
+    <!-- deprecated, use "Video call" instead -->
     <string name="outgoing_video_call">Wychodzące połączenie wideo</string>
-    <!-- deprecated, use incoming_audio_call or incoming_video_call instead -->
-    <string name="incoming_call">Połączenie przychodzące</string>
+    <!-- deprecated, use "Audio call" instead -->
     <string name="incoming_audio_call">Przychodzące połączenie audio</string>
+    <!-- deprecated, use "Video call" instead -->
     <string name="incoming_video_call">Przychodzące połączenie wideo</string>
     <string name="declined_call">Połączenie odrzucone</string>
     <string name="canceled_call">Połączenie anulowane</string>
@@ -481,11 +462,9 @@
     <string name="ask_remove_from_channel">Usunąć %1$s z kanału?</string>
     <string name="open_url_confirmation">Czy chcesz otworzyć ten link?</string>
 
-
     <!-- contact list -->
     <string name="contacts_title">Kontakty</string>
     <string name="contacts_type_email_above">Wpisz adres e-mail powyżej</string>
-
 
     <!-- chatlist and chat view -->
     <plurals name="chat_archived">
@@ -552,24 +531,13 @@
     <string name="send_file_to">Wyślij „%1$s” do…</string>
     <!-- title shown above a list contacts where one should be selected (eg. when a webxdc attempts to send a message to a chat) -->
     <string name="send_message_to">Wyślij wiadomość do…</string>
-    <string name="enable_realtime">Aplikacje w czasie rzeczywistym</string>
-    <string name="enable_realtime_explain">Włącz połączenia w czasie rzeczywistym dla aplikacji dołączonych do tego czatu. Jeśli ta opcja jest włączona, partnerzy czatu mogą być w stanie wykryć twój adres IP, gdy uruchamiasz aplikację.</string>
-
-    <!-- map -->
-    <string name="filter_map_on_time">Pokaż lokalizacje w ramach czasowych</string>
-    <string name="show_location_traces">Pokaż ślady</string>
-    <string name="add_poi">Wyślij interesujący punkt</string>
-
 
     <!-- punycode warning / labeled links -->
-    <!-- placeholder is domain/hostname that should be trusted -->
-    <string name="open_external_url_trust_domain">Nie pytaj ponownie dla %1$s</string>
     <string name="puny_code_warning_header">Wykryto podejrzany link</string>
     <!-- placeholder contains the hostname converted to ascii -->
     <string name="puny_code_warning_question">Na pewno chcesz odwiedzić %1$s?</string>
     <!-- this message is shown whenever a link with non-latin characters is clicked. first placeholder is original hostname with special chars, second placeholder is hostname encoded in ascii -->
     <string name="puny_code_warning_description">Wybrano link, który może przekłamywać znaki poprzez użycie podobnie wyglądających znaków z różnych alfabetów. Podążanie za linkiem oznaczonym %1$s doprowadzi do %2$s, co jest normalne dla znaków niełacińskich. Jeśli nie spodziewałeś się takich znaków, ten link może być szkodliwy.</string>
-
 
     <!-- search -->
     <string name="search">Szukaj</string>
@@ -579,7 +547,6 @@
     <string name="search_no_result_for_x">Nie znaleziono wyników dla „%s</string>
     <!-- Adjective, as in "Show Unread Messages" -->
     <string name="search_unread">Nieprzeczytane</string>
-
 
     <!-- create/edit groups, contact/group profile -->
     <string name="group_name">Nazwa grupy</string>
@@ -644,8 +611,6 @@
     <string name="incoming_messages">Wiadomości przychodzące</string>
     <!-- Headline for the "Outbox" eg. in the "Connectivity" view -->
     <string name="outgoing_messages">Wiadomości wychodzące</string>
-    <!-- deprecated -->
-    <string name="storage_on_domain">Zajętość skrzynki %1$s</string>
     <string name="connectivity">Łączność</string>
     <!-- Shown in the title bar if the app is "Not connected"; prefer short strings. -->
     <string name="connectivity_not_connected">Nie połączony</string>
@@ -663,11 +628,10 @@
     <!-- Used for describing resource usage, resulting string will be eg. "1.2 GiB of 3 GiB used" -->
     <string name="part_of_total_used">%1$s z %2$s </string>
 
-
     <!-- welcome and login -->
     <!-- Primary button on the welcome screen, allows to create an instant profile -->
     <string name="onboarding_create_instant_account">Utwórz nowy profil</string>
-    <!-- Secondary button on the welcome screen, allows to "Add as Second Device", "Restore from Backup"  -->
+    <!-- Secondary button on the welcome screen, allows to "Add as Second Device", "Restore from Backup" -->
     <string name="onboarding_alternative_logins">Mam już profil</string>
     <!-- This is a button and a title, allowing to use existing, classic email, setting ports, passwords and so on -->
     <string name="manual_account_setup_option">Użyj klasycznego e-maila jako przekaźnika</string>
@@ -729,9 +693,6 @@
     <!-- shown if a QR code was scanned that can be used as a relay -->
     <string name="confirm_add_transport">Dodać ten serwer przekaźnikowy?</string>
     <string name="invalid_transport_qr">Zeskanowany kod QR zawiera nieprawidłowy serwer przekaźnikowy.</string>
-    <!-- placeholder will be replaced by a relay server name -->
-    <string name="confirm_remove_transport">Usunąć serwer przekaźnikowy „%1$s”?\n\nTwoje kontakty mogą się z tobą skontaktować tylko wtedy, gdy kontaktowałeś się z nimi wcześniej za pośrednictwem innego serwera przekaźnikowego.\n\nW razie wątpliwości usuń ten serwer przekaźnikowy.</string>
-
     <string name="login_certificate_checks">Sprawdzanie certyfikatów</string>
     <string name="login_error_mail">Podaj ważny adres e-mail</string>
     <string name="login_error_server">Wprowadź poprawny adres serwera / IP</string>
@@ -772,10 +733,7 @@
     <string name="share_text_multiple_chats">Wysłać ten tekst do %1$d czatów?\n\n\"%2$s\"</string>
     <string name="share_abort">Udostępnianie zostało przerwane z powodu brakujących uprawnień.</string>
 
-
     <!-- preferences -->
-    <string name="pref_using_custom">Używanie niestandardowe: %s</string>
-    <string name="pref_using_default">Użyj domyślne: %s</string>
     <string name="pref_profile_info_headline">Twój profil</string>
     <string name="pref_profile_photo">Zdjęcie profilowe</string>
     <string name="pref_blocked_contacts">Zablokowane kontakty</string>
@@ -807,8 +765,6 @@
     <string name="pref_sound">Dźwięk</string>
     <string name="pref_silent">Cichy</string>
     <string name="pref_privacy">Prywatność</string>
-    <!-- deprecated, use pref_chats -->
-    <string name="pref_chats_and_media">Czaty i media</string>
     <string name="pref_system_default">Domyślny systemu</string>
     <!-- Translators: as in "opposite of dark" -->
     <string name="pref_light_theme">Jasny</string>
@@ -834,7 +790,7 @@
     <string name="pref_other">Inne</string>
     <string name="pref_backup">Kopia zapasowa</string>
     <string name="pref_backup_explain">Wykonaj kopię zapasową czatów na pamięci zewnętrznej</string>
-    <string name="pref_backup_export_explain">Kopia zapasowa pomaga skonfigurować nową instalację na tym lub na innym urządzeniu.\n\nKopia zapasowa będzie zawierała wszystkie wiadomości, kontakty i czaty oraz pełną konfigurację  funkcji automatycznego szyfrowania typu end-to-end. Przechowuj plik kopii zapasowej w bezpiecznym miejscu lub usuń go jak najszybciej.</string>
+    <string name="pref_backup_export_explain">Kopia zapasowa pomaga skonfigurować nową instalację na tym lub na innym urządzeniu.\n\nKopia zapasowa będzie zawierała wszystkie wiadomości, kontakty i czaty oraz pełną konfigurację funkcji automatycznego szyfrowania typu end-to-end. Przechowuj plik kopii zapasowej w bezpiecznym miejscu lub usuń go jak najszybciej.</string>
     <string name="pref_backup_export_this">Eksportuj ten profil</string>
     <!-- the placeholder will be replaced by the number of profiles to export; the number is always larger than 1 -->
     <string name="pref_backup_export_all">Eksportuj wszystkie profile (%1$d)</string>
@@ -873,8 +829,6 @@
     <string name="n_bytes_message">Wiadomość %1$s</string>
     <!-- %1$s will be replaced by human-readable date and time -->
     <string name="download_max_available_until">Maksymalna ilość do pobrania dostępna do %1$s</string>
-    <!-- deprecated -->
-    <string name="select_profile">Wybierz profil</string>
     <string name="profile_image_select">Wybierz zdjęcie profilowe</string>
     <string name="select_your_new_profile_image">Wybierz nowe zdjęcie profilowe</string>
     <string name="profile_image_delete">Usuń zdjęcie profilowe</string>
@@ -977,10 +931,6 @@
     <string name="ephemeral_timer_seconds_by_you">Ustawiono zegar znikających wiadomości na %1$s s.</string>
     <!-- %1$s will be replaced by the number of seconds (always >1) the timer is set to, %2$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_seconds_by_other">Użytkownik %2$s ustawił zegar znikających wiadomości na %1$s s.</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_you">Ustawiono zegar znikających wiadomości na 1 minutę.</string>
-    <!-- deprecated, usage needs to be removed in core -->
-    <string name="ephemeral_timer_1_minute_by_other">Użytkownik %1$s ustawił zegar znikających wiadomości na 1 minutę.</string>
     <string name="ephemeral_timer_1_hour_by_you">Ustawiono zegar znikających wiadomości na 1 godzinę.</string>
     <!-- %1$s will be replaced by name of the contact -->
     <string name="ephemeral_timer_1_hour_by_other">Użytkownik %1$s ustawił zegar znikających wiadomości na 1 godzinę.</string>
@@ -1077,14 +1027,12 @@
     <string name="verified_by">Kontakt zweryfikowany przez %1$s</string>
     <string name="verified_by_you">Kontakt zweryfikowany przez ciebie</string>
     <string name="verified_by_unknown">Zweryfikowano</string>
-    <!-- deprecated -->
-    <string name="verified_contact_required_explain">Aby zagwarantować szyfrowanie end-to-end, do tej grupy możesz dodawać wyłącznie kontakty oznaczone zielonym znacznikiem wyboru.\n\nMożesz spotkać się z kontaktami osobiście i zeskanować ich kod QR, aby je zweryfikować.</string>
     <string name="mailto_dialog_header_select_chat">Wybierz czat, do którego chcesz wysłać wiadomość</string>
     <!-- first placeholder is the name of the chat -->
     <string name="confirm_replace_draft">Na czacie %1$s jest już wersja robocza wiadomości, czy chcesz ją zastąpić?</string>
     <string name="mailto_link_could_not_be_decoded">link mailto nie mógł zostać odszyfrowany: %1$s</string>
 
-    <!-- notifications  -->
+    <!-- notifications -->
     <string name="notify_reply_button">Odpowiedz</string>
     <string name="notify_new_message">Nowa wiadomość</string>
     <string name="notify_background_connection_enabled">Połączenie w tle włączone</string>
@@ -1099,7 +1047,6 @@
     <!-- Body text for a generic "New messages" notification. Shown if we do not have more information about a new messages. Note, that the string is also referenced at https://github.com/deltachat/notifiers -->
     <string name="new_messages_body">Masz nowe wiadomości</string>
     <string name="n_messages_in_m_chats">%1$d wiadomości w %2$d czatach</string>
-
 
     <!-- permissions -->
     <string name="perm_required_title">Wymagane zezwolenie</string>

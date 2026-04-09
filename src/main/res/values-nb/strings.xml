@@ -16,7 +16,6 @@
     <string name="off">Av</string>
     <string name="def">Forvalg</string>
     <string name="default_value">Standardverdi (%1$s)</string>
-    <string name="default_value_as_above">Standardverdi (som over)</string>
     <string name="custom">Egendefinert</string>
     <string name="none">Ingen</string>
     <string name="automatic">Automatisk</string>
@@ -34,8 +33,6 @@
     <string name="update">Oppdater</string>
     <string name="emoji">Emoji</string>
     <string name="attachment">Vedlegg</string>
-    <!-- the placeholder will be replaced by the name of the image or file to attach -->
-    <string name="ask_attach">Legg ved \"%1$s\"?</string>
     <string name="back">Forrige</string>
     <string name="close">Lukk</string>
     <string name="close_window">Lukk vindu</string>
@@ -117,19 +114,9 @@
     <string name="last_month">Forrige måneden</string>
     <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by date or time, resulting in "Last seen at 12:13 AM" or "Last seen Nov 12" -->
     <string name="last_seen_at">Sist sett %1$s</string>
-    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages)-->
+    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages) -->
     <string name="last_seen_relative">Sist sett %1$s</string>
     <string name="last_seen_unknown">Sist sett: uvisst</string>
-    <!-- Shown in call duration. Avoid abbreviations, prefer full words ex. "N seconds". -->
-    <plurals name="n_seconds_ext">
-        <item quantity="one">%d sekund</item>
-        <item quantity="other">%d sekunder</item>
-    </plurals>
-    <!-- Shown in call duration. Avoid abbreviations, prefer full words ex. "N minutes". -->
-    <plurals name="n_minutes_ext">
-        <item quantity="one">%d minutt</item>
-        <item quantity="other">%d minutter</item>
-    </plurals>
     <!-- Shown beside messages that are "N minutes old". Prefer short strings, or well-known abbreviations. -->
     <plurals name="n_minutes">
         <item quantity="one">%d minutt</item>
@@ -261,8 +248,6 @@
     <string name="channels">Kanaler</string>
     <!-- consider keeping the term "channel" as in WhatsApp or Telegram -->
     <string name="new_channel">Ny kanal</string>
-    <!-- deprecated -->
-    <string name="add_recipients">Legg til mottakere</string>
     <!-- consider keeping the term "channel" as in WhatsApp or Telegram -->
     <string name="channel_name">Kanalnavn</string>
     <string name="email">E-post</string>
@@ -341,8 +326,6 @@
     <string name="menu_more_options">Flere valg</string>
     <string name="menu_learn_spelling">Lær staving</string>
     <string name="jump_to_message">Gå til melding</string>
-    <string name="jump_to_original_message">Gå til opprinnelig melding</string>
-    <string name="copy_json">Kopien JSON</string>
     <string name="replace_draft">Erstatt kladd</string>
     <string name="title_share_location">Del posisjon med alle gruppemedlemmer</string>
     <string name="device_talk">Enhetsmeldinger</string>
@@ -400,10 +383,6 @@
     <string name="answer_call">Svar</string>
     <!-- the action "to decline" a call, not: "the decline" -->
     <string name="end_call">Avvis</string>
-    <!-- deprecated, use outgoing_audio_call or outgoing_video_call instead -->
-    <string name="outgoing_call">Utgående anrop</string>
-    <!-- deprecated, use incoming_audio_call or incoming_video_call instead -->
-    <string name="incoming_call">Innkommende anrop</string>
     <string name="declined_call">Avvist anrop</string>
     <string name="canceled_call">Avbrutt anrop</string>
     <string name="missed_call">Ubesvart anrop</string>
@@ -447,11 +426,9 @@
     <string name="ask_remove_from_channel">Fjern %1$s fra kanalen?</string>
     <string name="open_url_confirmation">Vil du åpne denne lenken?</string>
 
-
     <!-- contact list -->
     <string name="contacts_title">Kontakter</string>
     <string name="contacts_type_email_above">Skriv e-postadresse over</string>
-
 
     <!-- chatlist and chat view -->
     <plurals name="chat_archived">
@@ -512,14 +489,6 @@
     <string name="send_file_to">Send \"%1$s\" til…</string>
     <!-- title shown above a list contacts where one should be selected (eg. when a webxdc attempts to send a message to a chat) -->
     <string name="send_message_to">Send melding til…</string>
-    <string name="enable_realtime">Sanntidsapper</string>
-    <string name="enable_realtime_explain">Slå på sanntidstilkoblinger for apper tilknyttet chatter. Når det er slått på kan chattepartnere se din IP-adresse når du starter en app.</string>
-
-    <!-- map -->
-    <string name="filter_map_on_time">Vis plasseringer innenfor tidsramme</string>
-    <string name="show_location_traces">Vis bevegelsesspor</string>
-    <string name="add_poi">Send interessepunkt</string>
-
 
     <!-- search -->
     <string name="search">Søk</string>
@@ -552,6 +521,7 @@
     <!-- share and forward messages -->
     <!-- Translators: shown above a chat/contact list when selecting recipients to forward messages -->
     <string name="forward_to">Videresend til…</string>
+    <!-- preferences -->
     <string name="pref_profile_info_headline">Din profilinfo</string>
     <string name="pref_profile_photo">Profilbilde</string>
     <string name="pref_blocked_contacts">Blokkerte kontakter</string>
@@ -571,8 +541,6 @@
     <string name="pref_sound">Lyd</string>
     <string name="pref_silent">Stille</string>
     <string name="pref_privacy">Personvern</string>
-    <!-- deprecated, use pref_chats -->
-    <string name="pref_chats_and_media">Chatter og medier</string>
     <string name="pref_system_default">System standard</string>
     <!-- Translators: as in "opposite of dark" -->
     <string name="pref_light_theme">Lys</string>
@@ -633,7 +601,7 @@
     <!-- This text is shown inside the "QR code card" with very limited space; please formulate the text as short as possible therefore. The placeholder will be replaced by the profile name eg. "Scan to chat with Alice" -->
     <string name="qrshow_join_contact_hint">Skann dette for å bekrefte en kontakt med %1$s.</string>
     <string name="contact_verified">%1$s bekreftet.</string>
-    <!-- notifications  -->
+    <!-- notifications -->
     <string name="notify_reply_button">Svar</string>
     <string name="notify_new_message">Ny meldin</string>
     <string name="notify_priority_high">Høy</string>

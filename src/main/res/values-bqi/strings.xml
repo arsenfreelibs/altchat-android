@@ -16,7 +16,6 @@
     <string name="off">کۊر</string>
     <string name="def">پؽش فرز</string>
     <string name="default_value">پؽش فرز (%1$s)</string>
-    <string name="default_value_as_above">پؽش فرز (جۊر روء)</string>
     <string name="custom">سفارشی</string>
     <string name="none">هیچکویکی</string>
     <string name="automatic">خوتکار</string>
@@ -34,8 +33,6 @@
     <string name="update">ورۊ کردن</string>
     <string name="emoji">ایموجی</string>
     <string name="attachment">پیوست</string>
-    <!-- the placeholder will be replaced by the name of the image or file to attach -->
-    <string name="ask_attach">«%1$s» پیوست بۊ؟</string>
     <string name="back">وورگشتن</string>
     <string name="close">بستن</string>
     <string name="close_window">بستن نیمدری</string>
@@ -115,7 +112,7 @@
     <string name="last_month">ما زیتری</string>
     <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by date or time, resulting in "Last seen at 12:13 AM" or "Last seen Nov 12" -->
     <string name="last_seen_at">ریتور دیندایی من %1$s</string>
-    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages)-->
+    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages) -->
     <string name="last_seen_relative">ریتور دیندایی %1$s</string>
     <string name="last_seen_unknown">ریتور دیندایی: دیار نؽ</string>
     <!-- Shown beside messages that are "N minutes old". Prefer short strings, or well-known abbreviations. -->
@@ -333,7 +330,6 @@
     <string name="ask_remove_members">پاک کردن %1$s ز جرگه؟</string>
     <string name="open_url_confirmation">اخۊی ای لینگن بۊگۊشی؟</string>
 
-
     <!-- contact list -->
     <string name="contacts_title">هومدنگووݩ</string>
     <string name="chat_please_enter_message">ی پیوم بزݩ.</string>
@@ -361,7 +357,7 @@
     <string name="send_file_to">فشناڌن \"%1$s\" و...</string>
     <!-- title shown above a list contacts where one should be selected (eg. when a webxdc attempts to send a message to a chat) -->
     <string name="send_message_to">فشناڌن پیوم و...</string>
-    <string name="show_location_traces">نشووݩ داڌن جا پا</string>
+
     <!-- search -->
     <string name="search">پیتینیڌن</string>
     <!-- create/edit groups, contact/group profile -->
@@ -380,8 +376,6 @@
     <string name="media_preview">نشووݩ داڌن وارسگر</string>
     <string name="send_message">فشناڌن پیوم</string>
 
-    <!-- deprecated -->
-    <string name="storage_on_domain">زفت کردن من %1$s</string>
     <!-- Shown in the title bar if the app is "Connecting"; prefer short strings. The ellipsis is a single character (…), not three (...) -->
     <string name="connectivity_connecting">هونی منپیز ابۊ...</string>
     <!-- Shown in the title bar if the app is "Updating" (eg. getting new/old message, sync things); prefer short strings. The ellipsis is a single character (…), not three (...) -->
@@ -435,7 +429,7 @@
     <string name="contact_verified">%1$s تاییڌ وابی.</string>
     <!-- Shown in contact profile. The placeholder will be replaced by the name of the contact that introduced the contact. -->
     <string name="verified_by">تاییڌ وابیڌه و دس %1$s</string>
-    <!-- notifications  -->
+    <!-- notifications -->
     <string name="notify_reply_button">ولوم</string>
     <string name="notify_new_message">پیوم نۊ</string>
     <string name="notify_name_and_message">نوم وو پیوم</string>

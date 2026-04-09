@@ -5,7 +5,6 @@
       <li><a href="#howtoe2ee">Come posso trovare persone con cui chattare?</a></li>
       <li><a href="#perché-una-chat-è-contrassegnata-come-richiesta">Perché una chat è contrassegnata come “Richiesta”?</a></li>
       <li><a href="#come-posso-mettere-in-contatto-due-miei-amici">Come posso mettere in contatto due miei amici?</a></li>
-      <li><a href="#delta-chat-supporta-immagini-video-e-altri-allegati">Delta Chat supporta immagini, video e altri allegati?</a></li>
       <li><a href="#multiple-accounts">Cosa sono i profili? Come posso passare dall’uno all’altro?</a></li>
       <li><a href="#chi-vede-la-mia-immagine-del-profilo">Chi vede la mia immagine del profilo?</a></li>
       <li><a href="#signature">Posso impostare una Biografia/Stato con Delta Chat?</a></li>
@@ -14,6 +13,7 @@
       <li><a href="#cosa-significa-il-punto-verde">Cosa significa il punto verde?</a></li>
       <li><a href="#cosa-significano-i-segni-di-spunta-visualizzati-accanto-ai-messaggi-in-uscita">Cosa significano i segni di spunta visualizzati accanto ai messaggi in uscita?</a></li>
       <li><a href="#edit">Correggi gli errori e cancella i messaggi dopo averli inviati</a></li>
+      <li><a href="#mediaquality">Come viene gestita la qualità dei media?</a></li>
       <li><a href="#ephemeralmsgs">Come funzionano i messaggi a scomparsa?</a></li>
       <li><a href="#delold">Cosa succede se attivo “Elimina Messaggi dal Dispositivo”?</a></li>
       <li><a href="#remove-account">Come posso eliminare il mio profilo chat?</a></li>
@@ -217,19 +217,6 @@ Puoi anche aggiungere un breve messaggio di presentazione.</p>
 <p>Il secondo contatto riceverà una <strong>scheda</strong>
 e potrà toccarla per iniziare a chattare con il primo contatto.</p>
     
-      <h3 id="delta-chat-supporta-immagini-video-e-altri-allegati">
-        
-        
-          Delta Chat supporta immagini, video e altri allegati? <a href="#delta-chat-supporta-immagini-video-e-altri-allegati" class="anchor"></a>
-        
-        
-      </h3>
-
-<p>Sì. Immagini, video, files, messaggi vocali ecc. possono essere inviati utilizzando <img style="vertical-align:middle; width:1.0em; margin:1px" src="../paperclip.png" alt="Paperclip" /> <strong>Allegato-</strong>
-o <img style="vertical-align:middle; width:0.8em; margin:1px" src="../mic.png" alt="Microphone" /> pulsanti <strong>Messaggio Vocale</strong></p>
-
-<p>Per le prestazioni, le immagini sono ottimizzate e inviate in dimensioni inferiori per impostazione predefinita, ma è possibile inviarle come “file” per preservare l’originale.</p>
-    
       <h3 id="multiple-accounts">
         
         
@@ -408,6 +395,32 @@ Non vengono inviate notifiche e non c’è limite di tempo.</p>
 
 <p>Nota che il messaggio originale potrebbe essere ancora sui dispositivi dei membri della chat
 che avrebbero già potuto rispondere, inoltrare, salvare, scattare una schermata o copiare il messaggio in altri modi.</p>
+    
+      <h3 id="mediaquality">
+        
+        
+          Come viene gestita la qualità dei media? <a href="#mediaquality" class="anchor"></a>
+        
+        
+      </h3>
+
+<p>Immagini, video, files, messaggi vocali ecc. possono essere inviati utilizzando <img style="vertical-align:middle; width:1.0em; margin:1px" src="../paperclip.png" alt="Paperclip" /> <strong>Allegato-</strong>
+o <img style="vertical-align:middle; width:0.8em; margin:1px" src="../mic.png" alt="Microphone" /> pulsanti <strong>Messaggio Vocale</strong></p>
+
+<ul>
+  <li>
+    <p>Per impostazione predefinita, la compressione garantisce una <strong>consegna rapida ed efficiente</strong> che rispetta i limiti di dati e di spazio di archiviazione di tutti.
+Questa soluzione è ideale per la comunicazione quotidiana.</p>
+  </li>
+  <li>
+    <p>Nelle regioni con connettività peggiore,
+è possibile scegliere una compressione più elevata in <strong>Impostazioni → Chat → Qualità Media in Uscita</strong>.</p>
+  </li>
+  <li>
+    <p>Se hai bisogno di inviare i file multimediali nella loro <strong>qualità originale</strong>, usa <img style="vertical-align:middle; width:1.0em; margin:1px" src="../paperclip.png" alt="Paperclip" /> <strong>Allega → File</strong> nella chat.
+Si prega di utilizzare questo metodo con parsimonia, poiché l’invio di file originali aumenterà significativamente il consumo di dati per te e per tutti i destinatari della chat.</p>
+  </li>
+</ul>
     
       <h3 id="ephemeralmsgs">
         
@@ -1021,16 +1034,22 @@ Tuttavia, se lo si desidera,
 
 <ul>
   <li>
-    <p>Puoi <strong>aggiungere</strong> un ripetitore scansionando il suo codice QR;<a href="https://chatmail.at/relays">https://chatmail.at/relays</a> ne mostra alcuni noti.
-Se hai più ripetitori, riceverai messaggi su tutti.</p>
+    <p>Puoi <strong>aggiungere</strong> un ripetitore scansionando il suo codice QR;
+<a href="https://chatmail.at/relays">chatmail.at/relays</a> mostra alcuni ripetitori noti.
+Se hai più ripetitori, riceverai i messaggi su tutti.
+I contatti vengono a conoscenza automaticamente dei tuoi ripetitori attuali quando invii loro un messaggio.</p>
   </li>
   <li>
-    <p>L’opzione <strong>predefinita</strong> definisce quella a cui i tuoi partner di chat invieranno messaggi futuri.</p>
+    <p>Tocca un ripetitore per impostarlo come <strong>utilizzato per l’invio</strong>.</p>
   </li>
   <li>
     <p>Se <strong>rimuovi</strong> un ripetitore,
-assicurati che un altro ripetitore predefinito sia stato utilizzato per un periodo di tempo sufficiente.
-In caso contrario, i messaggi dei tuoi interlocutori di chat non ti   arriveranno.In caso di dubbio, rimuovilo in seguito.</p>
+i contatti che conoscono solo quel ripetitore potrebbero non raggiungerti finché non invierai loro un nuovo messaggio.
+Per rimanere raggiungibile nel frattempo, seleziona <strong>Nascondi dai Contatti</strong> nella finestra di dialogo di conferma
+invece di rimuoverlo immediatamente.</p>
+  </li>
+  <li>
+    <p>Per <strong>visualizzare</strong> nuovamente un ripetitore nascosto, toccalo.</p>
   </li>
 </ul>
 

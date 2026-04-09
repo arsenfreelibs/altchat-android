@@ -16,7 +16,6 @@
     <string name="off">Desligado</string>
     <string name="def">Padrão</string>
     <string name="default_value">Padrão (%1$s)</string>
-    <string name="default_value_as_above">Padrão (igual acima)</string>
     <string name="custom">Personalizado</string>
     <string name="none">Nenhum</string>
     <string name="automatic">Automático</string>
@@ -33,8 +32,6 @@
     <string name="update">Actualizar</string>
     <string name="emoji">Emoji</string>
     <string name="attachment">Anexo</string>
-    <!-- the placeholder will be replaced by the name of the image or file to attach -->
-    <string name="ask_attach">Anexar \"%1$s\"?</string>
     <string name="close">Fechar</string>
     <string name="close_window">Fechar Janela</string>
     <string name="forward">Reencaminhar</string>
@@ -223,7 +220,6 @@
     <string name="menu_settings">Definições</string>
     <string name="menu_advanced">Avançado</string>
     <string name="menu_view_profile">Ver perfil</string>
-    <string name="copy_json">Copiar JSON</string>
     <string name="mute_for_one_hour">Calado por 1 hora</string>
     <string name="mute_for_eight_hours">Calado por 8 horas</string>
     <string name="mute_for_one_day">Calado por 1 dia</string>
@@ -251,7 +247,7 @@
     <string name="ask_export_attachment">Exportar anexo? A exportação de anexos permitirá o seu acesso a qualquer outra aplicação no seu dispositivo.\n\nContinuar?</string>
     <string name="ask_block_contact">Bloquear este contacto?\n\nMensagens directas e grupos criados por contactos bloqueados serão ocultados.\n\nMensagens de contactos bloqueados não serão ocultadas noutros grupos.</string>
     <string name="ask_unblock_contact">Desbloquear esse contacto? Poderá mais uma vez receber mensagens deste contacto.</string>
-    <string name="ask_delete_contacts">Remover contactos? Assim removerá permanentemente os contactos selecionados.\n\nContactos com chats a decorrer e contactos com  endereços do sistema não podem ser removidos permanentemente.</string>
+    <string name="ask_delete_contacts">Remover contactos? Assim removerá permanentemente os contactos selecionados.\n\nContactos com chats a decorrer e contactos com endereços do sistema não podem ser removidos permanentemente.</string>
     <string name="ask_start_chat_with">Conversar com %1$s?</string>
     <!-- %1$s is replaced by a comma-separated list of names -->
     <string name="ask_remove_members">Remover %1$s do grupo?</string>
@@ -260,7 +256,6 @@
     <!-- contact list -->
     <string name="contacts_title">Contactos</string>
     <string name="contacts_type_email_above">Digite o endereço de e-mail acima</string>
-
 
     <!-- chatlist and chat view -->
     <plurals name="chat_archived">
@@ -296,6 +291,7 @@
     <string name="send_file_to">Enviar \"%1$s\" para…</string>
     <!-- title shown above a list contacts where one should be selected (eg. when a webxdc attempts to send a message to a chat) -->
     <string name="send_message_to">Enviar mensagem para…</string>
+
     <!-- search -->
     <string name="search">Pesquisar</string>
     <string name="search_explain">Pesquisar chats, contactos, emensagens</string>
@@ -347,8 +343,6 @@
     <string name="forward_to">Reencaminhar ...</string>
     <string name="ask_send_files_to_selected_chats">Enviar %1$d arquivo(s) para %2$d conversas?</string>
     <!-- preferences -->
-    <string name="pref_using_custom">Utilizando personalizado %s</string>
-    <string name="pref_using_default">Utilizando padrão: %s</string>
     <string name="pref_profile_info_headline">O seu perfil</string>
     <string name="pref_profile_photo">Foto do perfil</string>
     <string name="pref_blocked_contacts">Bloquear contactos</string>
@@ -371,8 +365,6 @@
     <string name="pref_sound">Som</string>
     <string name="pref_silent">Silêncio</string>
     <string name="pref_privacy">Privacidade</string>
-    <!-- deprecated, use pref_chats -->
-    <string name="pref_chats_and_media">chats e mídia</string>
     <string name="pref_system_default">Configuração por omissão</string>
     <!-- Translators: as in "opposite of dark" -->
     <string name="pref_light_theme">Luz</string>
@@ -442,7 +434,7 @@
     <string name="qrshow_join_contact_hint">Digitalize para configurar um contato com %1$s</string>
     <string name="secure_join_wait">A estabelecer ligação cifrada de ponta-a-ponta, por favor aguarde…</string>
     <string name="contact_verified">%1$s verificado.</string>
-    <!-- notifications  -->
+    <!-- notifications -->
     <string name="notify_reply_button">Responder</string>
     <string name="notify_new_message">Mensagem nova</string>
     <string name="notify_background_connection_enabled">Conexão em segundo plano ativada</string>
