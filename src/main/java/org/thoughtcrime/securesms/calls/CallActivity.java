@@ -1,6 +1,8 @@
 package org.thoughtcrime.securesms.calls;
 
 import android.Manifest;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.app.KeyguardManager;
 import android.app.PictureInPictureParams;
 import android.content.Context;
@@ -24,8 +26,6 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -37,9 +37,9 @@ import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.button.MaterialButtonToggleGroup;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import org.thoughtcrime.securesms.BuildConfig;
 import org.thoughtcrime.securesms.EglUtils;
 import org.thoughtcrime.securesms.R;
@@ -71,16 +71,27 @@ public class CallActivity extends AppCompatActivity {
   private TextView displayNameText;
   private View incomingCallPrompt;
 
-  private View callerIconContainer;
-  private ImageView callerIconView;
   private ImageView remoteAvatarView;
 
-  private MaterialButtonToggleGroup answerModeSelector;
+  // Animations
+  private PulsingRingsView ringsView;
+  private View glowTopLeft;
+  private View glowBottomRight;
+  private ObjectAnimator glowAnimTop;
+  private ObjectAnimator glowAnimBottom;
+
+  // Dots and timer animation
+  private final Handler dotsHandler = new Handler(Looper.getMainLooper());
+  private Runnable dotsRunnable;
+  private int dotsCount;
+  private final Handler timerHandler = new Handler(Looper.getMainLooper());
+  private Runnable timerRunnable;
+  private long connectedAtMs;
 
   // Layouts and elements
-  private ConstraintLayout topBar;
   private LinearLayout bottomLayoutContainer;
-  private CardView localVideoContainer;
+  private View localVideoContainer;
+  private ImageButton pipButton;
   private ImageButton endCallButton;
   private MaterialButton answerButton;
   private MaterialButton declineButton;
@@ -135,11 +146,9 @@ public class CallActivity extends AppCompatActivity {
           boolean isInPipMode = pipModeInfo.isInPictureInPictureMode();
 
           if (isInPipMode) {
-            topBar.setVisibility(View.GONE);
             bottomLayoutContainer.setVisibility(View.GONE);
             incomingCallPrompt.setVisibility(View.GONE);
           } else {
-            topBar.setVisibility(View.VISIBLE);
             bottomLayoutContainer.setVisibility(View.VISIBLE);
             if (viewModel != null) {
               CallViewModel.CallState state = viewModel.getCallState().getValue();
@@ -295,7 +304,6 @@ public class CallActivity extends AppCompatActivity {
   }
 
   private void initializeViews() {
-    topBar = findViewById(R.id.top_bar);
     bottomLayoutContainer = findViewById(R.id.call_controls_layout);
     localVideoContainer = findViewById(R.id.local_video_container);
 
@@ -306,11 +314,12 @@ public class CallActivity extends AppCompatActivity {
     displayNameText = findViewById(R.id.display_name_text);
     incomingCallPrompt = findViewById(R.id.incoming_call_prompt);
 
-    callerIconContainer = findViewById(R.id.caller_icon_container);
-    callerIconView = findViewById(R.id.caller_icon);
     remoteAvatarView = findViewById(R.id.remote_avatar_view);
 
-    answerModeSelector = findViewById(R.id.answer_mode_selector);
+    ringsView = findViewById(R.id.rings_view);
+    glowTopLeft = findViewById(R.id.glow_top_left);
+    glowBottomRight = findViewById(R.id.glow_bottom_right);
+    pipButton = findViewById(R.id.pip_button);
 
     endCallButton = findViewById(R.id.end_call_button);
     answerButton = findViewById(R.id.answer_button);
@@ -320,7 +329,14 @@ public class CallActivity extends AppCompatActivity {
     speakerButton = findViewById(R.id.speaker_button);
     switchCameraButton = findViewById(R.id.switch_camera_button);
 
+    // Hide PiP button if device does not support PiP
+    if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)) {
+      pipButton.setVisibility(View.GONE);
+    }
+
     initializeVideoRenderers();
+
+    setupGlowAnimation();
 
     setupButtonListeners();
   }
@@ -392,6 +408,9 @@ public class CallActivity extends AppCompatActivity {
           }
         });
 
+    pipButton.setOnClickListener(
+        v -> enterPictureInPictureMode(createPipParams()));
+
     getOnBackPressedDispatcher()
         .addCallback(
             this,
@@ -426,6 +445,81 @@ public class CallActivity extends AppCompatActivity {
             });
   }
 
+  private void setupGlowAnimation() {
+    if (glowTopLeft == null || glowBottomRight == null) return;
+
+    PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1.0f, 1.25f);
+    PropertyValuesHolder scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.0f, 1.25f);
+
+    glowAnimTop = ObjectAnimator.ofPropertyValuesHolder(glowTopLeft, scaleX, scaleY);
+    glowAnimTop.setDuration(3000);
+    glowAnimTop.setRepeatMode(ObjectAnimator.REVERSE);
+    glowAnimTop.setRepeatCount(ObjectAnimator.INFINITE);
+
+    PropertyValuesHolder scaleX2 = PropertyValuesHolder.ofFloat(View.SCALE_X, 1.25f, 1.0f);
+    PropertyValuesHolder scaleY2 = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.25f, 1.0f);
+
+    glowAnimBottom = ObjectAnimator.ofPropertyValuesHolder(glowBottomRight, scaleX2, scaleY2);
+    glowAnimBottom.setDuration(3000);
+    glowAnimBottom.setRepeatMode(ObjectAnimator.REVERSE);
+    glowAnimBottom.setRepeatCount(ObjectAnimator.INFINITE);
+
+    glowAnimTop.start();
+    glowAnimBottom.start();
+  }
+
+  private void startDotsAnimation(final String baseText) {
+    stopDotsAnimation();
+    dotsCount = 0;
+    dotsRunnable = new Runnable() {
+      @Override
+      public void run() {
+        dotsCount = (dotsCount + 1) % 4;
+        StringBuilder sb = new StringBuilder(baseText);
+        for (int i = 0; i < dotsCount; i++) sb.append('.');
+        statusText.setText(sb.toString());
+        dotsHandler.postDelayed(this, 500);
+      }
+    };
+    dotsHandler.post(dotsRunnable);
+  }
+
+  private void stopDotsAnimation() {
+    if (dotsRunnable != null) {
+      dotsHandler.removeCallbacks(dotsRunnable);
+      dotsRunnable = null;
+    }
+  }
+
+  private void startCallTimer() {
+    stopCallTimer();
+    connectedAtMs = System.currentTimeMillis();
+    timerRunnable = new Runnable() {
+      @Override
+      public void run() {
+        long elapsed = (System.currentTimeMillis() - connectedAtMs) / 1000;
+        long minutes = elapsed / 60;
+        long seconds = elapsed % 60;
+        statusText.setText(String.format(Locale.US, "%02d:%02d", minutes, seconds));
+        timerHandler.postDelayed(this, 1000);
+      }
+    };
+    timerHandler.post(timerRunnable);
+  }
+
+  private void stopCallTimer() {
+    if (timerRunnable != null) {
+      timerHandler.removeCallbacks(timerRunnable);
+      timerRunnable = null;
+    }
+  }
+
+  private void updateButtonBackground(ImageButton button, boolean active) {
+    if (button == null) return;
+    button.setBackgroundResource(
+        active ? R.drawable.call_button_active_green : R.drawable.call_button_inactive);
+  }
+
   private void initializeViewModel() {
     viewModel = new ViewModelProvider(this).get(CallViewModel.class);
 
@@ -458,14 +552,6 @@ public class CallActivity extends AppCompatActivity {
         .observe(
             this,
             icon -> {
-              if (callerIconView != null) {
-                if (icon != null) {
-                  callerIconView.setImageIcon(icon);
-                } else {
-                  callerIconView.setImageResource(R.drawable.ic_person);
-                }
-              }
-
               if (remoteAvatarView != null) {
                 if (icon != null) {
                   remoteAvatarView.setImageIcon(icon);
@@ -483,6 +569,7 @@ public class CallActivity extends AppCompatActivity {
             enabled -> {
               muteButton.setSelected(!enabled);
               muteButton.setImageResource(enabled ? R.drawable.ic_mic_on : R.drawable.ic_mic_off);
+              updateButtonBackground(muteButton, !enabled);
             });
 
     viewModel
@@ -493,6 +580,7 @@ public class CallActivity extends AppCompatActivity {
               videoButton.setSelected(!enabled);
               videoButton.setImageResource(
                   enabled ? R.drawable.ic_videocam_on : R.drawable.ic_videocam_off);
+              updateButtonBackground(videoButton, enabled);
             });
 
     viewModel
@@ -578,58 +666,57 @@ public class CallActivity extends AppCompatActivity {
       return;
     }
 
+    stopDotsAnimation();
+    stopCallTimer();
+
     switch (state) {
       case INITIALIZING:
         statusText.setText(R.string.call_initializing);
         incomingCallPrompt.setVisibility(View.GONE);
         bottomLayoutContainer.setVisibility(View.GONE);
-        callerIconContainer.setVisibility(View.GONE);
-        answerModeSelector.setVisibility(View.GONE);
+        if (ringsView != null) ringsView.stopRinging();
         break;
 
       case PROMPTING_USER_ACCEPT:
         statusText.setText(R.string.call_incoming);
         incomingCallPrompt.setVisibility(View.VISIBLE);
         bottomLayoutContainer.setVisibility(View.GONE);
-        callerIconContainer.setVisibility(View.VISIBLE);
-        answerModeSelector.setVisibility(View.VISIBLE);
-        initializeAnswerModeSelector();
+        if (ringsView != null) ringsView.startRinging();
         break;
 
       case RINGING:
-        statusText.setText(R.string.call_ringing);
         incomingCallPrompt.setVisibility(View.GONE);
         bottomLayoutContainer.setVisibility(View.VISIBLE);
-        callerIconContainer.setVisibility(View.GONE);
-        answerModeSelector.setVisibility(View.GONE);
+        if (ringsView != null) ringsView.startRinging();
+        startDotsAnimation(getString(R.string.call_ringing));
         break;
 
       case CONNECTING:
-        statusText.setText(R.string.connectivity_connecting);
         incomingCallPrompt.setVisibility(View.GONE);
         bottomLayoutContainer.setVisibility(View.VISIBLE);
-        callerIconContainer.setVisibility(View.GONE);
-        answerModeSelector.setVisibility(View.GONE);
+        if (ringsView != null) ringsView.startRinging();
+        startDotsAnimation(getString(R.string.connectivity_connecting));
         break;
 
       case CONNECTED:
-        statusText.setText(R.string.connectivity_connected);
         incomingCallPrompt.setVisibility(View.GONE);
         bottomLayoutContainer.setVisibility(View.VISIBLE);
-        callerIconContainer.setVisibility(View.GONE);
-        answerModeSelector.setVisibility(View.GONE);
+        if (ringsView != null) ringsView.stopRinging();
+        startCallTimer();
         break;
 
       case RECONNECTING:
-        statusText.setText(R.string.call_reconnecting);
+        incomingCallPrompt.setVisibility(View.GONE);
+        bottomLayoutContainer.setVisibility(View.VISIBLE);
+        if (ringsView != null) ringsView.startRinging();
+        startDotsAnimation(getString(R.string.call_reconnecting));
         break;
 
       case ANSWERED_ELSEWHERE:
         statusText.setText(R.string.call_answered_elsewhere);
         incomingCallPrompt.setVisibility(View.GONE);
         bottomLayoutContainer.setVisibility(View.GONE);
-        callerIconContainer.setVisibility(View.GONE);
-        answerModeSelector.setVisibility(View.GONE);
+        if (ringsView != null) ringsView.stopRinging();
 
         new Handler(Looper.getMainLooper())
             .postDelayed(
@@ -643,6 +730,7 @@ public class CallActivity extends AppCompatActivity {
 
       case ENDED:
         statusText.setText(R.string.call_ended);
+        if (ringsView != null) ringsView.stopRinging();
         finish();
         break;
 
@@ -650,8 +738,7 @@ public class CallActivity extends AppCompatActivity {
         statusText.setText(R.string.call_failed);
         incomingCallPrompt.setVisibility(View.GONE);
         bottomLayoutContainer.setVisibility(View.GONE);
-        callerIconContainer.setVisibility(View.GONE);
-        answerModeSelector.setVisibility(View.GONE);
+        if (ringsView != null) ringsView.stopRinging();
 
         new Handler(Looper.getMainLooper())
             .postDelayed(
@@ -670,12 +757,15 @@ public class CallActivity extends AppCompatActivity {
   private void updateSpeakerButton(CallEndpointCompat endpoint) {
     if (endpoint == null) {
       speakerButton.setImageResource(R.drawable.ic_volume_up);
+      updateButtonBackground(speakerButton, false);
       return;
     }
 
     int iconRes = CallUtil.getIconResByCallEndpoint(endpoint);
+    boolean isSpeaker = endpoint.getType() == CallEndpointCompat.TYPE_SPEAKER;
 
     speakerButton.setImageResource(iconRes);
+    updateButtonBackground(speakerButton, isSpeaker);
     Log.d(TAG, "Speaker button updated for endpoint: " + endpoint.getName());
   }
 
@@ -733,26 +823,6 @@ public class CallActivity extends AppCompatActivity {
         && !isInPictureInPictureMode();
   }
 
-  private void initializeAnswerModeSelector() {
-    CallCoordinator coordinator = CallCoordinator.getInstance(getApplication());
-
-    // Set initial selection without triggering listener
-    answerModeSelector.clearOnButtonCheckedListeners();
-    answerModeSelector.check(
-        coordinator.isStartsWithVideo() ? R.id.answer_video_button : R.id.answer_audio_only_button);
-
-    // Set listener
-    answerModeSelector.addOnButtonCheckedListener(
-        (group, checkedId, isChecked) -> {
-          if (isChecked && viewModel != null) {
-            boolean startsWithVideo = (checkedId == R.id.answer_video_button);
-            viewModel.setStartsWithVideo(startsWithVideo);
-            viewModel.switchToEarpiece(!startsWithVideo);
-            Log.d(TAG, "Answer mode changed to: " + (startsWithVideo ? "Video" : "Audio"));
-          }
-        });
-  }
-
   private void layoutVideos() {
     if (isFinishing() || isDestroyed()) return;
     if (viewModel == null) return;
@@ -801,13 +871,6 @@ public class CallActivity extends AppCompatActivity {
     }
 
     localVideoContainer.setVisibility(showCorner ? View.VISIBLE : View.GONE);
-
-    boolean showAvatar =
-        !showFullScreen
-            && state != CallViewModel.CallState.PROMPTING_USER_ACCEPT
-            && state != CallViewModel.CallState.INITIALIZING;
-
-    remoteAvatarView.setVisibility(showAvatar ? View.VISIBLE : View.GONE);
   }
 
   private void detachAllTracks() {
@@ -1012,6 +1075,12 @@ public class CallActivity extends AppCompatActivity {
   @Override
   protected void onDestroy() {
     super.onDestroy();
+
+    stopDotsAnimation();
+    stopCallTimer();
+
+    if (glowAnimTop != null) glowAnimTop.cancel();
+    if (glowAnimBottom != null) glowAnimBottom.cancel();
 
     if (viewModel != null) {
       detachAllTracks();
