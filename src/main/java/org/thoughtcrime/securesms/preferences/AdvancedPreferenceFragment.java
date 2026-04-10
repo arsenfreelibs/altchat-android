@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Objects;
-import org.thoughtcrime.securesms.ApplicationPreferencesActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import org.thoughtcrime.securesms.LogViewActivity;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.StatsSending;
@@ -264,7 +264,7 @@ public class AdvancedPreferenceFragment extends ListSummaryPreferenceFragment
   public void onResume() {
     super.onResume();
     Objects.requireNonNull(
-            ((ApplicationPreferencesActivity) requireActivity()).getSupportActionBar())
+            ((AppCompatActivity) requireActivity()).getSupportActionBar())
         .setTitle(R.string.menu_advanced);
 
     String value = Integer.toString(dcContext.getConfigInt("show_emails"));

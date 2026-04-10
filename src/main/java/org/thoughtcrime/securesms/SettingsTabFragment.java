@@ -1,10 +1,15 @@
 package org.thoughtcrime.securesms;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.content.Intent;
+import android.os.SystemClock;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +32,9 @@ public class SettingsTabFragment extends Fragment {
 
   private Toolbar toolbar;
   private OnBackPressedCallback backCallback;
+  private int advancedTapCount = 0;
+  private long advancedLastTapTime = 0;
+  private TextView settingsTitleView = null;
 
   @Nullable
   @Override
@@ -95,10 +103,6 @@ public class SettingsTabFragment extends Fragment {
     if (toolbar == null || !isAdded()) return;
     if (backCallback != null) backCallback.setEnabled(true);
     ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
-    ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
-    if (actionBar != null) {
-      actionBar.setTitle(R.string.menu_settings);
-    }
     // setSupportActionBar() posts deferred initialization work internally via Handler.
     // If we call applyActionBarState() synchronously here, that deferred work runs
     // after us and resets DisplayHomeAsUpEnabled to false. Posting our call ensures
@@ -132,11 +136,59 @@ public class SettingsTabFragment extends Fragment {
     });
     ActionBar ab = ((AppCompatActivity) requireActivity()).getSupportActionBar();
     if (ab != null) {
-      ab.setDisplayHomeAsUpEnabled(
-          getChildFragmentManager().getBackStackEntryCount() > 0);
+      boolean isRoot = getChildFragmentManager().getBackStackEntryCount() == 0;
+      ab.setDisplayHomeAsUpEnabled(!isRoot);
+      if (isRoot) {
+        setupEasterEggTitle(ab);
+      } else {
+        // Remove the clickable title view from the toolbar before switching to a sub-screen
+        if (settingsTitleView != null && settingsTitleView.getParent() != null) {
+          ((ViewGroup) settingsTitleView.getParent()).removeView(settingsTitleView);
+        }
+        ab.setDisplayOptions(
+            ActionBar.DISPLAY_SHOW_TITLE,
+            ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
+      }
     }
     // Hide bottom nav on any sub-screen, show it on root Settings
     setBottomNavVisible(getChildFragmentManager().getBackStackEntryCount() == 0);
+  }
+
+  private void setupEasterEggTitle(ActionBar ab) {
+    // Create the clickable title view only once to avoid stacking on tab re-entry.
+    // Each setSupportActionBar() call creates a fresh ActionBar wrapper that does not
+    // know about the view the previous wrapper added to the Toolbar, so calling
+    // setCustomView() again would duplicate the title. We reuse the same instance and
+    // detach it from whatever parent it currently has before handing it to the new wrapper.
+    if (settingsTitleView == null) {
+      settingsTitleView = new TextView(requireActivity());
+      settingsTitleView.setText(R.string.menu_settings);
+      settingsTitleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+      settingsTitleView.setTextColor(Color.WHITE);
+      settingsTitleView.setOnClickListener(v -> {
+        long now = SystemClock.elapsedRealtime();
+        if (now - advancedLastTapTime > 3000) {
+          advancedTapCount = 0;
+        }
+        advancedLastTapTime = now;
+        advancedTapCount++;
+        if (advancedTapCount >= 20) {
+          advancedTapCount = 0;
+          Fragment f = getChildFragmentManager().findFragmentById(R.id.settings_container);
+          if (f instanceof SettingsRootFragment) {
+            ((SettingsRootFragment) f).revealAdvancedSettings();
+          }
+        }
+      });
+    }
+    // Detach from previous parent (orphaned by the old ActionBar wrapper) before re-adding.
+    if (settingsTitleView.getParent() != null) {
+      ((ViewGroup) settingsTitleView.getParent()).removeView(settingsTitleView);
+    }
+    ab.setDisplayOptions(
+        ActionBar.DISPLAY_SHOW_CUSTOM,
+        ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
+    ab.setCustomView(settingsTitleView);
   }
 
   private void setBottomNavVisible(boolean visible) {

@@ -3,6 +3,7 @@ package org.thoughtcrime.securesms.preferences;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.widget.Toast;
 import android.view.View;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -142,6 +143,12 @@ public class SettingsRootFragment extends CorrectedPreferenceFragment
    */
   private SettingsTabFragment getSettingsTabFragment() {
     return (SettingsTabFragment) requireParentFragment();
+  }
+
+  public void revealAdvancedSettings() {
+    findPreference(PREFERENCE_CATEGORY_ADVANCED).setVisible(true);
+    findPreference(PREFERENCE_CATEGORY_HELP).setEnabled(true);
+    Toast.makeText(requireActivity(), R.string.menu_advanced, Toast.LENGTH_SHORT).show();
   }
 
   private class CategoryClickListener implements Preference.OnPreferenceClickListener {
