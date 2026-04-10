@@ -88,7 +88,7 @@ public class QrShowFragment extends Fragment implements DcEventCenter.DcEventDel
     ScaleStableImageView backgroundView = view.findViewById(R.id.background);
     Drawable drawable;
     if (DynamicTheme.isDarkTheme(getActivity())) {
-      drawable = getActivity().getResources().getDrawable(R.drawable.background_hd_dark_1);
+      drawable = getActivity().getResources().getDrawable(R.drawable.background_hd_dark);
     } else {
       drawable = getActivity().getResources().getDrawable(R.drawable.background_hd);
     }

@@ -149,7 +149,7 @@ public class ChatBackgroundActivity extends PassphraseRequiredActionBarActivity 
 
   private void setDefaultLayoutBackgroundImage() {
     if (DynamicTheme.isDarkTheme(this)) {
-      Drawable image = getResources().getDrawable(R.drawable.background_hd_dark_1);
+      Drawable image = getResources().getDrawable(R.drawable.background_hd_dark);
       preview.setImageDrawable(image);
     } else {
       Drawable image = getResources().getDrawable(R.drawable.background_hd);
