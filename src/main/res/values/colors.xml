@@ -89,4 +89,14 @@
     <color name="calls_primary">#B6C5FA</color>
     <color name="calls_red">#BA1B1B</color>
     <color name="calls_green">#4CAF50</color>
+
+    <!-- Call screen iOS-style redesign -->
+    <color name="call_bg_top">#0A1A0D</color>
+    <color name="call_bg_mid">#16321B</color>
+    <color name="call_bg_btm">#2A5A32</color>
+    <color name="call_glow_color">#55388040</color>
+    <color name="call_ring_color">#5AC87F</color>
+    <color name="call_button_inactive">#26FFFFFF</color>
+    <color name="call_button_active_green">#8C4CAF50</color>
+    <color name="call_button_end">#CCE53935</color>
 </resources>
