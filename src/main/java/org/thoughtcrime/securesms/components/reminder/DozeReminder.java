@@ -119,10 +119,6 @@ public class DozeReminder {
 
   public static void maybeAskDirectly(Context context) {
     try {
-      if (isPushAvailableAndSufficient()) {
-        return;
-      }
-
       if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M
           && !Prefs.getBooleanPreference(context, Prefs.DOZE_ASKED_DIRECTLY, false)
           && ContextCompat.checkSelfPermission(

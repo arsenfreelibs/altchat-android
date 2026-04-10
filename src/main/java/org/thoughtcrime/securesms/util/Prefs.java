@@ -258,8 +258,8 @@ public class Prefs {
       }
     }
 
-    // if the key was unset, then calculate default value
-    return !isPushEnabled(context) || !DcHelper.getAccounts(context).isAllChatmail();
+    // if the key was unset, default to enabled
+    return true;
   }
 
   // vibrate
