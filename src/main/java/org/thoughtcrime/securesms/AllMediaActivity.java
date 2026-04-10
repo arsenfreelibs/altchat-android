@@ -78,7 +78,6 @@ public class AllMediaActivity extends PassphraseRequiredActionBarActivity
 
   @Override
   protected void onCreate(Bundle bundle, boolean ready) {
-    tabs.add(new TabData(R.string.webxdc_apps, DcMsg.DC_MSG_WEBXDC, 0, 0));
     tabs.add(
         new TabData(
             R.string.tab_gallery, DcMsg.DC_MSG_IMAGE, DcMsg.DC_MSG_GIF, DcMsg.DC_MSG_VIDEO));
