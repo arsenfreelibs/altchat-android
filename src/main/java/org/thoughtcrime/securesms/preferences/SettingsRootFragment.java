@@ -82,6 +82,14 @@ public class SettingsRootFragment extends CorrectedPreferenceFragment
         .setOnPreferenceClickListener(new CategoryClickListener(PREFERENCE_CATEGORY_HELP));
     this.findPreference(PREFERENCE_CATEGORY_HELP).setEnabled(false);
 
+    try {
+      String versionName = requireActivity().getPackageManager()
+          .getPackageInfo(requireActivity().getPackageName(), 0).versionName;
+      this.findPreference("preference_app_version").setSummary("alt.chat v" + versionName);
+    } catch (android.content.pm.PackageManager.NameNotFoundException e) {
+      this.findPreference("preference_app_version").setSummary("alt.chat");
+    }
+
     DcHelper.getEventCenter(requireActivity())
         .addObserver(DcContext.DC_EVENT_CONNECTIVITY_CHANGED, this);
   }
