@@ -858,6 +858,11 @@ public class CallActivity extends AppCompatActivity {
     }
 
     remoteVideoView.setVisibility(showFullScreen ? View.VISIBLE : View.GONE);
+    // Hide avatar and rings when full-screen video is active — SurfaceView always
+    // renders behind regular Views, so we hide them instead of fighting z-order.
+    int avatarVisibility = showFullScreen ? View.INVISIBLE : View.VISIBLE;
+    if (remoteAvatarView != null) remoteAvatarView.setVisibility(avatarVisibility);
+    if (ringsView != null) ringsView.setVisibility(avatarVisibility);
 
     boolean showCorner =
         state == CallViewModel.CallState.CONNECTED
