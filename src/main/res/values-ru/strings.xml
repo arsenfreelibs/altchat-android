@@ -1254,4 +1254,68 @@
     <string name="alt_restore_step2_title">Введите код подтверждения</string>
     <string name="alt_restore_step3_title">Расшифровка ключа</string>
     <string name="alt_restore_step3_subtitle">Введите код подтверждения и пароль восстановления, установленный при регистрации.</string>
+
+    <!-- Calls -->
+    <string name="call_answered_elsewhere">Звонок принят на другом устройстве</string>
+    <string name="call_requires_mic_permission">Для звонков требуется разрешение на микрофон</string>
+
+    <!-- Terms of Service dialog -->
+    <string name="tos_title">Пользовательское соглашение</string>
+    <string name="tos_text">Нажимая «Принять», вы соглашаетесь использовать Alt Chat законным образом.</string>
+    <string name="tos_checkbox">Я прочитал(а) и принимаю Условия использования</string>
+    <string name="tos_agree">Принять</string>
+    <string name="tos_decline">Отклонить</string>
+    <string name="tos_must_accept">Для продолжения необходимо принять Условия использования</string>
+
+    <!-- Network and registration cancellation -->
+    <string name="network_connection_unavailable">Нет подключения к сети</string>
+    <string name="alt_cancel_registration_title">Отменить регистрацию?</string>
+    <string name="alt_cancel_registration_message">Настройка аккаунта не завершена. Если вы вернётесь назад, аккаунт будет удалён. Продолжить?</string>
+    <string name="alt_cancel_registration_confirm">Удалить и вернуться</string>
+
+    <!-- Registration input fields -->
+    <string name="alt_username_hint">Имя пользователя (буквы, цифры, _)</string>
+    <string name="alt_display_name_hint">Отображаемое имя (необязательно)</string>
+    <string name="alt_email_hint">Контактный email</string>
+    <string name="alt_password_hint">Пароль для восстановления</string>
+    <string name="alt_password_confirm_hint">Подтвердите пароль для восстановления</string>
+    <string name="alt_code_hint">Код подтверждения</string>
+
+    <!-- Buttons -->
+    <string name="alt_register_button">Зарегистрироваться</string>
+    <string name="alt_verify_button">Подтвердить</string>
+    <string name="alt_resend_button">Отправить повторно</string>
+    <string name="alt_restore_button">Восстановить ключ</string>
+
+    <!-- Status and info messages -->
+    <string name="alt_dc_addrs">Ваши DC-адреса: %1$s</string>
+    <string name="alt_no_dc_addrs">DC-аккаунты не настроены</string>
+    <string name="alt_code_sent_to">Код подтверждения отправлен на %1$s</string>
+    <string name="alt_resend_in">Повторная отправка через %1$d с</string>
+    <string name="alt_code_resent">Код подтверждения отправлен повторно</string>
+    <string name="alt_rate_limited">Слишком много запросов. Пожалуйста, подождите.</string>
+    <string name="alt_search_empty">Пользователи не найдены</string>
+    <string name="alt_not_registered_banner">Зарегистрируйтесь на Alt Platform, чтобы другие пользователи могли вас найти.</string>
+    <string name="alt_onboarding_snackbar">Найдите пользователей через Alt Platform</string>
+
+    <!-- Validation errors -->
+    <string name="alt_username_invalid">Имя пользователя должно быть от 3 до 32 символов: буквы, цифры, _</string>
+    <string name="alt_username_taken">Это имя пользователя уже занято</string>
+    <string name="alt_email_invalid">Введите корректный email</string>
+    <string name="alt_email_taken">Этот email уже зарегистрирован</string>
+    <string name="alt_username_reserved">Это имя пользователя зарезервировано</string>
+    <string name="alt_username_required">Введите имя пользователя</string>
+    <string name="alt_password_too_short">Пароль должен содержать не менее 8 символов</string>
+    <string name="alt_passwords_mismatch">Пароли не совпадают</string>
+    <string name="alt_password_required">Введите пароль</string>
+    <string name="alt_code_required">Введите код подтверждения</string>
+    <string name="alt_code_invalid">Неверный или истёкший код</string>
+    <string name="alt_user_not_found">Пользователь не найден</string>
+    <string name="alt_wrong_password">Неверный пароль для восстановления</string>
+    <string name="alt_import_failed">Не удалось импортировать ключ. Попробуйте ещё раз.</string>
+
+    <!-- Search -->
+    <string name="alt_search_remote_section">Alt Platform</string>
+    <string name="alt_search_remote_no_results">Пользователи Alt Platform не найдены</string>
+
 </resources>

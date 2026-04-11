@@ -122,7 +122,9 @@ public class WelcomeActivity extends BaseActionBarActivity
 
     WebView webView = new WebView(this);
     webView.setWebViewClient(new WebViewClient());
-    webView.loadUrl("file:///android_asset/tos.html");
+    String tosLang = java.util.Locale.getDefault().getLanguage();
+    String tosFile = "ru".equals(tosLang) ? "tos-ru.html" : "tos.html";
+    webView.loadUrl("file:///android_asset/" + tosFile);
     webView.getLayoutParams(); // ensure layout created
     android.view.ViewGroup.LayoutParams webParams =
         new android.view.ViewGroup.LayoutParams(
