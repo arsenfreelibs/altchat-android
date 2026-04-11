@@ -97,6 +97,7 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:layout_margin="16dp"
+            android:enabled="false"
             android:text="@string/instant_onboarding_show_more_instances" />
 
     </LinearLayout>
