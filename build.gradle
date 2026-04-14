@@ -28,7 +28,7 @@ android {
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
-        versionCode 758
+        versionCode 759
         versionName "1.0.13"
 
         applicationId "me.alt.chat"
