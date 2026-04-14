@@ -31,7 +31,7 @@ android {
         versionCode 756
         versionName "1.0.11"
 
-        applicationId "me.altchat"
+        applicationId "me.alt.chat"
         multiDexEnabled true
 
         minSdkVersion 21
@@ -128,7 +128,7 @@ android {
         }
         gplay {
             dimension "none"
-            applicationId "me.altchat"
+            applicationId "me.alt.chat"
             apply plugin: "com.google.gms.google-services"
             buildConfigField "boolean", "USE_PLAY_SERVICES", "true"
         }
