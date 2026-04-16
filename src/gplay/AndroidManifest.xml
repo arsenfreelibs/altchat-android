@@ -13,10 +13,12 @@
         android:name="firebase_messaging_auto_init_enabled"
         android:value="false" />
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+
     <application>
         <service
             android:name=".connect.KeepAliveService"
-            android:foregroundServiceType="dataSync"
+            android:foregroundServiceType="specialUse"
             android:enabled="true" />
 
         <service

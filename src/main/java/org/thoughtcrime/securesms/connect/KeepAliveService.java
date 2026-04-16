@@ -61,6 +61,7 @@ public class KeepAliveService extends Service {
       }
     } catch (Exception e) {
       Log.e(TAG, "Error in onCreate()", e);
+      stopSelf();
     }
   }
 
