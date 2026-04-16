@@ -55,7 +55,7 @@ public class KeepAliveService extends Service {
       Notification notification = createNotification();
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
         startForeground(NotificationCenter.ID_PERMANENT, notification,
-            android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE);
+            android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_REMOTE_MESSAGING);
       } else {
         startForeground(NotificationCenter.ID_PERMANENT, notification);
       }
