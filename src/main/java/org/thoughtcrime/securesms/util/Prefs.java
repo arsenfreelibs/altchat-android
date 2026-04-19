@@ -199,7 +199,7 @@ public class Prefs {
   }
 
   public static boolean isNewBroadcastAvailable(Context context) {
-    return getBooleanPreference(context, "pref_new_broadcast_list", false);
+    return getBooleanPreference(context, "pref_new_broadcast_list", true);
   }
 
   public static boolean isCallsEnabled(Context context) {
