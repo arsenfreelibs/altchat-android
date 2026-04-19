@@ -1,8 +1,10 @@
 package org.thoughtcrime.securesms;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -11,10 +13,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import android.view.MenuItem;
+import chat.delta.rpc.types.SecurejoinSource;
+import chat.delta.rpc.types.SecurejoinUiPath;
 import com.b44t.messenger.DcContact;
 import com.b44t.messenger.DcContext;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import org.thoughtcrime.securesms.connect.DcHelper;
+import org.thoughtcrime.securesms.qr.QrActivity;
+import org.thoughtcrime.securesms.qr.QrCodeHandler;
 
 /**
  * The "Contacts" tab fragment hosted inside {@link ConversationListActivity}.
@@ -109,6 +116,24 @@ public class ContactsTabFragment extends Fragment
 
   @Override
   public void onContactSelected(int contactId) {
+    if (contactId == DcContact.DC_CONTACT_ID_NEW_GROUP) {
+      startActivity(new Intent(requireActivity(), GroupCreateActivity.class));
+      return;
+    } else if (contactId == DcContact.DC_CONTACT_ID_NEW_UNENCRYPTED_GROUP) {
+      Intent intent = new Intent(requireActivity(), GroupCreateActivity.class);
+      intent.putExtra(GroupCreateActivity.UNENCRYPTED, true);
+      startActivity(intent);
+      return;
+    } else if (contactId == DcContact.DC_CONTACT_ID_NEW_BROADCAST) {
+      Intent intent = new Intent(requireActivity(), GroupCreateActivity.class);
+      intent.putExtra(GroupCreateActivity.CREATE_BROADCAST, true);
+      startActivity(intent);
+      return;
+    } else if (contactId == DcContact.DC_CONTACT_ID_QR_INVITE) {
+      IntentIntegrator.forSupportFragment(this).setCaptureActivity(QrActivity.class).initiateScan();
+      return;
+    }
+
     DcContext dcContext = DcHelper.getContext(requireActivity());
     int chatId = dcContext.getChatIdByContactId(contactId);
     if (chatId != 0) {
@@ -122,6 +147,18 @@ public class ContactsTabFragment extends Fragment
           .setPositiveButton(android.R.string.ok,
               (dialog, which) -> openConversation(dcContext.createChatByContactId(contactId)))
           .show();
+    }
+  }
+
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (resultCode != Activity.RESULT_OK) return;
+    if (requestCode == IntentIntegrator.REQUEST_CODE) {
+      IntentResult scanResult = IntentIntegrator.parseActivityResult(resultCode, data);
+      QrCodeHandler qrCodeHandler = new QrCodeHandler(requireActivity());
+      qrCodeHandler.handleOnlySecureJoinQr(
+          scanResult.getContents(), SecurejoinSource.Scan, SecurejoinUiPath.NewContact);
     }
   }
 
