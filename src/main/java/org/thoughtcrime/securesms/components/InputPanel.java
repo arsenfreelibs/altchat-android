@@ -50,7 +50,7 @@ public class InputPanel extends ConstraintLayout
   private QuoteView quoteView;
   private EmojiToggle emojiToggle;
   private ComposeText composeText;
-  private View quickCameraToggle;
+  private VideoNoteRecorderView videoNoteRecorderView;
   private View quickAudioToggle;
   private View buttonToggle;
   private View recordingContainer;
@@ -85,7 +85,7 @@ public class InputPanel extends ConstraintLayout
     this.quoteView = findViewById(R.id.quote_view);
     this.emojiToggle = findViewById(R.id.emoji_toggle);
     this.composeText = findViewById(R.id.embedded_text_editor);
-    this.quickCameraToggle = findViewById(R.id.quick_camera_toggle);
+    this.videoNoteRecorderView = findViewById(R.id.video_note_recorder_view);
     this.quickAudioToggle = findViewById(R.id.quick_audio_toggle);
     this.buttonToggle = findViewById(R.id.button_toggle);
     this.recordingContainer = findViewById(R.id.recording_container);
@@ -94,8 +94,13 @@ public class InputPanel extends ConstraintLayout
     this.slideToCancel = new SlideToCancel(findViewById(R.id.slide_to_cancel));
     this.microphoneRecorderView = findViewById(R.id.recorder_view);
     this.microphoneRecorderView.setListener(this);
+    this.videoNoteRecorderView.setListener(videoNoteListener);
 
-    this.recordLockCancel.setOnClickListener(v -> microphoneRecorderView.cancelAction());
+    this.recordLockCancel.setOnClickListener(
+        v -> {
+          microphoneRecorderView.cancelAction();
+          videoNoteRecorderView.cancelAction();
+        });
 
     quoteDismiss.setOnClickListener(v -> clearQuote());
   }
@@ -207,6 +212,7 @@ public class InputPanel extends ConstraintLayout
     if (listener != null) listener.onRecorderPermissionRequired();
   }
 
+  /** Called by MicrophoneRecorderView (audio recording starts). */
   @Override
   public void onRecordPressed() {
     if (listener != null) listener.onRecorderStarted();
@@ -215,7 +221,7 @@ public class InputPanel extends ConstraintLayout
 
     ViewUtil.fadeOut(emojiToggle, FADE_TIME, View.INVISIBLE);
     ViewUtil.fadeOut(composeText, FADE_TIME, View.INVISIBLE);
-    ViewUtil.fadeOut(quickCameraToggle, FADE_TIME, View.INVISIBLE);
+    ViewUtil.fadeOut(videoNoteRecorderView, FADE_TIME, View.INVISIBLE);
     ViewUtil.fadeOut(quickAudioToggle, FADE_TIME, View.INVISIBLE);
     buttonToggle.animate().alpha(0).setDuration(FADE_TIME).start();
   }
@@ -234,6 +240,8 @@ public class InputPanel extends ConstraintLayout
       }
     }
   }
+
+  // --- MicrophoneRecorderView.Listener ---
 
   @Override
   public void onRecordMoved(float offsetX, float absoluteX) {
@@ -260,15 +268,66 @@ public class InputPanel extends ConstraintLayout
     if (listener != null) listener.onRecorderLocked();
   }
 
+  private final VideoNoteRecorderView.Listener videoNoteListener =
+      new VideoNoteRecorderView.Listener() {
+        @Override
+        public void onRecordPressed() {
+          if (listener != null) listener.onVideoNoteRecorderStarted();
+          ViewUtil.fadeOut(emojiToggle, FADE_TIME, View.INVISIBLE);
+          ViewUtil.fadeOut(composeText, FADE_TIME, View.INVISIBLE);
+          ViewUtil.fadeOut(quickAudioToggle, FADE_TIME, View.INVISIBLE);
+          buttonToggle.animate().alpha(0).setDuration(FADE_TIME).start();
+        }
+
+        @Override
+        public void onRecordReleased() {
+          long elapsedTime = onRecordHideEvent();
+          if (listener != null) {
+            Log.d(TAG, "VideoNote elapsed time: " + elapsedTime);
+            listener.onVideoNoteRecorderFinished();
+          }
+        }
+
+        @Override
+        public void onRecordCanceled() {
+          onRecordHideEvent();
+          if (listener != null) listener.onVideoNoteRecorderCanceled();
+        }
+
+        @Override
+        public void onRecordLocked() {
+          slideToCancel.hide();
+          recordLockCancel.setVisibility(View.VISIBLE);
+          buttonToggle.animate().alpha(1).setDuration(FADE_TIME).start();
+          if (listener != null) listener.onVideoNoteRecorderLocked();
+        }
+
+        @Override
+        public void onRecordMoved(float offsetX, float absoluteX) {
+          slideToCancel.moveTo(offsetX);
+          float position = absoluteX / recordingContainer.getWidth();
+          if (ViewUtil.isLtr(InputPanel.this) && position <= 0.5
+              || ViewUtil.isRtl(InputPanel.this) && position >= 0.6) {
+            videoNoteRecorderView.cancelAction();
+          }
+        }
+
+        @Override
+        public void onRecordPermissionRequired() {
+          if (listener != null) listener.onRecorderPermissionRequired();
+        }
+      };
+
   public void onPause() {
     this.microphoneRecorderView.cancelAction();
+    this.videoNoteRecorderView.cancelAction();
   }
 
   public void setEnabled(boolean enabled) {
     composeText.setEnabled(enabled);
     emojiToggle.setEnabled(enabled);
     quickAudioToggle.setEnabled(enabled);
-    quickCameraToggle.setEnabled(enabled);
+    videoNoteRecorderView.setEnabled(enabled);
   }
 
   private long onRecordHideEvent() {
@@ -283,7 +342,7 @@ public class InputPanel extends ConstraintLayout
           public void onSuccess(Void result) {
             ViewUtil.fadeIn(emojiToggle, FADE_TIME);
             ViewUtil.fadeIn(composeText, FADE_TIME);
-            ViewUtil.fadeIn(quickCameraToggle, FADE_TIME);
+            ViewUtil.fadeIn(videoNoteRecorderView, FADE_TIME);
             ViewUtil.fadeIn(quickAudioToggle, FADE_TIME);
             buttonToggle.animate().alpha(1).setDuration(FADE_TIME).start();
             composeText.requestFocus();
@@ -342,6 +401,14 @@ public class InputPanel extends ConstraintLayout
     void onRecorderCanceled();
 
     void onRecorderPermissionRequired();
+
+    void onVideoNoteRecorderStarted();
+
+    void onVideoNoteRecorderLocked();
+
+    void onVideoNoteRecorderFinished();
+
+    void onVideoNoteRecorderCanceled();
 
     void onEmojiToggle();
 

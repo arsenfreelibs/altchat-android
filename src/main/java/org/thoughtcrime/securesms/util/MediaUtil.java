@@ -44,6 +44,7 @@ public class MediaUtil {
   public static final String AUDIO_M4A = "audio/mp4";
   public static final String AUDIO_UNSPECIFIED = "audio/*";
   public static final String VIDEO_UNSPECIFIED = "video/*";
+  public static final String VIDEO_NOTE = "video/x-videonote";
   public static final String OCTET = "application/octet-stream";
   public static final String WEBXDC = "application/webxdc+zip";
   public static final String VCARD = "text/vcard";

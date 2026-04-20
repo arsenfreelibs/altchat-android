@@ -182,6 +182,10 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   private AttachmentTypeSelector attachmentTypeSelector;
   private AttachmentManager attachmentManager;
   private AudioRecorder audioRecorder;
+  private org.thoughtcrime.securesms.video.VideoNoteRecorder videoNoteRecorder;
+  private org.thoughtcrime.securesms.components.VideoNoteRecordingOverlay videoNoteOverlay;
+  private android.os.Handler videoNoteProgressHandler;
+  private FrameLayout contentView;
   private FrameLayout emojiPickerContainer;
   private MediaKeyboard emojiPicker;
   protected HidingLinearLayout quickAttachmentToggle;
@@ -388,6 +392,11 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     DcHelper.getNotificationCenter(this).clearVisibleChat();
     if (isFinishing()) overridePendingTransition(R.anim.fade_scale_in, R.anim.slide_to_right);
     inputPanel.onPause();
+    if (videoNoteRecorder != null) {
+      videoNoteRecorder.cancel();
+      stopVideoNoteProgress();
+      finishVideoNoteUi();
+    }
   }
 
   @Override
@@ -1022,8 +1031,6 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     messageRequestBottomView =
         ViewUtil.findById(this, R.id.conversation_activity_message_request_bottom_bar);
 
-    ImageButton quickCameraToggle = ViewUtil.findById(this, R.id.quick_camera_toggle);
-
     if (!ViewUtil.isEdgeToEdgeSupported()) {
       // since insets will not be applied, we need to set top padding to avoid drawing behind
       // toolbar
@@ -1051,6 +1058,10 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     attachmentTypeSelector = null;
     attachmentManager = new AttachmentManager(this, this);
     audioRecorder = new AudioRecorder(this);
+    videoNoteRecorder = new org.thoughtcrime.securesms.video.VideoNoteRecorder();
+    videoNoteOverlay = new org.thoughtcrime.securesms.components.VideoNoteRecordingOverlay(this);
+    videoNoteProgressHandler = new android.os.Handler(android.os.Looper.getMainLooper());
+    contentView = findViewById(android.R.id.content);
 
     SendButtonListener sendButtonListener = new SendButtonListener();
     ComposeKeyPressedListener composeKeyPressedListener = new ComposeKeyPressedListener();
@@ -1074,9 +1085,6 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     composeText.setOnEditorActionListener(sendButtonListener);
     composeText.setOnClickListener(composeKeyPressedListener);
     composeText.setOnFocusChangeListener(composeKeyPressedListener);
-
-    quickCameraToggle.setOnClickListener(
-        v -> attachmentManager.capturePhoto(ConversationActivity.this, TAKE_PHOTO));
 
     initializeBackground();
   }
@@ -1431,7 +1439,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   @Override
   public void onRecorderPermissionRequired() {
     Permissions.with(this)
-        .request(Manifest.permission.RECORD_AUDIO)
+        .request(Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA)
         .ifNecessary()
         .withPermanentDenialDialog(getString(R.string.perm_explain_access_to_mic_denied))
         .execute();
@@ -1531,6 +1539,112 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
           @Override
           public void onFailure(ExecutionException e) {}
         });
+  }
+
+  // --- Video note recording ---
+
+  @Override
+  public void onVideoNoteRecorderStarted() {
+    fragment.hideAddReactionView();
+    ServiceUtil.getVibrator(this).vibrate(20);
+    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+    videoNoteOverlay.show(contentView);
+
+    File outputFile =
+        new File(getCacheDir(), "videonote_" + System.currentTimeMillis() + ".mp4");
+
+    videoNoteRecorder.start(
+        this,
+        this,
+        videoNoteOverlay.getPreviewView(),
+        outputFile,
+        new org.thoughtcrime.securesms.video.VideoNoteRecorder.Callback() {
+          @Override
+          public void onRecordingStarted() {
+            startVideoNoteProgress();
+          }
+
+          @Override
+          public void onRecordingFinished(long durationMs) {
+            stopVideoNoteProgress();
+            if (durationMs >= 1000) {
+              sendVideoNote(outputFile);
+            } else {
+              outputFile.delete();
+            }
+            finishVideoNoteUi();
+          }
+
+          @Override
+          public void onAutoStopped() { /* onRecordingFinished handles send/discard */ }
+
+          @Override
+          public void onError(Exception e) {
+            Log.e(TAG, "VideoNote recording error", e);
+            outputFile.delete();
+            finishVideoNoteUi();
+            Toast.makeText(
+                    ConversationActivity.this,
+                    R.string.chat_unable_to_record_audio,
+                    Toast.LENGTH_LONG)
+                .show();
+          }
+        });
+  }
+
+  @Override
+  public void onVideoNoteRecorderLocked() {
+    updateToggleButtonState();
+    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+  }
+
+  @Override
+  public void onVideoNoteRecorderFinished() {
+    // Actual send logic is in the VideoNoteRecorder.Callback.onRecordingFinished
+    updateToggleButtonState();
+    ServiceUtil.getVibrator(this).vibrate(20);
+    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    videoNoteRecorder.stop();
+  }
+
+  @Override
+  public void onVideoNoteRecorderCanceled() {
+    updateToggleButtonState();
+    ServiceUtil.getVibrator(this).vibrate(50);
+    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    videoNoteRecorder.cancel();
+    stopVideoNoteProgress();
+    finishVideoNoteUi();
+  }
+
+  private void startVideoNoteProgress() {
+    videoNoteProgressHandler.post(
+        new Runnable() {
+          @Override
+          public void run() {
+            long elapsed = videoNoteRecorder.getElapsedMs();
+            videoNoteOverlay.updateProgress(elapsed / 30000f);
+            videoNoteOverlay.updateTimer(elapsed);
+            videoNoteProgressHandler.postDelayed(this, 50);
+          }
+        });
+  }
+
+  private void stopVideoNoteProgress() {
+    videoNoteProgressHandler.removeCallbacksAndMessages(null);
+  }
+
+  private void finishVideoNoteUi() {
+    videoNoteOverlay.hide();
+  }
+
+  private void sendVideoNote(@NonNull File file) {
+    com.b44t.messenger.DcMsg msg =
+        new com.b44t.messenger.DcMsg(
+            DcHelper.getContext(this), com.b44t.messenger.DcMsg.DC_MSG_VIDEO);
+    msg.setFileAndDeduplicate(file.getAbsolutePath(), null, org.thoughtcrime.securesms.util.MediaUtil.VIDEO_NOTE);
+    DcHelper.getContext(this).sendMsg(chatId, msg);
   }
 
   private void reloadEmojiPicker() {

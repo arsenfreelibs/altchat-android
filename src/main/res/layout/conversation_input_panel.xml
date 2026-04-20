@@ -82,18 +82,17 @@
                 android:clipChildren="false"
                 android:clipToPadding="false">
 
-                <ImageButton
-                    android:id="@+id/quick_camera_toggle"
+                <org.thoughtcrime.securesms.components.VideoNoteRecorderView
+                    android:id="@+id/video_note_recorder_view"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:src="?quick_camera_icon"
-                    android:paddingLeft="11dp"
-                    android:paddingRight="11dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:background="@drawable/touch_highlight_background"
-                    android:contentDescription="@string/camera" />
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
+
+                    <include layout="@layout/video_note_recorder_view" />
+
+                </org.thoughtcrime.securesms.components.VideoNoteRecorderView>
 
                 <org.thoughtcrime.securesms.components.MicrophoneRecorderView
                     android:id="@+id/recorder_view"
