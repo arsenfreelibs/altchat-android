@@ -88,6 +88,15 @@ public final class MicrophoneRecorderView extends FrameLayout implements View.On
     }
   }
 
+  public void finishAction() {
+    if (state != State.NOT_RUNNING) {
+      state = State.NOT_RUNNING;
+      hideUi();
+
+      if (listener != null) listener.onRecordReleased();
+    }
+  }
+
   private void hideUi() {
     floatingRecordButton.hide();
     lockDropTarget.hide();
@@ -129,7 +138,7 @@ public final class MicrophoneRecorderView extends FrameLayout implements View.On
         break;
     }
 
-    return false;
+    return true;
   }
 
   public void setListener(@Nullable Listener listener) {

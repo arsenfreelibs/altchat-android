@@ -1,6 +1,7 @@
 package org.thoughtcrime.securesms.components;
 
 import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -90,7 +91,7 @@ public class InputPanel extends ConstraintLayout
     this.buttonToggle = findViewById(R.id.button_toggle);
     this.recordingContainer = findViewById(R.id.recording_container);
     this.recordLockCancel = findViewById(R.id.record_cancel);
-    this.recordTime = new RecordTime(findViewById(R.id.record_time));
+    this.recordTime = new RecordTime(findViewById(R.id.record_time), findViewById(R.id.recording_dot));
     this.slideToCancel = new SlideToCancel(findViewById(R.id.slide_to_cancel));
     this.microphoneRecorderView = findViewById(R.id.recorder_view);
     this.microphoneRecorderView.setListener(this);
@@ -323,6 +324,10 @@ public class InputPanel extends ConstraintLayout
     this.videoNoteRecorderView.cancelAction();
   }
 
+  public void finishAudioRecording() {
+    this.microphoneRecorderView.finishAction();
+  }
+
   public void setEnabled(boolean enabled) {
     composeText.setEnabled(enabled);
     emojiToggle.setEnabled(enabled);
@@ -476,24 +481,38 @@ public class InputPanel extends ConstraintLayout
   private static class RecordTime implements Runnable {
 
     private final TextView recordTimeView;
+    private final View recordingDotView;
     private final AtomicLong startTime = new AtomicLong(0);
     private final int UPDATE_EVERY_MS = 99;
+    private @Nullable ObjectAnimator pulseAnimator;
 
-    private RecordTime(TextView recordTimeView) {
+    private RecordTime(TextView recordTimeView, View recordingDotView) {
       this.recordTimeView = recordTimeView;
+      this.recordingDotView = recordingDotView;
     }
 
     public void display() {
       this.startTime.set(System.currentTimeMillis());
       this.recordTimeView.setText(formatElapsedTime(0));
       ViewUtil.fadeIn(this.recordTimeView, FADE_TIME);
+      ViewUtil.fadeIn(this.recordingDotView, FADE_TIME);
+      pulseAnimator = ObjectAnimator.ofFloat(this.recordingDotView, "alpha", 1f, 0.2f);
+      pulseAnimator.setDuration(700);
+      pulseAnimator.setRepeatMode(ObjectAnimator.REVERSE);
+      pulseAnimator.setRepeatCount(ObjectAnimator.INFINITE);
+      pulseAnimator.start();
       Util.runOnMainDelayed(this, UPDATE_EVERY_MS);
     }
 
     public long hide() {
       long elapsedtime = System.currentTimeMillis() - startTime.get();
       this.startTime.set(0);
+      if (pulseAnimator != null) {
+        pulseAnimator.cancel();
+        pulseAnimator = null;
+      }
       ViewUtil.fadeOut(this.recordTimeView, FADE_TIME, View.INVISIBLE);
+      ViewUtil.fadeOut(this.recordingDotView, FADE_TIME, View.GONE);
       return elapsedtime;
     }
 

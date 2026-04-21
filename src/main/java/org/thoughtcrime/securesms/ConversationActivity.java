@@ -151,6 +151,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
         InputPanel.MediaListener,
         AudioView.OnActionListener {
   private static final String TAG = ConversationActivity.class.getSimpleName();
+        private static final long MAX_AUDIO_NOTE_DURATION_MS = 30_000L;
 
   public static final String ACCOUNT_ID_EXTRA = "account_id";
   public static final String CHAT_ID_EXTRA = "chat_id";
@@ -182,6 +183,8 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   private AttachmentTypeSelector attachmentTypeSelector;
   private AttachmentManager attachmentManager;
   private AudioRecorder audioRecorder;
+  private android.os.Handler audioNoteAutoFinishHandler;
+  private @Nullable Runnable audioNoteAutoFinishRunnable;
   private org.thoughtcrime.securesms.video.VideoNoteRecorder videoNoteRecorder;
   private org.thoughtcrime.securesms.components.VideoNoteRecordingOverlay videoNoteOverlay;
   private android.os.Handler videoNoteProgressHandler;
@@ -388,6 +391,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     super.onPause();
 
     processComposeControls(ACTION_SAVE_DRAFT);
+    cancelAudioNoteAutoFinish();
 
     DcHelper.getNotificationCenter(this).clearVisibleChat();
     if (isFinishing()) overridePendingTransition(R.anim.fade_scale_in, R.anim.slide_to_right);
@@ -1058,6 +1062,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     attachmentTypeSelector = null;
     attachmentManager = new AttachmentManager(this, this);
     audioRecorder = new AudioRecorder(this);
+    audioNoteAutoFinishHandler = new android.os.Handler(android.os.Looper.getMainLooper());
     videoNoteRecorder = new org.thoughtcrime.securesms.video.VideoNoteRecorder();
     videoNoteOverlay = new org.thoughtcrime.securesms.components.VideoNoteRecordingOverlay(this);
     videoNoteProgressHandler = new android.os.Handler(android.os.Looper.getMainLooper());
@@ -1454,6 +1459,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
     audioRecorder.startRecording();
+    scheduleAudioNoteAutoFinish();
   }
 
   @Override
@@ -1464,6 +1470,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
 
   @Override
   public void onRecorderFinished() {
+    cancelAudioNoteAutoFinish();
     updateToggleButtonState();
     Vibrator vibrator = ServiceUtil.getVibrator(this);
     vibrator.vibrate(20);
@@ -1515,6 +1522,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
 
   @Override
   public void onRecorderCanceled() {
+    cancelAudioNoteAutoFinish();
     updateToggleButtonState();
     Vibrator vibrator = ServiceUtil.getVibrator(this);
     vibrator.vibrate(50);
@@ -1539,6 +1547,24 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
           @Override
           public void onFailure(ExecutionException e) {}
         });
+  }
+
+  private void scheduleAudioNoteAutoFinish() {
+    cancelAudioNoteAutoFinish();
+    audioNoteAutoFinishRunnable =
+        () -> {
+          audioNoteAutoFinishRunnable = null;
+          inputPanel.finishAudioRecording();
+        };
+    audioNoteAutoFinishHandler.postDelayed(
+        audioNoteAutoFinishRunnable, MAX_AUDIO_NOTE_DURATION_MS);
+  }
+
+  private void cancelAudioNoteAutoFinish() {
+    if (audioNoteAutoFinishRunnable != null) {
+      audioNoteAutoFinishHandler.removeCallbacks(audioNoteAutoFinishRunnable);
+      audioNoteAutoFinishRunnable = null;
+    }
   }
 
   // --- Video note recording ---
