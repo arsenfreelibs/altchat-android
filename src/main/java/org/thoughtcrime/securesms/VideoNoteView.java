@@ -70,6 +70,7 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
   private ImageView playIcon;
   private VideoNoteProgressRing progressRing;
   private TextView senderNameView;
+  private TextView durationView;
   private ConversationItemFooter footer;
 
   private @Nullable
@@ -83,6 +84,7 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
   private @Nullable Bitmap currentFrameBitmap;
   private boolean frameDecodeInFlight = false;
   private int frameDecodeGeneration = 0;
+  private int thumbnailGeneration = 0;
 
   private @Nullable
   BindableConversationItem.EventListener eventListener;
@@ -114,6 +116,7 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
     playIcon = findViewById(R.id.video_note_play_icon);
     progressRing = findViewById(R.id.video_note_progress_ring);
     senderNameView = findViewById(R.id.video_note_sender_name);
+    durationView = findViewById(R.id.video_note_duration);
     footer = findViewById(R.id.video_note_footer);
 
     progressRing.configureAsPlaybackRing();
@@ -148,7 +151,8 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
     this.messageRecord = messageRecord;
     this.batchSelected = batchSelected;
 
-    // Position circle and footer: right for outgoing, left for incoming
+    // Position circle: right for outgoing, left for incoming.
+    // Footer always appears at bottom-right of the circle (same visual position for both directions).
     int dp8 = (int) (8 * getResources().getDisplayMetrics().density);
     int dp16 = dp8 * 2;
 
@@ -163,16 +167,21 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
       flp.gravity = android.view.Gravity.BOTTOM | android.view.Gravity.END;
       flp.rightMargin = dp16;
       flp.leftMargin = 0;
+      flp.bottomMargin = dp8;
     } else {
       lp.gravity = android.view.Gravity.START;
       lp.leftMargin = dp8;
       lp.rightMargin = 0;
+      // For incoming: circle right edge = 8dp + 200dp = 208dp.
+      // Position footer so its right edge is at 200dp (= circle right edge - 8dp),
+      // matching the same 8dp inset as for outgoing messages.
+      // We measure the footer after setMessageRecord() to know its width.
       flp.gravity = android.view.Gravity.BOTTOM | android.view.Gravity.START;
-      flp.leftMargin = dp16;
       flp.rightMargin = 0;
+      flp.bottomMargin = dp8;
+      // Measurement happens below after footer.setMessageRecord().
     }
     circleContainer.setLayoutParams(lp);
-    footer.setLayoutParams(flp);
 
     // Load thumbnail with rotation
     loadThumbnailAsync(messageRecord.getFile());
@@ -195,6 +204,33 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
     }
 
     footer.setMessageRecord(messageRecord);
+
+    if (!messageRecord.isOutgoing()) {
+      // Measure the footer now that its content is set, then position its right edge
+      // at the same 8dp inset from the circle's right edge (= 200dp from screen left).
+      footer.measure(
+          android.view.View.MeasureSpec.makeMeasureSpec(0, android.view.View.MeasureSpec.UNSPECIFIED),
+          android.view.View.MeasureSpec.makeMeasureSpec(0, android.view.View.MeasureSpec.UNSPECIFIED));
+      int circleRightEdgePx = (int) ((8 + 200) * getResources().getDisplayMetrics().density);
+      int insetPx = dp8;
+      flp.leftMargin = circleRightEdgePx - insetPx - footer.getMeasuredWidth();
+    }
+    footer.setLayoutParams(flp);
+
+    // Duration pill layout params — content loaded async in loadThumbnailAsync
+    android.widget.FrameLayout.LayoutParams dlp =
+        (android.widget.FrameLayout.LayoutParams) durationView.getLayoutParams();
+    dlp.gravity = android.view.Gravity.BOTTOM | android.view.Gravity.START;
+    dlp.bottomMargin = dp8;
+    dlp.rightMargin = 0;
+    if (messageRecord.isOutgoing()) {
+      int screenWidthPx = getResources().getDisplayMetrics().widthPixels;
+      dlp.leftMargin = screenWidthPx - (int) (200 * getResources().getDisplayMetrics().density);
+    } else {
+      dlp.leftMargin = dp16;
+    }
+    durationView.setLayoutParams(dlp);
+    durationView.setVisibility(View.GONE);
 
     // Reset playback state on rebind
     stopPlayback();
@@ -235,21 +271,36 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
     thumbnailView.setImageBitmap(null);
     if (filePath == null || filePath.isEmpty()) return;
 
+    final int generation = ++thumbnailGeneration;
     thumbnailThread =
       new Thread(
         () -> {
           Bitmap frame = null;
+          long durationMs = 0;
           try (MediaMetadataRetriever mmr = new MediaMetadataRetriever()) {
             mmr.setDataSource(filePath);
             frame = mmr.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
             // Do NOT apply rotation manually — getFrameAtTime() already returns
             // a correctly-oriented frame on API 27+ (Android 8.1+)
+            String durStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+            if (durStr != null && !durStr.isEmpty()) {
+              durationMs = Long.parseLong(durStr);
+            }
           } catch (Exception e) {
             Log.e(TAG, "Thumbnail load error", e);
           }
           if (Thread.currentThread().isInterrupted()) return;
           final Bitmap result = frame;
-          post(() -> thumbnailView.setImageBitmap(result));
+          final long finalDuration = durationMs;
+          post(() -> {
+            if (generation != thumbnailGeneration) return;
+            thumbnailView.setImageBitmap(result);
+            if (finalDuration > 0) {
+              int s = (int) (finalDuration / 1000);
+              durationView.setText(String.format(java.util.Locale.US, "%d:%02d", s / 60, s % 60));
+              durationView.setVisibility(View.VISIBLE);
+            }
+          });
         });
     thumbnailThread.setDaemon(true);
     thumbnailThread.start();
@@ -384,6 +435,7 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
       retriever.setDataSource(filePath);
     } catch (RuntimeException e) {
       Log.e(TAG, "Frame retriever init failed", e);
+      releaseRetriever(retriever);
       return;
     }
 
