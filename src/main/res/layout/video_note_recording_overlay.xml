@@ -40,28 +40,6 @@
 
     </FrameLayout>
 
-    <TextView
-        android:id="@+id/video_note_timer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:clickable="false"
-        android:focusable="false"
-        android:text="0:00"
-        android:textColor="#FFFFFFFF"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/video_note_hint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:clickable="false"
-        android:focusable="false"
-        android:text="@string/video_note_release_to_send"
-        android:textColor="#80FFFFFF"
-        android:textSize="13sp" />
-
   </LinearLayout>
 
 </FrameLayout>
