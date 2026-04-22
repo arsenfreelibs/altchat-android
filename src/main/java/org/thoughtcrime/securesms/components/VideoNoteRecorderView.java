@@ -96,6 +96,15 @@ public final class VideoNoteRecorderView extends FrameLayout implements View.OnT
     }
   }
 
+  public void finishAction() {
+    longPressHandler.removeCallbacksAndMessages(null);
+    if (state != State.NOT_RUNNING) {
+      state = State.NOT_RUNNING;
+      hideUi();
+      if (listener != null) listener.onRecordReleased();
+    }
+  }
+
   private void hideUi() {
     floatingRecordButton.hide();
     lockDropTarget.hide();
@@ -151,7 +160,7 @@ public final class VideoNoteRecorderView extends FrameLayout implements View.OnT
         }
         break;
     }
-    return false;
+    return true;
   }
 
   public void setListener(@Nullable Listener listener) {

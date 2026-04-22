@@ -274,6 +274,7 @@ public class InputPanel extends ConstraintLayout
         @Override
         public void onRecordPressed() {
           if (listener != null) listener.onVideoNoteRecorderStarted();
+          slideToCancel.display();
           ViewUtil.fadeOut(emojiToggle, FADE_TIME, View.INVISIBLE);
           ViewUtil.fadeOut(composeText, FADE_TIME, View.INVISIBLE);
           ViewUtil.fadeOut(quickAudioToggle, FADE_TIME, View.INVISIBLE);
@@ -328,6 +329,14 @@ public class InputPanel extends ConstraintLayout
     this.microphoneRecorderView.finishAction();
   }
 
+  public void startVideoNoteTimer() {
+    recordTime.display(30_000L);
+  }
+
+  public void finishVideoNoteRecording() {
+    this.videoNoteRecorderView.finishAction();
+  }
+
   public void setEnabled(boolean enabled) {
     composeText.setEnabled(enabled);
     emojiToggle.setEnabled(enabled);
@@ -363,11 +372,12 @@ public class InputPanel extends ConstraintLayout
   }
 
   public boolean isRecordingInLockedMode() {
-    return microphoneRecorderView.isRecordingLocked();
+    return microphoneRecorderView.isRecordingLocked() || videoNoteRecorderView.isRecordingLocked();
   }
 
   public void releaseRecordingLock() {
     microphoneRecorderView.unlockAction();
+    videoNoteRecorderView.unlockAction();
   }
 
   @Override
@@ -483,6 +493,7 @@ public class InputPanel extends ConstraintLayout
     private final TextView recordTimeView;
     private final View recordingDotView;
     private final AtomicLong startTime = new AtomicLong(0);
+    private final AtomicLong limitMs = new AtomicLong(0);
     private final int UPDATE_EVERY_MS = 99;
     private @Nullable ObjectAnimator pulseAnimator;
 
@@ -492,6 +503,11 @@ public class InputPanel extends ConstraintLayout
     }
 
     public void display() {
+      display(0);
+    }
+
+    public void display(long maxMs) {
+      this.limitMs.set(maxMs);
       this.startTime.set(System.currentTimeMillis());
       this.recordTimeView.setText(formatElapsedTime(0));
       ViewUtil.fadeIn(this.recordTimeView, FADE_TIME);
@@ -507,6 +523,7 @@ public class InputPanel extends ConstraintLayout
     public long hide() {
       long elapsedtime = System.currentTimeMillis() - startTime.get();
       this.startTime.set(0);
+      this.limitMs.set(0);
       if (pulseAnimator != null) {
         pulseAnimator.cancel();
         pulseAnimator = null;
@@ -521,6 +538,11 @@ public class InputPanel extends ConstraintLayout
       long localStartTime = startTime.get();
       if (localStartTime > 0) {
         long elapsedTime = System.currentTimeMillis() - localStartTime;
+        long limit = limitMs.get();
+        if (limit > 0 && elapsedTime >= limit) {
+          recordTimeView.setText(formatElapsedTime(limit));
+          return;
+        }
         recordTimeView.setText(formatElapsedTime(elapsedTime));
         Util.runOnMainDelayed(this, UPDATE_EVERY_MS);
       }
