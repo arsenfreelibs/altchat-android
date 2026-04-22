@@ -1588,12 +1588,14 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
         new org.thoughtcrime.securesms.video.VideoNoteRecorder.Callback() {
           @Override
           public void onRecordingStarted() {
+            inputPanel.startVideoNoteTimer();
             startVideoNoteProgress();
           }
 
           @Override
           public void onRecordingFinished(long durationMs) {
             stopVideoNoteProgress();
+            inputPanel.finishVideoNoteRecording();
             if (durationMs >= 1000) {
               sendVideoNote(outputFile);
             } else {
@@ -1651,7 +1653,6 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
           public void run() {
             long elapsed = videoNoteRecorder.getElapsedMs();
             videoNoteOverlay.updateProgress(elapsed / 30000f);
-            videoNoteOverlay.updateTimer(elapsed);
             videoNoteProgressHandler.postDelayed(this, 50);
           }
         });
