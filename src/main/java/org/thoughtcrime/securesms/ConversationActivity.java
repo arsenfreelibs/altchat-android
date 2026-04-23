@@ -1138,8 +1138,11 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
       initializeBackground();
     }
     chatId = getIntent().getIntExtra(CHAT_ID_EXTRA, -1);
-    if (chatId == DcChat.DC_CHAT_NO_CHAT)
-      throw new IllegalStateException("can't display a conversation for no chat.");
+    if (chatId == DcChat.DC_CHAT_NO_CHAT) {
+      android.util.Log.e("ConversationActivity", "Started with no chat ID, finishing.");
+      finish();
+      return;
+    }
     dcChat = DcHelper.getContext(context).getChat(chatId);
     recipient = new Recipient(this, dcChat);
     glideRequests = GlideApp.with(this);
