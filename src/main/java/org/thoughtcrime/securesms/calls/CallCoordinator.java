@@ -1376,11 +1376,12 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
       }
     }
 
-    // CallForegroundService holds FOREGROUND_SERVICE_TYPE_PHONE_CALL which grants an automatic
-    // USE_FULL_SCREEN_INTENT exemption on Android 14+. NotificationManager.canUseFullScreenIntent()
-    // does NOT reflect this exemption, so we skip that check and always use the full-screen path
-    // on Android 12+ (minimum for CallStyle notifications).
-    boolean canUseFullScreen = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
+    // Check full screen intent permission on Android 14+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+      if (!canUseFullScreenIntent()) {
+        Log.w(TAG, "Full screen intent permission not granted, notification will appear normally");
+      }
+    }
 
     // Answer intent
     Intent answerIntent = new Intent(this.appContext, CallActivity.class);
@@ -1418,7 +1419,7 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
             PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
     Notification.Builder builder;
-    if (canUseFullScreen && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
       // Android 12+, CallStyle
       Person caller =
           new Person.Builder().setName(callerName).setIcon(callerIcon).setImportant(true).build();
