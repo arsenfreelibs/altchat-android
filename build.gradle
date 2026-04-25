@@ -28,8 +28,8 @@ android {
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
-        versionCode 763
-        versionName "1.0.16"
+        versionCode 764
+        versionName "1.0.17"
 
         applicationId "me.alt.chat"
         multiDexEnabled true
@@ -253,14 +253,13 @@ dependencies {
     // <https://github.com/cketti/SafeContentResolver>
     implementation 'de.cketti.safecontentresolver:safe-content-resolver-v21:1.0.0'
 
-    gplayImplementation 'com.google.android.gms:play-services-location:21.3.0'
-
     gplayImplementation('com.google.firebase:firebase-messaging:24.1.2') {
         // for PUSH notifications, don't upgrade: v25.0.0 requires minSdk>=23
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
     }
+    gplayImplementation 'com.google.android.gms:play-services-location:21.3.0'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.assertj:assertj-core:3.27.3'
