@@ -149,14 +149,20 @@ public class ContactSelectionListFragment extends Fragment
     recyclerView = ViewUtil.findById(view, R.id.recycler_view);
     emptyView = ViewUtil.findById(view, android.R.id.empty);
 
-    // add padding to avoid content hidden behind system bars
-    ViewUtil.applyWindowInsets(recyclerView, true, false, true, false);
-    // apply max(navBar, ime) as bottom padding so keyboard pushes content up
-    // instead of the whole window panning (adjustNothing in manifest)
+    // Root view: only nav bar bottom padding — keeps remote section above nav bar.
+    // Keyboard padding is NOT applied here to avoid squeezing local results out of view.
     ViewCompat.setOnApplyWindowInsetsListener(view, (v, insets) -> {
       int sysBottom = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
+      v.setPadding(0, 0, 0, sysBottom);
+      return insets;
+    });
+    // RecyclerView: left/right system bars + IME bottom. clipToPadding=false lets items
+    // scroll above the keyboard so local results remain accessible while typing.
+    ViewCompat.setOnApplyWindowInsetsListener(recyclerView, (v, insets) -> {
+      int left = insets.getInsets(WindowInsetsCompat.Type.systemBars()).left;
+      int right = insets.getInsets(WindowInsetsCompat.Type.systemBars()).right;
       int imeBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom;
-      v.setPadding(0, 0, 0, Math.max(sysBottom, imeBottom));
+      v.setPadding(left, 0, right, imeBottom);
       return insets;
     });
 
