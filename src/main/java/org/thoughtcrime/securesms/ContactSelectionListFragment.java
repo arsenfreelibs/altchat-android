@@ -66,6 +66,8 @@ import org.thoughtcrime.securesms.contacts.ContactSelectionListItem;
 import org.thoughtcrime.securesms.contacts.NewContactActivity;
 import org.thoughtcrime.securesms.mms.GlideApp;
 import org.thoughtcrime.securesms.permissions.Permissions;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.util.ViewUtil;
 
@@ -149,7 +151,14 @@ public class ContactSelectionListFragment extends Fragment
 
     // add padding to avoid content hidden behind system bars
     ViewUtil.applyWindowInsets(recyclerView, true, false, true, false);
-    ViewUtil.applyWindowInsets(view, false, false, false, true);
+    // apply max(navBar, ime) as bottom padding so keyboard pushes content up
+    // instead of the whole window panning (adjustNothing in manifest)
+    ViewCompat.setOnApplyWindowInsetsListener(view, (v, insets) -> {
+      int sysBottom = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
+      int imeBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom;
+      v.setPadding(0, 0, 0, Math.max(sysBottom, imeBottom));
+      return insets;
+    });
 
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     actionModeCallback =

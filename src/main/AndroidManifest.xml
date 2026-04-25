@@ -154,6 +154,7 @@
             android:launchMode="singleTask"
             android:theme="@style/TextSecure.Splash"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"
+            android:windowSoftInputMode="adjustNothing"
             android:exported="true" />
 
         <activity-alias
