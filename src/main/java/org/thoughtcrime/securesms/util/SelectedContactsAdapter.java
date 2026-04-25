@@ -116,7 +116,7 @@ public class SelectedContactsAdapter extends BaseAdapter {
       recipient = new Recipient(context, dcContact);
       name.setText(dcContact.getDisplayName());
       name.setTypeface(null, Typeface.NORMAL);
-      phone.setText(dcContact.getAddr());
+      phone.setText(Util.extractNick(dcContact.getAddr()));
       phone.setVisibility(View.VISIBLE);
     }
 

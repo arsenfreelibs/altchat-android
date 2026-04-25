@@ -67,6 +67,12 @@ public class Util {
     return value == null || value.getText() == null || TextUtils.isEmpty(value.getTextTrimmed());
   }
 
+  public static String extractNick(String addr) {
+    if (addr == null) return null;
+    int at = addr.indexOf('@');
+    return at > 0 ? addr.substring(0, at) : addr;
+  }
+
   public static boolean isInviteURL(Uri uri) {
     return INVITE_DOMAIN.equals(uri.getHost()) && uri.getEncodedFragment() != null;
   }

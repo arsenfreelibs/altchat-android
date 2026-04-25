@@ -35,6 +35,7 @@ import org.thoughtcrime.securesms.connect.DcContactsLoader;
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.mms.GlideRequests;
 import org.thoughtcrime.securesms.util.LRUCache;
+import org.thoughtcrime.securesms.util.Util;
 
 /**
  * List adapter to display all contacts and their related information
@@ -302,7 +303,7 @@ public class ContactSelectionListAdapter
     } else {
       dcContact = getContact(i);
       name = dcContact.getDisplayName();
-      addr = dcContact.getAddr();
+      addr = Util.extractNick(dcContact.getAddr());
     }
 
     viewHolder.unbind(glideRequests);

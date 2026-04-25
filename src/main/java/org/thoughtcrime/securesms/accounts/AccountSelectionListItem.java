@@ -21,6 +21,7 @@ import org.thoughtcrime.securesms.components.AvatarView;
 import org.thoughtcrime.securesms.mms.GlideRequests;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.util.ThemeUtil;
+import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.util.ViewUtil;
 
 public class AccountSelectionListItem extends LinearLayout {
@@ -75,7 +76,7 @@ public class AccountSelectionListItem extends LinearLayout {
       self = dcContext.getContact(DcContact.DC_CONTACT_ID_SELF);
       name = dcContext.getConfig(CONFIG_DISPLAY_NAME);
       if (TextUtils.isEmpty(name)) {
-        name = self.getAddr();
+        name = Util.extractNick(self.getAddr());
       }
       addrOrTag = dcContext.getConfig(CONFIG_PRIVATE_TAG);
       unreadCount = dcContext.getFreshMsgs().length;

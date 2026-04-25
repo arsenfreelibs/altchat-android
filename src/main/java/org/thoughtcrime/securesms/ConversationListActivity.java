@@ -533,7 +533,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
       DcContact self = dcContext.getContact(DcContact.DC_CONTACT_ID_SELF);
       String name = dcContext.getConfig("displayname");
       if (TextUtils.isEmpty(name)) {
-        name = self.getAddr();
+        name = Util.extractNick(self.getAddr());
       }
       selfAvatar.setAvatar(GlideApp.with(this), new Recipient(this, self, name), false);
     }

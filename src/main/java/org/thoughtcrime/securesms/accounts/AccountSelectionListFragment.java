@@ -228,12 +228,12 @@ public class AccountSelectionListFragment extends DialogFragment
     String name = dcContext.getConfig("displayname");
     DcContact contact = dcContext.getContact(DcContact.DC_CONTACT_ID_SELF);
     if (TextUtils.isEmpty(name)) {
-      name = contact.getAddr();
+      name = Util.extractNick(contact.getAddr());
     }
     Recipient recipient = new Recipient(requireContext(), contact, name);
     avatar.setAvatar(GlideApp.with(ctx), recipient, false);
     nameView.setText(name);
-    addrView.setText(contact.getAddr());
+    addrView.setText(Util.extractNick(contact.getAddr()));
     Util.runOnAnyBackgroundThread(
         () -> {
           try {

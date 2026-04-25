@@ -186,7 +186,7 @@ public class ProfileAdapter extends RecyclerView.Adapter {
       } else {
         dcContact = dcContext.getContact(contactId);
         name = dcContact.getDisplayName();
-        addr = dcContact.getAddr();
+        addr = Util.extractNick(dcContact.getAddr());
       }
 
       contactItem.unbind(glideRequests);

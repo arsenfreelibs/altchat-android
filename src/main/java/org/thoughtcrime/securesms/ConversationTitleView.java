@@ -90,7 +90,7 @@ public class ConversationTitleView extends RelativeLayout {
         if (dcContact.isBot()) {
           subtitleStr = context.getString(R.string.bot);
         } else if (!dcChat.isEncrypted()) {
-          subtitleStr = dcContact.getAddr();
+          subtitleStr = Util.extractNick(dcContact.getAddr());
         }
         isOnline = dcContact.wasSeenRecently();
       }
@@ -118,7 +118,7 @@ public class ConversationTitleView extends RelativeLayout {
     avatar.setSeenRecently(contact.wasSeenRecently());
 
     title.setText(contact.getDisplayName());
-    subtitle.setText(contact.getAddr());
+    subtitle.setText(Util.extractNick(contact.getAddr()));
     subtitle.setVisibility(View.VISIBLE);
   }
 
