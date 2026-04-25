@@ -214,7 +214,8 @@ public class AltPlatformService {
                 }
             }
         }
-        return Collections.emptyList();
+        // null signals an auth/network error (as opposed to empty list = no results)
+        return null;
     }
 
     public UserProfileResponse getProfile(String username) {

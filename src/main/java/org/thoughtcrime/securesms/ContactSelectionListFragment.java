@@ -148,7 +148,8 @@ public class ContactSelectionListFragment extends Fragment
     emptyView = ViewUtil.findById(view, android.R.id.empty);
 
     // add padding to avoid content hidden behind system bars
-    ViewUtil.applyWindowInsets(recyclerView, true, false, true, true);
+    ViewUtil.applyWindowInsets(recyclerView, true, false, true, false);
+    ViewUtil.applyWindowInsets(view, false, false, false, true);
 
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     actionModeCallback =
@@ -334,6 +335,11 @@ public class ContactSelectionListFragment extends Fragment
       Util.runOnMain(() -> {
         if (!isAdded()) return;
         altRemoteProgress.setVisibility(View.GONE);
+        if (results == null) {
+          // auth/network error — hide section (user is not connected to Alt Platform)
+          altRemoteSection.setVisibility(View.GONE);
+          return;
+        }
         altRemoteAdapter.setItems(results);
         if (results.isEmpty()) {
           altRemoteEmpty.setText(getString(R.string.alt_search_remote_no_results));
