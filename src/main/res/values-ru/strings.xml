@@ -1317,5 +1317,6 @@
     <!-- Search -->
     <string name="alt_search_remote_section">Alt Platform</string>
     <string name="alt_search_remote_no_results">Пользователи Alt Platform не найдены</string>
+    <string name="alt_search_remote_auth_error">Войдите в Alt Platform, чтобы видеть больше результатов</string>
 
 </resources>

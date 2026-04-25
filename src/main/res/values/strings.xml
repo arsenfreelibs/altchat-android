@@ -1309,6 +1309,7 @@
     <string name="alt_import_failed">Failed to import key. Please try again.</string>
     <string name="alt_search_remote_section">Alt Platform</string>
     <string name="alt_search_remote_no_results">No Alt Platform users found</string>
+    <string name="alt_search_remote_auth_error">Sign in to Alt Platform to see more results</string>
     <string name="alt_search_tab_title">Search</string>
 
 </resources>
