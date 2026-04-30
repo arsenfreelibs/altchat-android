@@ -267,6 +267,14 @@ public class CallActivity extends AppCompatActivity {
       if (keyguardManager != null) {
         keyguardManager.requestDismissKeyguard(this, null);
       }
+
+      // Belt-and-suspenders for Android 14+ / Samsung: also set window flags
+      // requestDismissKeyguard alone may fail on secured devices before FGS is promoted
+      getWindow()
+          .addFlags(
+              WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                  | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                  | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
     } else {
       getWindow()
           .addFlags(

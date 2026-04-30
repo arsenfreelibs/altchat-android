@@ -887,7 +887,6 @@
     <string name="stats_device_message">Chcesz pomóc w ulepszeniu Alt Chat i wesprzeć badania, wysyłając co tydzień anonimowe statystyki użytkowania?\n\n👉 Kliknij tutaj… 👈</string>
     <string name="stats_confirmation_dialog">Chcesz pomóc w ulepszeniu Alt Chat i wesprzeć badania, wysyłając co tydzień anonimowe statystyki użytkowania?</string>
     <string name="stats_thanks">Dziękujemy! Zawsze możesz wyłączyć wysyłanie w „Ustawienia » Zaawansowane”.\n\nCzy masz dodatkowo 5 minut na udział w badaniu naukowym dotyczącym bezpieczeństwa Alt Chat?</string>
-    <string name="send_stats_to_devs">Wyślij statystyki do programistów Delta Chat</string>
     <string name="disable">Wyłącz</string>
     <string name="stats_keep_sending">Kontynuuj wysyłanie</string>
     <string name="stats_msg_body">Załącznik zawiera anonimowe statystyki użytkowania, które pomagają nam ulepszać Alt Chat. Więcej informacji można znaleźć na: https://alt.chat/help#statssending. Dziękujemy!</string>

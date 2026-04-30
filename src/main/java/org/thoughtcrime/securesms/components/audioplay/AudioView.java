@@ -121,7 +121,7 @@ public class AudioView extends FrameLayout {
       public void onSeekEnd(float progress) {
         if (viewModel != null) {
           viewModel.setUserSeeking(false);
-          viewModel.seekTo((long) (progress * duration), msgId, audioUri);
+          viewModel.seekTo((long) (progress * duration), msgId);
         }
       }
     });
@@ -149,28 +149,6 @@ public class AudioView extends FrameLayout {
 
           if (listener != null) {
             listener.onPlayPauseButtonClicked(v);
-          }
-        });
-
-    seekBar.setOnSeekBarChangeListener(
-        new SeekBar.OnSeekBarChangeListener() {
-          @Override
-          public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            if (fromUser) {
-              AudioView.this.progress = progress;
-              updateTimestampsAndSeekBar();
-            }
-          }
-
-          @Override
-          public void onStartTrackingTouch(SeekBar seekBar) {
-            viewModel.setUserSeeking(true);
-          }
-
-          @Override
-          public void onStopTrackingTouch(SeekBar seekBar) {
-            viewModel.setUserSeeking(false);
-            viewModel.seekTo(seekBar.getProgress(), msgId);
           }
         });
 
