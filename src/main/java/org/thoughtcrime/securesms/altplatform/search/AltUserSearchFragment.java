@@ -88,10 +88,11 @@ public class AltUserSearchFragment extends Fragment implements AltUserSearchAdap
         executor.execute(() -> {
             AltPlatformService service = new AltPlatformService(requireContext());
             List<UserProfileResponse> results = service.searchUsers(query);
+            List<UserProfileResponse> safeResults = results != null ? results : Collections.emptyList();
             Util.runOnMain(() -> {
                 progressBar.setVisibility(View.GONE);
-                adapter.setItems(results);
-                emptyLabel.setVisibility(results.isEmpty() ? View.VISIBLE : View.GONE);
+                adapter.setItems(safeResults);
+                emptyLabel.setVisibility(safeResults.isEmpty() ? View.VISIBLE : View.GONE);
             });
         });
     }
