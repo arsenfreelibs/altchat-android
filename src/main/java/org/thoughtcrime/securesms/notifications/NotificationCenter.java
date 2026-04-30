@@ -59,7 +59,7 @@ import org.thoughtcrime.securesms.service.CallForegroundService;
 import chat.delta.rpc.RpcException;
 
 public class NotificationCenter {
-  private static final String TAG = NotificationCenter.class.getSimpleName();
+  private static final String TAG = "NotificationCenter";
   @NonNull private final ApplicationContext context;
   private volatile ChatData visibleChat = null;
   private volatile Pair<Integer, Integer> visibleWebxdc = null;

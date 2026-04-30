@@ -102,6 +102,7 @@ import org.thoughtcrime.securesms.components.ScaleStableImageView;
 import org.thoughtcrime.securesms.components.SendButton;
 import org.thoughtcrime.securesms.components.audioplay.AudioPlaybackViewModel;
 import org.thoughtcrime.securesms.components.audioplay.AudioView;
+import org.thoughtcrime.securesms.components.audioplay.ChatAudioQueueProvider;
 import org.thoughtcrime.securesms.components.emoji.MediaKeyboard;
 import org.thoughtcrime.securesms.connect.AccountManager;
 import org.thoughtcrime.securesms.connect.DcEventCenter;
@@ -150,8 +151,8 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
         InputPanel.Listener,
         InputPanel.MediaListener,
         AudioView.OnActionListener {
-  private static final String TAG = ConversationActivity.class.getSimpleName();
-        private static final long MAX_AUDIO_NOTE_DURATION_MS = 30_000L;
+  private static final String TAG = "ConversationActivity";
+  private static final long MAX_AUDIO_NOTE_DURATION_MS = 30_000L;
 
   public static final String ACCOUNT_ID_EXTRA = "account_id";
   public static final String CHAT_ID_EXTRA = "chat_id";
@@ -229,7 +230,9 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     initializeViews();
     initializeResources();
 
+    int accountId = DcHelper.getAccounts(this).getSelectedAccount().getAccountId();
     playbackViewModel = new ViewModelProvider(this).get(AudioPlaybackViewModel.class);
+    playbackViewModel.setQueueProvider(new ChatAudioQueueProvider(this, chatId, accountId));
     initializeMediaController();
 
     initializeSecurity(false, isDefaultSms)
@@ -425,6 +428,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
       mediaController = null;
       playbackViewModel.setMediaController(null);
     }
+    playbackViewModel.setQueueProvider(null);
     super.onDestroy();
   }
 

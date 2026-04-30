@@ -101,7 +101,7 @@ import org.thoughtcrime.securesms.accounts.AccountOperationsListener;
 public class ConversationListActivity extends PassphraseRequiredActionBarActivity
     implements ConversationListFragment.ConversationSelectedListener,
                AccountOperationsListener {
-  private static final String TAG = ConversationListActivity.class.getSimpleName();
+  private static final String TAG = "ConversationListActivity";
   private static final String OPENPGP4FPR = "openpgp4fpr";
   private static final String NDK_ARCH_WARNED = "ndk_arch_warned";
   public static final String CLEAR_NOTIFICATIONS = "clear_notifications";

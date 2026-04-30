@@ -70,7 +70,7 @@ public class ConversationListFragment extends BaseConversationListFragment
   public static final String ARCHIVE = "archive";
   public static final String RELOAD_LIST = "reload_list";
 
-  private static final String TAG = ConversationListFragment.class.getSimpleName();
+  private static final String TAG = "ConversationListFragment";
   private static final String STATE_FILTER_TYPE = "filter_type";
   private static final String STATE_FILTER_ID   = "filter_id";
 

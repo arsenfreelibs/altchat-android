@@ -15,7 +15,7 @@ import java.util.concurrent.Executor;
 
 public class PlatformLocationSource implements LocationSource {
 
-  private static final String TAG = PlatformLocationSource.class.getSimpleName();
+  private static final String TAG = "PlatformLocationSource";
   private static final long UPDATE_INTERVAL_MS = 0;
 
   private LocationManager locationManager;
@@ -36,7 +36,7 @@ public class PlatformLocationSource implements LocationSource {
       registered = requestProvider(context, LocationManager.FUSED_PROVIDER, callback);
     }
 
-    // Fall back (or complement) with individual providers
+    // Fall back with individual providers
     if (!registered) {
       requestProvider(context, LocationManager.GPS_PROVIDER, callback);
       requestProvider(context, LocationManager.NETWORK_PROVIDER, callback);

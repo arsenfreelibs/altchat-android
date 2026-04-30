@@ -63,7 +63,7 @@ import org.webrtc.VideoTrack;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class CallCoordinator implements DcEventCenter.DcEventDelegate {
-  private static final String TAG = CallCoordinator.class.getSimpleName();
+  private static final String TAG = "CallCoordinator";
 
   // Notification channels
   private static final String CHANNEL_ID_INCOMING = "voip_incoming_calls";
@@ -217,7 +217,8 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
                   calleeName = "Unknown";
                 }
 
-                showOrUpdateOngoingNotification("Calling " + calleeName + "...");
+                showOrUpdateOngoingNotification(
+                    appContext.getString(R.string.calling_person, calleeName));
               }
 
               // Initialize call
@@ -413,6 +414,15 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
       callService.stopRingtone();
     }
 
+    // Promote the service to foreground immediately. Waiting until onIncomingCallAccepted
+    // on executor pool thread is too late on stricter OEM.
+    //
+    // Do not cancel() but use showOrUpdateOngoingNotification to replace incoming
+    // notification without a gap.
+    String callerName = displayName.getValue();
+    if (callerName == null) callerName = "Unknown";
+    showOrUpdateOngoingNotification(appContext.getString(R.string.call_with, callerName));
+
     // Notify Android system with CallControlScope
     CallControlScope scope = activeCallControlScope;
     if (scope != null) {
@@ -436,8 +446,6 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
             }
           });
     }
-
-    notificationManager.cancel(NOTIFICATION_ID_CALL);
   }
 
   public void answerWebRTC() {
@@ -938,7 +946,7 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
       callerName = "Unknown";
     }
 
-    showOrUpdateOngoingNotification("Call with " + callerName);
+    showOrUpdateOngoingNotification(appContext.getString(R.string.call_with, callerName));
   }
 
   private synchronized void onCallAnsweredOnOtherDevice() {
@@ -1025,7 +1033,7 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
     if (calleeName == null) {
       calleeName = "Unknown";
     }
-    showOrUpdateOngoingNotification("Call with " + calleeName);
+    showOrUpdateOngoingNotification(appContext.getString(R.string.call_with, calleeName));
   }
 
   private synchronized void onCallEnded(int accId, int callId) {
@@ -1116,6 +1124,14 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
     if (!activeAccId.equals(accId) || !activeCallId.equals(callId)) {
       Log.w(TAG, "Cleanup IDs don't match active call, aborting");
       return;
+    }
+
+    if (callService != null) {
+      try {
+        callService.stopForegroundAndDismiss();
+      } catch (Exception e) {
+        Log.w(TAG, "stopForegroundAndDismiss failed", e);
+      }
     }
 
     // Clear state

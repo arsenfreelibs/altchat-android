@@ -31,7 +31,7 @@ import org.thoughtcrime.securesms.util.ViewUtil;
 
 public class BackupTransferActivity extends BaseActionBarActivity {
 
-  private static final String TAG = BackupTransferActivity.class.getSimpleName();
+  private static final String TAG = "BackupTransferActivity";
 
   public enum TransferMode {
     INVALID(0),

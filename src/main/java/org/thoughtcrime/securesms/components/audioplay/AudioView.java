@@ -22,7 +22,7 @@ import org.thoughtcrime.securesms.util.DateUtils;
 
 public class AudioView extends FrameLayout {
 
-  private static final String TAG = AudioView.class.getSimpleName();
+  private static final String TAG = "AudioView";
 
   private final @NonNull ImageView playPauseButton;
   private final AnimatedVectorDrawableCompat playToPauseDrawable;
@@ -134,12 +134,12 @@ public class AudioView extends FrameLayout {
 
           AudioPlaybackState state = viewModel.getPlaybackState().getValue();
 
-          if (state != null && msgId == state.getMsgId() && audioUri.equals(state.getAudioUri())) {
+          if (state != null && msgId == state.getMsgId()) {
             // Same audio
             if (state.getStatus() == AudioPlaybackState.PlaybackStatus.PLAYING) {
-              viewModel.pause(msgId, audioUri);
+              viewModel.pause(msgId);
             } else {
-              viewModel.play(msgId, audioUri);
+              viewModel.play(msgId);
             }
           } else {
             // Different audio
@@ -149,6 +149,28 @@ public class AudioView extends FrameLayout {
 
           if (listener != null) {
             listener.onPlayPauseButtonClicked(v);
+          }
+        });
+
+    seekBar.setOnSeekBarChangeListener(
+        new SeekBar.OnSeekBarChangeListener() {
+          @Override
+          public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            if (fromUser) {
+              AudioView.this.progress = progress;
+              updateTimestampsAndSeekBar();
+            }
+          }
+
+          @Override
+          public void onStartTrackingTouch(SeekBar seekBar) {
+            viewModel.setUserSeeking(true);
+          }
+
+          @Override
+          public void onStopTrackingTouch(SeekBar seekBar) {
+            viewModel.setUserSeeking(false);
+            viewModel.seekTo(seekBar.getProgress(), msgId);
           }
         });
 
@@ -326,7 +348,7 @@ public class AudioView extends FrameLayout {
     if (audioUri == null || state == null) return;
 
     // Check if this state is about this message
-    boolean isThisMessage = msgId == state.getMsgId() && audioUri.equals(state.getAudioUri());
+    boolean isThisMessage = msgId == state.getMsgId();
 
     if (isThisMessage) {
       updateUIForPlaybackState(state);
@@ -362,13 +384,9 @@ public class AudioView extends FrameLayout {
   private void onDurationsChanged(Map<Integer, Long> durations) {
     AudioPlaybackState state = viewModel.getPlaybackState().getValue();
 
-    // When there is no playback happening, msgId can be -1 and audioUri is null
-    if (state != null
-        && msgId >= 0
-        && msgId == state.getMsgId()
-        && audioUri != null
-        && audioUri.equals(state.getAudioUri())) {
-      return; // Is playing this message
+    // When there is no playback happening, msgId can be -1
+    if (state != null && msgId >= 0 && msgId == state.getMsgId()) {
+      return;
     }
 
     Long duration = durations.get(msgId);

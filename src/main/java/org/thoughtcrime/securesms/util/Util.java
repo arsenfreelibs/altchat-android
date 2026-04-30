@@ -58,7 +58,7 @@ import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.components.ComposeText;
 
 public class Util {
-  private static final String TAG = Util.class.getSimpleName();
+  private static final String TAG = "Util";
   public static final String INVITE_DOMAIN = "alt-chat.me";
 
   public static final Handler handler = new Handler(Looper.getMainLooper());

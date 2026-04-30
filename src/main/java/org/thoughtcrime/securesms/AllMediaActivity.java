@@ -27,6 +27,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.util.ArrayList;
 import org.thoughtcrime.securesms.components.audioplay.AudioPlaybackViewModel;
+import org.thoughtcrime.securesms.components.audioplay.ChatAudioQueueProvider;
 import org.thoughtcrime.securesms.connect.DcEventCenter;
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.service.AudioPlaybackService;
@@ -35,7 +36,7 @@ import org.thoughtcrime.securesms.util.ViewUtil;
 
 public class AllMediaActivity extends PassphraseRequiredActionBarActivity
     implements DcEventCenter.DcEventDelegate {
-  private static final String TAG = AllMediaActivity.class.getSimpleName();
+  private static final String TAG = "AllMediaActivity";
 
   public static final String CHAT_ID_EXTRA = "chat_id";
   public static final String CONTACT_ID_EXTRA = "contact_id";
@@ -106,7 +107,9 @@ public class AllMediaActivity extends PassphraseRequiredActionBarActivity
     eventCenter.addObserver(DcContext.DC_EVENT_CHAT_MODIFIED, this);
     eventCenter.addObserver(DcContext.DC_EVENT_CONTACTS_CHANGED, this);
 
+    int accountId = DcHelper.getAccounts(this).getSelectedAccount().getAccountId();
     playbackViewModel = new ViewModelProvider(this).get(AudioPlaybackViewModel.class);
+    playbackViewModel.setQueueProvider(new ChatAudioQueueProvider(this, chatId, accountId));
     initializeMediaController();
   }
 
@@ -118,6 +121,7 @@ public class AllMediaActivity extends PassphraseRequiredActionBarActivity
       mediaController = null;
       playbackViewModel.setMediaController(null);
     }
+    playbackViewModel.setQueueProvider(null);
     super.onDestroy();
   }
 

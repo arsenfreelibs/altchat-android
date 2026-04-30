@@ -498,7 +498,7 @@
             android:name=".calls.CallService"
             android:enabled="true"
             android:exported="false"
-            android:foregroundServiceType="microphone" />
+            android:foregroundServiceType="camera|microphone|phoneCall" />
 
         <service
             android:name=".service.CallForegroundService"

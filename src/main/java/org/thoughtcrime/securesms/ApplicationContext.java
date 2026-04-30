@@ -51,7 +51,7 @@ import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.webxdc.WebxdcGarbageCollectionWorker;
 
 public class ApplicationContext extends MultiDexApplication {
-  private static final String TAG = ApplicationContext.class.getSimpleName();
+  private static final String TAG = "ApplicationContext";
   private static final Object initLock = new Object();
   private static volatile boolean isInitialized = false;
 
@@ -192,7 +192,7 @@ public class ApplicationContext extends MultiDexApplication {
               Log.i(TAG, "DcAccounts created");
               rpc = new Rpc(new FFITransport(dcAccounts.getJsonrpcInstance()));
               Log.i(TAG, "Rpc created");
-              AccountManager.getInstance().migrateToDcAccounts(this);
+              AccountManager.getInstance().migrateToDcAccounts(this, dcAccounts);
 
               int[] allAccounts = dcAccounts.getAll();
               Log.i(TAG, "Number of profiles: " + allAccounts.length);
