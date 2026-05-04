@@ -105,10 +105,17 @@
         app:menu="@menu/bottom_nav_menu"
         app:labelVisibilityMode="labeled" />
 
+    <org.thoughtcrime.securesms.components.audioplay.AudioMiniPlayerView
+        android:id="@+id/audio_mini_player"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottom_navigation"
+        android:visibility="gone" />
+
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_below="@id/toolbar"
-        android:layout_above="@id/bottom_navigation"
+        android:layout_above="@id/audio_mini_player"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

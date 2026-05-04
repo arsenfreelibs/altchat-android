@@ -90,13 +90,21 @@ import org.thoughtcrime.securesms.util.StorageUtil;
 import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.util.ViewUtil;
 
+import android.content.ComponentName;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.media3.session.MediaController;
+import androidx.media3.session.SessionToken;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.badge.BadgeDrawable;
+import com.google.common.util.concurrent.ListenableFuture;
 import org.thoughtcrime.securesms.accounts.AccountOperationsListener;
+import org.thoughtcrime.securesms.components.audioplay.AudioMiniPlayerView;
+import org.thoughtcrime.securesms.components.audioplay.AudioPlaybackViewModel;
+import org.thoughtcrime.securesms.service.AudioPlaybackService;
 
 public class ConversationListActivity extends PassphraseRequiredActionBarActivity
     implements ConversationListFragment.ConversationSelectedListener,
@@ -144,6 +152,20 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
   private int deleteProfileId = 0;
 
   private ActivityResultLauncher<Intent> deleteProfileLockLauncher;
+
+  private AudioPlaybackViewModel listPlaybackViewModel;
+  private ListenableFuture<MediaController> listMediaControllerFuture;
+
+  @Override
+  public void onDestroy() {
+    if (listMediaControllerFuture != null) {
+      MediaController.releaseFuture(listMediaControllerFuture);
+    }
+    if (listPlaybackViewModel != null) {
+      listPlaybackViewModel.setMediaController(null);
+    }
+    super.onDestroy();
+  }
 
   @Override
   protected void onPreCreate() {
@@ -305,6 +327,23 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
             });
 
     refresh();
+
+    listPlaybackViewModel = new ViewModelProvider(this).get(AudioPlaybackViewModel.class);
+    SessionToken audioSessionToken =
+        new SessionToken(this, new ComponentName(this, AudioPlaybackService.class));
+    listMediaControllerFuture = new MediaController.Builder(this, audioSessionToken).buildAsync();
+    listMediaControllerFuture.addListener(
+        () -> {
+          try {
+            MediaController controller = listMediaControllerFuture.get();
+            listPlaybackViewModel.setMediaController(controller);
+          } catch (Exception e) {
+            android.util.Log.e(TAG, "Error connecting to audio playback service", e);
+          }
+        },
+        ContextCompat.getMainExecutor(this));
+    AudioMiniPlayerView miniPlayer = findViewById(R.id.audio_mini_player);
+    miniPlayer.setViewModel(listPlaybackViewModel, this);
 
     if (BuildConfig.DEBUG) checkNdkArchitecture();
 
