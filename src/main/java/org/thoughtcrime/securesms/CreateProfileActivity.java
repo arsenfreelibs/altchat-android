@@ -15,13 +15,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.loader.app.LoaderManager;
+import com.b44t.messenger.DcContext;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -30,6 +35,7 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import org.thoughtcrime.securesms.components.AvatarSelector;
 import org.thoughtcrime.securesms.components.InputAwareLayout;
+import org.thoughtcrime.securesms.connect.AccountManager;
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.contacts.avatars.ResourceContactPhoto;
 import org.thoughtcrime.securesms.mms.AttachmentManager;
@@ -38,6 +44,7 @@ import org.thoughtcrime.securesms.permissions.Permissions;
 import org.thoughtcrime.securesms.profiles.AvatarHelper;
 import org.thoughtcrime.securesms.scribbles.ScribbleActivity;
 import org.thoughtcrime.securesms.util.Prefs;
+import org.thoughtcrime.securesms.util.ScreenLockUtil;
 import org.thoughtcrime.securesms.util.ViewUtil;
 
 @SuppressLint("StaticFieldLeak")
@@ -58,9 +65,19 @@ public class CreateProfileActivity extends BaseActionBarActivity {
   private Bitmap avatarBmp;
   private AttachmentManager attachmentManager;
 
+  private ActivityResultLauncher<Intent> deleteProfileLockLauncher;
+
   @Override
   public void onCreate(Bundle bundle) {
     super.onCreate(bundle);
+
+    deleteProfileLockLauncher = registerForActivityResult(
+        new ActivityResultContracts.StartActivityForResult(),
+        result -> {
+          if (result.getResultCode() == RESULT_OK) {
+            deleteCurrentProfile();
+          }
+        });
 
     setContentView(R.layout.profile_create_activity);
 
@@ -192,6 +209,36 @@ public class CreateProfileActivity extends BaseActionBarActivity {
     ViewUtil.applyWindowInsets(container);
 
     loginSuccessText.setVisibility(View.GONE);
+
+    Button deleteButton = ViewUtil.findById(this, R.id.delete_profile_button);
+    deleteButton.setOnClickListener(v -> onDeleteProfileClicked());
+  }
+
+  private void onDeleteProfileClicked() {
+    new AlertDialog.Builder(this)
+        .setTitle(R.string.delete_account)
+        .setMessage(R.string.delete_account_ask)
+        .setNegativeButton(R.string.cancel, null)
+        .setPositiveButton(R.string.delete, (d, w) -> {
+          boolean needsLock = ScreenLockUtil.applyScreenLock(
+              this,
+              getString(R.string.delete_account),
+              getString(R.string.enter_system_secret_to_continue),
+              deleteProfileLockLauncher);
+          if (!needsLock) {
+            deleteCurrentProfile();
+          }
+        })
+        .show();
+  }
+
+  private void deleteCurrentProfile() {
+    int profileId = DcHelper.getAccounts(this).getSelectedAccount().getAccountId();
+    DcHelper.getNotificationCenter(this).removeAllNotifications(profileId);
+    DcHelper.getAccounts(this).removeAccount(profileId);
+    DcContext nextAcc = DcHelper.getAccounts(this).getSelectedAccount();
+    AccountManager.getInstance().switchAccountAndStartActivity(
+        this, nextAcc.isOk() ? nextAcc.getAccountId() : 0);
   }
 
   private void initializeProfileName() {
