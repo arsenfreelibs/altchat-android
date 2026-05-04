@@ -12,7 +12,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.media3.common.MediaItem;
+import androidx.media3.common.MediaMetadata;
 import androidx.media3.common.PlaybackException;
+import androidx.media3.common.PlaybackParameters;
 import androidx.media3.common.Player;
 import androidx.media3.session.MediaController;
 import java.util.Collections;
@@ -71,7 +73,7 @@ public class AudioPlaybackViewModel extends ViewModel {
   }
 
   // Public methods
-  public void loadAudioAndPlay(int msgId, Uri audioUri) {
+  public void loadAudioAndPlay(int msgId, Uri audioUri, @Nullable String senderName) {
     if (mediaController == null) return;
 
     String mediaId = String.valueOf(msgId);
@@ -82,7 +84,7 @@ public class AudioPlaybackViewModel extends ViewModel {
       return;
     }
 
-    updateState(msgId, audioUri, AudioPlaybackState.PlaybackStatus.LOADING, 0, 0);
+    updateState(msgId, audioUri, AudioPlaybackState.PlaybackStatus.LOADING, 0, 0, senderName);
 
     List<MediaItem> items = null;
     int startIndex = -1;
@@ -93,15 +95,40 @@ public class AudioPlaybackViewModel extends ViewModel {
     }
 
     if (startIndex < 0) {
+      MediaMetadata metadata = new MediaMetadata.Builder().setArtist(senderName).build();
       items =
           Collections.singletonList(
-              new MediaItem.Builder().setMediaId(mediaId).setUri(audioUri).build());
+              new MediaItem.Builder()
+                  .setMediaId(mediaId)
+                  .setUri(audioUri)
+                  .setMediaMetadata(metadata)
+                  .build());
       startIndex = 0;
     }
 
     mediaController.setMediaItems(items, startIndex, 0);
     mediaController.prepare();
     mediaController.play();
+  }
+
+  public void setPlaybackSpeed(float speed) {
+    if (mediaController == null) return;
+    mediaController.setPlaybackParameters(new PlaybackParameters(speed));
+    AudioPlaybackState current = playbackState.getValue();
+    if (current != null) {
+      playbackState.setValue(new AudioPlaybackState(
+          current.getMsgId(), current.getAudioUri(), current.getStatus(),
+          current.getCurrentPosition(), current.getDuration(),
+          current.getSenderName(), speed));
+    }
+  }
+
+  public void cyclePlaybackSpeed() {
+    float current = 1.0f;
+    AudioPlaybackState state = playbackState.getValue();
+    if (state != null) current = state.getPlaybackSpeed();
+    float next = current >= 1.9f ? 1.0f : (current >= 1.4f ? 2.0f : 1.5f);
+    setPlaybackSpeed(next);
   }
 
   private static int indexOfMediaId(List<MediaItem> items, String mediaId) {
@@ -303,6 +330,9 @@ public class AudioPlaybackViewModel extends ViewModel {
                 mediaController.setPlayWhenReady(false);
               }
             }
+            if (events.containsAny(Player.EVENT_PLAYBACK_PARAMETERS_CHANGED)) {
+              updateCurrentState(false);
+            }
           }
 
           @Override
@@ -343,9 +373,11 @@ public class AudioPlaybackViewModel extends ViewModel {
 
     Uri currentUri = null;
     int currentMsgId = 0;
+    String senderName = null;
     if (playbackState.getValue() != null) {
       currentMsgId = playbackState.getValue().getMsgId();
       currentUri = playbackState.getValue().getAudioUri();
+      senderName = playbackState.getValue().getSenderName();
     }
     if (queryPlaying || playbackState.getValue() == null) {
       MediaItem item = mediaController.getCurrentMediaItem();
@@ -358,6 +390,10 @@ public class AudioPlaybackViewModel extends ViewModel {
         if (item.localConfiguration != null) {
           currentUri = item.localConfiguration.uri;
         }
+        CharSequence artist = item.mediaMetadata.artist;
+        if (artist != null) {
+          senderName = artist.toString();
+        }
       }
     }
     updateState(
@@ -365,7 +401,8 @@ public class AudioPlaybackViewModel extends ViewModel {
         currentUri,
         status,
         mediaController.getCurrentPosition(),
-        mediaController.getDuration());
+        mediaController.getDuration(),
+        senderName);
   }
 
   private void updateState(
@@ -373,7 +410,8 @@ public class AudioPlaybackViewModel extends ViewModel {
       Uri audioUri,
       AudioPlaybackState.PlaybackStatus status,
       long position,
-      long duration) {
+      long duration,
+      @Nullable String senderName) {
     // Sanitize longs
     if (position < 0 || position > Integer.MAX_VALUE) {
       position = 0;
@@ -382,9 +420,7 @@ public class AudioPlaybackViewModel extends ViewModel {
       duration = 0;
     }
 
-    AudioPlaybackState prev = playbackState.getValue();
-    String senderName = prev != null ? prev.getSenderName() : null;
-    float speed = prev != null ? prev.getPlaybackSpeed() : 1.0f;
+    float speed = mediaController != null ? mediaController.getPlaybackParameters().speed : 1.0f;
     playbackState.setValue(new AudioPlaybackState(msgId, audioUri, status, position, duration, senderName, speed));
   }
 
@@ -393,7 +429,7 @@ public class AudioPlaybackViewModel extends ViewModel {
     AudioPlaybackState current = playbackState.getValue();
 
     if (current != null) {
-      updateState(current.getMsgId(), current.getAudioUri(), status, position, duration);
+      updateState(current.getMsgId(), current.getAudioUri(), status, position, duration, current.getSenderName());
     }
   }
 

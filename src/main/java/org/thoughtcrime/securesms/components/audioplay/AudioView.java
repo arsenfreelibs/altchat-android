@@ -38,6 +38,7 @@ public class AudioView extends FrameLayout {
 
   private int msgId = -1;
   private Uri audioUri;
+  private @Nullable String senderName;
   private int progress;
   private int duration;
   private AudioPlaybackViewModel viewModel;
@@ -144,7 +145,7 @@ public class AudioView extends FrameLayout {
           } else {
             // Different audio
             // Note: they can be the same *physical* file, but in different messages
-            viewModel.loadAudioAndPlay(msgId, audioUri);
+            viewModel.loadAudioAndPlay(msgId, audioUri, senderName);
           }
 
           if (listener != null) {
@@ -191,6 +192,10 @@ public class AudioView extends FrameLayout {
       viewModel.getDurations().observeForever(durationObserver);
       viewModel.getWaveforms().observeForever(waveformObserver);
     }
+  }
+
+  public void setSenderName(@Nullable String name) {
+    this.senderName = name;
   }
 
   public void setAudio(final @NonNull AudioSlide audio) {
