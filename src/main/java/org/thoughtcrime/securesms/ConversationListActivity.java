@@ -157,7 +157,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
   private ListenableFuture<MediaController> listMediaControllerFuture;
 
   @Override
-  public void onDestroy() {
+  protected void onDestroy() {
     if (listMediaControllerFuture != null) {
       MediaController.releaseFuture(listMediaControllerFuture);
     }
