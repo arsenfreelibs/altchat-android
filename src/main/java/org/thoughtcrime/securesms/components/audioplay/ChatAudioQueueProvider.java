@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.media3.common.MediaItem;
+import androidx.media3.common.MediaMetadata;
+import com.b44t.messenger.DcContact;
 import com.b44t.messenger.DcContext;
 import com.b44t.messenger.DcMsg;
 import java.util.ArrayList;
@@ -30,10 +32,15 @@ public class ChatAudioQueueProvider {
     List<MediaItem> items = new ArrayList<>(msgIds.length);
     for (int msgId : msgIds) {
       String id = String.valueOf(msgId);
+      DcMsg msg = dcContext.getMsg(msgId);
+      DcContact contact = dcContext.getContact(msg.getFromId());
+      String senderName = msg.getSenderName(contact);
+      MediaMetadata metadata = new MediaMetadata.Builder().setArtist(senderName).build();
       items.add(
           new MediaItem.Builder()
               .setMediaId(id)
               .setUri(Uri.parse("dcmsg://" + accountId + "/" + id))
+              .setMediaMetadata(metadata)
               .build());
     }
     return items;
