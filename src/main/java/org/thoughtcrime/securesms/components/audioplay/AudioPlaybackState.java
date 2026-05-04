@@ -9,6 +9,8 @@ public class AudioPlaybackState {
   private final PlaybackStatus status;
   private final long currentPosition;
   private final long duration;
+  private final @Nullable String senderName;
+  private final float playbackSpeed;
 
   public enum PlaybackStatus {
     IDLE,
@@ -23,16 +25,20 @@ public class AudioPlaybackState {
       @Nullable Uri audioUri,
       PlaybackStatus status,
       long currentPosition,
-      long duration) {
+      long duration,
+      @Nullable String senderName,
+      float playbackSpeed) {
     this.msgId = msgId;
     this.audioUri = audioUri;
     this.status = status;
     this.currentPosition = currentPosition;
     this.duration = duration;
+    this.senderName = senderName;
+    this.playbackSpeed = playbackSpeed;
   }
 
   public static AudioPlaybackState idle() {
-    return new AudioPlaybackState(0, null, PlaybackStatus.IDLE, 0, 0);
+    return new AudioPlaybackState(0, null, PlaybackStatus.IDLE, 0, 0, null, 1.0f);
   }
 
   public int getMsgId() {
@@ -54,5 +60,14 @@ public class AudioPlaybackState {
 
   public long getDuration() {
     return duration;
+  }
+
+  @Nullable
+  public String getSenderName() {
+    return senderName;
+  }
+
+  public float getPlaybackSpeed() {
+    return playbackSpeed;
   }
 }

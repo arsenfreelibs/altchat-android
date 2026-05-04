@@ -382,7 +382,10 @@ public class AudioPlaybackViewModel extends ViewModel {
       duration = 0;
     }
 
-    playbackState.setValue(new AudioPlaybackState(msgId, audioUri, status, position, duration));
+    AudioPlaybackState prev = playbackState.getValue();
+    String senderName = prev != null ? prev.getSenderName() : null;
+    float speed = prev != null ? prev.getPlaybackSpeed() : 1.0f;
+    playbackState.setValue(new AudioPlaybackState(msgId, audioUri, status, position, duration, senderName, speed));
   }
 
   private void updateCurrentAudioState(
