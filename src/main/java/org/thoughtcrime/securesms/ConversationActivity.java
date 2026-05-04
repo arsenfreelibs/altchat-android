@@ -100,6 +100,7 @@ import org.thoughtcrime.securesms.components.InputPanel;
 import org.thoughtcrime.securesms.components.KeyboardAwareLinearLayout.OnKeyboardShownListener;
 import org.thoughtcrime.securesms.components.ScaleStableImageView;
 import org.thoughtcrime.securesms.components.SendButton;
+import org.thoughtcrime.securesms.components.audioplay.AudioMiniPlayerView;
 import org.thoughtcrime.securesms.components.audioplay.AudioPlaybackViewModel;
 import org.thoughtcrime.securesms.components.audioplay.AudioView;
 import org.thoughtcrime.securesms.components.audioplay.ChatAudioQueueProvider;
@@ -234,6 +235,9 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     playbackViewModel = new ViewModelProvider(this).get(AudioPlaybackViewModel.class);
     playbackViewModel.setQueueProvider(new ChatAudioQueueProvider(this, chatId, accountId));
     initializeMediaController();
+
+    AudioMiniPlayerView miniPlayer = findViewById(R.id.audio_mini_player);
+    miniPlayer.setViewModel(playbackViewModel, this);
 
     initializeSecurity(false, isDefaultSms)
         .addListener(

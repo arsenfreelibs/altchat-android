@@ -56,6 +56,12 @@
                 android:paddingEnd="16dp"
                 android:focusable="true" />
 
+            <org.thoughtcrime.securesms.components.audioplay.AudioMiniPlayerView
+                android:id="@+id/audio_mini_player"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
             <include layout="@layout/conversation_input_panel" />
 
             <FrameLayout
