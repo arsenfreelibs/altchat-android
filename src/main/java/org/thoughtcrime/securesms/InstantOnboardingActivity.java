@@ -499,11 +499,11 @@ public class InstantOnboardingActivity extends BaseActionBarActivity
     String displayName = pendingDisplayName;
     org.thoughtcrime.securesms.altplatform.storage.AltPrefs.setRegistered(
         getApplicationContext(), displayName, null);
-    navigateToMain();
     executor.execute(() -> {
       new org.thoughtcrime.securesms.altplatform.AltPlatformService(getApplicationContext())
           .quickRegister(displayName);
     });
+    navigateToMain();
   }
 
   private void navigateToMain() {
@@ -584,7 +584,7 @@ public class InstantOnboardingActivity extends BaseActionBarActivity
               try {
                 rpc.addTransportFromQr(dcContext.getAccountId(), qrCode);
                 DcHelper.getEventCenter(this).endCaptureNextError();
-                progressSuccess();
+                Util.runOnMain(this::progressSuccess);
               } catch (RpcException e) {
                 DcHelper.getEventCenter(this).endCaptureNextError();
                 if (!cancelled) {
