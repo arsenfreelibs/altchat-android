@@ -1,8 +1,12 @@
 package org.thoughtcrime.securesms.preferences;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
+import android.text.Spannable;
+import android.text.style.ForegroundColorSpan;
 import android.widget.Toast;
 import android.view.View;
 import androidx.activity.result.ActivityResultLauncher;
@@ -13,6 +17,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import com.b44t.messenger.DcContext;
 import com.b44t.messenger.DcEvent;
@@ -39,6 +44,8 @@ import org.thoughtcrime.securesms.util.ScreenLockUtil;
 public class SettingsRootFragment extends CorrectedPreferenceFragment
     implements DcEventCenter.DcEventDelegate {
 
+  private static final String PREFERENCE_UPDATE_AVAILABLE = "preference_update_available";
+
   private static final String PREFERENCE_CATEGORY_PROFILE = "preference_category_profile";
   private static final String PREFERENCE_CATEGORY_NOTIFICATIONS = "preference_category_notifications";
   private static final String PREFERENCE_CATEGORY_APPEARANCE = "preference_category_appearance";
@@ -61,6 +68,21 @@ public class SettingsRootFragment extends CorrectedPreferenceFragment
             getSettingsTabFragment().showBackupProvider();
           }
         });
+
+    this.findPreference(PREFERENCE_UPDATE_AVAILABLE)
+        .setOnPreferenceClickListener(preference -> {
+          String pkg = requireActivity().getPackageName();
+          Intent intent = new Intent(Intent.ACTION_VIEW,
+              Uri.parse("market://details?id=" + pkg));
+          if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
+            startActivity(intent);
+          } else {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                Uri.parse("https://play.google.com/store/apps/details?id=" + pkg)));
+          }
+          return true;
+        });
+    this.findPreference(PREFERENCE_UPDATE_AVAILABLE).setVisible(false);
 
     this.findPreference(PREFERENCE_CATEGORY_PROFILE)
         .setOnPreferenceClickListener(new ProfileClickListener());
@@ -102,6 +124,14 @@ public class SettingsRootFragment extends CorrectedPreferenceFragment
   @Override
   public void onResume() {
     super.onResume();
+    // Apply deferred update-available state unconditionally — this must run even
+    // when the Settings tab is currently hidden, because onResume() is called right
+    // after the fragment is committed (while the tab is still hidden), and the early
+    // return below would otherwise skip this forever.
+    Fragment parent = getParentFragment();
+    if (parent instanceof SettingsTabFragment && ((SettingsTabFragment) parent).isUpdateAvailable()) {
+      showUpdateAvailable();
+    }
     if (getParentFragment() != null && getParentFragment().isHidden()) return;
     ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
     if (actionBar != null) {
@@ -151,6 +181,23 @@ public class SettingsRootFragment extends CorrectedPreferenceFragment
    */
   private SettingsTabFragment getSettingsTabFragment() {
     return (SettingsTabFragment) requireParentFragment();
+  }
+
+  public void showUpdateAvailable() {
+    Preference pref = findPreference(PREFERENCE_UPDATE_AVAILABLE);
+    if (pref == null || pref.isVisible()) return;
+    SpannableStringBuilder title =
+        new SpannableStringBuilder(getString(R.string.update_available));
+    title.append("  \u25CF"); // ● red dot
+    title.setSpan(
+        new ForegroundColorSpan(
+            androidx.core.content.ContextCompat.getColor(
+                requireContext(), R.color.update_dot_color)),
+        title.length() - 1,
+        title.length(),
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    pref.setTitle(title);
+    pref.setVisible(true);
   }
 
   public void revealAdvancedSettings() {

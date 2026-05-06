@@ -35,6 +35,11 @@ public class SettingsTabFragment extends Fragment {
   private int advancedTapCount = 0;
   private long advancedLastTapTime = 0;
   private TextView settingsTitleView = null;
+  private boolean updateAvailable = false;
+
+  public boolean isUpdateAvailable() {
+    return updateAvailable;
+  }
 
   @Nullable
   @Override
@@ -196,6 +201,15 @@ public class SettingsTabFragment extends Fragment {
     View bottomNav = requireActivity().findViewById(R.id.bottom_navigation);
     if (bottomNav != null) {
       bottomNav.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+  }
+
+  /** Called from ConversationListActivity when an update is detected. */
+  public void showUpdateAvailable() {
+    updateAvailable = true;
+    Fragment f = getChildFragmentManager().findFragmentById(R.id.settings_container);
+    if (f instanceof SettingsRootFragment) {
+      ((SettingsRootFragment) f).showUpdateAvailable();
     }
   }
 }
