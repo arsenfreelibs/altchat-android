@@ -358,6 +358,13 @@ public class AudioView extends FrameLayout {
         updateProgress(state);
         break;
 
+      case IDLE:
+        togglePlayPause(false);
+        this.progress = 0;
+        waveformView.setProgress(0f);
+        updateTimestamp();
+        break;
+
       case LOADING:
       case ERROR:
         // No special handling yet

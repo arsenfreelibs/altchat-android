@@ -328,6 +328,7 @@ public class AudioPlaybackViewModel extends ViewModel {
               } else if (player.getPlaybackState() == Player.STATE_ENDED
                   && !player.hasNextMediaItem()) {
                 mediaController.setPlayWhenReady(false);
+                updateCurrentState(false);
               }
             }
             if (events.containsAny(Player.EVENT_PLAYBACK_PARAMETERS_CHANGED)) {
