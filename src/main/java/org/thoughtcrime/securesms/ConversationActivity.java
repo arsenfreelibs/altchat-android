@@ -706,8 +706,14 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   }
 
   public void setDraftText(String txt) {
-    composeText.setText(txt);
-    composeText.setSelection(composeText.getText().length());
+    try {
+      if (rpc.canSend(rpc.getSelectedAccountId(), chatId)) {
+        composeText.setText(txt);
+        composeText.setSelection(composeText.getText().length());
+      }
+    } catch (RpcException e) {
+      Log.e(TAG, "Rpc error", e);
+    }
   }
 
   public void hideSoftKeyboard() {
@@ -1151,6 +1157,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
       return;
     }
     dcChat = DcHelper.getContext(context).getChat(chatId);
+    attachmentTypeSelector = null;
     recipient = new Recipient(this, dcChat);
     glideRequests = GlideApp.with(this);
 
@@ -1295,6 +1302,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
 
     DcContext dcContext = DcHelper.getContext(context);
     final int currentChatId = dcChat.getId();
+    final boolean canSend = dcChat.canSend();
     Util.runOnAnyBackgroundThread(
         () -> {
           DcMsg msg = null;
@@ -1413,7 +1421,8 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
               }
             }
           } else {
-            dcContext.setDraft(currentChatId, msg);
+            // set or clear draft if user can't send in chat since they can't delete it otherwise
+            dcContext.setDraft(currentChatId, canSend ? msg : null);
           }
           future.set(currentChatId);
         });
