@@ -96,6 +96,13 @@ public class AudioRecorder {
 
             long size = outputFile.length();
 
+            if (size == 0) {
+              Log.w(TAG, "Recording produced empty file, discarding");
+              outputFile.delete();
+              sendToFuture(future, new IOException("Recording produced an empty file"));
+              return;
+            }
+
             // Create blob using synchronous file-based method
             Uri captureUri =
                 blobProvider.create(context, outputFile, MediaUtil.AUDIO_M4A, "voice.m4a", size);
