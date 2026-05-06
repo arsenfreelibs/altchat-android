@@ -15,6 +15,9 @@
 
 -dontwarn com.google.firebase.analytics.connector.AnalyticsConnector
 
+# Keep Google Play In-App Updates classes (gplay flavor only)
+-keep class com.google.android.play.core.** { *; }
+
 # Keep WebRTC classes
 -keep class org.webrtc.** { *; }
 -keepclassmembers class org.webrtc.** { *; }
