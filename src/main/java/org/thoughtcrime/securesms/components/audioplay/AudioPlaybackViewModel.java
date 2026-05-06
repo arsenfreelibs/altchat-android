@@ -365,7 +365,8 @@ public class AudioPlaybackViewModel extends ViewModel {
     if (mediaController.isPlaying()) {
       status = AudioPlaybackState.PlaybackStatus.PLAYING;
     } else if (mediaController.getPlaybackState() == Player.STATE_READY
-        || mediaController.getPlaybackState() == Player.STATE_ENDED) {
+        || (mediaController.getPlaybackState() == Player.STATE_ENDED
+            && mediaController.hasNextMediaItem())) {
       status = AudioPlaybackState.PlaybackStatus.PAUSED;
     } else {
       status = AudioPlaybackState.PlaybackStatus.IDLE;
