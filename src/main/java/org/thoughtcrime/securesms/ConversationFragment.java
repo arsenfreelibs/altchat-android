@@ -911,10 +911,12 @@ public class ConversationFragment extends MessageSelectorFragment {
           setCorrectMenuVisibility(menu);
           ConversationAdaptiveActionsToolbar.adjustMenuActions(
               menu, 10, requireActivity().getWindow().getDecorView().getMeasuredWidth());
-          actionMode.setTitle(String.valueOf(getListAdapter().getSelectedItems().size()));
+          int selectionSize = getListAdapter().getSelectedItems().size();
+          actionMode.setTitle(String.valueOf(selectionSize));
           actionMode.setTitleOptionalHint(
               false); // the title represents important information, also indicating implicitly,
           // more items can be selected
+          ((ConversationActivity) requireActivity()).updateSelectionReplyButton(selectionSize);
         }
       } else if (DozeReminder.isDozeReminderMsg(getContext(), messageRecord)) {
         DozeReminder.dozeReminderTapped(getContext());
@@ -1060,6 +1062,8 @@ public class ConversationFragment extends MessageSelectorFragment {
       setCorrectMenuVisibility(menu);
       ConversationAdaptiveActionsToolbar.adjustMenuActions(
           menu, 10, requireActivity().getWindow().getDecorView().getMeasuredWidth());
+      ((ConversationActivity) requireActivity()).showSelectionActionButtons(true);
+      ((ConversationActivity) requireActivity()).updateSelectionReplyButton(1);
       return true;
     }
 
@@ -1075,6 +1079,7 @@ public class ConversationFragment extends MessageSelectorFragment {
 
       actionMode = null;
       hideAddReactionView();
+      ((ConversationActivity) requireActivity()).showSelectionActionButtons(false);
     }
 
     @Override
@@ -1137,6 +1142,23 @@ public class ConversationFragment extends MessageSelectorFragment {
         return true;
       }
       return false;
+    }
+  }
+
+  public void triggerReplySelected() {
+    Set<DcMsg> selected = getListAdapter().getSelectedItems();
+    if (selected.size() == 1) {
+      handleReplyMessage(getSelectedMessageRecord(selected));
+    }
+    if (actionMode != null) {
+      actionMode.finish();
+    }
+  }
+
+  public void triggerForwardSelected() {
+    handleForwardMessage(getListAdapter().getSelectedItems());
+    if (actionMode != null) {
+      actionMode.finish();
     }
   }
 

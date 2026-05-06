@@ -178,6 +178,8 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   private ConversationFragment fragment;
   private InputAwareLayout container;
   private View composePanel;
+  private View selectionActionButtons;
+  private com.google.android.material.button.MaterialButton selectionReplyButton;
   private ScaleStableImageView backgroundView;
   private MessageRequestsBottomView messageRequestBottomView;
   private ProgressDialog progressDialog;
@@ -1041,6 +1043,16 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     composeText = ViewUtil.findById(this, R.id.embedded_text_editor);
     emojiPickerContainer = ViewUtil.findById(this, R.id.emoji_picker_container);
     composePanel = ViewUtil.findById(this, R.id.bottom_panel);
+    selectionActionButtons = ViewUtil.findById(this, R.id.selection_action_buttons);
+    selectionReplyButton = selectionActionButtons.findViewById(R.id.selection_reply_button);
+    selectionReplyButton.setOnClickListener(v -> {
+      ConversationFragment frag = (ConversationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_content);
+      if (frag != null) frag.triggerReplySelected();
+    });
+    selectionActionButtons.findViewById(R.id.selection_forward_button).setOnClickListener(v -> {
+      ConversationFragment frag = (ConversationFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_content);
+      if (frag != null) frag.triggerForwardSelected();
+    });
     container = ViewUtil.findById(this, R.id.layout_container);
     quickAttachmentToggle = ViewUtil.findById(this, R.id.quick_attachment_toggle);
     inputPanel = ViewUtil.findById(this, R.id.bottom_panel);
@@ -1186,6 +1198,22 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
       }
       */
     }
+  }
+
+  public void showSelectionActionButtons(boolean show) {
+    if (show) {
+      composePanel.setVisibility(View.GONE);
+      selectionActionButtons.setVisibility(View.VISIBLE);
+    } else {
+      selectionActionButtons.setVisibility(View.GONE);
+      setComposePanelVisibility(false);
+    }
+  }
+
+  public void updateSelectionReplyButton(int selectionCount) {
+    boolean singleSelected = selectionCount == 1;
+    selectionReplyButton.setEnabled(singleSelected);
+    selectionReplyButton.setAlpha(singleSelected ? 1f : 0.4f);
   }
 
   //////// Helper Methods
