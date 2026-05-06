@@ -350,8 +350,6 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
 
     DcHelper.maybeShowMigrationError(this);
 
-    AppUpdateCheckerFactory.create(this).checkForUpdate(() -> showUpdateAvailableBadge());
-
     String rawQrString = getIntent().getStringExtra(FROM_WELCOME_RAW_QR);
     // Launch chat directly, if coming from onboarding with a join chat/group QR
     if (rawQrString != null) {
@@ -643,6 +641,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     invalidateOptionsMenu();
     DirectShareUtil.triggerRefreshDirectShare(this);
     updateChatsTabBadge();
+    AppUpdateCheckerFactory.create(this).checkForUpdate(() -> showUpdateAvailableBadge());
     if (DcHelper.getContext(this).isSendingLocationsToChat(0)) {
       LocationStreamingService.ensureRunning(this);
     }
