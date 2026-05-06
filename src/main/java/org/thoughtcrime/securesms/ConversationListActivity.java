@@ -82,6 +82,7 @@ import org.thoughtcrime.securesms.search.SearchFragment;
 import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme;
 import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.Prefs;
+import org.thoughtcrime.securesms.util.update.AppUpdateCheckerFactory;
 import org.thoughtcrime.securesms.util.SaveAttachmentTask;
 import org.thoughtcrime.securesms.util.ScreenLockUtil;
 import org.thoughtcrime.securesms.util.SendRelayedMessageUtil;
@@ -349,6 +350,8 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
 
     DcHelper.maybeShowMigrationError(this);
 
+    AppUpdateCheckerFactory.create(this).checkForUpdate(() -> showUpdateAvailableBadge());
+
     String rawQrString = getIntent().getStringExtra(FROM_WELCOME_RAW_QR);
     // Launch chat directly, if coming from onboarding with a join chat/group QR
     if (rawQrString != null) {
@@ -531,6 +534,17 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
       badge.setBackgroundColor(ContextCompat.getColor(this, R.color.unread_count));
     } else {
       bottomNav.removeBadge(R.id.nav_chats);
+    }
+  }
+
+  private void showUpdateAvailableBadge() {
+    BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+    if (bottomNav == null) return;
+    BadgeDrawable badge = bottomNav.getOrCreateBadge(R.id.nav_settings);
+    badge.setVisible(true);
+    badge.clearNumber();
+    if (settingsTabFragment != null) {
+      settingsTabFragment.showUpdateAvailable();
     }
   }
 
