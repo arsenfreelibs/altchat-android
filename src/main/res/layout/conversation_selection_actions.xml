@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/selection_action_buttons"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="?attr/input_panel_bg_color"
+    android:paddingTop="6dp"
+    android:paddingBottom="6dp"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/selection_reply_button"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/notify_reply_button"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textAllCaps="false"
+        app:icon="@drawable/ic_selection_reply"
+        app:iconPadding="6dp"
+        app:iconTint="?android:attr/textColorPrimary"
+        app:iconGravity="textEnd" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/selection_forward_button"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/forward"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textAllCaps="false"
+        app:icon="@drawable/ic_selection_forward"
+        app:iconPadding="6dp"
+        app:iconTint="?android:attr/textColorPrimary"
+        app:iconGravity="textStart" />
+
+</LinearLayout>

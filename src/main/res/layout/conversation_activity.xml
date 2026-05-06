@@ -64,6 +64,13 @@
 
             <include layout="@layout/conversation_input_panel" />
 
+            <include
+                android:id="@+id/selection_action_buttons"
+                layout="@layout/conversation_selection_actions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
             <FrameLayout
                 android:id="@+id/emoji_picker_container"
                 android:layout_width="match_parent"
