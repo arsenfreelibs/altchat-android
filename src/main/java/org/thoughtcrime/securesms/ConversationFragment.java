@@ -32,6 +32,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
@@ -100,6 +101,10 @@ public class ConversationFragment extends MessageSelectorFragment {
   private View floatingLocationButton;
   private View bottomDivider;
   private AddReactionView addReactionView;
+  private MessageContextOverlay messageContextOverlay;
+  private float lastTouchX;
+  private float lastTouchY;
+  private int contextOverlaySession;
   private TextView noMessageTextView;
   private Timer reloadTimer;
 
@@ -143,6 +148,7 @@ public class ConversationFragment extends MessageSelectorFragment {
     scrollToBottomButton = ViewUtil.findById(view, R.id.scroll_to_bottom_button);
     floatingLocationButton = ViewUtil.findById(view, R.id.floating_location_button);
     addReactionView = ViewUtil.findById(view, R.id.add_reaction_view);
+    messageContextOverlay = ViewUtil.findById(view, R.id.message_context_overlay);
     noMessageTextView = ViewUtil.findById(view, R.id.no_messages_text_view);
     bottomDivider = ViewUtil.findById(view, R.id.bottom_divider);
 
@@ -158,6 +164,48 @@ public class ConversationFragment extends MessageSelectorFragment {
 
     new ConversationItemSwipeCallback(msg -> actionMode == null, this::handleReplyMessage)
         .attachToRecyclerView(list);
+
+    list.addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener() {
+      @Override
+      public boolean onInterceptTouchEvent(RecyclerView rv, android.view.MotionEvent e) {
+        if (e.getAction() == android.view.MotionEvent.ACTION_DOWN) {
+          lastTouchX = e.getX();
+          lastTouchY = e.getY();
+          if (messageContextOverlay.isVisible() || addReactionView.getVisibility() == View.VISIBLE) {
+            float rawX = e.getRawX();
+            float rawY = e.getRawY();
+
+            boolean insideActions = false;
+            if (messageContextOverlay.isVisible()) {
+              int[] loc = new int[2];
+              messageContextOverlay.getLocationInWindow(loc);
+              insideActions =
+                  rawX >= loc[0]
+                      && rawX <= loc[0] + messageContextOverlay.getWidth()
+                      && rawY >= loc[1]
+                      && rawY <= loc[1] + messageContextOverlay.getHeight();
+            }
+
+            boolean insideReactions = false;
+            if (addReactionView.getVisibility() == View.VISIBLE) {
+              int[] loc = new int[2];
+              addReactionView.getLocationInWindow(loc);
+              insideReactions =
+                  rawX >= loc[0]
+                      && rawX <= loc[0] + addReactionView.getWidth()
+                      && rawY >= loc[1]
+                      && rawY <= loc[1] + addReactionView.getHeight();
+            }
+
+            if (!insideActions && !insideReactions) {
+              hideAddReactionView();
+              return true;
+            }
+          }
+        }
+        return false;
+      }
+    });
 
     // setLayerType() is needed to allow larger items (long texts in our case)
     // with hardware layers, drawing may result in errors as "OpenGLRenderer: Path too large to be
@@ -313,7 +361,20 @@ public class ConversationFragment extends MessageSelectorFragment {
   }
 
   public void hideAddReactionView() {
+    contextOverlaySession++;
     addReactionView.hide();
+    messageContextOverlay.hide();
+  }
+
+  public boolean hideContextMenusIfVisible() {
+    boolean reactionVisible = addReactionView != null && addReactionView.getVisibility() == View.VISIBLE;
+    boolean overlayVisible = messageContextOverlay != null && messageContextOverlay.isVisible();
+    if (!reactionVisible && !overlayVisible) {
+      return false;
+    }
+
+    hideAddReactionView();
+    return true;
   }
 
   private void initializeResources() {
@@ -827,6 +888,7 @@ public class ConversationFragment extends MessageSelectorFragment {
       markseenDebouncer.publish(() -> manageMessageSeenState());
 
       ConversationFragment.this.addReactionView.move(dy);
+      ConversationFragment.this.messageContextOverlay.move(dy);
     }
 
     @Override
@@ -898,7 +960,7 @@ public class ConversationFragment extends MessageSelectorFragment {
   private class ConversationFragmentItemClickListener implements ItemClickListener {
 
     @Override
-    public void onItemClick(DcMsg messageRecord) {
+    public void onItemClick(DcMsg messageRecord, View view) {
       if (actionMode != null) {
         ((ConversationAdapter) list.getAdapter()).toggleSelection(messageRecord);
         list.getAdapter().notifyDataSetChanged();
@@ -950,6 +1012,62 @@ public class ConversationFragment extends MessageSelectorFragment {
             Intent intent = new Intent(getActivity(), EditRelayActivity.class);
             intent.putExtra(EditRelayActivity.EXTRA_ADDR, self_mail);
             startActivity(intent);
+          } else {
+            View anchorView = view != null ? view : list;
+
+            hideAddReactionView();
+            final int session = contextOverlaySession;
+            final DcMsg finalMsg = messageRecord;
+            final View finalAnchor = anchorView;
+            addReactionView.showContextMode(
+                finalMsg, finalAnchor, ConversationFragment.this::hideAddReactionView);
+            // Wrap in post() so addReactionView layout is complete before we read its position.
+            addReactionView.post(() -> {
+              if (session != contextOverlaySession) {
+                return;
+              }
+              int minTop = 0;
+              int gapPx = (int) dpToPx(8);
+              if (addReactionView.getVisibility() == View.VISIBLE) {
+                int reactionTop = getTopMargin(addReactionView);
+                minTop = reactionTop + addReactionView.getHeight() + gapPx;
+              }
+              messageContextOverlay.show(finalMsg, finalAnchor, minTop, ConversationFragment.this);
+
+              // If bottom-clamp moves actions up, shift reactions up to preserve exact 8dp gap.
+              final int desiredMinTop = minTop;
+              messageContextOverlay.post(() -> {
+                if (session != contextOverlaySession) {
+                  return;
+                }
+                if (desiredMinTop <= 0
+                    || addReactionView.getVisibility() != View.VISIBLE
+                    || !messageContextOverlay.isVisible()) {
+                  return;
+                }
+
+                int overlayTop = getTopMargin(messageContextOverlay);
+                if (overlayTop >= desiredMinTop) {
+                  return;
+                }
+
+                int reactionTop = getTopMargin(addReactionView);
+                int delta = desiredMinTop - overlayTop;
+                int minReactionTop = (int) dpToPx(8);
+                int newReactionTop = Math.max(minReactionTop, reactionTop - delta);
+                ViewUtil.setTopMargin(addReactionView, newReactionTop);
+
+                int adjustedMinTop = newReactionTop + addReactionView.getHeight() + gapPx;
+                if (overlayTop < adjustedMinTop) {
+                  View parent = (View) messageContextOverlay.getParent();
+                  int topBound = (int) dpToPx(8);
+                  int maxOverlayTop =
+                      parent.getHeight() - messageContextOverlay.getHeight() - topBound;
+                  int newOverlayTop = Math.max(topBound, Math.min(adjustedMinTop, maxOverlayTop));
+                  ViewUtil.setTopMargin(messageContextOverlay, newOverlayTop);
+                }
+              });
+            });
           }
         }
       }
@@ -957,20 +1075,28 @@ public class ConversationFragment extends MessageSelectorFragment {
 
     @Override
     public void onItemLongClick(DcMsg messageRecord, View view) {
+      hideAddReactionView();
       if (actionMode == null) {
         ((ConversationAdapter) list.getAdapter()).toggleSelection(messageRecord);
         list.getAdapter().notifyDataSetChanged();
 
         actionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(actionModeCallback);
-        addReactionView.show(
-            messageRecord,
-            view,
-            () -> {
-              if (actionMode != null) {
-                actionMode.finish();
-              }
-            });
       }
+    }
+
+    private float dpToPx(float dp) {
+      return dp * requireContext().getResources().getDisplayMetrics().density;
+    }
+
+    private int getTopMargin(View view) {
+      if (view == null) {
+        return 0;
+      }
+      ViewGroup.LayoutParams params = view.getLayoutParams();
+      if (params instanceof MarginLayoutParams) {
+        return ((MarginLayoutParams) params).topMargin;
+      }
+      return (int) view.getY();
     }
 
     private void jumpToOriginal(DcMsg original) {
@@ -1160,6 +1286,14 @@ public class ConversationFragment extends MessageSelectorFragment {
     if (actionMode != null) {
       actionMode.finish();
     }
+  }
+
+  public void forwardSingleMessage(DcMsg msg) {
+    handleForwardMessage(java.util.Collections.singleton(msg));
+  }
+
+  public void deleteSingleMessage(DcMsg msg, int chatId) {
+    handleDeleteMessages(chatId, java.util.Collections.singleton(msg));
   }
 
   @Override

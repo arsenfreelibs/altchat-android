@@ -22,6 +22,7 @@ import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.util.ViewUtil;
 
 public class AddReactionView extends LinearLayout {
+
   private AppCompatTextView[] defaultReactionViews;
   private AppCompatTextView anyReactionView;
   private boolean anyReactionClearsReaction;
@@ -30,6 +31,7 @@ public class AddReactionView extends LinearLayout {
   private Rpc rpc;
   private DcMsg msgToReactTo;
   private AddReactionListener listener;
+  private int contextModeGeneration;
 
   public AddReactionView(Context context) {
     super(context);
@@ -109,7 +111,84 @@ public class AddReactionView extends LinearLayout {
     setVisibility(View.VISIBLE);
   }
 
+  /**
+   * Show for short-tap context mode. Positions using screen-width fractions (deferred via post()
+   * so that getWidth()/getHeight() are valid) so that both this bar and the actions overlay are
+   * consistently aligned with the message bubble — matching MessageContextOverlay.position().
+   */
+  public void showContextMode(DcMsg msgToReactTo, View itemView, AddReactionListener listener) {
+    init();
+
+    if (msgToReactTo.isInfo() || !dcContext.getChat(msgToReactTo.getChatId()).canSend()) {
+      return;
+    }
+
+    this.msgToReactTo = msgToReactTo;
+    this.listener = listener;
+
+    final String existingReaction = getSelfReaction();
+    boolean existingHilited = false;
+    for (AppCompatTextView rv : defaultReactionViews) {
+      if (rv.getText().toString().equals(existingReaction)) {
+        rv.setBackground(
+            ContextCompat.getDrawable(context, R.drawable.reaction_pill_background_selected));
+        existingHilited = true;
+      } else {
+        rv.setBackground(null);
+      }
+    }
+
+    if (existingReaction != null && !existingHilited) {
+      anyReactionView.setText(existingReaction);
+      anyReactionView.setBackground(
+          ContextCompat.getDrawable(context, R.drawable.reaction_pill_background_selected));
+      anyReactionClearsReaction = true;
+    } else {
+      anyReactionView.setText("⋯");
+      anyReactionView.setBackground(null);
+      anyReactionClearsReaction = false;
+    }
+
+    setVisibility(View.VISIBLE);
+    final int generation = ++contextModeGeneration;
+    post(
+        () -> {
+          if (generation != contextModeGeneration
+              || getVisibility() != View.VISIBLE
+              || this.msgToReactTo == null
+              || this.msgToReactTo.getId() != msgToReactTo.getId()) {
+            return;
+          }
+          positionContextMode(msgToReactTo, itemView);
+        });
+  }
+
+  private void positionContextMode(DcMsg msg, View itemView) {
+    View container = (View) getParent();
+    int parentW = container.getWidth();
+    int barW = getWidth();
+    int barH = getHeight();
+
+    // Horizontal: 18% margin from the respective edge — same fraction as MessageContextOverlay.
+    // Use barH as minimum margin so the bar never overlaps the very edge on narrow screens.
+    int hMargin = Math.max((int) (parentW * 0.18f), barH);
+    int x;
+    if (msg.isOutgoing()) {
+      x = parentW - barW - hMargin;
+    } else {
+      x = hMargin;
+    }
+    x = Math.max(0, Math.min(x, parentW - barW));
+    ViewUtil.setLeftMargin(this, x);
+
+    // Vertical: sit just above the item view, clamped 8dp from top.
+    float dp8 = 8 * context.getResources().getDisplayMetrics().density;
+    int y = Math.max((int) dp8, (int) itemView.getY() - barH);
+    ViewUtil.setTopMargin(this, y);
+  }
+
   public void hide() {
+    contextModeGeneration++;
     setVisibility(View.GONE);
   }
 

@@ -123,4 +123,88 @@
             style="@style/AddReaction" />
     </org.thoughtcrime.securesms.reactions.AddReactionView>
 
+    <!-- Telegram-style actions overlay (short tap) -->
+    <org.thoughtcrime.securesms.MessageContextOverlay
+        android:id="@+id/message_context_overlay"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="220dp"
+        android:background="@drawable/popup_menu_background"
+        android:elevation="8dp">
+
+        <!-- Action items -->
+        <TextView
+            android:id="@+id/ctx_action_reply"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:drawablePadding="16dp"
+            android:textSize="15sp"
+            android:visibility="gone"
+            android:background="?attr/selectableItemBackground"
+            android:drawableStart="@drawable/ic_selection_reply"
+            android:drawableTint="?android:attr/textColorPrimary"
+            android:text="@string/notify_reply_button" />
+
+        <TextView
+            android:id="@+id/ctx_action_copy"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:drawablePadding="16dp"
+            android:textSize="15sp"
+            android:background="?attr/selectableItemBackground"
+            android:drawableStart="@drawable/ic_content_copy_white_24dp"
+            android:drawableTint="?android:attr/textColorPrimary"
+            android:text="@string/menu_copy_text_to_clipboard" />
+
+        <TextView
+            android:id="@+id/ctx_action_forward"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:drawablePadding="16dp"
+            android:textSize="15sp"
+            android:background="?attr/selectableItemBackground"
+            android:drawableStart="@drawable/ic_selection_forward"
+            android:drawableTint="?android:attr/textColorPrimary"
+            android:text="@string/forward" />
+
+        <TextView
+            android:id="@+id/ctx_action_save"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:drawablePadding="16dp"
+            android:textSize="15sp"
+            android:visibility="gone"
+            android:background="?attr/selectableItemBackground" />
+
+        <TextView
+            android:id="@+id/ctx_action_delete"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:drawablePadding="16dp"
+            android:textSize="15sp"
+            android:textColor="#ffff0c16"
+            android:background="?attr/selectableItemBackground"
+            android:drawableStart="@drawable/ic_delete_white_24dp"
+            android:drawableTint="#ffff0c16"
+            android:text="@string/delete" />
+
+    </org.thoughtcrime.securesms.MessageContextOverlay>
+
 </FrameLayout>
