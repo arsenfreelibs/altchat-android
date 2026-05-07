@@ -274,6 +274,10 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
             new OnBackPressedCallback(true) {
               @Override
               public void handleOnBackPressed() {
+                if (fragment != null && fragment.hideContextMenusIfVisible()) {
+                  return;
+                }
+
                 if (container.isInputOpen()) {
                   container.hideCurrentInput(composeText);
                 } else {
