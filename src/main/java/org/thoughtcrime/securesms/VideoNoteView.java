@@ -24,10 +24,14 @@ import androidx.media3.common.MediaItem;
 import androidx.media3.common.Player;
 import androidx.media3.exoplayer.ExoPlayer;
 
+import chat.delta.rpc.RpcException;
+import chat.delta.rpc.types.Reaction;
+import chat.delta.rpc.types.Reactions;
 import com.b44t.messenger.DcChat;
 import com.b44t.messenger.DcContact;
 import com.b44t.messenger.DcMsg;
 
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,6 +43,7 @@ import org.thoughtcrime.securesms.components.audioplay.AudioPlaybackViewModel;
 import org.thoughtcrime.securesms.components.audioplay.AudioView;
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.mms.GlideRequests;
+import org.thoughtcrime.securesms.reactions.ReactionsConversationView;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.util.ViewUtil;
 
@@ -72,6 +77,8 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
   private TextView senderNameView;
   private TextView durationView;
   private ConversationItemFooter footer;
+  private ReactionsConversationView reactionsOutgoingView;
+  private ReactionsConversationView reactionsIncomingView;
 
   private @Nullable
   Thread thumbnailThread;
@@ -90,6 +97,9 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
   BindableConversationItem.EventListener eventListener;
   private @Nullable
   OnClickListener adapterClickListener;
+  private float lastTapX = Float.NaN;
+  private float lastTapY = Float.NaN;
+  private final Runnable clearPulseSelectionRunnable = () -> setSelected(false);
   private @NonNull
   Set<DcMsg> batchSelected = new java.util.HashSet<>();
 
@@ -118,18 +128,48 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
     senderNameView = findViewById(R.id.video_note_sender_name);
     durationView = findViewById(R.id.video_note_duration);
     footer = findViewById(R.id.video_note_footer);
+    reactionsOutgoingView = findViewById(R.id.video_note_reactions_outgoing);
+    reactionsIncomingView = findViewById(R.id.video_note_reactions_incoming);
 
     progressRing.configureAsPlaybackRing();
+    setBackgroundResource(R.drawable.conversation_item_background);
 
-    // Internal click: tap to play/pause, or pass to adapter in batch-select mode.
+    // Track touch point so click can distinguish circle taps from cell taps.
+    super.setOnTouchListener(
+        (v, event) -> {
+          switch (event.getActionMasked()) {
+            case android.view.MotionEvent.ACTION_DOWN:
+              lastTapX = event.getX();
+              lastTapY = event.getY();
+              break;
+            case android.view.MotionEvent.ACTION_CANCEL:
+              lastTapX = Float.NaN;
+              lastTapY = Float.NaN;
+              break;
+            default:
+              break;
+          }
+          return false;
+        });
+
+    // In normal mode: circle tap toggles playback, outside-circle tap opens adapter context.
+    // In batch-select mode: any tap is passed to adapter selection handling.
     super.setOnClickListener(
-      v -> {
-        if (!batchSelected.isEmpty()) {
-          if (adapterClickListener != null) adapterClickListener.onClick(v);
-        } else {
-          togglePlayback();
+        v -> {
+          if (!batchSelected.isEmpty()) {
+            if (adapterClickListener != null) {
+              adapterClickListener.onClick(v);
+            }
+            return;
+          }
+
+          if (isLastTapInsideCircle()) {
+            togglePlayback();
+          } else if (adapterClickListener != null) {
+            adapterClickListener.onClick(v);
+          }
         }
-      });
+    );
   }
 
   @Override
@@ -150,6 +190,7 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
     AudioView.OnActionListener audioPlayPauseListener) {
     this.messageRecord = messageRecord;
     this.batchSelected = batchSelected;
+    applyInteractionState(messageRecord, pulseHighlight);
 
     // Position circle: right for outgoing, left for incoming.
     // Footer always appears at bottom-right of the circle (same visual position for both directions).
@@ -232,6 +273,8 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
     durationView.setLayoutParams(dlp);
     durationView.setVisibility(View.GONE);
 
+    setReactions(messageRecord);
+
     // Reset playback state on rebind
     stopPlayback();
     thumbnailView.setVisibility(View.VISIBLE);
@@ -245,6 +288,84 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
     } else {
       setAlpha(1f);
     }
+  }
+
+  private void applyInteractionState(@NonNull DcMsg messageRecord, boolean pulseHighlight) {
+    removeCallbacks(clearPulseSelectionRunnable);
+    if (batchSelected.contains(messageRecord)) {
+      setBackgroundResource(R.drawable.conversation_item_background);
+      setSelected(true);
+    } else if (pulseHighlight) {
+      setBackgroundResource(R.drawable.conversation_item_background_animated);
+      setSelected(true);
+      postDelayed(clearPulseSelectionRunnable, 500L);
+    } else {
+      setBackgroundResource(R.drawable.conversation_item_background);
+      setSelected(false);
+    }
+  }
+
+  private boolean isLastTapInsideCircle() {
+    if (Float.isNaN(lastTapX) || Float.isNaN(lastTapY)) {
+      // Non-touch click path (e.g. accessibility): preserve previous play/pause default.
+      return true;
+    }
+
+    return lastTapX >= circleContainer.getLeft()
+        && lastTapX <= circleContainer.getRight()
+        && lastTapY >= circleContainer.getTop()
+        && lastTapY <= circleContainer.getBottom();
+  }
+
+  private void setReactions(@NonNull DcMsg current) {
+    ReactionsConversationView active =
+        current.isOutgoing() ? reactionsOutgoingView : reactionsIncomingView;
+    ReactionsConversationView inactive =
+        current.isOutgoing() ? reactionsIncomingView : reactionsOutgoingView;
+
+    inactive.clear();
+    inactive.setVisibility(View.GONE);
+    active.setVisibility(View.VISIBLE);
+
+    try {
+      Reactions reactions =
+          DcHelper.getRpc(getContext())
+              .getMessageReactions(DcHelper.getContext(getContext()).getAccountId(), current.getId());
+      List<Reaction> reactionList = reactions != null ? reactions.reactions : null;
+      if (reactionList == null) {
+        active.clear();
+        updateBottomMetaOffset(false);
+      } else {
+        active.setReactions(reactionList);
+        updateBottomMetaOffset(!reactionList.isEmpty());
+        active.setOnClickListener(
+            view -> {
+              if (eventListener != null && batchSelected.isEmpty()) {
+                eventListener.onReactionClicked(current);
+              } else if (adapterClickListener != null) {
+                adapterClickListener.onClick(VideoNoteView.this);
+              } else {
+                performClick();
+              }
+            });
+      }
+    } catch (RpcException e) {
+      active.clear();
+      updateBottomMetaOffset(false);
+    }
+  }
+
+  private void updateBottomMetaOffset(boolean hasReactions) {
+    int base = (int) (8 * getResources().getDisplayMetrics().density);
+    int extra = hasReactions ? (int) (18 * getResources().getDisplayMetrics().density) : 0;
+
+    FrameLayout.LayoutParams footerLp = (FrameLayout.LayoutParams) footer.getLayoutParams();
+    footerLp.bottomMargin = base + extra;
+    footer.setLayoutParams(footerLp);
+
+    FrameLayout.LayoutParams durationLp = (FrameLayout.LayoutParams) durationView.getLayoutParams();
+    durationLp.bottomMargin = base + extra;
+    durationView.setLayoutParams(durationLp);
   }
 
   @Override

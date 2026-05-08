@@ -10,6 +10,7 @@
 -->
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="200dp">
 
@@ -101,5 +102,23 @@
       android:textColor="#FFFFFFFF"
       android:textSize="12sp"
       android:visibility="gone" />
+
+  <org.thoughtcrime.securesms.reactions.ReactionsConversationView
+      android:id="@+id/video_note_reactions_outgoing"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom|end"
+      android:layout_marginBottom="-2dp"
+      android:orientation="horizontal"
+      app:message_type="outgoing" />
+
+  <org.thoughtcrime.securesms.reactions.ReactionsConversationView
+      android:id="@+id/video_note_reactions_incoming"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom|start"
+      android:layout_marginBottom="-2dp"
+      android:orientation="horizontal"
+      app:message_type="incoming" />
 
 </FrameLayout>
