@@ -84,7 +84,8 @@
 ```
 
 Бэкап **не шифруется на клиенте**. На сервер отправляется `.tar` как есть.
-Защита — TLS на транспорте + изоляция blob'ов в объектном хранилище.
+Защита — TLS на транспорте + одноразовый recovery-token (scope=`backup:download`)
+для скачивания.
 
 ### Technical Approach
 
@@ -125,14 +126,19 @@
 
 #### 1.2 Prompt email раз в сутки (Фаза 1)
 
-- При старте приложения проверяем: `email на аккаунте == null && now - last_prompt_at >= 24ч`.
-- Если да — показываем `EmailPromptDialog` с полем ввода email.
-- Кнопки: «Указать», «Напомнить позже», «Не показывать снова».
+- При старте приложения, если `prompt_disabled = false` и `now - last_prompt_at >= 24ч`,
+  клиент дёргает `GET /v1/users/me` и проверяет поле `email`:
+  - `email == null` → email на аккаунте — дефолт-заглушка (`email_is_default=TRUE`
+    на сервере). Показываем `EmailPromptDialog` и обновляем `last_prompt_at`.
+  - `email != null` → реальный email задан, prompt не показываем.
+- `EmailPromptDialog` имеет кнопки: «Указать», «Напомнить позже», «Не показывать снова».
 - При «Указать»:
   1. `PUT /v1/users/me/email {email}` → сервер шлёт код, отвечает `202`;
   2. UI открывает `EmailVerifyActivity` с полем ввода кода;
-  3. `POST /v1/users/me/email/verify {code}` → `200`, на аккаунте сохраняется email.
-- «Не показывать снова» сохраняет флаг навсегда (можно сбросить из настроек
+  3. `POST /v1/users/me/email/verify {email, code}` → `200`, на аккаунте сохраняется email.
+  4. После успешного verify — повторно дёрнуть `GET /v1/users/me` и закэшировать
+     реальный email в `AltAccount`, чтобы prompt больше не показывался.
+- «Не показывать снова» ставит `prompt_disabled = true` (сбрасывается из
   `BackupSettingsFragment`).
 
 #### 1.3 Восстановление на чистом приложении (Фаза 1)
@@ -174,8 +180,12 @@
 | `last_prompt_at` | Long | unix-ms последнего показа `EmailPromptDialog` |
 | `prompt_disabled` | Boolean | пользователь нажал «не показывать снова» |
 
-Email на аккаунте берётся из существующего `AltAccount`/`AltPrefs` (ANDROID-001) —
-здесь не дублируется.
+Email на аккаунте берётся вызовом `GET /v1/users/me` (см. §3.1.9). Сервер
+возвращает `email: null`, если на аккаунте стоит дефолт-заглушка
+(`email_is_default=TRUE` в БД), и реальный email — после успешного verify.
+Кэш email хранится в `AltAccount`/`AltPrefs` (ANDROID-001) и обновляется:
+- при старте приложения (если кэш старше 24 ч);
+- сразу после успешного `POST /v1/users/me/email/verify`.
 
 #### 2.2 BackupUploadWorker
 
@@ -296,11 +306,13 @@ curl -s -X PUT $BASE/v1/users/me/email \
 ##### 3.1.5 `POST /v1/users/me/email/verify` — подтвердить кодом
 
 - **Auth**: JWT
-- **Body**: `{"code":"123456"}`
+- **Body**: `{"email":"alice@example.com","code":"123456"}` — клиент шлёт оба поля
+  (Android уже знает, какой email задавал в `PUT /v1/users/me/email`).
 - При успехе `pending` email становится текущим.
 - **Ответы**:
   - `200 {"email":"alice@example.com"}`
   - `400 {"error":"invalid_or_expired_code"}`
+  - `409 {"error":"email_taken"}` — email был занят другим аккаунтом между PUT и verify.
 
 ##### 3.1.6 `POST /v1/backup/recovery/request` — запросить код на чистом устройстве
 
@@ -334,55 +346,21 @@ curl -s -X POST $BASE/v1/backup/recovery/request \
 - **Один токен — одно успешное скачивание.** После 200 токен инвалидируется.
 - `401` если токен не того scope или просрочен.
 
-#### 3.2 Модель данных (Backend)
+##### 3.1.9 `GET /v1/users/me` — инфо о текущем юзере
 
-```sql
-CREATE TABLE user_backups (
-    user_id        BIGINT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
-    blob_path      TEXT NOT NULL,            -- путь в S3/MinIO/диске
-    blob_size      BIGINT NOT NULL,
-    sha256         TEXT NOT NULL,
-    created_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
-    updated_at     TIMESTAMPTZ NOT NULL DEFAULT now()
-);
+- **Auth**: JWT
+- **Поведение**: возвращает `username` и `email`. Сервер маппит
+  `email_is_default=TRUE` (дефолт-заглушка) в `email: null`. Реальный email
+  отдаётся как есть.
+- **Ответы**:
+  - `200 {"username":"alice","email":"alice@example.com"}` — реальный email задан.
+  - `200 {"username":"alice","email":null}` — дефолт-заглушка. По этому полю
+    Android решает показывать `EmailPromptDialog` (см. §1.2).
+  - `401`
 
--- Коды восстановления бэкапа. Отдельно от кодов входа в аккаунт, чтобы они
--- могли существовать одновременно и не пересекаться по scope.
-CREATE TABLE backup_recovery_codes (
-    user_id      BIGINT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
-    code_hash    TEXT NOT NULL,
-    expires_at   TIMESTAMPTZ NOT NULL,
-    attempts     INT NOT NULL DEFAULT 0,
-    created_at   TIMESTAMPTZ NOT NULL DEFAULT now()
-);
-
--- Если в users пока нет колонок для подтверждения email — добавить:
-ALTER TABLE users
-    ADD COLUMN email                TEXT NULL,
-    ADD COLUMN email_pending        TEXT NULL,
-    ADD COLUMN email_code_hash      TEXT NULL,
-    ADD COLUMN email_code_expires_at TIMESTAMPTZ NULL;
-CREATE UNIQUE INDEX idx_users_email ON users(email) WHERE email IS NOT NULL;
+```bash
+curl -s $BASE/v1/users/me -H "Authorization: Bearer $TOKEN"
 ```
-
-> Если в текущей схеме `users.email` уже есть — переиспользовать его.
-> Финальный набор колонок согласовать с владельцем модуля Users.
-
-Сами blob'ы хранить **не в Postgres**, а в объектном сторадже (S3/MinIO),
-имена — `backups/<user_uuid>.tar`.
-
-#### 3.3 Хранение и удаление
-
-- При `POST /v1/backup` старый blob атомарно заменяется новым (write to
-  `<user_uuid>.tar.tmp` → rename).
-- При удалении пользователя — каскадное удаление blob'а из объектного хранилища
-  (отдельным джобом, чтобы не блокировать запрос).
-- Доступ к blob'ам — только админ-роль и владелец (через `recoveryToken`).
-
-#### 3.4 Логирование и аудит
-
-- Каждый upload/delete/recovery-issue логируется с user_id, ts, IP, user-agent, size.
-- В логах **никогда** не дампить blob, только метаданные.
 
 ---
 
@@ -395,7 +373,7 @@ CREATE UNIQUE INDEX idx_users_email ON users(email) WHERE email IS NOT NULL;
 | Восстановление прерывается на середине загрузки | Файл пишется в `cacheDir/restore.tar.part`. После полной загрузки и проверки sha256 — rename в `restore.tar`, дальше импорт. Незавершённый `.part` чистится при следующем старте. |
 | Двое устройств одного аккаунта | Пока поддерживаем один профиль = одно устройство (multi-device — отдельный тикет). При импорте на втором устройстве — overwrite поведения у ядра (`import_backup` стирает текущий профиль, [imex.rs:194-195](../jni/deltachat-core-rust/src/imex.rs#L194-L195)). |
 | Blob есть, бэкап версии новее ядра | Серверу всё равно. Клиент при импорте получит ошибку *«profile is from a newer version»* (см. [imex.rs:792-799](../jni/deltachat-core-rust/src/imex.rs#L792-L799)) — обновить приложение и повторить. |
-| Конфликт кодов с кодами входа в аккаунт | Используются **разные таблицы** (`backup_recovery_codes` vs существующие). Один и тот же email может одновременно иметь активный код входа и активный backup-recovery-код. |
+| Конфликт кодов с кодами входа в аккаунт | На сервере коды разделяются по `Purpose` (`backup_recovery` vs прочие). Для клиента это прозрачно: один и тот же email может одновременно иметь активный код входа и активный backup-recovery-код. |
 
 ---
 
@@ -403,25 +381,18 @@ CREATE UNIQUE INDEX idx_users_email ON users(email) WHERE email IS NOT NULL;
 
 **Phase 1 — MVP (DEV-57):**
 
-Backend:
-1. Миграция БД (таблица `user_backups`, `backup_recovery_codes`, при необходимости — колонки `email*` в `users`).
-2. Эндпоинты 3.1.1–3.1.3 (upload/get/delete).
-3. Эндпоинты 3.1.4–3.1.5 (установка email + verify).
-4. Эндпоинты 3.1.6–3.1.8 (recovery flow).
-5. Тесты эндпоинтов.
+Backend (см. отдельный тикет в `backend-api`): эндпоинты §3.1.1–3.1.8.
 
 Android:
-6. `CloudBackupApi` (DTO + OkHttp).
-7. `BackupUploadWorker` (только one-time запуск после регистрации).
-8. `EmailPromptDialog` + `EmailVerifyActivity` + интеграция в `ApplicationContext.onCreate`.
-9. `BackupSettingsFragment` (статус, ручной upload, удаление).
-10. `CloudRestoreActivity` + кнопка «Restore from cloud» на `WelcomeActivity`.
+1. `CloudBackupApi` (DTO + OkHttp).
+2. `BackupUploadWorker` (только one-time запуск после регистрации).
+3. `EmailPromptDialog` + `EmailVerifyActivity` + интеграция в `ApplicationContext.onCreate`.
+4. `BackupSettingsFragment` (статус, ручной upload, удаление).
+5. `CloudRestoreActivity` + кнопка «Restore from cloud» на `WelcomeActivity`.
 
 **Phase 2 — Periodic update (отдельный тикет):**
 
-11. Постановка `PeriodicWorkRequest` (24 ч, constraints) в `ApplicationContext.onCreate`.
-12. Метрики в backend: % пользователей с актуальным бэкапом (< 7 дней),
-    p95 размер blob'а, частота восстановлений.
+6. Постановка `PeriodicWorkRequest` (24 ч, constraints) в `ApplicationContext.onCreate`.
 
 ---
 
@@ -436,5 +407,4 @@ Android:
       код и полностью восстановить профиль.
 - [ ] Лимиты (100 МБ, rate-limit upload, rate-limit recovery) работают и
       возвращают корректные коды ошибок.
-- [ ] Аудит-лог на бэкенде показывает upload/download события.
 - [ ] Phase 2 (periodic 24h) вынесена в отдельный тикет и не входит в DoD MVP.
