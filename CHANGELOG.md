@@ -4,6 +4,7 @@
 
 * Better incoming call system integration
 * Calls are not experimental anymore and don't need to be manually enabled
+* Calls can be answered by tapping messages
 * Channels are no longer experimental and are available by default
 * Display a permanent notification when doing location streaming and get rid of dangerous "Access Location in Background" permission
 * Autoplay all voice messages in a chat
@@ -15,6 +16,7 @@
 * Show more recent added stickers at the top of the sticker picker
 * Allow to open links in messages via actions in TalkBack menu
 * Allow to open map if user clicks "Location streaming enabled" system message
+* Allow to disable incoming calls notifications
 * Fix: do not accidentally set draft in chats that don't allow sending messages
 
 ## v2.49.0

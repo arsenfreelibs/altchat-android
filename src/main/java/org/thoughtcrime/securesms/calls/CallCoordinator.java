@@ -23,6 +23,7 @@ import android.os.Looper;
 import android.telecom.DisconnectCause;
 import android.util.Log;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
@@ -32,6 +33,7 @@ import androidx.core.telecom.CallControlScope;
 import androidx.core.telecom.CallEndpointCompat;
 import androidx.core.telecom.CallException;
 import androidx.core.telecom.CallsManager;
+import androidx.core.util.Pair;
 import androidx.lifecycle.FlowLiveDataConversions;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -98,6 +100,7 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
   private final MutableLiveData<Boolean> outgoingCallPlaced = new MutableLiveData<>(false);
   private final MutableLiveData<Boolean> answeredElsewhere = new MutableLiveData<>(false);
   private final MutableLiveData<Boolean> isFrontCamera = new MutableLiveData<>(true);
+  private final MutableLiveData<Boolean> mediaCaptureReady = new MutableLiveData<>(false);
 
   // Audio Routing Support
   private final MediatorLiveData<CallEndpointCompat> currentAudioEndpoint =
@@ -121,6 +124,7 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
   private boolean hasNotifiedBackend = false;
   private boolean hasAutoSelectedEarpiece = false;
   private boolean hasAnsweredLocally = false;
+  private boolean pendingMediaCapture = false;
 
   private CallControlScope activeCallControlScope;
   private CallViewModel activeCallViewModel;
@@ -230,6 +234,11 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
                 mainHandler.removeCallbacks(outgoingRingtoneRunnable);
                 mainHandler.postDelayed(outgoingRingtoneRunnable, 1500);
               }
+
+              if (pendingMediaCapture) {
+                pendingMediaCapture = false;
+                callService.startMediaCapture();
+              }
             }
           }
 
@@ -338,6 +347,10 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
     return isFrontCamera;
   }
 
+  public LiveData<Boolean> getMediaCaptureReady() {
+    return mediaCaptureReady;
+  }
+
   // State Update Methods (CallService)
 
   public void updateConnectionState(PeerConnection.PeerConnectionState state) {
@@ -386,6 +399,11 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
     isFrontCamera.postValue(front);
   }
 
+  public void updateMediaCaptureReady(boolean ready) {
+    Log.d(TAG, "updateMediaCaptureReady: " + ready);
+    mediaCaptureReady.postValue(ready);
+  }
+
   public void reportError(String error) {
     Log.e(TAG, "reportError: " + error);
     errorMessage.postValue(error);
@@ -398,7 +416,8 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
     if (callService != null) {
       callService.startMediaCapture();
     } else {
-      Log.w(TAG, "Cannot start media capture, service not ready");
+      Log.d(TAG, "Service not ready, deferring media capture");
+      pendingMediaCapture = true;
     }
   }
 
@@ -663,11 +682,17 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
   public synchronized void setVideoEnabled(boolean enabled) {
     Log.d(TAG, "setVideoEnabled: " + enabled);
 
+    if (callService != null) {
+      boolean success = callService.setVideoEnabled(enabled);
+      if (!success && enabled) {
+        enabled = false;
+        reportError("Camera unavailable");
+      }
+    }
+
     localVideoEnabled.postValue(enabled);
 
     if (callService != null) {
-      callService.setVideoEnabled(enabled);
-
       callService.sendMutedState(Boolean.TRUE.equals(localAudioEnabled.getValue()), enabled);
     }
   }
@@ -887,31 +912,14 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
       int accId, int callId, String offerSdp, boolean startsWithVideo) {
     Log.d(TAG, "onIncomingCall: accId=" + accId + ", callId=" + callId);
 
-    if (hasActiveCall()) {
-      Log.w(TAG, "Already have an active call, ignoring incoming call");
-      return;
-    }
+    Pair<DcChat, String> result = setupIncomingCallState(accId, callId, offerSdp, startsWithVideo);
+    if (result == null) return;
 
-    resetLiveDataForNewCall();
-
-    this.activeAccId = accId;
-    this.activeCallId = callId;
-    this.isIncomingCall = true;
-    this.startsWithVideo = startsWithVideo;
-    this.pendingOfferSdp = offerSdp;
-
-    // Get caller info
-    DcContext dcContext = ApplicationContext.getDcAccounts().getAccount(accId);
-    int chatId = dcContext.getMsg(callId).getChatId();
-    this.activeChatId = chatId;
-    DcChat dcChat = dcContext.getChat(chatId);
-    String callerName = getNameFromChat(dcChat);
+    DcChat dcChat = result.first;
+    String callerName = result.second;
     Icon callerIcon = getIconFromChat(this.appContext, dcChat);
 
-    displayName.postValue(callerName);
     displayIcon.postValue(callerIcon);
-
-    this.preferredStartingEndpoint = getPreferredStartingEndpoint(startsWithVideo);
 
     // Add to CallsManager
     CallAttributesCompat callAttributes = createCallAttributes(callerName, callId, true);
@@ -921,6 +929,37 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
     showIncomingCallNotification(callerName, callerIcon);
 
     startAndBindService();
+  }
+
+  public synchronized void handleIncomingCallFromConversation(
+      int accId, int callId, String offerSdp, boolean hasVideo) {
+    Log.d(TAG, "handleIncomingCallFromConversation: accId=" + accId + ", callId=" + callId);
+
+    if (offerSdp == null || offerSdp.isEmpty()) {
+      Log.e(TAG, "Cannot start incoming call: no SDP offer");
+      return;
+    }
+
+    Pair<DcChat, String> result = setupIncomingCallState(accId, callId, offerSdp, hasVideo);
+    if (result == null) return;
+
+    DcChat dcChat = result.first;
+    String callerName = result.second;
+
+    new Thread(
+            () -> {
+              Icon callerIcon = getIconFromChat(this.appContext, dcChat);
+              displayIcon.postValue(callerIcon);
+            })
+        .start();
+
+    // Add to CallsManager
+    CallAttributesCompat callAttributes = createCallAttributes(callerName, callId, true);
+    addCallToTelecom(callAttributes, callerName, null);
+
+    startAndBindService();
+
+    launchCallActivity();
   }
 
   private synchronized void onIncomingCallAccepted(int callId, boolean fromThisDevice) {
@@ -1147,6 +1186,7 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
     this.hasNotifiedBackend = false;
     this.hasAutoSelectedEarpiece = false;
     this.hasAnsweredLocally = false;
+    this.pendingMediaCapture = false;
 
     mainHandler.removeCallbacks(outgoingRingtoneRunnable);
 
@@ -1212,6 +1252,7 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
   private void resetLiveDataForNewCall() {
     connectionState.postValue(PeerConnection.PeerConnectionState.NEW);
     answeredElsewhere.postValue(false); // clearLiveData() must not reset answeredElsewhere
+    mediaCaptureReady.postValue(false);
     clearLiveData();
   }
 
@@ -1228,6 +1269,7 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
     outgoingCallPlaced.postValue(false);
     currentAudioEndpoint.postValue(null);
     availableAudioEndpoints.postValue(null);
+    mediaCaptureReady.postValue(false);
   }
 
   public synchronized void initiateOutgoingCall(int accId, int chatId, boolean startsWithVideo) {
@@ -1235,16 +1277,6 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
 
     if (hasActiveCall()) {
       Log.w(TAG, "Already have an active call, cannot start new one");
-      return;
-    }
-
-    // Check microphone permission
-    if (!hasMicrophonePermission()) {
-      Log.e(TAG, "Microphone permission not granted");
-
-      Intent intent = new Intent(appContext, CallActivity.class);
-      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-      appContext.startActivity(intent);
       return;
     }
 
@@ -1273,7 +1305,9 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
 
     this.preferredStartingEndpoint = getPreferredStartingEndpoint(startsWithVideo);
 
-    startAndBindService();
+    if (hasMicrophonePermission()) {
+      startAndBindService();
+    }
 
     launchCallActivity();
   }
@@ -1303,6 +1337,43 @@ public class CallCoordinator implements DcEventCenter.DcEventDelegate {
 
     // Add call to CallsManager
     addCallToTelecom(callAttributes, calleeName, calleeIcon);
+  }
+
+  @Nullable
+  private Pair<DcChat, String> setupIncomingCallState(
+      int accId, int callId, String offerSdp, boolean startsWithVideo) {
+    if (hasActiveCall()) {
+      Log.w(TAG, "Already have an active call, ignoring incoming call");
+      return null;
+    }
+
+    resetLiveDataForNewCall();
+
+    this.activeAccId = accId;
+    this.activeCallId = callId;
+    this.isIncomingCall = true;
+    this.startsWithVideo = startsWithVideo;
+    this.pendingOfferSdp = offerSdp;
+
+    DcContext dcContext = ApplicationContext.getDcAccounts().getAccount(accId);
+    int chatId = dcContext.getMsg(callId).getChatId();
+    this.activeChatId = chatId;
+    DcChat dcChat = dcContext.getChat(chatId);
+    String callerName = getNameFromChat(dcChat);
+
+    displayName.postValue(callerName);
+
+    this.preferredStartingEndpoint = getPreferredStartingEndpoint(startsWithVideo);
+
+    return new Pair<>(dcChat, callerName);
+  }
+
+  public synchronized void ensureServiceStarted() {
+    if (isServiceBound || !hasActiveCall()) {
+      return;
+    }
+    Log.d(TAG, "Starting service after permission grant");
+    startAndBindService();
   }
 
   private void addCallToTelecom(
