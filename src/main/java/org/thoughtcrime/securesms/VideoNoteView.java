@@ -2,16 +2,18 @@ package org.thoughtcrime.securesms;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.graphics.Outline;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.TextureView;
 import android.view.View;
+import android.view.ViewOutlineProvider;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ import androidx.media3.common.AudioAttributes;
 import androidx.media3.common.C;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.Player;
+import androidx.media3.common.VideoSize;
 import androidx.media3.exoplayer.ExoPlayer;
 
 import chat.delta.rpc.RpcException;
@@ -33,10 +36,7 @@ import com.b44t.messenger.DcMsg;
 
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import org.thoughtcrime.securesms.components.CircleFrameLayout;
 import org.thoughtcrime.securesms.components.ConversationItemFooter;
 import org.thoughtcrime.securesms.components.VideoNoteProgressRing;
 import org.thoughtcrime.securesms.components.audioplay.AudioPlaybackViewModel;
@@ -45,21 +45,11 @@ import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.mms.GlideRequests;
 import org.thoughtcrime.securesms.reactions.ReactionsConversationView;
 import org.thoughtcrime.securesms.recipients.Recipient;
-import org.thoughtcrime.securesms.util.ViewUtil;
 
 public class VideoNoteView extends FrameLayout implements BindableConversationItem {
 
   private static final String TAG = VideoNoteView.class.getSimpleName();
   private static final int PROGRESS_UPDATE_MS = 50;
-  private static final int FRAME_COPY_MS = 50;
-  private static final int MAX_FRAME_DECODE_SIZE_PX = 360;
-  private static final ExecutorService FRAME_DECODE_EXECUTOR =
-      Executors.newSingleThreadExecutor(
-          runnable -> {
-            Thread thread = new Thread(runnable, "VideoNoteFrameDecoder");
-            thread.setDaemon(true);
-            return thread;
-          });
 
   private DcMsg messageRecord;
   private @Nullable
@@ -86,12 +76,8 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
   @Nullable
   private static java.lang.ref.WeakReference<VideoNoteView> sCurrentlyPlaying = null;
 
-  private @Nullable Runnable frameCopyRunnable;
-  private @Nullable MediaMetadataRetriever frameRetriever;
-  private @Nullable Bitmap currentFrameBitmap;
-  private boolean frameDecodeInFlight = false;
-  private int frameDecodeGeneration = 0;
   private int thumbnailGeneration = 0;
+  private TextureView textureView;
 
   private @Nullable
   BindableConversationItem.EventListener eventListener;
@@ -120,8 +106,16 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
     videoFrameView = findViewById(R.id.video_note_frame);
     thumbnailView = findViewById(R.id.video_note_thumbnail);
 
-    // Samsung does not reliably clip live TextureView video inside a circle.
-    // We render decoded frames into videoFrameView instead.
+    textureView = findViewById(R.id.video_note_texture);
+    // TextureView is a sibling of CircleFrameLayout in the root FrameLayout.
+    // setClipToOutline clips it to a circle at the HWUI compositor level.
+    textureView.setOutlineProvider(new ViewOutlineProvider() {
+      @Override
+      public void getOutline(View view, Outline outline) {
+        outline.setOval(0, 0, view.getWidth(), view.getHeight());
+      }
+    });
+    textureView.setClipToOutline(true);
 
     playIcon = findViewById(R.id.video_note_play_icon);
     progressRing = findViewById(R.id.video_note_progress_ring);
@@ -223,6 +217,14 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
       // Measurement happens below after footer.setMessageRecord().
     }
     circleContainer.setLayoutParams(lp);
+
+    // Sync TextureView position with circle container (it's a sibling in root FrameLayout)
+    android.widget.FrameLayout.LayoutParams tvlp =
+        (android.widget.FrameLayout.LayoutParams) textureView.getLayoutParams();
+    tvlp.gravity = lp.gravity;
+    tvlp.leftMargin = lp.leftMargin;
+    tvlp.rightMargin = lp.rightMargin;
+    textureView.setLayoutParams(tvlp);
 
     // Load thumbnail with rotation
     loadThumbnailAsync(messageRecord.getFile());
@@ -485,25 +487,55 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
             onVideoEnded();
           }
         }
+
+        @Override
+        public void onVideoSizeChanged(@NonNull VideoSize videoSize) {
+          post(() -> applyCenterCropTransform(videoSize.width, videoSize.height));
+        }
+
+        @Override
+        public void onRenderedFirstFrame() {
+          post(() -> thumbnailView.setVisibility(View.INVISIBLE));
+        }
       });
 
     playing = true;
-    // Keep thumbnail visible until the first decoded frame arrives.
     playIcon.setVisibility(View.GONE);
     progressRing.setVisibility(View.VISIBLE);
     startProgressUpdates();
 
+    // ExoPlayer manages the SurfaceTextureListener internally.
+    // Must be called BEFORE prepare()/play().
+    player.setVideoTextureView(textureView);
     player.setMediaItem(MediaItem.fromUri(Uri.fromFile(new java.io.File(filePath))));
     player.prepare();
     player.play();
-    startFrameCapture(filePath);
+  }
+
+  private void applyCenterCropTransform(int videoWidth, int videoHeight) {
+    int vw = textureView.getWidth();
+    int vh = textureView.getHeight();
+    if (vw == 0 || vh == 0 || videoWidth == 0 || videoHeight == 0) return;
+    // Scale so the video fills the square view (centerCrop): the larger dimension wins.
+    float scaleX, scaleY;
+    if ((float) videoWidth / videoHeight > (float) vw / vh) {
+      // video wider than view — fit height, crop sides
+      scaleX = ((float) videoWidth / videoHeight) * vh / vw;
+      scaleY = 1f;
+    } else {
+      // video taller than view — fit width, crop top/bottom
+      scaleX = 1f;
+      scaleY = ((float) videoHeight / videoWidth) * vw / vh;
+    }
+    Matrix m = new Matrix();
+    m.setScale(scaleX, scaleY, vw / 2f, vh / 2f);
+    textureView.setTransform(m);
   }
 
   private void pausePlayback() {
     if (player != null) player.pause();
     playing = false;
     stopProgressUpdates();
-    stopFrameCapture();
     thumbnailView.setVisibility(View.VISIBLE);
     playIcon.setVisibility(View.VISIBLE);
     progressRing.setVisibility(View.INVISIBLE);
@@ -513,9 +545,8 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
 
   private void stopPlayback() {
     stopProgressUpdates();
-    stopFrameCapture();
+    textureView.setTransform(new Matrix());
     if (player != null) {
-      player.stop();
       player.release();
       player = null;
     }
@@ -533,7 +564,6 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
   private void onVideoEnded() {
     playing = false;
     stopProgressUpdates();
-    stopFrameCapture();
     if (player != null) {
       player.pause();
       player.seekTo(0);
@@ -544,215 +574,6 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
     progressRing.setVisibility(View.INVISIBLE);
     VideoNoteView cur = sCurrentlyPlaying != null ? sCurrentlyPlaying.get() : null;
     if (cur == this) sCurrentlyPlaying = null;
-  }
-
-  // ---- Frame capture: decode video frames to a regular ImageView ----
-
-  private void startFrameCapture(@NonNull String filePath) {
-    stopFrameCapture();
-
-    final MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-    try {
-      retriever.setDataSource(filePath);
-    } catch (RuntimeException e) {
-      Log.e(TAG, "Frame retriever init failed", e);
-      releaseRetriever(retriever);
-      return;
-    }
-
-    frameRetriever = retriever;
-    final int generation = ++frameDecodeGeneration;
-    final int sourceWidth = parseMetadataInt(retriever, MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH);
-    final int sourceHeight = parseMetadataInt(retriever, MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT);
-    final int rotationDegrees = parseMetadataInt(retriever, MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
-    final boolean swapSourceAxes = rotationDegrees == 90 || rotationDegrees == 270;
-
-    frameCopyRunnable = new Runnable() {
-      @Override
-      public void run() {
-        if (!playing || player == null || frameRetriever != retriever || generation != frameDecodeGeneration) {
-          return;
-        }
-
-        if (frameDecodeInFlight) {
-          progressHandler.postDelayed(this, FRAME_COPY_MS / 2L);
-          return;
-        }
-
-        frameDecodeInFlight = true;
-        final long positionMs = Math.max(0L, player.getCurrentPosition());
-        int targetWidth = Math.max(videoFrameView.getWidth(), circleContainer.getWidth());
-        int targetHeight = Math.max(videoFrameView.getHeight(), circleContainer.getHeight());
-        if (targetWidth <= 0 && circleContainer.getLayoutParams() != null) {
-          targetWidth = circleContainer.getLayoutParams().width;
-        }
-        if (targetHeight <= 0 && circleContainer.getLayoutParams() != null) {
-          targetHeight = circleContainer.getLayoutParams().height;
-        }
-        final int decodeWidth = clampFrameDecodeSize(targetWidth);
-        final int decodeHeight = clampFrameDecodeSize(targetHeight);
-        final long decodeStartedAtMs = SystemClock.uptimeMillis();
-
-        FRAME_DECODE_EXECUTOR.execute(
-            () -> {
-              final Bitmap bitmap =
-                  decodeFrameAt(
-                      retriever,
-                      positionMs,
-                      decodeWidth,
-                      decodeHeight,
-                      sourceWidth,
-                      sourceHeight,
-                      swapSourceAxes);
-              post(
-                  () -> {
-                    frameDecodeInFlight = false;
-
-                    if (generation != frameDecodeGeneration || frameRetriever != retriever || !playing) {
-                      recycleBitmap(bitmap);
-                      releaseRetriever(retriever);
-                      return;
-                    }
-
-                    if (bitmap != null) {
-                      setVideoFrame(bitmap);
-                      if (videoFrameView.getVisibility() != View.VISIBLE) {
-                        videoFrameView.setVisibility(View.VISIBLE);
-                        thumbnailView.setVisibility(View.GONE);
-                      }
-                    }
-
-                    if (playing && frameCopyRunnable != null && generation == frameDecodeGeneration) {
-                      long elapsedMs = SystemClock.uptimeMillis() - decodeStartedAtMs;
-                      long nextDelayMs = Math.max(0L, FRAME_COPY_MS - elapsedMs);
-                      progressHandler.postDelayed(frameCopyRunnable, nextDelayMs);
-                    }
-                  });
-            });
-      }
-    };
-
-    progressHandler.post(frameCopyRunnable);
-  }
-
-  private static int clampFrameDecodeSize(int size) {
-    if (size <= 0) return size;
-    return Math.min(size, MAX_FRAME_DECODE_SIZE_PX);
-  }
-
-  private static int parseMetadataInt(
-      @NonNull MediaMetadataRetriever retriever, int metadataKey) {
-    try {
-      String value = retriever.extractMetadata(metadataKey);
-      if (value == null || value.isEmpty()) return 0;
-      return Integer.parseInt(value);
-    } catch (RuntimeException e) {
-      return 0;
-    }
-  }
-
-  private @Nullable Bitmap decodeFrameAt(
-      @NonNull MediaMetadataRetriever retriever,
-      long positionMs,
-      int targetWidth,
-      int targetHeight,
-      int sourceWidth,
-      int sourceHeight,
-      boolean swapSourceAxes) {
-    final long timeUs = positionMs * 1000L;
-    try {
-      if (Build.VERSION.SDK_INT >= 27 && targetWidth > 0 && targetHeight > 0) {
-        int orientedSourceWidth = swapSourceAxes ? sourceHeight : sourceWidth;
-        int orientedSourceHeight = swapSourceAxes ? sourceWidth : sourceHeight;
-
-        if (orientedSourceWidth > 0 && orientedSourceHeight > 0) {
-          float scale =
-              Math.max(
-                  targetWidth / (float) orientedSourceWidth,
-                  targetHeight / (float) orientedSourceHeight);
-          int scaledWidth = Math.max(1, Math.round(orientedSourceWidth * scale));
-          int scaledHeight = Math.max(1, Math.round(orientedSourceHeight * scale));
-
-          Bitmap scaled =
-              retriever.getScaledFrameAtTime(
-                  timeUs, MediaMetadataRetriever.OPTION_CLOSEST, scaledWidth, scaledHeight);
-          if (scaled != null) {
-            return scaled;
-          }
-        }
-      }
-
-      Bitmap frame = retriever.getFrameAtTime(timeUs, MediaMetadataRetriever.OPTION_CLOSEST);
-      if (frame == null) return null;
-
-      if (targetWidth <= 0 || targetHeight <= 0) {
-        return frame;
-      }
-
-      float scale =
-          Math.max(targetWidth / (float) frame.getWidth(), targetHeight / (float) frame.getHeight());
-      int scaledWidth = Math.max(1, Math.round(frame.getWidth() * scale));
-      int scaledHeight = Math.max(1, Math.round(frame.getHeight() * scale));
-
-      if (frame.getWidth() == scaledWidth && frame.getHeight() == scaledHeight) {
-        return frame;
-      }
-
-      Bitmap scaled = Bitmap.createScaledBitmap(frame, scaledWidth, scaledHeight, true);
-      recycleBitmap(frame);
-      return scaled;
-    } catch (RuntimeException e) {
-      Log.w(TAG, "Frame decode failed at " + positionMs + "ms", e);
-      return null;
-    }
-  }
-
-  private void setVideoFrame(@NonNull Bitmap bitmap) {
-    Bitmap previous = currentFrameBitmap;
-    currentFrameBitmap = bitmap;
-    videoFrameView.setImageBitmap(bitmap);
-    recycleBitmap(previous);
-  }
-
-  private void clearVideoFrame() {
-    videoFrameView.setImageDrawable(null);
-    recycleBitmap(currentFrameBitmap);
-    currentFrameBitmap = null;
-  }
-
-  private void stopFrameCapture() {
-    if (frameCopyRunnable != null) {
-      progressHandler.removeCallbacks(frameCopyRunnable);
-      frameCopyRunnable = null;
-    }
-
-    frameDecodeGeneration++;
-    MediaMetadataRetriever retriever = frameRetriever;
-    frameRetriever = null;
-
-    if (!frameDecodeInFlight) {
-      releaseRetriever(retriever);
-    }
-
-    if (videoFrameView != null) {
-      videoFrameView.setVisibility(View.GONE);
-      clearVideoFrame();
-    }
-  }
-
-  private static void releaseRetriever(@Nullable MediaMetadataRetriever retriever) {
-    if (retriever == null) return;
-    try {
-      retriever.release();
-    } catch (Exception e) {
-      Log.w(TAG, "Retriever release failed", e);
-    }
-  }
-
-  private static void recycleBitmap(@Nullable Bitmap bitmap) {
-    if (bitmap != null && !bitmap.isRecycled()) {
-      bitmap.recycle();
-    }
   }
 
   private void startProgressUpdates() {

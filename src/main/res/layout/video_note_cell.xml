@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Strategy: decode video frames to a regular ImageView.
+    Video note cell layout.
 
-    Samsung ignores every standard clipping approach for live TextureView video.
-    Instead of trying to clip a SurfaceTexture, ExoPlayer handles audio/timeline
-    and VideoNoteView decodes the current video frame into video_note_frame.
-    Because that frame is a normal ImageView child of CircleFrameLayout, the
-    existing circular software clip remains reliable.
+    TextureView (sibling of CircleFrameLayout, first child = behind) receives
+    GPU-decoded video frames from ExoPlayer. It is clipped to a circle via
+    setClipToOutline(true) + oval ViewOutlineProvider set in VideoNoteView.init().
+
+    CircleFrameLayout sits on top and clips its children (thumbnail, progress ring,
+    play icon, sender name) to a circle via canvas.clipPath() on the hardware canvas.
 -->
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="200dp">
+
+  <!-- TextureView: sibling of CircleFrameLayout (NOT inside it) so it gets a
+       hardware-accelerated SurfaceTexture. setClipToOutline(true) + oval outline
+       is applied in code. Must be FIRST child so CircleFrameLayout is on top. -->
+  <TextureView
+      android:id="@+id/video_note_texture"
+      android:layout_width="200dp"
+      android:layout_height="200dp"
+      android:layout_gravity="end"
+      android:layout_marginEnd="8dp" />
 
   <org.thoughtcrime.securesms.components.CircleFrameLayout
       android:id="@+id/video_note_circle"
@@ -21,8 +32,7 @@
       android:layout_gravity="end"
       android:layout_marginEnd="8dp">
 
-        <!-- Frame ImageView: receives decoded video frames during playback.
-            Clipped to circle by CircleFrameLayout (LAYER_TYPE_SOFTWARE + clipPath). -->
+        <!-- Reserved for future fallback rendering (currently unused) -->
     <ImageView
         android:id="@+id/video_note_frame"
         android:layout_width="match_parent"

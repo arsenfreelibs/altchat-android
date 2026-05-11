@@ -4,15 +4,15 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Path;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.FrameLayout;
 
 /**
- * FrameLayout that clips its children to a circle via software clipPath().
+ * FrameLayout that clips its children to a circle via canvas.clipPath().
  *
- * This is used for the video note fallback renderer where decoded frames are drawn
- * into a regular ImageView. Software clipping is reliable across devices, including
- * Samsung builds where live TextureView circular clipping proved inconsistent.
+ * No LAYER_TYPE_SOFTWARE — the RecyclerView parent no longer forces software rendering,
+ * so hardware-accelerated canvas.clipPath() (supported since API 18) is used instead.
+ * TextureView lives as a sibling (not inside this ViewGroup) and is clipped separately
+ * via setClipToOutline(true) in VideoNoteView.init().
  */
 public class CircleFrameLayout extends FrameLayout {
 
@@ -20,21 +20,14 @@ public class CircleFrameLayout extends FrameLayout {
 
   public CircleFrameLayout(Context context) {
     super(context);
-    init();
   }
 
   public CircleFrameLayout(Context context, AttributeSet attrs) {
     super(context, attrs);
-    init();
   }
 
   public CircleFrameLayout(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
-    init();
-  }
-
-  private void init() {
-    setLayerType(View.LAYER_TYPE_SOFTWARE, null);
   }
 
   @Override

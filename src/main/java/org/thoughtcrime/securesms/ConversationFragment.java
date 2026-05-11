@@ -207,10 +207,11 @@ public class ConversationFragment extends MessageSelectorFragment {
       }
     });
 
-    // setLayerType() is needed to allow larger items (long texts in our case)
-    // with hardware layers, drawing may result in errors as "OpenGLRenderer: Path too large to be
-    // rendered into a texture"
-    list.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+    // NOTE: LAYER_TYPE_SOFTWARE was previously set here to work around "Path too large to be
+    // rendered into a texture" on older/low-end devices. Removed because it prevents
+    // TextureView children (video note playback) from ever creating a SurfaceTexture —
+    // hardware layers are impossible inside a software-layer ViewGroup.
+    // The "path too large" issue does not reproduce on API 26+ hardware-accelerated GPUs.
 
     if (pendingAddBottomInsets) {
       bottomDivider.setVisibility(View.GONE);
