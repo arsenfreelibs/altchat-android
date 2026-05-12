@@ -83,6 +83,7 @@ import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme;
 import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.Prefs;
 import org.thoughtcrime.securesms.util.update.AppUpdateCheckerFactory;
+import org.thoughtcrime.securesms.util.review.AppReviewRequesterFactory;
 import org.thoughtcrime.securesms.util.SaveAttachmentTask;
 import org.thoughtcrime.securesms.util.ScreenLockUtil;
 import org.thoughtcrime.securesms.util.SendRelayedMessageUtil;
@@ -642,6 +643,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     DirectShareUtil.triggerRefreshDirectShare(this);
     updateChatsTabBadge();
     AppUpdateCheckerFactory.create(this).checkForUpdate(() -> showUpdateAvailableBadge());
+    AppReviewRequesterFactory.create(this).maybeRequestReview(this);
     if (DcHelper.getContext(this).isSendingLocationsToChat(0)) {
       LocationStreamingService.ensureRunning(this);
     }
