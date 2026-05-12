@@ -17,6 +17,7 @@
 
 # Keep Google Play In-App Updates classes (gplay flavor only)
 -keep class com.google.android.play.core.** { *; }
+-keep class com.google.android.play.core.review.** { *; }
 
 # Keep WebRTC classes
 -keep class org.webrtc.** { *; }

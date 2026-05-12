@@ -261,6 +261,7 @@ dependencies {
     }
     gplayImplementation 'com.google.android.gms:play-services-location:21.3.0'
     gplayImplementation 'com.google.android.play:app-update:2.1.0'
+    gplayImplementation 'com.google.android.play:review:2.0.2'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.assertj:assertj-core:3.27.3'
