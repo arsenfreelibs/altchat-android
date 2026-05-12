@@ -21,8 +21,9 @@ public class GplayAppReviewRequester implements AppReviewRequester {
 
   @Override
   public void maybeRequestReview(Activity activity) {
-    int opens = PreferenceManager.getDefaultSharedPreferences(context)
-        .getInt(PREF_OPENS, 0) + 1;
+    int prev = PreferenceManager.getDefaultSharedPreferences(context)
+        .getInt(PREF_OPENS, 0);
+    int opens = (prev >= TRIGGER_EVERY * 1000) ? 1 : prev + 1;
     PreferenceManager.getDefaultSharedPreferences(context)
         .edit().putInt(PREF_OPENS, opens).apply();
 
@@ -34,6 +35,7 @@ public class GplayAppReviewRequester implements AppReviewRequester {
         Log.w(TAG, "requestReviewFlow failed", task.getException());
         return;
       }
+      if (activity.isFinishing() || activity.isDestroyed()) return;
       ReviewInfo reviewInfo = task.getResult();
       manager.launchReviewFlow(activity, reviewInfo)
           .addOnCompleteListener(t -> Log.i(TAG, "launchReviewFlow complete"));
