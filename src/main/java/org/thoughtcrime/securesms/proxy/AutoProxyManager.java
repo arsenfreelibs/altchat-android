@@ -15,9 +15,6 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Random;
 import javax.net.ssl.HttpsURLConnection;
@@ -322,18 +319,7 @@ public class AutoProxyManager implements DcEventCenter.DcEventDelegate {
     try {
       byte[] key = Base64.decode(keyB64, Base64.DEFAULT);
       byte[] data = Base64.decode(blob, Base64.DEFAULT);
-      if (key.length == 0) return new String[0];
-      for (int i = 0; i < data.length; i++) {
-        data[i] = (byte) (data[i] ^ key[i % key.length]);
-      }
-      String joined = new String(data, StandardCharsets.UTF_8);
-      Arrays.fill(data, (byte) 0);
-      ArrayList<String> urls = new ArrayList<>();
-      for (String line : joined.split("\n")) {
-        line = line.trim();
-        if (!line.isEmpty()) urls.add(line);
-      }
-      return urls.toArray(new String[0]);
+      return AutoProxyObfuscation.deobfuscate(data, key);
     } catch (Exception e) {
       Log.w(TAG, "failed to decode proxy list", e);
       return new String[0];
