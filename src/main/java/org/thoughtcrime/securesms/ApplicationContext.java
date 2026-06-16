@@ -43,6 +43,7 @@ import org.thoughtcrime.securesms.jobmanager.JobManager;
 import org.thoughtcrime.securesms.notifications.FcmReceiveService;
 import org.thoughtcrime.securesms.notifications.InChatSounds;
 import org.thoughtcrime.securesms.notifications.NotificationCenter;
+import org.thoughtcrime.securesms.proxy.AutoProxyManager;
 import org.thoughtcrime.securesms.util.AndroidSignalProtocolLogger;
 import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.Prefs;
@@ -60,6 +61,7 @@ public class ApplicationContext extends MultiDexApplication {
   private DcContext dcContext;
 
   private DcEventCenter eventCenter;
+  private AutoProxyManager autoProxyManager;
   private NotificationCenter notificationCenter;
   private JobManager jobManager;
 
@@ -249,6 +251,9 @@ public class ApplicationContext extends MultiDexApplication {
               DcHelper.setStockTranslations(this);
 
               dcAccounts.startIo();
+
+              autoProxyManager = new AutoProxyManager(this);
+              autoProxyManager.start();
             } catch (Exception e) {
               Log.e(TAG, "Fatal error during DcAccounts initialization", e);
               // Mark as initialized even on error to avoid deadlock
