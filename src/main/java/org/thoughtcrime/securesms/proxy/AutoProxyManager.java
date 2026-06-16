@@ -5,6 +5,7 @@ import static org.thoughtcrime.securesms.connect.DcHelper.CONFIG_PROXY_URL;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Base64;
 import android.util.Log;
 import android.os.HandlerThread;
 import androidx.annotation.NonNull;
@@ -14,9 +15,13 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Random;
 import javax.net.ssl.HttpsURLConnection;
+import org.thoughtcrime.securesms.BuildConfig;
 import org.thoughtcrime.securesms.connect.DcEventCenter;
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.util.Prefs;
@@ -34,11 +39,10 @@ public class AutoProxyManager implements DcEventCenter.DcEventDelegate {
   private static final String TAG = "AutoProxyManager";
 
   // --- Bundled proxies and timings (see ТЗ §3) ---
-  // Proxy URLs are intentionally NOT stored in the repository. Supply them at build/runtime
-  // (e.g. via BuildConfig from a gitignored gradle property, or a remote config). With an empty
-  // list the manager stays disabled and never engages a proxy.
-  private static final String[] PROXIES = {
-  };
+  // Proxy URLs are NOT stored in the repository. They come from the gitignored proxy.properties,
+  // XOR+base64-obfuscated into BuildConfig at build time, and are decoded into memory here.
+  // With an empty list (no proxy.properties) the manager stays disabled and never engages.
+  private static final String[] PROXIES = decodeProxies();
   private static final long GRACE_MS = 20_000L; // relay must be down this long before engaging
   private static final long PROXY_TRY_MS = 30_000L; // time per proxy before rotating
   private static final long DIRECT_RECHECK_MS = 240_000L; // how often we re-test the direct relay
@@ -306,6 +310,34 @@ public class AutoProxyManager implements DcEventCenter.DcEventDelegate {
 
   private boolean isRelayConnected() {
     return DcHelper.getContext(context).getConnectivity() >= DcContext.DC_CONNECTIVITY_CONNECTED;
+  }
+
+  /** Decode the XOR+base64 proxy blob from BuildConfig into memory. Never persists plaintext. */
+  private static String[] decodeProxies() {
+    String blob = BuildConfig.AUTO_PROXY_OBF;
+    String keyB64 = BuildConfig.AUTO_PROXY_OBF_KEY;
+    if (blob == null || blob.isEmpty() || keyB64 == null || keyB64.isEmpty()) {
+      return new String[0];
+    }
+    try {
+      byte[] key = Base64.decode(keyB64, Base64.DEFAULT);
+      byte[] data = Base64.decode(blob, Base64.DEFAULT);
+      if (key.length == 0) return new String[0];
+      for (int i = 0; i < data.length; i++) {
+        data[i] = (byte) (data[i] ^ key[i % key.length]);
+      }
+      String joined = new String(data, StandardCharsets.UTF_8);
+      Arrays.fill(data, (byte) 0);
+      ArrayList<String> urls = new ArrayList<>();
+      for (String line : joined.split("\n")) {
+        line = line.trim();
+        if (!line.isEmpty()) urls.add(line);
+      }
+      return urls.toArray(new String[0]);
+    } catch (Exception e) {
+      Log.w(TAG, "failed to decode proxy list", e);
+      return new String[0];
+    }
   }
 
   private boolean hasProxies() {

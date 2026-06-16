@@ -1,0 +1,13 @@
+# Auto-proxy credentials — template.
+#
+# Copy this file to `proxy.properties` (which is gitignored) and put the real
+# proxy URLs there. They are NEVER committed to git.
+#
+# At build time, build.gradle XOR+base64-obfuscates these into
+# BuildConfig.AUTO_PROXY_OBF, so the shipped APK contains no plaintext
+# "user:pass@host" string. To rotate creds: edit `proxy.properties`, rebuild.
+#
+# Multiple proxies: separate by ';' (or newlines with trailing backslashes).
+# Leave empty / omit the file to disable the auto-proxy feature.
+
+AUTO_PROXY_URLS=http://USER:PASS@HOST1:8000;http://USER:PASS@HOST2:8000

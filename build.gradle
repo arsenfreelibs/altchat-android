@@ -54,6 +54,11 @@ android {
         buildConfigField("String", "TEST_MAIL_PW", buildConfigProperty("TEST_MAIL_PW"))
         buildConfigField("String", "NDK_ARCH", getNdkArch())
         buildConfigField("String", "ALT_API_BASE_URL", '"https://api.alt-to.online"')
+
+        // Auto-proxy creds: plaintext URLs live in gitignored proxy.properties and are
+        // XOR+base64-obfuscated here so the APK carries no plaintext "user:pass" string.
+        buildConfigField("String", "AUTO_PROXY_OBF", autoProxyObfBlob())
+        buildConfigField("String", "AUTO_PROXY_OBF_KEY", autoProxyObfKey())
     }
 
     compileOptions {
@@ -307,4 +312,38 @@ String getNdkArch() {
     def arch = properties.getProperty('NDK_ARCH')
     if (arch == null) return "\"\""
     return "\"$arch\""
+}
+
+// Fixed XOR key for auto-proxy obfuscation. NOT a secret: it only prevents the
+// proxy "user:pass@host" string from appearing in plaintext in the shipped APK
+// (defeats `strings` / casual APK scanners). The real creds live in the
+// gitignored proxy.properties and never enter git.
+static byte[] autoProxyKeyBytes() {
+    return [0x5b, 0x21, 0x7e, 0x3c, 0xa9, 0x14, 0x6d, 0xf0,
+            0x82, 0x39, 0xcc, 0x4f, 0x1a, 0xe7, 0x90, 0x66] as byte[]
+}
+
+String autoProxyObfKey() {
+    return "\"${autoProxyKeyBytes().encodeBase64().toString()}\""
+}
+
+// Reads gitignored proxy.properties (AUTO_PROXY_URLS, ';'/newline separated),
+// XORs the newline-joined list with the fixed key, base64-encodes the result.
+// Returns "" when the file/value is absent so builds without creds still work.
+String autoProxyObfBlob() {
+    def f = project.rootProject.file('proxy.properties')
+    if (!f.exists()) return "\"\""
+    Properties props = new Properties()
+    props.load(f.newDataInputStream())
+    def raw = props.getProperty('AUTO_PROXY_URLS')
+    if (raw == null) return "\"\""
+    def urls = raw.split(/[;\r\n]+/).collect { it.trim() }.findAll { !it.isEmpty() }
+    if (urls.isEmpty()) return "\"\""
+    byte[] data = urls.join('\n').getBytes('UTF-8')
+    byte[] key = autoProxyKeyBytes()
+    byte[] out = new byte[data.length]
+    for (int i = 0; i < data.length; i++) {
+        out[i] = (byte) (data[i] ^ key[i % key.length])
+    }
+    return "\"${out.encodeBase64().toString()}\""
 }
