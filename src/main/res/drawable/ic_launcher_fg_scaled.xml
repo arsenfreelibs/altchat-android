@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  API < 26 fallback: fixed inset instead of a percentage. Fractional insets on
+  InsetDrawable are only supported on API 26+ (drawable-v26 variant); on older
+  devices "15%" crashes when inflated (UnsupportedOperationException). 10dp ~=
+  15% of the 64dp device-talk avatar this is rendered into (Recipient.java).
+-->
 <inset xmlns:android="http://schemas.android.com/apk/res/android"
-    android:inset="15%">
+    android:inset="10dp">
     <bitmap
         android:src="@mipmap/ic_launcher_foreground"
         android:tint="#FFFFFF" />
