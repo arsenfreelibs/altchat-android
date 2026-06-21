@@ -1,6 +1,27 @@
 # Delta Chat Android Changelog
 
-## Unreleased
+## v2.53.0
+2026-06
+
+* Use message style notifications for longer message previews
+* Remove notification after audio playback ends
+* Fix: do not allow blocked contacts to use our invite links
+* Fix sending mini-app that was used/prepared before sending
+* Some more small fixes and updated translations
+* Update to core 2.53.0
+
+## v2.52.0
+2026-06
+
+* Fix: avoid crashes in Media preview sometimes
+* Fix: Incorrect total time when attaching audio files as draft
+* Fix: Audio files in draft showing total time from wrong file
+* Fix: Update the channel title after joining if the QR code had an outdated title
+* Voice recording will be automatically saved as draft when interrupted
+* Update to core 2.52.0
+
+## v2.51.0
+2026-06
 
 * Better incoming call system integration
 * Calls are not experimental anymore and don't need to be manually enabled
@@ -19,9 +40,30 @@
 * Allow to open links in messages via actions in TalkBack menu
 * Allow to open map if user clicks "Location streaming enabled" system message
 * Allow to disable incoming calls notifications
+* Add an option to process unencrypted messages; by default, only encrypted messages can be sent or received
 * Fix: do not accidentally set draft in chats that don't allow sending messages
 * Fix swipe navigation between tabs in RTL languages
-* Remove legacy option
+* Remove "Move to DeltaChat folder", in case you are using the option, a device message shows how to proceed
+* Remove "Only fetch from DeltaChat folder" option, the functionality is preserved for existing profiles
+* Remove "Delete Messages from Server" option, this is now up to the server:
+  Chatmail handles that automatically, classic email servers used as relay often have lots of storage or options themselves
+* Remove "Show Email" options, all messages are shown by default, shared usage of email account is not supported
+* Allow otherwise invalid TLS connections if the key is unchanged
+* Adapt quota warning to automatic cleanup.
+* Don't show non-delivery-notfications in broadcast channels
+* Resend the last 10 messages to new broadcast channel member
+* Enable PQC (Post-Quantum Cryptography) support. We do not generate PQC keys yet, this step is needed for forward compatibility
+* Improve avatar quality
+* Add new webxdc.isAppSender and webxdc.isBroadcast APIs for mini-apps
+* Fix: avoid invalid empty "~" notifications when some peer is streaming location
+* Fix: Improve detection of stickers
+* Fix text direction issues for RTL languages in "Show full message" view
+* Fix: Reconnect when removing a relay
+* Fix: Location streaming now works correctly with multiple accounts
+* Fix debouncing in chatlist and search
+* Fix sharing contact across profiles
+* Fix: Reset scroll location after switching account
+* Update to core 2.51.0
 
 ## v2.49.0
 2026-04

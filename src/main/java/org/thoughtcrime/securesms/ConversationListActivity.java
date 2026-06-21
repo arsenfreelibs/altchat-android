@@ -915,6 +915,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     refreshAvatar();
     refreshUnreadIndicator();
     refreshTitle();
+    conversationListFragment.resetScrollPosition();
     conversationListFragment.loadChatlistAsync();
   }
 

@@ -136,7 +136,10 @@ public class AudioView extends FrameLayout {
 
           AudioPlaybackState state = viewModel.getPlaybackState().getValue();
 
-          if (state != null && msgId == state.getMsgId()) {
+          if (state != null
+              && msgId == state.getMsgId()
+              && (state.getStatus() == AudioPlaybackState.PlaybackStatus.PLAYING
+                  || state.getStatus() == AudioPlaybackState.PlaybackStatus.PAUSED)) {
             // Same audio
             if (state.getStatus() == AudioPlaybackState.PlaybackStatus.PLAYING) {
               viewModel.pause(msgId);
@@ -208,14 +211,17 @@ public class AudioView extends FrameLayout {
     waveformView.setSamples(null);
     waveformView.setProgress(0f);
 
+    this.progress = 0;
+    this.duration = 0;
+
+    viewModel.ensureDurationLoaded(getContext(), msgId, audioUri);
+
     // Get duration
     Map<Integer, Long> durations = viewModel.getDurations().getValue();
     if (durations != null && durations.containsKey(msgId)) {
       this.duration = Math.toIntExact(durations.get(msgId));
-      updateTimestamp();
-    } else {
-      viewModel.ensureDurationLoaded(getContext(), msgId, audioUri);
     }
+    updateTimestamp();
 
     // Get or start loading waveform
     Map<Integer, float[]> waveforms = viewModel.getWaveforms().getValue();
@@ -375,8 +381,11 @@ public class AudioView extends FrameLayout {
   private void onDurationsChanged(Map<Integer, Long> durations) {
     AudioPlaybackState state = viewModel.getPlaybackState().getValue();
 
-    // When there is no playback happening, msgId can be -1
-    if (state != null && msgId >= 0 && msgId == state.getMsgId()) {
+    if (state != null
+        && msgId >= 0
+        && msgId == state.getMsgId()
+        && (state.getStatus() == AudioPlaybackState.PlaybackStatus.PLAYING
+            || state.getStatus() == AudioPlaybackState.PlaybackStatus.PAUSED)) {
       return;
     }
 

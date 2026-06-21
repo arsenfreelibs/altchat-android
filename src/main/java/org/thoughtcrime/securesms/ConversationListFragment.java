@@ -83,6 +83,7 @@ public class ConversationListFragment extends BaseConversationListFragment
   private Timer reloadTimer;
   private boolean chatlistJustLoaded;
   private boolean reloadTimerInstantly;
+  private boolean resetScrollPosition;
 
   private volatile @NonNull ActiveFilter activeFilter = ActiveFilter.ALL;
   private volatile FilterManager filterManager;
@@ -308,9 +309,9 @@ public class ConversationListFragment extends BaseConversationListFragment
 
   public void loadChatlistAsync() {
     synchronized (loadChatlistLock) {
-      needsAnotherLoad = true;
       if (inLoadChatlist) {
         Log.i(TAG, "chatlist loading debounced");
+        needsAnotherLoad = true;
         return;
       }
       inLoadChatlist = true;
@@ -319,6 +320,9 @@ public class ConversationListFragment extends BaseConversationListFragment
     Util.runOnAnyBackgroundThread(
         () -> {
           while (true) {
+            Log.i(TAG, "executing debounced chatlist loading");
+            loadChatlist();
+
             synchronized (loadChatlistLock) {
               if (!needsAnotherLoad) {
                 inLoadChatlist = false;
@@ -327,8 +331,6 @@ public class ConversationListFragment extends BaseConversationListFragment
               needsAnotherLoad = false;
             }
 
-            Log.i(TAG, "executing debounced chatlist loading");
-            loadChatlist();
             Util.sleep(100);
           }
         });
@@ -351,9 +353,9 @@ public class ConversationListFragment extends BaseConversationListFragment
       Log.w(TAG, "Ignoring call to loadChatlist()");
       return;
     }
-    DcChatlist chatlist =
-        DcHelper.getContext(context)
-            .getChatlist(listflags, queryFilter.isEmpty() ? null : queryFilter, 0);
+    long startMs = System.currentTimeMillis();
+    DcChatlist chatlist = DcHelper.getContext(context).getChatlist(listflags, null, 0);
+    Log.i(TAG, "⏰ getChatlist(): " + (System.currentTimeMillis() - startMs) + "ms");
 
     // Capture volatile fields once to ensure a consistent view for this entire background load
     final FilterManager fm = filterManager;
@@ -422,6 +424,10 @@ public class ConversationListFragment extends BaseConversationListFragment
           ((ConversationListAdapter) list.getAdapter()).changeData(chatlist, filteredIndices);
           if (filterBarFilters != null && filterBar != null && filterBar.getVisibility() == View.VISIBLE) {
             filterBar.configure(filterBarFilters, activeFilter, filterBarBadges, filterBarAllUnread);
+          }
+          if (resetScrollPosition) {
+            list.scrollToPosition(0);
+            resetScrollPosition = false;
           }
         });
   }
@@ -644,5 +650,9 @@ public class ConversationListFragment extends BaseConversationListFragment
         ((ConversationListActivity) activity).updateChatsTabBadge();
       }
     }
+  }
+
+  public void resetScrollPosition() {
+    resetScrollPosition = true;
   }
 }
