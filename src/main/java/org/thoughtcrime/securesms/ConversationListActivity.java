@@ -664,6 +664,8 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
           .setVisible(ShareUtil.isFromWebxdc(this) && ShareUtil.getSharedUris(this).size() == 1);
     } else {
       inflater.inflate(R.menu.text_secure_normal, menu);
+      menu.findItem(R.id.menu_lock_app)
+          .setVisible(org.thoughtcrime.securesms.passcode.PasscodeManager.isEnabled(this));
       menu.findItem(R.id.menu_global_map).setVisible(Prefs.isLocationStreamingEnabled(this));
       MenuItem proxyItem = menu.findItem(R.id.menu_proxy_settings);
       if (TextUtils.isEmpty(DcHelper.get(this, CONFIG_PROXY_URL))) {
@@ -724,7 +726,12 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     super.onOptionsItemSelected(item);
 
     int itemId = item.getItemId();
-    if (itemId == R.id.menu_qr) {
+    if (itemId == R.id.menu_lock_app) {
+      org.thoughtcrime.securesms.passcode.PasscodeManager.lock();
+      startActivity(
+          org.thoughtcrime.securesms.passcode.PasscodeActivity.getLockIntent(this));
+      return true;
+    } else if (itemId == R.id.menu_qr) {
       Intent intent =
           new IntentIntegrator(this).setCaptureActivity(QrActivity.class).createScanIntent();
       qrScannerLauncher.launch(intent);
