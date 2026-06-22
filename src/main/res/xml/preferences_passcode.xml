@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        android:key="passcode_change"
+        android:title="@string/alt_passcode_change" />
+
+    <androidx.preference.SwitchPreferenceCompat
+        android:key="passcode_fingerprint"
+        android:title="@string/alt_passcode_fingerprint" />
+
+    <ListPreference
+        android:key="passcode_autolock"
+        android:title="@string/alt_passcode_autolock"
+        android:summary="@string/alt_passcode_autolock_summary"
+        android:entries="@array/passcode_autolock_entries"
+        android:entryValues="@array/passcode_autolock_values" />
+
+    <PreferenceCategory
+        android:key="passcode_task_switcher_category"
+        android:title="@string/alt_passcode_task_switcher_header">
+
+        <androidx.preference.SwitchPreferenceCompat
+            android:key="passcode_show_content"
+            android:title="@string/alt_passcode_show_content"
+            android:summary="@string/alt_passcode_show_content_summary"
+            android:enabled="false"
+            android:defaultValue="true" />
+
+    </PreferenceCategory>
+
+    <!-- title is set (in red) programmatically in PasscodePreferenceFragment -->
+    <Preference
+        android:key="passcode_turn_off" />
+
+</PreferenceScreen>

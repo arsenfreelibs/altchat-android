@@ -1360,4 +1360,32 @@
     <string name="alt_passcode_use_fingerprint">Use fingerprint</string>
     <string name="alt_passcode_delete">Delete</string>
 
+    <!-- passcode lock: settings -->
+    <string name="alt_privacy_security_title">Privacy and Security</string>
+    <string name="alt_passcode_title">Passcode Lock</string>
+    <string name="alt_passcode_summary_on">On</string>
+    <string name="alt_passcode_summary_off">Off</string>
+    <string name="alt_passcode_change">Change Passcode</string>
+    <string name="alt_passcode_fingerprint">Unlock with Fingerprint</string>
+    <string name="alt_passcode_autolock">Auto-lock</string>
+    <string name="alt_passcode_autolock_summary">Require passcode if away for some time.</string>
+    <string name="alt_passcode_autolock_disabled">Disabled</string>
+    <string name="alt_passcode_autolock_1min">in 1 minute</string>
+    <string name="alt_passcode_autolock_5min">in 5 minutes</string>
+    <string name="alt_passcode_autolock_1hour">in 1 hour</string>
+    <string name="alt_passcode_autolock_5hours">in 5 hours</string>
+    <string name="alt_passcode_task_switcher_header">App Content in Task Switcher</string>
+    <string name="alt_passcode_show_content">Show Content</string>
+    <string name="alt_passcode_show_content_summary">If disabled, chat content will be hidden in the task switcher but you won\'t be able to take screenshots in the app.</string>
+    <string name="alt_passcode_turn_off">Turn Passcode Off</string>
+    <string name="alt_passcode_turn_off_confirm">Are you sure you want to disable your passcode?</string>
+
+    <!-- passcode lock: create / change flow -->
+    <string name="alt_passcode_create_title">Create a passcode</string>
+    <string name="alt_passcode_create_subtitle">Please enter any 4 digits that you will use to unlock the app.</string>
+    <string name="alt_passcode_confirm_title">Re-enter your passcode</string>
+    <string name="alt_passcode_confirm_subtitle">If you forget your passcode, you\'ll need to clear the app data or reinstall the app.</string>
+    <string name="alt_passcode_enter_old_title">Enter your current passcode</string>
+    <string name="alt_passcode_mismatch">Passcodes don\'t match. Try again.</string>
+
 </resources>

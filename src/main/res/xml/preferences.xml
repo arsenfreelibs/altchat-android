@@ -29,6 +29,12 @@
         android:layout="@layout/preference_item" />
 
     <Preference
+        android:key="preference_category_privacy"
+        android:title="@string/alt_privacy_security_title"
+        android:icon="@drawable/ic_privacy_24dp"
+        android:layout="@layout/preference_item" />
+
+    <Preference
         android:key="preference_category_multidevice"
         android:title="@string/multidevice_title"
         android:icon="@drawable/ic_baseline_devices_24"

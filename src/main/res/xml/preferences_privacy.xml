@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="preference_passcode_lock"
+        android:title="@string/alt_passcode_title"
+        android:icon="@drawable/ic_lock_24dp" />
+
+    <!-- Duplicated from preferences_advanced.xml (same keys) so they are reachable here without
+         touching the upstream Advanced screen; both screens stay in sync via the shared keys. -->
+    <PreferenceCategory>
+        <org.thoughtcrime.securesms.components.SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:icon="@drawable/ic_visibility_off_24dp"
+            android:key="pref_screen_security"
+            android:summary="@string/pref_screen_security_explain"
+            android:title="@string/pref_screen_security" />
+
+        <org.thoughtcrime.securesms.components.SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:icon="@drawable/ic_keyboard_24dp"
+            android:key="pref_incognito_keyboard"
+            android:summary="@string/pref_incognito_keyboard_explain"
+            android:title="@string/pref_incognito_keyboard" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

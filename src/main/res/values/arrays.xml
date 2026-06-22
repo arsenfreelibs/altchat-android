@@ -211,4 +211,20 @@
         <item>26214400</item> <!-- 25 MiB, fine for most things send by delta -->
     </string-array>
 
+    <string-array name="passcode_autolock_entries">
+        <item>@string/alt_passcode_autolock_disabled</item>
+        <item>@string/alt_passcode_autolock_1min</item>
+        <item>@string/alt_passcode_autolock_5min</item>
+        <item>@string/alt_passcode_autolock_1hour</item>
+        <item>@string/alt_passcode_autolock_5hours</item>
+    </string-array>
+
+    <string-array name="passcode_autolock_values">
+        <item>-1</item>
+        <item>60</item>
+        <item>300</item>
+        <item>3600</item>
+        <item>18000</item>
+    </string-array>
+
 </resources>

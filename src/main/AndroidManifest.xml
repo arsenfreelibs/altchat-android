@@ -623,6 +623,12 @@
             android:excludeFromRecents="true"
             android:theme="@style/TextSecure.LightNoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <activity
+            android:name="org.thoughtcrime.securesms.passcode.PasscodeSetupActivity"
+            android:exported="false"
+            android:theme="@style/TextSecure.LightNoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden" />
     </application>
 
     <queries>

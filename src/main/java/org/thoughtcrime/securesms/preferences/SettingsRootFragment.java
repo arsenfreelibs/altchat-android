@@ -50,6 +50,7 @@ public class SettingsRootFragment extends CorrectedPreferenceFragment
   private static final String PREFERENCE_CATEGORY_NOTIFICATIONS = "preference_category_notifications";
   private static final String PREFERENCE_CATEGORY_APPEARANCE = "preference_category_appearance";
   private static final String PREFERENCE_CATEGORY_CHATS = "preference_category_chats";
+  private static final String PREFERENCE_CATEGORY_PRIVACY = "preference_category_privacy";
   private static final String PREFERENCE_CATEGORY_MULTIDEVICE = "preference_category_multidevice";
   private static final String PREFERENCE_CATEGORY_ADVANCED = "preference_category_advanced";
   private static final String PREFERENCE_CATEGORY_CONNECTIVITY = "preference_category_connectivity";
@@ -94,6 +95,8 @@ public class SettingsRootFragment extends CorrectedPreferenceFragment
         .setOnPreferenceClickListener(new CategoryClickListener(PREFERENCE_CATEGORY_APPEARANCE));
     this.findPreference(PREFERENCE_CATEGORY_CHATS)
         .setOnPreferenceClickListener(new CategoryClickListener(PREFERENCE_CATEGORY_CHATS));
+    this.findPreference(PREFERENCE_CATEGORY_PRIVACY)
+        .setOnPreferenceClickListener(new CategoryClickListener(PREFERENCE_CATEGORY_PRIVACY));
     this.findPreference(PREFERENCE_CATEGORY_MULTIDEVICE)
         .setOnPreferenceClickListener(new CategoryClickListener(PREFERENCE_CATEGORY_MULTIDEVICE));
     this.findPreference(PREFERENCE_CATEGORY_ADVANCED)
@@ -243,6 +246,9 @@ public class SettingsRootFragment extends CorrectedPreferenceFragment
           break;
         case PREFERENCE_CATEGORY_CHATS:
           fragment = new ChatsPreferenceFragment();
+          break;
+        case PREFERENCE_CATEGORY_PRIVACY:
+          fragment = new PrivacyPreferenceFragment();
           break;
         case PREFERENCE_CATEGORY_MULTIDEVICE:
           if (!ScreenLockUtil.applyScreenLock(
