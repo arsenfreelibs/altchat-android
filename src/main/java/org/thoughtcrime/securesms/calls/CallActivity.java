@@ -47,6 +47,7 @@ import java.util.Locale;
 import org.thoughtcrime.securesms.BuildConfig;
 import org.thoughtcrime.securesms.EglUtils;
 import org.thoughtcrime.securesms.R;
+import org.thoughtcrime.securesms.passcode.PasscodeManager;
 import org.webrtc.RendererCommon;
 import org.webrtc.SurfaceViewRenderer;
 import org.webrtc.VideoTrack;
@@ -436,7 +437,16 @@ public class CallActivity extends AppCompatActivity {
         });
 
     pipButton.setOnClickListener(
-        v -> enterPictureInPictureMode(createPipParams()));
+        v -> {
+          if (isPipAllowed()) {
+            enterPictureInPictureMode(createPipParams());
+          }
+        });
+    // When the passcode lock is on, picture-in-picture is disabled so the call cannot become a
+    // floating window that bypasses the lock; hide the entry point.
+    if (!isPipAllowed()) {
+      pipButton.setVisibility(View.GONE);
+    }
 
     getOnBackPressedDispatcher()
         .addCallback(
@@ -456,7 +466,12 @@ public class CallActivity extends AppCompatActivity {
                   case CONNECTING:
                   case CONNECTED:
                   case RECONNECTING:
-                    enterPictureInPictureMode(createPipParams());
+                    if (isPipAllowed()) {
+                      enterPictureInPictureMode(createPipParams());
+                    } else {
+                      // PiP disabled by passcode lock: keep the call running in the background.
+                      moveTaskToBack(true);
+                    }
                     break;
 
                   case INITIALIZING:
@@ -1085,7 +1100,10 @@ public class CallActivity extends AppCompatActivity {
           case CONNECTING:
           case CONNECTED:
           case RECONNECTING:
-            enterPictureInPictureMode(createPipParams());
+            if (isPipAllowed()) {
+              enterPictureInPictureMode(createPipParams());
+            }
+            // else: passcode lock disables PiP; let the activity go to the background normally.
             break;
 
           case INITIALIZING:
@@ -1101,6 +1119,11 @@ public class CallActivity extends AppCompatActivity {
     } else {
       Log.w(TAG, "No View Model exists");
     }
+  }
+
+  /** PiP is disabled while the app passcode lock is enabled (see passcode lock feature). */
+  private boolean isPipAllowed() {
+    return !PasscodeManager.isEnabled(this);
   }
 
   private PictureInPictureParams createPipParams() {

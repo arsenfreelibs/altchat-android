@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import org.thoughtcrime.securesms.ApplicationContext;
+import org.thoughtcrime.securesms.calls.CallActivity;
 import org.thoughtcrime.securesms.passcode.PasscodeActivity;
 import org.thoughtcrime.securesms.passcode.PasscodeManager;
 
@@ -83,6 +84,12 @@ public class ForegroundDetector implements Application.ActivityLifecycleCallback
    */
   private void maybeShowPasscodeLock(@NonNull Activity activity) {
     if (activity instanceof PasscodeActivity) {
+      return;
+    }
+    // Let incoming/active calls pass through the lock straight to the call screen. The lock state
+    // is intentionally not cleared, so navigating from the call back into the app re-raises the
+    // lock screen and the app stays locked once the call ends.
+    if (activity instanceof CallActivity) {
       return;
     }
     if (PasscodeManager.shouldLockOnForeground(activity)) {
