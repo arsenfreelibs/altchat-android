@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import org.thoughtcrime.securesms.ApplicationContext;
+import org.thoughtcrime.securesms.passcode.PasscodeActivity;
+import org.thoughtcrime.securesms.passcode.PasscodeManager;
 
 @SuppressLint("NewApi")
 public class ForegroundDetector implements Application.ActivityLifecycleCallbacks {
@@ -52,6 +54,8 @@ public class ForegroundDetector implements Application.ActivityLifecycleCallback
     }
 
     refs++;
+
+    maybeShowPasscodeLock(activity);
   }
 
   @Override
@@ -67,6 +71,22 @@ public class ForegroundDetector implements Application.ActivityLifecycleCallback
       Log.i(
           "DeltaChat",
           "++++++++++++++++++ last ForegroundDetector.onActivityStopped() ++++++++++++++++++");
+      // Remember when the app went to the background, to measure idle time for passcode auto-lock.
+      PasscodeManager.onAppBackgrounded();
+    }
+  }
+
+  /**
+   * Shows the passcode lock screen on top of {@code activity} when required (cold start, or the app
+   * was in the background at least the configured auto-lock timeout). The lock screen itself is
+   * skipped to avoid recursion.
+   */
+  private void maybeShowPasscodeLock(@NonNull Activity activity) {
+    if (activity instanceof PasscodeActivity) {
+      return;
+    }
+    if (PasscodeManager.shouldLockOnForeground(activity)) {
+      activity.startActivity(PasscodeActivity.getLockIntent(activity));
     }
   }
 
