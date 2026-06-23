@@ -1353,4 +1353,38 @@
     <string name="alt_search_remote_no_results">Пользователи Alt Platform не найдены</string>
     <string name="alt_search_remote_auth_error">Войдите в Alt Platform, чтобы видеть больше результатов</string>
 
+    <!-- passcode lock (auto-translated, needs review) -->
+    <string name="alt_passcode_locked_title">%1$s заблокирован</string>
+    <string name="alt_passcode_enter_hint">Введите код-пароль</string>
+    <string name="alt_passcode_wrong">Неверный код-пароль</string>
+    <string name="alt_passcode_locked_out">Слишком много попыток. Повторите через %1$s.</string>
+    <string name="alt_passcode_unlock_biometric_title">Разблокировать %1$s</string>
+    <string name="alt_passcode_unlock_biometric_subtitle">Подтвердите отпечаток пальца для разблокировки.</string>
+    <string name="alt_passcode_use_pin">Ввести PIN</string>
+    <string name="alt_passcode_use_fingerprint">Отпечаток пальца</string>
+    <string name="alt_passcode_delete">Удалить</string>
+    <string name="alt_privacy_security_title">Конфиденциальность и безопасность</string>
+    <string name="alt_passcode_title">Код-пароль</string>
+    <string name="alt_passcode_summary_on">Вкл.</string>
+    <string name="alt_passcode_summary_off">Выкл.</string>
+    <string name="alt_passcode_change">Изменить код-пароль</string>
+    <string name="alt_passcode_fingerprint">Разблокировка отпечатком пальца</string>
+    <string name="alt_passcode_autolock">Автоблокировка</string>
+    <string name="alt_passcode_autolock_summary">Запрашивать код-пароль после простоя.</string>
+    <string name="alt_passcode_autolock_disabled">Отключено</string>
+    <string name="alt_passcode_autolock_1min">через 1 минуту</string>
+    <string name="alt_passcode_autolock_5min">через 5 минут</string>
+    <string name="alt_passcode_autolock_1hour">через 1 час</string>
+    <string name="alt_passcode_autolock_5hours">через 5 часов</string>
+    <string name="alt_passcode_task_switcher_header">Содержимое в списке недавних</string>
+    <string name="alt_passcode_show_content">Показывать содержимое</string>
+    <string name="alt_passcode_show_content_summary">Если выключено, содержимое чатов скрывается в списке недавних, но вы не сможете делать скриншоты в приложении.</string>
+    <string name="alt_passcode_turn_off">Отключить код-пароль</string>
+    <string name="alt_passcode_turn_off_confirm">Вы уверены, что хотите отключить код-пароль?</string>
+    <string name="alt_passcode_create_title">Создайте код-пароль</string>
+    <string name="alt_passcode_create_subtitle">Введите любые 4 цифры, которые вы будете использовать для разблокировки приложения.</string>
+    <string name="alt_passcode_confirm_title">Повторите код-пароль</string>
+    <string name="alt_passcode_confirm_subtitle">Если вы забудете код-пароль, потребуется очистить данные приложения или переустановить его.</string>
+    <string name="alt_passcode_enter_old_title">Введите текущий код-пароль</string>
+    <string name="alt_passcode_mismatch">Коды-пароли не совпадают. Попробуйте снова.</string>
 </resources>

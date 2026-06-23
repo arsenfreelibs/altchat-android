@@ -1312,4 +1312,38 @@
     <!-- device messages for updates -->
     <string name="update_2_0">Co nowego?\n\n💯 Szyfrowanie end-to-end jest niezawodne i na zawsze. Kłódki 🔒 odchodzą w zapomnienie!\n\n✉️ Klasyczna poczta e-mail bez szyfrowania end-to-end jest oznaczona symbolem litery.\n\n😻 Nowy, ulepszony ekran profilu dla wszystkich kontaktów.\n\n🔲 Nowy przycisk szybkiego dostępu do aplikacji używanych na czacie.\n\n❤️ Prosimy o darowizny, które pomogą nam zachować niezależność i stale wprowadzać ulepszenia: %1$s</string>
     <string name="alt_search_tab_title">Szukaj</string>
+    <!-- passcode lock (auto-translated, needs review) -->
+    <string name="alt_passcode_locked_title">%1$s zablokowany</string>
+    <string name="alt_passcode_enter_hint">Wprowadź kod</string>
+    <string name="alt_passcode_wrong">Nieprawidłowy kod</string>
+    <string name="alt_passcode_locked_out">Zbyt wiele prób. Spróbuj ponownie za %1$s.</string>
+    <string name="alt_passcode_unlock_biometric_title">Odblokuj %1$s</string>
+    <string name="alt_passcode_unlock_biometric_subtitle">Potwierdź odcisk palca, aby odblokować.</string>
+    <string name="alt_passcode_use_pin">Użyj PIN-u</string>
+    <string name="alt_passcode_use_fingerprint">Odcisk palca</string>
+    <string name="alt_passcode_delete">Usuń</string>
+    <string name="alt_privacy_security_title">Prywatność i bezpieczeństwo</string>
+    <string name="alt_passcode_title">Blokada kodem</string>
+    <string name="alt_passcode_summary_on">Wł.</string>
+    <string name="alt_passcode_summary_off">Wył.</string>
+    <string name="alt_passcode_change">Zmień kod</string>
+    <string name="alt_passcode_fingerprint">Odblokuj odciskiem palca</string>
+    <string name="alt_passcode_autolock">Automatyczna blokada</string>
+    <string name="alt_passcode_autolock_summary">Wymagaj kodu po pewnym czasie nieaktywności.</string>
+    <string name="alt_passcode_autolock_disabled">Wyłączone</string>
+    <string name="alt_passcode_autolock_1min">po 1 minucie</string>
+    <string name="alt_passcode_autolock_5min">po 5 minutach</string>
+    <string name="alt_passcode_autolock_1hour">po 1 godzinie</string>
+    <string name="alt_passcode_autolock_5hours">po 5 godzinach</string>
+    <string name="alt_passcode_task_switcher_header">Zawartość aplikacji w przeglądzie aplikacji</string>
+    <string name="alt_passcode_show_content">Pokaż zawartość</string>
+    <string name="alt_passcode_show_content_summary">Po wyłączeniu zawartość czatów będzie ukryta w przeglądzie aplikacji, ale nie będzie można robić zrzutów ekranu w aplikacji.</string>
+    <string name="alt_passcode_turn_off">Wyłącz kod</string>
+    <string name="alt_passcode_turn_off_confirm">Czy na pewno chcesz wyłączyć kod?</string>
+    <string name="alt_passcode_create_title">Utwórz kod</string>
+    <string name="alt_passcode_create_subtitle">Wprowadź dowolne 4 cyfry, których użyjesz do odblokowania aplikacji.</string>
+    <string name="alt_passcode_confirm_title">Wprowadź kod ponownie</string>
+    <string name="alt_passcode_confirm_subtitle">Jeśli zapomnisz kodu, musisz wyczyścić dane aplikacji lub zainstalować ją ponownie.</string>
+    <string name="alt_passcode_enter_old_title">Wprowadź obecny kod</string>
+    <string name="alt_passcode_mismatch">Kody nie są zgodne. Spróbuj ponownie.</string>
 </resources>

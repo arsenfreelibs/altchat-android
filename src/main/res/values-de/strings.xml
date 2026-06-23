@@ -1276,4 +1276,38 @@
     <!-- device messages for updates -->
     <string name="update_2_0">Was ist neu?\n\n💯 Die Ende-zu-Ende-Verschlüsselung ist jetzt dauerhaft. Vorhängeschlösser 🔒 gibt es nicht mehr!\n\n✉️ Klassische E-Mails ohne Ende-zu-Ende-Verschlüsselung sind mit einem Umschlag-Symbol gekennzeichnet\n\n😻 Neues, verbessertes Profil für alle Kontakte\n\n🔲 Neue Schaltfläche für den schnellen Zugriff auf Apps, die in einem Chat verwendet werden\n\n❤️ Bitte spende und hilf uns, unabhängig zu bleiben und weiterhin Verbesserungen zu bringen: %1$s</string>
     <string name="alt_search_tab_title">Suche</string>
+    <!-- passcode lock (auto-translated, needs review) -->
+    <string name="alt_passcode_locked_title">%1$s gesperrt</string>
+    <string name="alt_passcode_enter_hint">Code eingeben</string>
+    <string name="alt_passcode_wrong">Falscher Code</string>
+    <string name="alt_passcode_locked_out">Zu viele Versuche. Erneut versuchen in %1$s.</string>
+    <string name="alt_passcode_unlock_biometric_title">%1$s entsperren</string>
+    <string name="alt_passcode_unlock_biometric_subtitle">Bestätige deinen Fingerabdruck zum Entsperren.</string>
+    <string name="alt_passcode_use_pin">PIN verwenden</string>
+    <string name="alt_passcode_use_fingerprint">Fingerabdruck</string>
+    <string name="alt_passcode_delete">Löschen</string>
+    <string name="alt_privacy_security_title">Datenschutz und Sicherheit</string>
+    <string name="alt_passcode_title">Code-Sperre</string>
+    <string name="alt_passcode_summary_on">An</string>
+    <string name="alt_passcode_summary_off">Aus</string>
+    <string name="alt_passcode_change">Code ändern</string>
+    <string name="alt_passcode_fingerprint">Mit Fingerabdruck entsperren</string>
+    <string name="alt_passcode_autolock">Automatische Sperre</string>
+    <string name="alt_passcode_autolock_summary">Code nach einiger Zeit der Abwesenheit verlangen.</string>
+    <string name="alt_passcode_autolock_disabled">Deaktiviert</string>
+    <string name="alt_passcode_autolock_1min">nach 1 Minute</string>
+    <string name="alt_passcode_autolock_5min">nach 5 Minuten</string>
+    <string name="alt_passcode_autolock_1hour">nach 1 Stunde</string>
+    <string name="alt_passcode_autolock_5hours">nach 5 Stunden</string>
+    <string name="alt_passcode_task_switcher_header">App-Inhalt in der App-Übersicht</string>
+    <string name="alt_passcode_show_content">Inhalt anzeigen</string>
+    <string name="alt_passcode_show_content_summary">Wenn deaktiviert, werden Chat-Inhalte in der App-Übersicht ausgeblendet, du kannst dann aber keine Screenshots in der App machen.</string>
+    <string name="alt_passcode_turn_off">Code deaktivieren</string>
+    <string name="alt_passcode_turn_off_confirm">Möchtest du deinen Code wirklich deaktivieren?</string>
+    <string name="alt_passcode_create_title">Code erstellen</string>
+    <string name="alt_passcode_create_subtitle">Gib 4 beliebige Ziffern ein, mit denen du die App entsperrst.</string>
+    <string name="alt_passcode_confirm_title">Code erneut eingeben</string>
+    <string name="alt_passcode_confirm_subtitle">Wenn du deinen Code vergisst, musst du die App-Daten löschen oder die App neu installieren.</string>
+    <string name="alt_passcode_enter_old_title">Aktuellen Code eingeben</string>
+    <string name="alt_passcode_mismatch">Codes stimmen nicht überein. Versuche es erneut.</string>
 </resources>

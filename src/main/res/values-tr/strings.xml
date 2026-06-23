@@ -1253,4 +1253,38 @@
     <!-- device messages for updates -->
     <string name="update_2_0">Ne yeni?\n\n💯 Uçtan uca şifreleme artık güvenilir ve sonsuza kadar geçerli. Asma kilitlerle 🔒 anlaşılabilir!\n\n✉️ Uçtan uca şifrelemeli olmayan klasik e-posta bir mektup sembolü olarak işaretlenir\n\n😻 Tüm kişileriniz için yeni geliştirilen profil ekranı\n\n🔲 Bir sohbette kullanılan uygulamalara hızlı erişim için yeni düğme\n\n❤️ Bağımsız kalmamız ve yeni geliştirmeler getirmemiz için lütfen bize yardım edin: %1$s</string>
     <string name="alt_search_tab_title">Arama</string>
+    <!-- passcode lock (auto-translated, needs review) -->
+    <string name="alt_passcode_locked_title">%1$s kilitli</string>
+    <string name="alt_passcode_enter_hint">Parolanı gir</string>
+    <string name="alt_passcode_wrong">Yanlış parola</string>
+    <string name="alt_passcode_locked_out">Çok fazla deneme. %1$s sonra tekrar dene.</string>
+    <string name="alt_passcode_unlock_biometric_title">%1$s kilidini aç</string>
+    <string name="alt_passcode_unlock_biometric_subtitle">Kilidi açmak için parmak izini doğrula.</string>
+    <string name="alt_passcode_use_pin">PIN kullan</string>
+    <string name="alt_passcode_use_fingerprint">Parmak izi</string>
+    <string name="alt_passcode_delete">Sil</string>
+    <string name="alt_privacy_security_title">Gizlilik ve Güvenlik</string>
+    <string name="alt_passcode_title">Parola Kilidi</string>
+    <string name="alt_passcode_summary_on">Açık</string>
+    <string name="alt_passcode_summary_off">Kapalı</string>
+    <string name="alt_passcode_change">Parolayı Değiştir</string>
+    <string name="alt_passcode_fingerprint">Parmak İziyle Kilit Aç</string>
+    <string name="alt_passcode_autolock">Otomatik kilit</string>
+    <string name="alt_passcode_autolock_summary">Bir süre uzak kalınırsa parola iste.</string>
+    <string name="alt_passcode_autolock_disabled">Devre dışı</string>
+    <string name="alt_passcode_autolock_1min">1 dakika sonra</string>
+    <string name="alt_passcode_autolock_5min">5 dakika sonra</string>
+    <string name="alt_passcode_autolock_1hour">1 saat sonra</string>
+    <string name="alt_passcode_autolock_5hours">5 saat sonra</string>
+    <string name="alt_passcode_task_switcher_header">Son uygulamalarda uygulama içeriği</string>
+    <string name="alt_passcode_show_content">İçeriği göster</string>
+    <string name="alt_passcode_show_content_summary">Devre dışı bırakılırsa sohbet içeriği son uygulamalar ekranında gizlenir, ancak uygulamada ekran görüntüsü alamazsınız.</string>
+    <string name="alt_passcode_turn_off">Parolayı Kapat</string>
+    <string name="alt_passcode_turn_off_confirm">Parolanı devre dışı bırakmak istediğine emin misin?</string>
+    <string name="alt_passcode_create_title">Parola oluştur</string>
+    <string name="alt_passcode_create_subtitle">Uygulamanın kilidini açmak için kullanacağın herhangi 4 rakam gir.</string>
+    <string name="alt_passcode_confirm_title">Parolanı tekrar gir</string>
+    <string name="alt_passcode_confirm_subtitle">Parolanı unutursan uygulama verilerini silmen veya uygulamayı yeniden yüklemen gerekir.</string>
+    <string name="alt_passcode_enter_old_title">Mevcut parolanı gir</string>
+    <string name="alt_passcode_mismatch">Parolalar eşleşmiyor. Tekrar dene.</string>
 </resources>

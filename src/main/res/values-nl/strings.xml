@@ -1276,4 +1276,38 @@
     <!-- device messages for updates -->
     <string name="update_2_0">Wijzigingslog:\n\n💯 Eind-tot-eindversleuteling is voortaan betrouwbaarder én standaard. Slotjes 🔒 zijn verleden tijd!\n\n✉️ Klassieke e-mails zonder eind-tot-eindversleuteling worden voortaan gemarkeerd met een letter\n\n😻 Nieuwe, mooiere profielpagina\'s van al je contactpersonen\n\n🔲 Nieuwe knop voor snelle toegang tot apps in gesprekken\n\n❤️ Overweeg een donatie, zodat we onafhankelijk kunnen blijven en verbeteringen kunnen blijven aanbrengen: %1$s</string>
     <string name="alt_search_tab_title">Zoeken</string>
+    <!-- passcode lock (auto-translated, needs review) -->
+    <string name="alt_passcode_locked_title">%1$s vergrendeld</string>
+    <string name="alt_passcode_enter_hint">Voer je toegangscode in</string>
+    <string name="alt_passcode_wrong">Onjuiste toegangscode</string>
+    <string name="alt_passcode_locked_out">Te veel pogingen. Probeer opnieuw over %1$s.</string>
+    <string name="alt_passcode_unlock_biometric_title">%1$s ontgrendelen</string>
+    <string name="alt_passcode_unlock_biometric_subtitle">Bevestig je vingerafdruk om te ontgrendelen.</string>
+    <string name="alt_passcode_use_pin">Pincode gebruiken</string>
+    <string name="alt_passcode_use_fingerprint">Vingerafdruk</string>
+    <string name="alt_passcode_delete">Verwijderen</string>
+    <string name="alt_privacy_security_title">Privacy en beveiliging</string>
+    <string name="alt_passcode_title">Toegangscodevergrendeling</string>
+    <string name="alt_passcode_summary_on">Aan</string>
+    <string name="alt_passcode_summary_off">Uit</string>
+    <string name="alt_passcode_change">Toegangscode wijzigen</string>
+    <string name="alt_passcode_fingerprint">Ontgrendelen met vingerafdruk</string>
+    <string name="alt_passcode_autolock">Automatisch vergrendelen</string>
+    <string name="alt_passcode_autolock_summary">Toegangscode vragen na enige tijd inactiviteit.</string>
+    <string name="alt_passcode_autolock_disabled">Uitgeschakeld</string>
+    <string name="alt_passcode_autolock_1min">na 1 minuut</string>
+    <string name="alt_passcode_autolock_5min">na 5 minuten</string>
+    <string name="alt_passcode_autolock_1hour">na 1 uur</string>
+    <string name="alt_passcode_autolock_5hours">na 5 uur</string>
+    <string name="alt_passcode_task_switcher_header">App-inhoud in app-overzicht</string>
+    <string name="alt_passcode_show_content">Inhoud tonen</string>
+    <string name="alt_passcode_show_content_summary">Indien uitgeschakeld wordt chatinhoud verborgen in het app-overzicht, maar kun je geen schermafbeeldingen maken in de app.</string>
+    <string name="alt_passcode_turn_off">Toegangscode uitschakelen</string>
+    <string name="alt_passcode_turn_off_confirm">Weet je zeker dat je je toegangscode wilt uitschakelen?</string>
+    <string name="alt_passcode_create_title">Maak een toegangscode</string>
+    <string name="alt_passcode_create_subtitle">Voer 4 willekeurige cijfers in die je gebruikt om de app te ontgrendelen.</string>
+    <string name="alt_passcode_confirm_title">Voer je toegangscode opnieuw in</string>
+    <string name="alt_passcode_confirm_subtitle">Als je je toegangscode vergeet, moet je de app-gegevens wissen of de app opnieuw installeren.</string>
+    <string name="alt_passcode_enter_old_title">Voer je huidige toegangscode in</string>
+    <string name="alt_passcode_mismatch">Toegangscodes komen niet overeen. Probeer opnieuw.</string>
 </resources>

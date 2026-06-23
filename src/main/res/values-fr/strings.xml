@@ -1220,4 +1220,38 @@
     <!-- device messages for updates -->
     <string name="update_2_0">Quoi de neuf ?\n\n💯 Le chiffrement de bout en bout est maintenant fiable et pérenne. 🔒Fini les cadenas !\n\n✉️ Les courriels sans chiffrement de bout en bout sont maintenant marqués par une icône enveloppe \n\n😻 Nouvelle fenêtre de profil améliorée pour tous les contacts \n\n🔲 Nouveau bouton pour l\'accès rapide aux applis utilisées dans une discussion\n\n❤️ Merci d\'envisager de faire un don afin que nous restions indépendants et continuions à améliorer Alt Chat : %1$s</string>
     <string name="alt_search_tab_title">Recherche</string>
+    <!-- passcode lock (auto-translated, needs review) -->
+    <string name="alt_passcode_locked_title">%1$s verrouillé</string>
+    <string name="alt_passcode_enter_hint">Saisissez le code</string>
+    <string name="alt_passcode_wrong">Code incorrect</string>
+    <string name="alt_passcode_locked_out">Trop de tentatives. Réessayez dans %1$s.</string>
+    <string name="alt_passcode_unlock_biometric_title">Déverrouiller %1$s</string>
+    <string name="alt_passcode_unlock_biometric_subtitle">Confirmez votre empreinte digitale pour déverrouiller.</string>
+    <string name="alt_passcode_use_pin">Utiliser le code</string>
+    <string name="alt_passcode_use_fingerprint">Empreinte digitale</string>
+    <string name="alt_passcode_delete">Supprimer</string>
+    <string name="alt_privacy_security_title">Confidentialité et sécurité</string>
+    <string name="alt_passcode_title">Verrouillage par code</string>
+    <string name="alt_passcode_summary_on">Activé</string>
+    <string name="alt_passcode_summary_off">Désactivé</string>
+    <string name="alt_passcode_change">Modifier le code</string>
+    <string name="alt_passcode_fingerprint">Déverrouiller avec l\'empreinte digitale</string>
+    <string name="alt_passcode_autolock">Verrouillage automatique</string>
+    <string name="alt_passcode_autolock_summary">Demander le code après une période d\'inactivité.</string>
+    <string name="alt_passcode_autolock_disabled">Désactivé</string>
+    <string name="alt_passcode_autolock_1min">après 1 minute</string>
+    <string name="alt_passcode_autolock_5min">après 5 minutes</string>
+    <string name="alt_passcode_autolock_1hour">après 1 heure</string>
+    <string name="alt_passcode_autolock_5hours">après 5 heures</string>
+    <string name="alt_passcode_task_switcher_header">Contenu de l\'application dans le sélecteur d\'applications</string>
+    <string name="alt_passcode_show_content">Afficher le contenu</string>
+    <string name="alt_passcode_show_content_summary">Si désactivé, le contenu des discussions sera masqué dans le sélecteur d\'applications, mais vous ne pourrez pas faire de captures d\'écran dans l\'application.</string>
+    <string name="alt_passcode_turn_off">Désactiver le code</string>
+    <string name="alt_passcode_turn_off_confirm">Voulez-vous vraiment désactiver votre code ?</string>
+    <string name="alt_passcode_create_title">Créer un code</string>
+    <string name="alt_passcode_create_subtitle">Saisissez 4 chiffres au choix que vous utiliserez pour déverrouiller l\'application.</string>
+    <string name="alt_passcode_confirm_title">Saisissez à nouveau le code</string>
+    <string name="alt_passcode_confirm_subtitle">Si vous oubliez votre code, vous devrez effacer les données de l\'application ou la réinstaller.</string>
+    <string name="alt_passcode_enter_old_title">Saisissez votre code actuel</string>
+    <string name="alt_passcode_mismatch">Les codes ne correspondent pas. Réessayez.</string>
 </resources>

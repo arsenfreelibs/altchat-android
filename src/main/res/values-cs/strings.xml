@@ -1170,4 +1170,38 @@
     <!-- device messages for updates -->
     <string name="update_2_0">Co je nového? \n\n💯 Koncové šifrování je nyní spolehlivé a navždy. Visací zámky 🔒 jsou pryč! \n\n✉️ Klasické e-maily bez koncového šifrování jsou označeny symbolem písmene \n\n😻 Nová vylepšená profilová obrazovka pro všechny kontakty \n\n🔲 Nové tlačítko pro rychlý přístup k aplikacím používaným v chatu \n\n❤️ Přispějte nám, abychom zůstali nezávislí a mohli pokračovat ve vylepšování: %1$s</string>
     <string name="alt_search_tab_title">Hledat</string>
+    <!-- passcode lock (auto-translated, needs review) -->
+    <string name="alt_passcode_locked_title">%1$s uzamčen</string>
+    <string name="alt_passcode_enter_hint">Zadejte přístupový kód</string>
+    <string name="alt_passcode_wrong">Nesprávný přístupový kód</string>
+    <string name="alt_passcode_locked_out">Příliš mnoho pokusů. Zkuste to znovu za %1$s.</string>
+    <string name="alt_passcode_unlock_biometric_title">Odemknout %1$s</string>
+    <string name="alt_passcode_unlock_biometric_subtitle">Pro odemčení potvrďte otisk prstu.</string>
+    <string name="alt_passcode_use_pin">Použít PIN</string>
+    <string name="alt_passcode_use_fingerprint">Otisk prstu</string>
+    <string name="alt_passcode_delete">Smazat</string>
+    <string name="alt_privacy_security_title">Soukromí a zabezpečení</string>
+    <string name="alt_passcode_title">Zámek kódem</string>
+    <string name="alt_passcode_summary_on">Zapnuto</string>
+    <string name="alt_passcode_summary_off">Vypnuto</string>
+    <string name="alt_passcode_change">Změnit kód</string>
+    <string name="alt_passcode_fingerprint">Odemknout otiskem prstu</string>
+    <string name="alt_passcode_autolock">Automatický zámek</string>
+    <string name="alt_passcode_autolock_summary">Vyžadovat kód po určité době nečinnosti.</string>
+    <string name="alt_passcode_autolock_disabled">Vypnuto</string>
+    <string name="alt_passcode_autolock_1min">za 1 minutu</string>
+    <string name="alt_passcode_autolock_5min">za 5 minut</string>
+    <string name="alt_passcode_autolock_1hour">za 1 hodinu</string>
+    <string name="alt_passcode_autolock_5hours">za 5 hodin</string>
+    <string name="alt_passcode_task_switcher_header">Obsah aplikace v přehledu aplikací</string>
+    <string name="alt_passcode_show_content">Zobrazit obsah</string>
+    <string name="alt_passcode_show_content_summary">Pokud je vypnuto, obsah chatů bude v přehledu aplikací skryt, ale nebudete moci pořizovat snímky obrazovky v aplikaci.</string>
+    <string name="alt_passcode_turn_off">Vypnout kód</string>
+    <string name="alt_passcode_turn_off_confirm">Opravdu chcete vypnout přístupový kód?</string>
+    <string name="alt_passcode_create_title">Vytvořte přístupový kód</string>
+    <string name="alt_passcode_create_subtitle">Zadejte libovolné 4 číslice, které budete používat k odemknutí aplikace.</string>
+    <string name="alt_passcode_confirm_title">Zadejte přístupový kód znovu</string>
+    <string name="alt_passcode_confirm_subtitle">Pokud kód zapomenete, budete muset vymazat data aplikace nebo ji přeinstalovat.</string>
+    <string name="alt_passcode_enter_old_title">Zadejte současný přístupový kód</string>
+    <string name="alt_passcode_mismatch">Kódy se neshodují. Zkuste to znovu.</string>
 </resources>

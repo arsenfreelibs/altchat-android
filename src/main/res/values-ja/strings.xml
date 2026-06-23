@@ -607,4 +607,38 @@
     <string name="a11y_disappearing_messages_activated">消えるメッセージを有効にしました。</string>
 
         <string name="alt_search_tab_title">検索</string>
+    <!-- passcode lock (auto-translated, needs review) -->
+    <string name="alt_passcode_locked_title">%1$s はロックされています</string>
+    <string name="alt_passcode_enter_hint">パスコードを入力</string>
+    <string name="alt_passcode_wrong">パスコードが違います</string>
+    <string name="alt_passcode_locked_out">試行回数が多すぎます。%1$s 後にもう一度お試しください。</string>
+    <string name="alt_passcode_unlock_biometric_title">%1$s のロックを解除</string>
+    <string name="alt_passcode_unlock_biometric_subtitle">指紋認証でロックを解除してください。</string>
+    <string name="alt_passcode_use_pin">PINを使用</string>
+    <string name="alt_passcode_use_fingerprint">指紋認証</string>
+    <string name="alt_passcode_delete">削除</string>
+    <string name="alt_privacy_security_title">プライバシーとセキュリティ</string>
+    <string name="alt_passcode_title">パスコードロック</string>
+    <string name="alt_passcode_summary_on">オン</string>
+    <string name="alt_passcode_summary_off">オフ</string>
+    <string name="alt_passcode_change">パスコードを変更</string>
+    <string name="alt_passcode_fingerprint">指紋でロック解除</string>
+    <string name="alt_passcode_autolock">自動ロック</string>
+    <string name="alt_passcode_autolock_summary">一定時間操作がない場合にパスコードを要求します。</string>
+    <string name="alt_passcode_autolock_disabled">無効</string>
+    <string name="alt_passcode_autolock_1min">1分後</string>
+    <string name="alt_passcode_autolock_5min">5分後</string>
+    <string name="alt_passcode_autolock_1hour">1時間後</string>
+    <string name="alt_passcode_autolock_5hours">5時間後</string>
+    <string name="alt_passcode_task_switcher_header">最近のアプリでのアプリ内容</string>
+    <string name="alt_passcode_show_content">内容を表示</string>
+    <string name="alt_passcode_show_content_summary">無効にすると、最近のアプリ画面でチャットの内容が隠されますが、アプリ内でスクリーンショットを撮れなくなります。</string>
+    <string name="alt_passcode_turn_off">パスコードをオフにする</string>
+    <string name="alt_passcode_turn_off_confirm">パスコードを無効にしてもよろしいですか？</string>
+    <string name="alt_passcode_create_title">パスコードを作成</string>
+    <string name="alt_passcode_create_subtitle">アプリのロック解除に使う4桁の数字を入力してください。</string>
+    <string name="alt_passcode_confirm_title">パスコードを再入力</string>
+    <string name="alt_passcode_confirm_subtitle">パスコードを忘れた場合は、アプリのデータを消去するか、アプリを再インストールする必要があります。</string>
+    <string name="alt_passcode_enter_old_title">現在のパスコードを入力</string>
+    <string name="alt_passcode_mismatch">パスコードが一致しません。もう一度お試しください。</string>
 </resources>

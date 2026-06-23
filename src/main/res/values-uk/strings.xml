@@ -1313,4 +1313,38 @@
     <!-- device messages for updates -->
     <string name="update_2_0">Що нового?\n\n💯 Наскрізне шифрування тепер надійне і завжди. Навісні замки 🔒 зникли!\n\n✉️ Класична електронна пошта без наскрізного шифрування позначається символом листа\n\n😻 Новий покращений екран профілю для всіх ваших контактів\n\n🔲 Нова кнопка для швидкого доступу до додатків, що використовуються в чаті\n\n❤️ Будь ласка, пожертвуйте, щоб допомогти нам залишатися незалежними та продовжувати вдосконалюватися: %1$s</string>
     <string name="alt_search_tab_title">Пошук</string>
+    <!-- passcode lock (auto-translated, needs review) -->
+    <string name="alt_passcode_locked_title">%1$s заблоковано</string>
+    <string name="alt_passcode_enter_hint">Введіть код-пароль</string>
+    <string name="alt_passcode_wrong">Неправильний код-пароль</string>
+    <string name="alt_passcode_locked_out">Забагато спроб. Повторіть через %1$s.</string>
+    <string name="alt_passcode_unlock_biometric_title">Розблокувати %1$s</string>
+    <string name="alt_passcode_unlock_biometric_subtitle">Підтвердіть відбиток пальця для розблокування.</string>
+    <string name="alt_passcode_use_pin">Ввести PIN</string>
+    <string name="alt_passcode_use_fingerprint">Відбиток пальця</string>
+    <string name="alt_passcode_delete">Видалити</string>
+    <string name="alt_privacy_security_title">Конфіденційність і безпека</string>
+    <string name="alt_passcode_title">Код-пароль</string>
+    <string name="alt_passcode_summary_on">Увімк.</string>
+    <string name="alt_passcode_summary_off">Вимк.</string>
+    <string name="alt_passcode_change">Змінити код-пароль</string>
+    <string name="alt_passcode_fingerprint">Розблокування відбитком пальця</string>
+    <string name="alt_passcode_autolock">Автоблокування</string>
+    <string name="alt_passcode_autolock_summary">Запитувати код-пароль після певного часу простою.</string>
+    <string name="alt_passcode_autolock_disabled">Вимкнено</string>
+    <string name="alt_passcode_autolock_1min">через 1 хвилину</string>
+    <string name="alt_passcode_autolock_5min">через 5 хвилин</string>
+    <string name="alt_passcode_autolock_1hour">через 1 годину</string>
+    <string name="alt_passcode_autolock_5hours">через 5 годин</string>
+    <string name="alt_passcode_task_switcher_header">Вміст у списку нещодавніх</string>
+    <string name="alt_passcode_show_content">Показувати вміст</string>
+    <string name="alt_passcode_show_content_summary">Якщо вимкнено, вміст чатів приховується у списку нещодавніх, але ви не зможете робити знімки екрана в застосунку.</string>
+    <string name="alt_passcode_turn_off">Вимкнути код-пароль</string>
+    <string name="alt_passcode_turn_off_confirm">Ви впевнені, що хочете вимкнути код-пароль?</string>
+    <string name="alt_passcode_create_title">Створіть код-пароль</string>
+    <string name="alt_passcode_create_subtitle">Введіть будь-які 4 цифри, які ви використовуватимете для розблокування застосунку.</string>
+    <string name="alt_passcode_confirm_title">Повторіть код-пароль</string>
+    <string name="alt_passcode_confirm_subtitle">Якщо ви забудете код-пароль, доведеться очистити дані застосунку або перевстановити його.</string>
+    <string name="alt_passcode_enter_old_title">Введіть поточний код-пароль</string>
+    <string name="alt_passcode_mismatch">Коди-паролі не збігаються. Спробуйте ще раз.</string>
 </resources>

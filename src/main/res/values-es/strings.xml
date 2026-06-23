@@ -1222,4 +1222,38 @@
     <!-- device messages for updates -->
     <string name="update_2_0">¿Qué hay de nuevo?\n\n💯 El cifrado de extremo a extremo es fiable y para siempre. ¡Se acabaron los candados 🔒!\n\n✉️ El correo electrónico clásico sin cifrado de extremo a extremo es marcado con un símbolo de carta.\n\n😻 Nueva pantalla de perfil mejorada para todos tus contactos.\n\n🔲 Nuevo botón para acceder rápidamente a las apps usadas en el chat.\n\n❤️ Dona para ayudarnos a mantener nuestra independencia y seguir mejorando: %1$s</string>
     <string name="alt_search_tab_title">Búsqueda</string>
+    <!-- passcode lock (auto-translated, needs review) -->
+    <string name="alt_passcode_locked_title">%1$s bloqueado</string>
+    <string name="alt_passcode_enter_hint">Introduce el código</string>
+    <string name="alt_passcode_wrong">Código incorrecto</string>
+    <string name="alt_passcode_locked_out">Demasiados intentos. Vuelve a intentarlo en %1$s.</string>
+    <string name="alt_passcode_unlock_biometric_title">Desbloquear %1$s</string>
+    <string name="alt_passcode_unlock_biometric_subtitle">Confirma tu huella digital para desbloquear.</string>
+    <string name="alt_passcode_use_pin">Usar PIN</string>
+    <string name="alt_passcode_use_fingerprint">Huella digital</string>
+    <string name="alt_passcode_delete">Borrar</string>
+    <string name="alt_privacy_security_title">Privacidad y seguridad</string>
+    <string name="alt_passcode_title">Bloqueo por código</string>
+    <string name="alt_passcode_summary_on">Activado</string>
+    <string name="alt_passcode_summary_off">Desactivado</string>
+    <string name="alt_passcode_change">Cambiar código</string>
+    <string name="alt_passcode_fingerprint">Desbloquear con huella digital</string>
+    <string name="alt_passcode_autolock">Bloqueo automático</string>
+    <string name="alt_passcode_autolock_summary">Pedir el código tras un tiempo de inactividad.</string>
+    <string name="alt_passcode_autolock_disabled">Desactivado</string>
+    <string name="alt_passcode_autolock_1min">en 1 minuto</string>
+    <string name="alt_passcode_autolock_5min">en 5 minutos</string>
+    <string name="alt_passcode_autolock_1hour">en 1 hora</string>
+    <string name="alt_passcode_autolock_5hours">en 5 horas</string>
+    <string name="alt_passcode_task_switcher_header">Contenido de la app en el selector de tareas</string>
+    <string name="alt_passcode_show_content">Mostrar contenido</string>
+    <string name="alt_passcode_show_content_summary">Si se desactiva, el contenido de los chats se ocultará en el selector de tareas, pero no podrás hacer capturas de pantalla en la app.</string>
+    <string name="alt_passcode_turn_off">Desactivar código</string>
+    <string name="alt_passcode_turn_off_confirm">¿Seguro que quieres desactivar tu código?</string>
+    <string name="alt_passcode_create_title">Crea un código</string>
+    <string name="alt_passcode_create_subtitle">Introduce 4 dígitos cualesquiera que usarás para desbloquear la app.</string>
+    <string name="alt_passcode_confirm_title">Vuelve a introducir el código</string>
+    <string name="alt_passcode_confirm_subtitle">Si olvidas tu código, tendrás que borrar los datos de la app o reinstalarla.</string>
+    <string name="alt_passcode_enter_old_title">Introduce tu código actual</string>
+    <string name="alt_passcode_mismatch">Los códigos no coinciden. Inténtalo de nuevo.</string>
 </resources>

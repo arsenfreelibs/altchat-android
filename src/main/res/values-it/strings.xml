@@ -1294,4 +1294,38 @@
     <!-- device messages for updates -->
     <string name="update_2_0">Novità?\n\n💯 La crittografia end-to-end è ora affidabile e definitiva. I lucchetti 🔒 sono spariti!\n\n✉️ Le email classiche senza crittografia end-to-end sono contrassegnate dal simbolo di una lettera\n\n😻 Nuova schermata del profilo migliorata per tutti i tuoi contatti\n\n🔲 Nuovo pulsante per l\'accesso rapido alle app utilizzate in una chat\n\n❤️ Dona per aiutarci a rimanere indipendenti e continuare a migliorare: %1$s</string>
     <string name="alt_search_tab_title">Ricerca</string>
+    <!-- passcode lock (auto-translated, needs review) -->
+    <string name="alt_passcode_locked_title">%1$s bloccato</string>
+    <string name="alt_passcode_enter_hint">Inserisci il codice</string>
+    <string name="alt_passcode_wrong">Codice errato</string>
+    <string name="alt_passcode_locked_out">Troppi tentativi. Riprova tra %1$s.</string>
+    <string name="alt_passcode_unlock_biometric_title">Sblocca %1$s</string>
+    <string name="alt_passcode_unlock_biometric_subtitle">Conferma la tua impronta digitale per sbloccare.</string>
+    <string name="alt_passcode_use_pin">Usa PIN</string>
+    <string name="alt_passcode_use_fingerprint">Impronta digitale</string>
+    <string name="alt_passcode_delete">Elimina</string>
+    <string name="alt_privacy_security_title">Privacy e sicurezza</string>
+    <string name="alt_passcode_title">Blocco con codice</string>
+    <string name="alt_passcode_summary_on">Attivo</string>
+    <string name="alt_passcode_summary_off">Disattivato</string>
+    <string name="alt_passcode_change">Cambia codice</string>
+    <string name="alt_passcode_fingerprint">Sblocca con impronta digitale</string>
+    <string name="alt_passcode_autolock">Blocco automatico</string>
+    <string name="alt_passcode_autolock_summary">Richiedi il codice dopo un periodo di inattività.</string>
+    <string name="alt_passcode_autolock_disabled">Disattivato</string>
+    <string name="alt_passcode_autolock_1min">dopo 1 minuto</string>
+    <string name="alt_passcode_autolock_5min">dopo 5 minuti</string>
+    <string name="alt_passcode_autolock_1hour">dopo 1 ora</string>
+    <string name="alt_passcode_autolock_5hours">dopo 5 ore</string>
+    <string name="alt_passcode_task_switcher_header">Contenuto dell\'app nel selettore app</string>
+    <string name="alt_passcode_show_content">Mostra contenuto</string>
+    <string name="alt_passcode_show_content_summary">Se disattivato, il contenuto delle chat sarà nascosto nel selettore app, ma non potrai fare screenshot nell\'app.</string>
+    <string name="alt_passcode_turn_off">Disattiva codice</string>
+    <string name="alt_passcode_turn_off_confirm">Sei sicuro di voler disattivare il codice?</string>
+    <string name="alt_passcode_create_title">Crea un codice</string>
+    <string name="alt_passcode_create_subtitle">Inserisci 4 cifre qualsiasi che userai per sbloccare l\'app.</string>
+    <string name="alt_passcode_confirm_title">Reinserisci il codice</string>
+    <string name="alt_passcode_confirm_subtitle">Se dimentichi il codice, dovrai cancellare i dati dell\'app o reinstallarla.</string>
+    <string name="alt_passcode_enter_old_title">Inserisci il codice attuale</string>
+    <string name="alt_passcode_mismatch">I codici non corrispondono. Riprova.</string>
 </resources>
