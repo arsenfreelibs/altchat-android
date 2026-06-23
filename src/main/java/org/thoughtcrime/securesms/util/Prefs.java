@@ -324,11 +324,19 @@ public class Prefs {
     PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(key, value).apply();
   }
 
+  public static int getIntPreference(Context context, String key, int defaultValue) {
+    return getIntegerPreference(context, key, defaultValue);
+  }
+
+  public static void setIntPreference(Context context, String key, int value) {
+    setIntegerPreference(context, key, value);
+  }
+
   public static long getLongPreference(Context context, String key, long defaultValue) {
     return PreferenceManager.getDefaultSharedPreferences(context).getLong(key, defaultValue);
   }
 
-  private static void setLongPreference(Context context, String key, long value) {
+  public static void setLongPreference(Context context, String key, long value) {
     PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(key, value).apply();
   }
 
