@@ -1349,4 +1349,15 @@
     <string name="alt_search_remote_auth_error">Sign in to Alt Platform to see more results</string>
     <string name="alt_search_tab_title">Search</string>
 
+    <!-- passcode lock: locked screen -->
+    <string name="alt_passcode_locked_title">%1$s Locked</string>
+    <string name="alt_passcode_enter_hint">Enter your passcode</string>
+    <string name="alt_passcode_wrong">Wrong passcode</string>
+    <string name="alt_passcode_locked_out">Too many attempts. Try again in %1$s.</string>
+    <string name="alt_passcode_unlock_biometric_title">Unlock %1$s</string>
+    <string name="alt_passcode_unlock_biometric_subtitle">Confirm your fingerprint to unlock.</string>
+    <string name="alt_passcode_use_pin">Use PIN</string>
+    <string name="alt_passcode_use_fingerprint">Use fingerprint</string>
+    <string name="alt_passcode_delete">Delete</string>
+
 </resources>

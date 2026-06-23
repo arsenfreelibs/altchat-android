@@ -614,6 +614,14 @@
         <meta-data
             android:name="com.sec.android.multiwindow.MINIMUM_SIZE_H"
             android:value="598.0dip" />
+
+        <activity
+            android:name="org.thoughtcrime.securesms.passcode.PasscodeActivity"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:excludeFromRecents="true"
+            android:theme="@style/TextSecure.LightNoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden" />
     </application>
 
     <queries>

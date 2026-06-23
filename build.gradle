@@ -239,6 +239,7 @@ dependencies {
     implementation ('com.journeyapps:zxing-android-embedded:4.3.0') { transitive = false } // QR Code scanner
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1' // used as JSON library
     implementation 'androidx.security:security-crypto:1.1.0-alpha06' // EncryptedSharedPreferences for token storage
+    implementation 'androidx.biometric:biometric:1.1.0' // fingerprint unlock for passcode lock
     implementation 'com.github.Baseflow:PhotoView:2.3.0' // does the zooming on photos / media
     implementation 'com.caverock:androidsvg-aar:1.4' // SVG support.
     implementation 'com.github.bumptech.glide:glide:4.16.0'
