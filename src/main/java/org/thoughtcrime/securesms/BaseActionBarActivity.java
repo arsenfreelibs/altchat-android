@@ -59,9 +59,20 @@ public abstract class BaseActionBarActivity extends AppCompatActivity {
     dynamicTheme.onResume(this);
   }
 
+  /** Subclasses that must always block screenshots (e.g. the passcode screens) return true. */
+  protected boolean isAlwaysScreenSecure() {
+    return false;
+  }
+
   private void initializeScreenshotSecurity() {
-    if (Prefs.isScreenSecurityEnabled(this)) {
+    boolean secure = isAlwaysScreenSecure()
+        || Prefs.isScreenSecurityEnabled(this)
+        || org.thoughtcrime.securesms.passcode.PasscodeManager.shouldHideContent(this);
+    if (secure) {
       getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+    } else {
+      // Re-evaluated on every resume, so toggling the setting off takes effect without a restart.
+      getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
     }
   }
 

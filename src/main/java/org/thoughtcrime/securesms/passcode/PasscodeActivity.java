@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import org.thoughtcrime.securesms.BaseActionBarActivity;
@@ -33,7 +32,7 @@ public class PasscodeActivity extends BaseActionBarActivity {
   private static final int BIOMETRIC_AUTHENTICATORS = BiometricManager.Authenticators.BIOMETRIC_WEAK;
 
   private final StringBuilder entered = new StringBuilder();
-  private List<View> keypadButtons = new ArrayList<>();
+  private List<View> keypadButtons;
   private LinearLayout dotsContainer;
   private TextView errorView;
   private CountDownTimer lockoutTimer;
@@ -48,6 +47,11 @@ public class PasscodeActivity extends BaseActionBarActivity {
     Intent intent = new Intent(context, PasscodeActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
     return intent;
+  }
+
+  @Override
+  protected boolean isAlwaysScreenSecure() {
+    return true; // the lock screen must never appear in screenshots / recents
   }
 
   @Override
@@ -135,13 +139,9 @@ public class PasscodeActivity extends BaseActionBarActivity {
   }
 
   private void verify() {
-    // Hashing (PBKDF2) is too slow for the UI thread; run it off-thread and disable input meanwhile.
-    final String code = entered.toString();
+    // Hashing (PBKDF2) is too slow for the UI thread; verify off-thread and disable input meanwhile.
     setKeypadEnabled(false);
-    new Thread(() -> {
-      final boolean ok = PasscodeManager.checkPasscode(this, code);
-      runOnUiThread(() -> onVerified(ok));
-    }).start();
+    PasscodeManager.checkPasscodeAsync(this, entered.toString(), this::onVerified);
   }
 
   private void onVerified(boolean ok) {

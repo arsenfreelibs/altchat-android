@@ -47,6 +47,11 @@ public class PasscodeSetupActivity extends BaseActionBarActivity {
   }
 
   @Override
+  protected boolean isAlwaysScreenSecure() {
+    return true; // entering/creating a passcode must never appear in screenshots / recents
+  }
+
+  @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
@@ -94,7 +99,9 @@ public class PasscodeSetupActivity extends BaseActionBarActivity {
     switch (step) {
       case ENTER_OLD:
         // Verifying the current passcode hashes off the UI thread (PBKDF2 is slow).
-        runHashing(() -> PasscodeManager.checkPasscode(this, code), ok -> {
+        processing = true;
+        PasscodeManager.checkPasscodeAsync(this, code, ok -> {
+          processing = false;
           if (ok) {
             goToStep(Step.ENTER_NEW);
           } else {
@@ -109,10 +116,9 @@ public class PasscodeSetupActivity extends BaseActionBarActivity {
       case CONFIRM_NEW:
         if (code.equals(firstEntry)) {
           // Storing the new passcode hashes off the UI thread.
-          runHashing(() -> {
-            PasscodeManager.setPasscode(this, code);
-            return true;
-          }, ok -> {
+          processing = true;
+          PasscodeManager.setPasscodeAsync(this, code, () -> {
+            processing = false;
             setResult(RESULT_OK);
             finish();
           });
@@ -123,24 +129,6 @@ public class PasscodeSetupActivity extends BaseActionBarActivity {
         }
         break;
     }
-  }
-
-  /** Runs {@code work} (a hashing call) on a background thread and delivers the result on the UI thread. */
-  private void runHashing(java.util.concurrent.Callable<Boolean> work, androidx.core.util.Consumer<Boolean> onResult) {
-    processing = true;
-    new Thread(() -> {
-      boolean result;
-      try {
-        result = work.call();
-      } catch (Exception e) {
-        result = false;
-      }
-      final boolean r = result;
-      runOnUiThread(() -> {
-        processing = false;
-        onResult.accept(r);
-      });
-    }).start();
   }
 
   private void rejectEntry(String message) {
@@ -167,6 +155,9 @@ public class PasscodeSetupActivity extends BaseActionBarActivity {
   }
 
   private void onBackspace() {
+    if (processing) {
+      return;
+    }
     if (entered.length() > 0) {
       entered.deleteCharAt(entered.length() - 1);
       refreshDots();

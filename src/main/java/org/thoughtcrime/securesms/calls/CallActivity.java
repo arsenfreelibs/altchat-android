@@ -48,6 +48,7 @@ import org.thoughtcrime.securesms.BuildConfig;
 import org.thoughtcrime.securesms.EglUtils;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.passcode.PasscodeManager;
+import org.thoughtcrime.securesms.util.Prefs;
 import org.webrtc.RendererCommon;
 import org.webrtc.SurfaceViewRenderer;
 import org.webrtc.VideoTrack;
@@ -135,6 +136,13 @@ public class CallActivity extends AppCompatActivity {
       CallCoordinator.getInstance(getApplication()).hangUp();
       finish();
       return;
+    }
+
+    // CallActivity does not extend BaseActionBarActivity, so mirror its screenshot-security logic
+    // here: hide the call in the task switcher / block screenshots when either the "Screen Security"
+    // setting or the passcode "Show Content" setting asks for it.
+    if (Prefs.isScreenSecurityEnabled(this) || PasscodeManager.shouldHideContent(this)) {
+      getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
     }
 
     setContentView(R.layout.activity_call);

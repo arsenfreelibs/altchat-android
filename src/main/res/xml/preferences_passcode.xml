@@ -22,10 +22,9 @@
         android:title="@string/alt_passcode_task_switcher_header">
 
         <androidx.preference.SwitchPreferenceCompat
-            android:key="passcode_show_content"
+            android:key="altchat_passcode_show_content"
             android:title="@string/alt_passcode_show_content"
             android:summary="@string/alt_passcode_show_content_summary"
-            android:enabled="false"
             android:defaultValue="true" />
 
     </PreferenceCategory>

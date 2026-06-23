@@ -49,6 +49,9 @@ public class PasscodePreferenceFragment extends CorrectedPreferenceFragment {
       return true;
     });
 
+    // The switch persists to its own key (read by PasscodeManager.shouldHideContent); FLAG_SECURE is
+    // (re-)evaluated on each activity resume, so no explicit listener or restart hint is needed.
+
     Preference turnOff = findPreference("passcode_turn_off");
     SpannableString redTitle = new SpannableString(getString(R.string.alt_passcode_turn_off));
     redTitle.setSpan(

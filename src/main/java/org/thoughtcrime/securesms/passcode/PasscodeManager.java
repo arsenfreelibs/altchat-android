@@ -38,6 +38,7 @@ public final class PasscodeManager {
   private static final String SALT          = "altchat_passcode_salt";
   private static final String AUTOLOCK      = "altchat_passcode_autolock_seconds";
   private static final String FINGERPRINT   = "altchat_passcode_fingerprint";
+  private static final String SHOW_CONTENT  = "altchat_passcode_show_content";
   private static final String FAILED        = "altchat_passcode_failed_attempts";
   private static final String LOCKOUT_UNTIL = "altchat_passcode_lockout_until"; // elapsedRealtime() ms
 
@@ -153,6 +154,24 @@ public final class PasscodeManager {
 
   public static void setFingerprintEnabled(Context context, boolean enabled) {
     Prefs.setBooleanPreference(context, FINGERPRINT, enabled);
+  }
+
+  /** Whether chat content may be shown in the task switcher / screenshots (default: yes). */
+  public static boolean isShowContentEnabled(Context context) {
+    return Prefs.getBooleanPreference(context, SHOW_CONTENT, true);
+  }
+
+  public static void setShowContentEnabled(Context context, boolean enabled) {
+    Prefs.setBooleanPreference(context, SHOW_CONTENT, enabled);
+  }
+
+  /**
+   * @return true when app windows should be marked {@code FLAG_SECURE} because of the passcode
+   *     "Show Content" setting: the passcode is enabled and the user chose to hide content. This
+   *     hides chat content in the task-switcher preview and blocks screenshots inside the app.
+   */
+  public static boolean shouldHideContent(Context context) {
+    return isEnabled(context) && !isShowContentEnabled(context);
   }
 
   // ---------------------------------------------------------------------------
