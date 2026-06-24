@@ -1139,7 +1139,7 @@
 
     <!-- location streaming -->
     <string name="location_streaming_notification_text">Stai condividendo la tua posizione</string>
-    <string name="location_rationale">Per condividere la tua posizione in tempo reale con i membri della chat, consenti a Delta Chat di utilizzare i tuoi dati di geolocalizzazione.\n\nPer garantire il funzionamento continuo della geolocalizzazione in tempo reale, i dati di geolocalizzazione vengono utilizzati anche quando l\'app è chiusa o non in uso.</string>
+    <string name="location_rationale">Per condividere la tua posizione in tempo reale con i membri della chat, consenti ad Alt Chat di utilizzare i tuoi dati di geolocalizzazione.\n\nPer garantire il funzionamento continuo della geolocalizzazione in tempo reale, i dati di geolocalizzazione vengono utilizzati anche quando l\'app è chiusa o non in uso.</string>
 
     <!-- permissions -->
     <string name="perm_required_title">Autorizzazione richiesta</string>
@@ -1206,7 +1206,7 @@
     <string name="explain_desktop_minimized_disabled_tray_pref" tools:ignore="TypographyDashes">L\'icona nella barra delle applicazioni non può essere disabilitata poiché Alt Chat è stato avviato con l\'opzione --minimizzato.</string>
     <string name="no_spellcheck_suggestions_found">Nessun suggerimento ortografico trovato.</string>
     <string name="show_window">Mostra Finestra</string>
-    <string name="data_found_other_installation_message">I profili di un\'altra installazione di Delta Chat non sono accessibili: le diverse installazioni memorizzano i dati in posizioni separate.\n\nPer mantenere i profili esistenti:\n1. Esci ora\n2. Apri l\'altro Delta Chat; se necessario, reinstallalo da %1$s\n3. Esegui il backup di ciascun profilo in \"Impostazioni/Chat\"\n4. Riavvia questa versione\n5. Ripristina i backup utilizzando \"Ho già un profilo\"\n\nContinuare senza i profili precedenti?</string>
+    <string name="data_found_other_installation_message">I profili di un\'altra installazione di Alt Chat non sono accessibili: le diverse installazioni memorizzano i dati in posizioni separate.\n\nPer mantenere i profili esistenti:\n1. Esci ora\n2. Apri l\'altro Alt Chat; se necessario, reinstallalo da %1$s\n3. Esegui il backup di ciascun profilo in \"Impostazioni/Chat\"\n4. Riavvia questa versione\n5. Ripristina i backup utilizzando \"Ho già un profilo\"\n\nContinuare senza i profili precedenti?</string>
 
     <!-- title of the "keybindings" dialog (for the keybindings names as such, where possible the normal command strings are used) -->
     <string name="keybindings">Associazioni tasti</string>

@@ -1157,7 +1157,7 @@
 
     <!-- location streaming -->
     <string name="location_streaming_notification_text">Udostępniasz swoją lokalizację</string>
-    <string name="location_rationale">Aby udostępnić swoją lokalizację na żywo członkom czatu, zezwól aplikacji Delta Chat na korzystanie z danych o twojej lokalizacji.\n\nAby funkcja lokalizacji na żywo działała bez przerw, dane o lokalizacji są używane nawet wtedy, gdy aplikacja jest zamknięta lub nieużywana.</string>
+    <string name="location_rationale">Aby udostępnić swoją lokalizację na żywo członkom czatu, zezwól aplikacji Alt Chat na korzystanie z danych o twojej lokalizacji.\n\nAby funkcja lokalizacji na żywo działała bez przerw, dane o lokalizacji są używane nawet wtedy, gdy aplikacja jest zamknięta lub nieużywana.</string>
 
     <!-- permissions -->
     <string name="perm_required_title">Wymagane zezwolenie</string>
@@ -1224,7 +1224,7 @@
     <string name="explain_desktop_minimized_disabled_tray_pref" tools:ignore="TypographyDashes">Ikona w zasobniku nie może być wyłączona, ponieważ Alt Chat został uruchomiony z opcją --minimized.</string>
     <string name="no_spellcheck_suggestions_found">Nie znaleziono propozycji pisowni.</string>
     <string name="show_window">Pokaż okno</string>
-    <string name="data_found_other_installation_message">Twoje profile z innej instalacji Delta Chat nie są dostępne – różne instalacje przechowują swoje dane w oddzielnych lokalizacjach.\n\nAby zachować istniejące profile:\n1. Zamknij teraz.\n2. Otwórz inny Delta Chat – w razie potrzeby zainstaluj go ponownie z %1$s\n3. Utwórz kopię zapasową każdego profilu w „Ustawienia/Czaty”.\n4. Uruchom ponownie tę wersję.\n5. Przywróć kopie zapasowe, naciskając „Mam już profil”.\n\nCzy kontynuować bez poprzednich profili?</string>
+    <string name="data_found_other_installation_message">Twoje profile z innej instalacji Alt Chat nie są dostępne – różne instalacje przechowują swoje dane w oddzielnych lokalizacjach.\n\nAby zachować istniejące profile:\n1. Zamknij teraz.\n2. Otwórz inny Alt Chat – w razie potrzeby zainstaluj go ponownie z %1$s\n3. Utwórz kopię zapasową każdego profilu w „Ustawienia/Czaty”.\n4. Uruchom ponownie tę wersję.\n5. Przywróć kopie zapasowe, naciskając „Mam już profil”.\n\nCzy kontynuować bez poprzednich profili?</string>
 
     <!-- title of the "keybindings" dialog (for the keybindings names as such, where possible the normal command strings are used) -->
     <string name="keybindings">Przypisanie klawiszy</string>

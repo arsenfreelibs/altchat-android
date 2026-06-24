@@ -1103,7 +1103,7 @@
 
     <!-- location streaming -->
     <string name="location_streaming_notification_text">您正在共享您的位置</string>
-    <string name="location_rationale">要与聊天成员共享您的实时位置，请允许 Delta Chat 使用您的位置数据。\n\n为了确保实时位置无缝工作，即使应用已关闭或未使用，也会使用位置数据。</string>
+    <string name="location_rationale">要与聊天成员共享您的实时位置，请允许 Alt Chat 使用您的位置数据。\n\n为了确保实时位置无缝工作，即使应用已关闭或未使用，也会使用位置数据。</string>
 
     <!-- permissions -->
     <string name="perm_required_title">需要权限</string>
@@ -1170,7 +1170,7 @@
     <string name="explain_desktop_minimized_disabled_tray_pref" tools:ignore="TypographyDashes">在 Alt Chat 带 --minimized 参数启动时，无法禁用托盘图标。</string>
     <string name="no_spellcheck_suggestions_found">未找到拼写建议</string>
     <string name="show_window">显示窗口</string>
-    <string name="data_found_other_installation_message">您无法访问其他 Delta Chat 安装中的配置文件 - 不同安装的数据存储在不同的位置。\n\n要保留现有配置文件：\n1. 立即退出\n2. 打开其他 Delta Chat - 如果需要，请从 %1$s 重新安装\n3. 在“设置/聊天”中备份每个配置文件\n4. 重新启动此版本\n5. 使用“我已有账号”恢复备份\n\n不使用之前的配置文件继续吗？</string>
+    <string name="data_found_other_installation_message">您无法访问其他 Alt Chat 安装中的配置文件 - 不同安装的数据存储在不同的位置。\n\n要保留现有配置文件：\n1. 立即退出\n2. 打开其他 Alt Chat - 如果需要，请从 %1$s 重新安装\n3. 在“设置/聊天”中备份每个配置文件\n4. 重新启动此版本\n5. 使用“我已有账号”恢复备份\n\n不使用之前的配置文件继续吗？</string>
 
     <!-- title of the "keybindings" dialog (for the keybindings names as such, where possible the normal command strings are used) -->
     <string name="keybindings">按键绑定</string>

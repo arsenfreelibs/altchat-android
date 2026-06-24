@@ -1113,7 +1113,7 @@
 
     <!-- location streaming -->
     <string name="location_streaming_notification_text">Po tregoni vendndodhjen tuaj</string>
-    <string name="location_rationale">Që të jepni vendndodhjen aty për aty për anëtarë të fjalosjes, lejojeni Delta Chat-in të përdorë të dhëna të vendndodhjes suaj.\n\nPër ta bërë vendndodhjen e atypëratyshme të funksionojë rrjedhshëm, përdoren të dhëna edhe kur aplikacioni është i mbyllur, ose jo në përdorim.</string>
+    <string name="location_rationale">Që të jepni vendndodhjen aty për aty për anëtarë të fjalosjes, lejojeni Alt Chat-in të përdorë të dhëna të vendndodhjes suaj.\n\nPër ta bërë vendndodhjen e atypëratyshme të funksionojë rrjedhshëm, përdoren të dhëna edhe kur aplikacioni është i mbyllur, ose jo në përdorim.</string>
 
     <!-- permissions -->
     <string name="perm_required_title">Lypset leje</string>
@@ -1180,7 +1180,7 @@
     <string name="explain_desktop_minimized_disabled_tray_pref" tools:ignore="TypographyDashes">Ikona e panelit s’mund të çaktivizohet, ngaqë Alt Chat qe nisur me mundësinë --minimized.</string>
     <string name="no_spellcheck_suggestions_found">S’u gjetën sugjerimi drejtshkrimi.</string>
     <string name="show_window">Shfaq Dritare</string>
-    <string name="data_found_other_installation_message">Profilet tuaja nga instalim tjetër i Delta Chat-it s’mund të përdoren - instalime të ndryshme i depozitojnë të dhënat e veta në vendndodhje të ndryshme:\n1. Mbylle tani\n2. Hap Delta Chat-in tjetër - në u dashtë, riinstaloje nga %1$s\n3. Kopjeruaje secilin profil te “Rregullime/Fjalosje”4. Rinis këtë version\n5. Riktheni kopjeruajtje duke përdorur “Kam tashmë një profil”\n\nTë vazhdohet pa profilet tuaj të mëparshëm?</string>
+    <string name="data_found_other_installation_message">Profilet tuaja nga instalim tjetër i Alt Chat-it s’mund të përdoren - instalime të ndryshme i depozitojnë të dhënat e veta në vendndodhje të ndryshme:\n1. Mbylle tani\n2. Hap Alt Chat-in tjetër - në u dashtë, riinstaloje nga %1$s\n3. Kopjeruaje secilin profil te “Rregullime/Fjalosje”4. Rinis këtë version\n5. Riktheni kopjeruajtje duke përdorur “Kam tashmë një profil”\n\nTë vazhdohet pa profilet tuaj të mëparshëm?</string>
 
     <!-- title of the "keybindings" dialog (for the keybindings names as such, where possible the normal command strings are used) -->
     <string name="keybindings">Kombinim tastesh</string>

@@ -1101,7 +1101,7 @@
 
     <!-- location streaming -->
     <string name="location_streaming_notification_text">Konumunuzu paylaşıyorsunuz</string>
-    <string name="location_rationale">Sohbet üyeleriyle canlı konumunuzu paylaşmak için Delta Chat\'in konum verilerinizi kullanmasına izin verin.\n\nCanlı konumun çalışmasını kesintisiz yapmak için konum verileri, uygulama kapatıldığında ya da kullanımda değilken bile kullanılır.</string>
+    <string name="location_rationale">Sohbet üyeleriyle canlı konumunuzu paylaşmak için Alt Chat\'in konum verilerinizi kullanmasına izin verin.\n\nCanlı konumun çalışmasını kesintisiz yapmak için konum verileri, uygulama kapatıldığında ya da kullanımda değilken bile kullanılır.</string>
 
     <!-- permissions -->
     <string name="perm_required_title">İzin gerekli</string>
@@ -1168,7 +1168,7 @@
     <string name="explain_desktop_minimized_disabled_tray_pref" tools:ignore="TypographyDashes">Alt Chat --minimized seçeneğiyle başlatıldığından tepsi simgesi etkisizleştirilemez.</string>
     <string name="no_spellcheck_suggestions_found">Yazım önerileri bulunamadı.</string>
     <string name="show_window">Pencereyi Göster</string>
-    <string name="data_found_other_installation_message">Başka bir Delta Chat kurulumundan gelen profilleriniz erişilebilir değildir - farklı kurulumlar, verilerini ayrı konumlarda saklar.\n\nVarolan profilleri tutmak için:\n1. Şimdi çıkın\n2. Diğer Delta Chat\'i açın - gerekirse, onu %1$s üzerinden yeniden kurun\n3. Her profili “Ayarlar/Sohbetler”den yedekleyin\n4. Bu sürümü yeniden başlatın\n5. Yedekleri “Zaten bir profilim var”dan geri yükleyin\n\nÖnceki profilleriniz olmadan sürdürülsün mü?</string>
+    <string name="data_found_other_installation_message">Başka bir Alt Chat kurulumundan gelen profilleriniz erişilebilir değildir - farklı kurulumlar, verilerini ayrı konumlarda saklar.\n\nVarolan profilleri tutmak için:\n1. Şimdi çıkın\n2. Diğer Alt Chat\'i açın - gerekirse, onu %1$s üzerinden yeniden kurun\n3. Her profili “Ayarlar/Sohbetler”den yedekleyin\n4. Bu sürümü yeniden başlatın\n5. Yedekleri “Zaten bir profilim var”dan geri yükleyin\n\nÖnceki profilleriniz olmadan sürdürülsün mü?</string>
 
     <!-- title of the "keybindings" dialog (for the keybindings names as such, where possible the normal command strings are used) -->
     <string name="keybindings">Tuş Bağları</string>

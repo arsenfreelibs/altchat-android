@@ -1122,7 +1122,7 @@
 
     <!-- location streaming -->
     <string name="location_streaming_notification_text">You are sharing your location</string>
-    <string name="location_rationale">To share your live location with chat members, allow Delta Chat to use your location data.\n\nTo make live location work gaplessly, location data is used even when the app is closed or not in use.</string>
+    <string name="location_rationale">To share your live location with chat members, allow Alt Chat to use your location data.\n\nTo make live location work gaplessly, location data is used even when the app is closed or not in use.</string>
 
     <!-- permissions -->
     <string name="perm_required_title">Permission required</string>
@@ -1190,7 +1190,7 @@
     <!-- deprecated, used on desktop although there is not spell checker -->
     <string name="no_spellcheck_suggestions_found">No spelling suggestions found.</string>
     <string name="show_window">Show Window</string>
-    <string name="data_found_other_installation_message">Your profiles from another Delta Chat installation are not accessible - different installations store their data in separate locations.\n\nTo keep existing profiles:\n1. Quit now\n2. Open the other Delta Chat - if needed, reinstall it from %1$s\n3. Back up each profile at \"Settings/Chats\"\n4. Relaunch this version\n5. Restore the backups using \"I already have a profile\"\n\nContinue without your previous profiles?</string>
+    <string name="data_found_other_installation_message">Your profiles from another Alt Chat installation are not accessible - different installations store their data in separate locations.\n\nTo keep existing profiles:\n1. Quit now\n2. Open the other Alt Chat - if needed, reinstall it from %1$s\n3. Back up each profile at \"Settings/Chats\"\n4. Relaunch this version\n5. Restore the backups using \"I already have a profile\"\n\nContinue without your previous profiles?</string>
 
     <!-- title of the "keybindings" dialog (for the keybindings names as such, where possible the normal command strings are used) -->
     <string name="keybindings">Keybindings</string>
