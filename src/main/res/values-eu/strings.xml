@@ -821,7 +821,7 @@
     <string name="pref_multidevice">Gailu anitzeko modua</string>
     <string name="pref_multidevice_explain">Sinkronizatu zure mezuak zure beste gailuekin. Automatikoki gaitzen da bigarren gailu bat gehitzean.</string>
     <string name="pref_multidevice_change_warn">Gailu anitzeko moduak gaituta egon behar du kontu bera hainbat gailutan erabiltzean. Desaktibatu ezarpen hau soilik kontu hau beste gailu guztietatik kendu baduzu.\n\nGailu anitzeko modua desaktibatzeak kontua hainbat gailutan erabiltzen ari den bitartean, mezuak galtzea eta bestelako arazoak eragingo ditu.</string>
-    <string name="pref_auto_folder_moves">Automatikoki mugitzen du DeltaChat karpetara</string>
+    <string name="pref_auto_folder_moves">Automatikoki mugitzen du Alt Chat karpetara</string>
     <string name="pref_only_fetch_mvbox_title">Alt Chat karpetatik soilik berreskuratu</string>
     <string name="pref_show_emails">Erakutsi ohiko e-mailak</string>
     <string name="pref_show_emails_no">Ez, txatak besterik ez</string>

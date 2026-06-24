@@ -443,7 +443,7 @@
     <string name="pref_background_btn_default">Menggunakan gambar default</string>
     <string name="pref_background_btn_gallery">Pilih dari galeri</string>
     <!-- deprecated -->
-    <string name="pref_auto_folder_moves">Perpindahan otomatis ke berkas DeltaChat</string>
+    <string name="pref_auto_folder_moves">Perpindahan otomatis ke berkas Alt Chat</string>
     <!-- deprecated -->
     <string name="pref_show_emails">Tampilkan email klasik</string>
     <!-- deprecated -->

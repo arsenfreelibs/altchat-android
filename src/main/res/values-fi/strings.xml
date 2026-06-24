@@ -615,8 +615,8 @@
     <string name="pref_background_btn_default">Käytä oletuskuvaa</string>
     <string name="pref_background_btn_gallery">Valitse galleriasta</string>
     <string name="pref_imap_folder_warn_disable_defaults">Jos muutat tätä asetusta, varmista että palvelimesi ja muut päätelaitteesi ovat määritetty vastaavasti.\n\nMuutoin ne eivät ehkä toimi lainkaan.</string>
-    <string name="pref_auto_folder_moves">Siirrä automaattisesti DeltaChat -kansioon</string>
-    <string name="pref_only_fetch_mvbox_title">Hae vain DeltaChat -kansiosta</string>
+    <string name="pref_auto_folder_moves">Siirrä automaattisesti Alt Chat -kansioon</string>
+    <string name="pref_only_fetch_mvbox_title">Hae vain Alt Chat -kansiosta</string>
     <string name="pref_show_emails">Näytä tavanomaiset sähköpostiviestit</string>
     <string name="pref_show_emails_no">Ei, vain pikaviestit</string>
     <string name="pref_show_emails_accepted_contacts">Hyväksytyille yhteystiedoille</string>

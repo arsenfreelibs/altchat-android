@@ -900,9 +900,9 @@
     <string name="pref_multidevice_explain">Синхронізуйте свої повідомлення з іншими пристроями. Автоматично вмикається після додавання іншими пристроями</string>
     <string name="pref_multidevice_change_warn">Режим декількох пристроїв має бути увімкнений, якщо ви використовуєте один і той самий профіль на декількох пристроях. Вимикайте цей параметр, лише якщо ви видалили цей профіль з усіх інших пристроїв.\n\nВимкнення режиму декількох пристроїв під час використання профілю на декількох пристроях призведе до пропусків повідомлення та інших проблем.</string>
     <!-- deprecated -->
-    <string name="pref_auto_folder_moves">Автоматично пересувати до папки DeltaChat</string>
+    <string name="pref_auto_folder_moves">Автоматично пересувати до папки Alt Chat</string>
     <!-- deprecated -->
-    <string name="pref_only_fetch_mvbox_title">Збирати лише з теки DeltaChat.</string>
+    <string name="pref_only_fetch_mvbox_title">Збирати лише з теки Alt Chat.</string>
     <!-- deprecated -->
     <string name="pref_show_emails">Показувати звичайну пошту</string>
     <!-- deprecated -->

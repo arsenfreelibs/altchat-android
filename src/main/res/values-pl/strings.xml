@@ -900,9 +900,9 @@
     <string name="pref_multidevice_explain">Synchronizuj swoje wiadomości z innymi swoimi urządzeniami. Włączane automatycznie po dodaniu drugiego urządzenia</string>
     <string name="pref_multidevice_change_warn">Tryb wielu urządzeń musi być włączony podczas korzystania z tego samego profilu na wielu urządzeniach. Wyłącz to ustawienie tylko wtedy, gdy usuniesz ten profil ze wszystkich pozostałych urządzeń.\n\nWyłączenie trybu wielu urządzeń podczas korzystania z profilu na wielu urządzeniach spowoduje pominięcie wiadomości i inne problemy.</string>
     <!-- deprecated -->
-    <string name="pref_auto_folder_moves">Automatyczne przenoszenie do folderu DeltaChat</string>
+    <string name="pref_auto_folder_moves">Automatyczne przenoszenie do folderu Alt Chat</string>
     <!-- deprecated -->
-    <string name="pref_only_fetch_mvbox_title">Pobieraj tylko z folderu DeltaChat</string>
+    <string name="pref_only_fetch_mvbox_title">Pobieraj tylko z folderu Alt Chat</string>
     <!-- deprecated -->
     <string name="pref_show_emails">Pokaż klasyczne e-maile</string>
     <!-- deprecated -->

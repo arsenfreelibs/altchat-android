@@ -805,8 +805,8 @@
     <string name="pref_multidevice">Flerenhetsläge</string>
     <string name="pref_multidevice_explain">Synkronisera dina meddelanden med dina andra enheter. Aktiveras automatiskt när du lägger till en andra enhet</string>
     <string name="pref_multidevice_change_warn">Flerenhetsläge måste vara aktiverat när du använder samma profil på flera enheter. Inaktivera endast den här inställningen om du har tagit bort profilen från alla andra enheter.\n\nInaktiverar du flerenhetsläget när du använder profilen på flera enheter kommer du att missa meddelanden och få andra problem.</string>
-    <string name="pref_auto_folder_moves">Flyttas automatiskt till DeltaChat-mappen</string>
-    <string name="pref_only_fetch_mvbox_title">Hämta endast från DeltaChat-mappen</string>
+    <string name="pref_auto_folder_moves">Flyttas automatiskt till Alt Chat-mappen</string>
+    <string name="pref_only_fetch_mvbox_title">Hämta endast från Alt Chat-mappen</string>
     <string name="pref_show_emails">Visa vanliga e-postmeddelanden</string>
     <string name="pref_show_emails_no">Nej, bara chattar</string>
     <string name="pref_show_emails_accepted_contacts">För godkända kontakter</string>

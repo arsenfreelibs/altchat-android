@@ -863,9 +863,9 @@
     <string name="pref_multidevice_explain">Sünkrooni oma sõnumid oma muude seadmetega. Teise seadme lisamisel lülitatakse automaatselt sisse.</string>
     <string name="pref_multidevice_change_warn">Kui kasutad sama profiili mitmes seadmes, siis peab mitme seadme režiimi sisse lülitama. Lülita see seadistus välja vaid siis, kui oled selle profiili eemaldanud kõikidest muudest oma seadmetest.\n\nKui aga lülitad välja siis, kui profiil on kasutusel mitmes seadmes, on tulemuseks kadunud sõnumid ja muud imelikud juhtumised.</string>
     <!-- deprecated -->
-    <string name="pref_auto_folder_moves">Tõsta automaatselt DeltaChati kausta</string>
+    <string name="pref_auto_folder_moves">Tõsta automaatselt Alt Chati kausta</string>
     <!-- deprecated -->
-    <string name="pref_only_fetch_mvbox_title">Laadi vaid DeltaChati kasutast</string>
+    <string name="pref_only_fetch_mvbox_title">Laadi vaid Alt Chati kasutast</string>
     <!-- deprecated -->
     <string name="pref_show_emails">Näita klassikalisi e-kirju</string>
     <!-- deprecated -->

@@ -843,9 +843,9 @@
     <string name="pref_multidevice_explain">İletilerinizi diğer aygıtlarınızla eşzamanlayın. İkinci bir aygıt eklendiğinde otomatik olarak etkinleştirilir</string>
     <string name="pref_multidevice_change_warn">Aynı profili birden fazla aygıtta kullanırken Çoklu Aygıt Modu etkinleştirilmelidir. Bu ayarı yalnızca bu profili diğer tüm aygıtlarınızdan kaldırdıysanız etkisizleştirin.\n\nProfili birden fazla aygıtta kullanırken Çoklu Aygıt Modu\'nu etkisizleştirmek, iletilerin kaçırılmasına ve diğer sorunlara neden olur.</string>
     <!-- deprecated -->
-    <string name="pref_auto_folder_moves">DeltaChat Klasörüne Otomatik Olarak Taşı</string>
+    <string name="pref_auto_folder_moves">Alt Chat Klasörüne Otomatik Olarak Taşı</string>
     <!-- deprecated -->
-    <string name="pref_only_fetch_mvbox_title">Yalnızca DeltaChat Klasöründen Getir</string>
+    <string name="pref_only_fetch_mvbox_title">Yalnızca Alt Chat Klasöründen Getir</string>
     <!-- deprecated -->
     <string name="pref_show_emails">Klasik E-Postaları Göster</string>
     <!-- deprecated -->

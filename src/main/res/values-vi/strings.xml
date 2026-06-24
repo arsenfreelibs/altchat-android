@@ -569,8 +569,8 @@
     <string name="pref_background_btn_default">Sử dụng hình ảnh mặc định</string>
     <string name="pref_background_btn_gallery">Chọn từ thư viện</string>
     <string name="pref_imap_folder_warn_disable_defaults">Nếu bạn thay đổi tùy chọn này, hãy đảm bảo rằng máy chủ và các máy khách khác của bạn được cấu hình tương ứng.\n\nNếu không, mọi thứ có thể không hoạt động.</string>
-    <string name="pref_auto_folder_moves">Tự động di chuyển đến Thư mục DeltaChat</string>
-    <string name="pref_only_fetch_mvbox_title">Chỉ tìm nạp từ thư mục DeltaChat</string>
+    <string name="pref_auto_folder_moves">Tự động di chuyển đến Thư mục Alt Chat</string>
+    <string name="pref_only_fetch_mvbox_title">Chỉ tìm nạp từ thư mục Alt Chat</string>
     <string name="pref_show_emails">Hiển thị E-mail cổ điển</string>
     <string name="pref_show_emails_no">Không, chỉ trò chuyện</string>
     <string name="pref_show_emails_accepted_contacts">Đối với các liên hệ được chấp nhận</string>

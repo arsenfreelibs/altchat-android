@@ -587,8 +587,8 @@
     <string name="pref_background_btn_default">Користи дату слику</string>
     <string name="pref_background_btn_gallery">Изабери из галерије</string>
     <string name="pref_imap_folder_warn_disable_defaults">Ако промените ову опцију, морате проверити да су ваш сервер и ваши други клијенти конфигурисани у складу са тим.\n\nУ супротном апликација можда уопште неће функционисати.</string>
-    <string name="pref_auto_folder_moves">Аутоматски премести у DeltaChat директоријум</string>
-    <string name="pref_only_fetch_mvbox_title">Примај поруке само из DeltaChat директоријума</string>
+    <string name="pref_auto_folder_moves">Аутоматски премести у Alt Chat директоријум</string>
+    <string name="pref_only_fetch_mvbox_title">Примај поруке само из Alt Chat директоријума</string>
     <string name="pref_show_emails">Прикажи обичне поруке е-поште</string>
     <string name="pref_show_emails_no">Не, само ћаскања</string>
     <string name="pref_show_emails_accepted_contacts">За прихваћене контакте</string>

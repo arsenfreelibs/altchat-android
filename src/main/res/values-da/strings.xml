@@ -443,7 +443,7 @@
     <string name="pref_background_btn_default">Brug standardbillede</string>
     <string name="pref_background_btn_gallery">Vælg fra galleri</string>
     <string name="pref_imap_folder_warn_disable_defaults">Ved deaktivering af denne indstiiling vær sikker på at server og andre klienter er indstillet tilsvarende.\n\nEllers fungerer det måske slet ikke.</string>
-    <string name="pref_auto_folder_moves">Flytter automatisk til DeltaChat mappe</string>
+    <string name="pref_auto_folder_moves">Flytter automatisk til Alt Chat mappe</string>
     <string name="pref_show_emails">Vis klassisk e-mail</string>
     <string name="pref_show_emails_no">Nej, kun samtaler</string>
     <string name="pref_show_emails_accepted_contacts">For godkendte kontakter</string>

@@ -787,8 +787,8 @@
     <string name="pref_multidevice">多裝置模式</string>
     <string name="pref_multidevice_explain">將您的訊息與其他裝置同步。新增第二個裝置時自動啟用</string>
     <string name="pref_multidevice_change_warn">在多個裝置上使用同一的帳戶時，必須啟用多裝置模式。只有在您已從所有其他設備移除此帳戶後，才可以禁用此設定。\n\n在多個裝置上使用該帳戶時禁用多裝置模式將導致漏接訊息及其他問題。</string>
-    <string name="pref_auto_folder_moves">自動搬移到 DeltaChat 資料夾</string>
-    <string name="pref_only_fetch_mvbox_title">僅從 DeltaChat 資料夾中獲取</string>
+    <string name="pref_auto_folder_moves">自動搬移到 Alt Chat 資料夾</string>
+    <string name="pref_only_fetch_mvbox_title">僅從 Alt Chat 資料夾中獲取</string>
     <string name="pref_show_emails">顯示傳統email</string>
     <string name="pref_show_emails_no">只顯示對話</string>
     <string name="pref_show_emails_accepted_contacts">顯示已接受的聯絡人</string>

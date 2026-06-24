@@ -836,8 +836,8 @@
     <string name="pref_multidevice">Mode appareils multiples</string>
     <string name="pref_multidevice_explain">Synchronise vos messages avec vos autres appareils. Activé automatiquement lorsque vous ajoutez un deuxième appareil</string>
     <string name="pref_multidevice_change_warn">Le mode appareils multiples doit être activé quand vous utilisez le même profil sur plusieurs appareils. Désactivez cette option seulement si vous avez supprimé ce profil de tous vos autres appareils.\n\nDésactiver ce mode alors que vous utilisez un profil sur plusieurs appareils causera un certain nombre de problèmes, dont des messages perdus.</string>
-    <string name="pref_auto_folder_moves">Déplacer automatiquement vers le dossier DeltaChat</string>
-    <string name="pref_only_fetch_mvbox_title">Ne consulter que le dossier DeltaChat</string>
+    <string name="pref_auto_folder_moves">Déplacer automatiquement vers le dossier Alt Chat</string>
+    <string name="pref_only_fetch_mvbox_title">Ne consulter que le dossier Alt Chat</string>
     <string name="pref_show_emails">Voir les courriels classiques</string>
     <string name="pref_show_emails_no">Non, seulement les discussions</string>
     <string name="pref_show_emails_accepted_contacts">Pour les contacts acceptés</string>

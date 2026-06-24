@@ -324,7 +324,7 @@
     <!-- deprecated -->
     <string name="pref_imap_folder_warn_disable_defaults">Bu seçimi ləğv etsəniz, serverinizin və digər müştərilərinizin müvafiq olaraq konfiqurasiya olunduğundan əmin olun. \n\nAyrıca şeylər işləməyəcəkdir.</string>
     <!-- deprecated -->
-    <string name="pref_auto_folder_moves">DeltaChat qovluğuna avtomatik keçid</string>
+    <string name="pref_auto_folder_moves">Alt Chat qovluğuna avtomatik keçid</string>
     <!-- deprecated -->
     <string name="pref_show_emails">Klassik e-poçtları göstər</string>
     <!-- deprecated -->

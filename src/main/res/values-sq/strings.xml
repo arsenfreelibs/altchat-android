@@ -855,9 +855,9 @@
     <string name="pref_multidevice_explain">Njëkohësoni mesazhet tuaj në pajisje tuajat të tjera. E aktivizuar automatikisht gjatë shtimit të një pajisjeje të dytë</string>
     <string name="pref_multidevice_change_warn">Mënyra Shumë-Pajisje duhet aktivizuar, kur përdoret i njëjti profil në disa pajisje. Çaktivizojeni këtë rregullim vetëm në se e keni hequr këtë profil nga krejt pajisjet tuaja të tjera.\n\nÇaktivizimi i Mënyrës Shumë-Pajisje, teksa përdoret profili në disa pajisje, do të sjellë mesazhe të humbura dhe probleme të tjera.</string>
     <!-- deprecated -->
-    <string name="pref_auto_folder_moves">Kaloji vetvetiu te Dosja DeltaChat</string>
+    <string name="pref_auto_folder_moves">Kaloji vetvetiu te Dosja Alt Chat</string>
     <!-- deprecated -->
-    <string name="pref_only_fetch_mvbox_title">Sill Vetëm nga Dosje DeltaChat</string>
+    <string name="pref_only_fetch_mvbox_title">Sill Vetëm nga Dosje Alt Chat</string>
     <!-- deprecated -->
     <string name="pref_show_emails">Shfaq Email-e Klasikë</string>
     <!-- deprecated -->

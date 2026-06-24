@@ -710,8 +710,8 @@
     <string name="pref_background_btn_default">Usar imaxe por omisión</string>
     <string name="pref_background_btn_gallery">Escoller na galería</string>
     <string name="pref_imap_folder_warn_disable_defaults">Se desactivas esta opción, asegúrate de que o servidor e os teus outros clientes están configurados de xeito acorde.\n\nSe non, algo podería fallar.</string>
-    <string name="pref_auto_folder_moves">Mover automáticamente ao cartafol DeltaChat</string>
-    <string name="pref_only_fetch_mvbox_title">Obter só desde cartafol DeltaChat</string>
+    <string name="pref_auto_folder_moves">Mover automáticamente ao cartafol Alt Chat</string>
+    <string name="pref_only_fetch_mvbox_title">Obter só desde cartafol Alt Chat</string>
     <string name="pref_show_emails">Mostrar correos clásicos</string>
     <string name="pref_show_emails_no">Non, só conversas</string>
     <string name="pref_show_emails_accepted_contacts">Para os contactos aceptados</string>

@@ -797,8 +797,8 @@
     <string name="pref_multidevice">Režim pro více zařízení</string>
     <string name="pref_multidevice_explain">Synchronizujte zprávy s ostatními zařízeními. Automaticky povoleno při přidání druhého zařízení</string>
     <string name="pref_multidevice_change_warn">Při použití stejného profilu na více zařízeních musí být povolen \"režim více zařízení\". Toto nastavení zakažte pouze v případě, že jste tento profil odstranili ze všech ostatních zařízení. \n\n Zakázání režimu \"režim více zařízení\" při používání profilu na více zařízeních bude mít za následek zmeškané zprávy a další problémy.</string>
-    <string name="pref_auto_folder_moves">Automaticky přesouvat do složky DeltaChat </string>
-    <string name="pref_only_fetch_mvbox_title">Načítat pouze ze složky DeltaChat</string>
+    <string name="pref_auto_folder_moves">Automaticky přesouvat do složky Alt Chat </string>
+    <string name="pref_only_fetch_mvbox_title">Načítat pouze ze složky Alt Chat</string>
     <string name="pref_show_emails">Zobrazovat běžné e-maily</string>
     <string name="pref_show_emails_no">Ne, pouze chaty</string>
     <string name="pref_show_emails_accepted_contacts">Pro přijaté kontakty</string>

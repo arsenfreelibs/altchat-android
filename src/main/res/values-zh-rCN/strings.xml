@@ -845,9 +845,9 @@
     <string name="pref_multidevice_explain">将您的消息与其他设备同步。添加第二台设备时自动启用</string>
     <string name="pref_multidevice_change_warn">在多个设备上使用同一账号时，必须启用多设备模式。仅当您已从所有其他设备中移除此账号后，才能禁用此设置。\n\n在多个设备上使用该账号时禁用多设备模式会导致错过消息和其他问题。</string>
     <!-- deprecated -->
-    <string name="pref_auto_folder_moves">自动移动至 DeltaChat 文件夹</string>
+    <string name="pref_auto_folder_moves">自动移动至 Alt Chat 文件夹</string>
     <!-- deprecated -->
-    <string name="pref_only_fetch_mvbox_title">只从 DeltaChat 文件夹获取</string>
+    <string name="pref_only_fetch_mvbox_title">只从 Alt Chat 文件夹获取</string>
     <!-- deprecated -->
     <string name="pref_show_emails">显示传统电子邮件</string>
     <!-- deprecated -->

@@ -881,9 +881,9 @@
     <string name="pref_multidevice_explain">Sincronizza i tuoi messaggi con gli altri dispositivi. Abilitazione automatica all\'aggiunta di un secondo dispositivo.</string>
     <string name="pref_multidevice_change_warn">La Modalità Multi-Dispositivo deve essere abilitata quando si utilizza lo stesso profilo su più dispositivi. Disattivare questa impostazione solo se si è rimosso il profilo da tutti gli altri dispositivi.\n\nDisattivare la Modalità Multi-Dispositivo mentre si utilizza il profilo su più dispositivi causerà la perdita di messaggi e altri problemi.</string>
     <!-- deprecated -->
-    <string name="pref_auto_folder_moves">Sposta nella Cartella DeltaChat</string>
+    <string name="pref_auto_folder_moves">Sposta nella Cartella Alt Chat</string>
     <!-- deprecated -->
-    <string name="pref_only_fetch_mvbox_title">Recupera dalla Cartella DeltaChat</string>
+    <string name="pref_only_fetch_mvbox_title">Recupera dalla Cartella Alt Chat</string>
     <!-- deprecated -->
     <string name="pref_show_emails">Mostra E-mail Classiche</string>
     <!-- deprecated -->

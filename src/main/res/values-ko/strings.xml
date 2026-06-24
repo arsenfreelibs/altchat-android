@@ -500,8 +500,8 @@
     <string name="pref_background_btn_default">기본 이미지 사용</string>
     <string name="pref_background_btn_gallery">갤러리에서 선택됨</string>
     <string name="pref_imap_folder_warn_disable_defaults">이 선택사항을 변경할 경우, 서버와 다른 클라이언트가 적절하게 구성되어 있는지 확인하십시오.\n\n그렇지 않으면 상황이 전혀 작동하지 않을 수 있습니다.</string>
-    <string name="pref_auto_folder_moves">DeltaChat 폴더로 자동 이동</string>
-    <string name="pref_only_fetch_mvbox_title">DeltaChat 폴더에서만 가져오기</string>
+    <string name="pref_auto_folder_moves">Alt Chat 폴더로 자동 이동</string>
+    <string name="pref_only_fetch_mvbox_title">Alt Chat 폴더에서만 가져오기</string>
     <string name="pref_show_emails_no">아뇨, 오직 채팅만</string>
     <string name="pref_show_emails_accepted_contacts">승인된 연락처의 경우</string>
     <string name="pref_show_emails_all">전부</string>

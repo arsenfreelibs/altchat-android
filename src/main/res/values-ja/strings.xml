@@ -428,7 +428,7 @@
     <string name="pref_background">背景</string>
     <string name="pref_background_btn_default">デフォルトの画像を使う</string>
     <string name="pref_background_btn_gallery">ギャラリーから選ぶ</string>
-    <string name="pref_auto_folder_moves">DeltaChatフォルダに自動で移動する</string>
+    <string name="pref_auto_folder_moves">Alt Chatフォルダに自動で移動する</string>
     <string name="pref_show_emails">一般的なメールを表示する</string>
     <string name="pref_show_emails_no">いいえ、チャットのみ</string>
     <string name="pref_show_emails_accepted_contacts">許可されたユーザーのみ</string>

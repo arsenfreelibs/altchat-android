@@ -822,7 +822,7 @@
     <string name="pref_multidevice_explain">Sincronitza els vostres missatges amb els vostres altres dispositius. Activat automàticament quan s\'afegeix un segon dispositiu.</string>
     <string name="pref_multidevice_change_warn">El mode multidispositiu ha d\'estar habilitat quan feu servir el mateix compte des de diferents perfils. Només desactiveu aquesta opció si heu suprimit aquest perfil de tots els vostres altres dispositius.\n\nDesactivar aquesta opció mentre es fa servir en el mateix perfil en múltiples dispositius farà que es perdin missatges i hi hagi altres problemes.</string>
     <string name="pref_auto_folder_moves">Moure automàticament a la carpeta de Alt Chat</string>
-    <string name="pref_only_fetch_mvbox_title">Agafa només de la carpeta de DeltaChat</string>
+    <string name="pref_only_fetch_mvbox_title">Agafa només de la carpeta de Alt Chat</string>
     <string name="pref_show_emails">Mostra els correus clàssics</string>
     <string name="pref_show_emails_no">No, només xats</string>
     <string name="pref_show_emails_accepted_contacts">Per a contactes acceptats</string>

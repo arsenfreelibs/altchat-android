@@ -705,8 +705,8 @@ Ak chcete pokračovať, aktualizujte toto zariadenie na najnovšiu verziu Alt Ch
     <string name="pref_background_btn_default">Použiť predvolený obrázok</string>
     <string name="pref_background_btn_gallery">Vyberte z galérie</string>
     <string name="pref_imap_folder_warn_disable_defaults">Ak túto možnosť zakážete, uistite sa, že váš server a ostatní klienti sú zodpovedajúcim spôsobom nakonfigurovaní.\n\nV opačnom prípade nemusí fungovať vôbec.</string>
-    <string name="pref_auto_folder_moves">Automaticky presúvať do priečinka DeltaChat</string>
-    <string name="pref_only_fetch_mvbox_title">Prijímať iba z priečinka DeltaChat</string>
+    <string name="pref_auto_folder_moves">Automaticky presúvať do priečinka Alt Chat</string>
+    <string name="pref_only_fetch_mvbox_title">Prijímať iba z priečinka Alt Chat</string>
     <string name="pref_show_emails">Zobraziť klasické e-maily</string>
     <string name="pref_show_emails_no">Nie, iba konverzácie</string>
     <string name="pref_show_emails_accepted_contacts">Pre prijaté kontakty</string>

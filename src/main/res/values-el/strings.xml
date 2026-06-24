@@ -520,8 +520,8 @@
     <string name="pref_background_btn_default">Χρήση προκαθορισμένου</string>
     <string name="pref_background_btn_gallery">Επιλογή</string>
     <string name="pref_imap_folder_warn_disable_defaults">Εάν αλλάξετε αυτήν την επιλογή, βεβαιωθείτε ότι ο διακομιστής σας και οι άλλοι πελάτες σας έχουν διαμορφωθεί ανάλογα.\n\nΔιαφορετικά, τα πράγματα ενδέχεται να μην λειτουργούν καθόλου.</string>
-    <string name="pref_auto_folder_moves">Μετακίνηση αυτόματα στον φάκελο DeltaChat</string>
-    <string name="pref_only_fetch_mvbox_title">Λήψη μόνο από τον φάκελο DeltaChat</string>
+    <string name="pref_auto_folder_moves">Μετακίνηση αυτόματα στον φάκελο Alt Chat</string>
+    <string name="pref_only_fetch_mvbox_title">Λήψη μόνο από τον φάκελο Alt Chat</string>
     <string name="pref_show_emails">Εμφάνιση κλασικών E-Mails</string>
     <string name="pref_show_emails_no">Όχι, μόνο συνομιλίες</string>
     <string name="pref_show_emails_accepted_contacts">Για αποδεκτές επαφές</string>

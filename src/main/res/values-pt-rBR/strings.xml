@@ -579,8 +579,8 @@
     <string name="pref_background_btn_default">Usar imagem padrão</string>
     <string name="pref_background_btn_gallery">Selecionar da galeria</string>
     <string name="pref_imap_folder_warn_disable_defaults">Se você mudar esta opção, certifique-se de que seu servidor e demais aplicativos estejam configurados de acordo.\n\nDo contrário, funcionalidades podem não funcionar.</string>
-    <string name="pref_auto_folder_moves">Mover automaticamente para a pasta DeltaChat</string>
-    <string name="pref_only_fetch_mvbox_title">Apenas pegar da pasta DeltaChat</string>
+    <string name="pref_auto_folder_moves">Mover automaticamente para a pasta Alt Chat</string>
+    <string name="pref_only_fetch_mvbox_title">Apenas pegar da pasta Alt Chat</string>
     <string name="pref_show_emails">Exibir e-mails normais</string>
     <string name="pref_show_emails_no">Não, somente conversas</string>
     <string name="pref_show_emails_accepted_contacts">Para contatos aceitos</string>

@@ -863,9 +863,9 @@
     <string name="pref_multidevice_explain">Synchronisiere deine Nachrichten mit deinen anderen Geräten. Wird beim Hinzufügen eines zweiten Geräts automatisch aktiviert.</string>
     <string name="pref_multidevice_change_warn">Der Mehrgerätemodus muss aktiviert sein, wenn dasselbe Profil auf mehreren Geräten verwendet wird. Deaktiviere diese Einstellung nur, wenn du dieses Profil von allen anderen Geräten entfernt hast.\n\nDie Deaktivierung des Mehrgerätemodus bei Verwendung des Profils auf mehreren Geräten führt zu verlorenen Nachrichten und anderen Problemen.</string>
     <!-- deprecated -->
-    <string name="pref_auto_folder_moves">Autom. Verschieben in den DeltaChat-Ordner</string>
+    <string name="pref_auto_folder_moves">Autom. Verschieben in den Alt Chat-Ordner</string>
     <!-- deprecated -->
-    <string name="pref_only_fetch_mvbox_title">Nur aus DeltaChat-Ordner lesen</string>
+    <string name="pref_only_fetch_mvbox_title">Nur aus Alt Chat-Ordner lesen</string>
     <!-- deprecated -->
     <string name="pref_show_emails">Normale E-Mails anzeigen</string>
     <!-- deprecated -->

@@ -745,7 +745,7 @@
     <string name="pref_multidevice">Kelių įrenginių veiksena</string>
     <string name="pref_multidevice_explain">Sinchronizuoti jūsų žinutes su kitais įrenginiais. Automatiškai įjungta, kai pridėtas antrasis įrenginys</string>
     <!-- deprecated -->
-    <string name="pref_auto_folder_moves">Automatiniai perkėlimai į DeltaChat aplanką</string>
+    <string name="pref_auto_folder_moves">Automatiniai perkėlimai į Alt Chat aplanką</string>
     <!-- deprecated -->
     <string name="pref_show_emails">Rodyti klasikinius el. laiškus</string>
     <!-- deprecated -->

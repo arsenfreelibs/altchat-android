@@ -764,9 +764,9 @@
     <!-- deprecated -->
     <string name="pref_imap_folder_warn_disable_defaults">Ha megváltoztatja ezt a beállítást, győződjön meg arról, hogy a kiszolgálója és a többi kliense is ennek megfelelően van beállítva.\n\nMáskülönben előfordulhat, hogy a dolgok egyáltalán nem fognak működni.</string>
     <!-- deprecated -->
-    <string name="pref_auto_folder_moves">Automatikus áthelyezés a DeltaChat nevű mappába</string>
+    <string name="pref_auto_folder_moves">Automatikus áthelyezés a Alt Chat nevű mappába</string>
     <!-- deprecated -->
-    <string name="pref_only_fetch_mvbox_title">Csak a DeltaChat nevű mappából történjen lekérdezés</string>
+    <string name="pref_only_fetch_mvbox_title">Csak a Alt Chat nevű mappából történjen lekérdezés</string>
     <!-- deprecated -->
     <string name="pref_show_emails">Klasszikus e-mailek megjelenítése</string>
     <!-- deprecated -->

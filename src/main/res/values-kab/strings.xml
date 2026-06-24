@@ -816,9 +816,9 @@
     <string name="pref_multidevice_explain">Mtawi iznan-ik·im akked ibenkan-nniḍen. Irmed s wudem awurman deg tmerna n yibenk wis sin</string>
     <string name="pref_multidevice_change_warn">Askar aget-ibenk yessefk ad yettwarmed mi ara tesqedceḍ yiwen n umaɣnu deg ddeqs n yibenkan. Sens kan aɣewwaṛ-agi ma yella tekkseḍ amaɣnu-yagi seg yibenkan-ik·im nniḍen.\n\nAsens n usakar n waget-ibenk mi ara tesqedceḍ amaɣnu ɣef ddeqs n yibenkan ad d-yeglu s yiznan yettwazeglen akked wuguren-nniḍen.</string>
     <!-- deprecated -->
-    <string name="pref_auto_folder_moves">Ddu s wudem awurman ɣer ukaram n DeltaChat</string>
+    <string name="pref_auto_folder_moves">Ddu s wudem awurman ɣer ukaram n Alt Chat</string>
     <!-- deprecated -->
-    <string name="pref_only_fetch_mvbox_title">Awi-d kan seg akaram n DeltaChat</string>
+    <string name="pref_only_fetch_mvbox_title">Awi-d kan seg akaram n Alt Chat</string>
     <!-- deprecated -->
     <string name="pref_show_emails">Sken imaylen iklasanen</string>
     <!-- deprecated -->
