@@ -16,8 +16,6 @@
  */
 package org.thoughtcrime.securesms;
 
-import static org.thoughtcrime.securesms.connect.DcHelper.CONFIG_PROXY_ENABLED;
-import static org.thoughtcrime.securesms.connect.DcHelper.CONFIG_PROXY_URL;
 import static org.thoughtcrime.securesms.util.ShareUtil.acquireRelayMessageContent;
 import static org.thoughtcrime.securesms.util.ShareUtil.getDirectSharingChatId;
 import static org.thoughtcrime.securesms.util.ShareUtil.getForwardedMessageAccountId;
@@ -667,15 +665,9 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
       menu.findItem(R.id.menu_lock_app)
           .setVisible(org.thoughtcrime.securesms.passcode.PasscodeManager.isEnabled(this));
       menu.findItem(R.id.menu_global_map).setVisible(Prefs.isLocationStreamingEnabled(this));
-      MenuItem proxyItem = menu.findItem(R.id.menu_proxy_settings);
-      if (TextUtils.isEmpty(DcHelper.get(this, CONFIG_PROXY_URL))) {
-        proxyItem.setVisible(false);
-      } else {
-        boolean proxyEnabled = DcHelper.getInt(this, CONFIG_PROXY_ENABLED) == 1;
-        proxyItem.setIcon(
-            proxyEnabled ? R.drawable.ic_proxy_enabled_24 : R.drawable.ic_proxy_disabled_24);
-        proxyItem.setVisible(true);
-      }
+      // Auto-proxy manages proxies on its own, so hide the toolbar proxy shortcut/indicator.
+      // Proxy settings remain reachable from Settings > Advanced.
+      menu.findItem(R.id.menu_proxy_settings).setVisible(false);
     }
 
     super.onPrepareOptionsMenu(menu);
