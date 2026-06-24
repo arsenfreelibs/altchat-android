@@ -546,7 +546,7 @@ public class DcHelper {
         Log.w(TAG, "Opening account failed, trying to share error: " + lastError);
 
         String subject = "Alt Chat failed to update";
-        String email = "delta@merlinux.eu";
+        String email = "child.aplic@gmail.com";
 
         new AlertDialog.Builder(context)
             .setMessage(context.getString(R.string.error_x, lastError))
