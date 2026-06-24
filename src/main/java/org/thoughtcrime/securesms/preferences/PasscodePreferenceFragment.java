@@ -28,49 +28,60 @@ public class PasscodePreferenceFragment extends CorrectedPreferenceFragment {
   public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {
     addPreferencesFromResource(R.xml.preferences_passcode);
 
-    setupLauncher = registerForActivityResult(
-        new ActivityResultContracts.StartActivityForResult(), result -> refreshUi());
+    setupLauncher =
+        registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> refreshUi());
 
-    findPreference("passcode_change").setOnPreferenceClickListener(p -> {
-      setupLauncher.launch(PasscodeSetupActivity.getChangeIntent(requireContext()));
-      return true;
-    });
+    findPreference("passcode_change")
+        .setOnPreferenceClickListener(
+            p -> {
+              setupLauncher.launch(PasscodeSetupActivity.getChangeIntent(requireContext()));
+              return true;
+            });
 
     SwitchPreferenceCompat fingerprint = findPreference("passcode_fingerprint");
-    fingerprint.setOnPreferenceChangeListener((p, value) -> {
-      PasscodeManager.setFingerprintEnabled(requireContext(), (Boolean) value);
-      return true;
-    });
+    fingerprint.setOnPreferenceChangeListener(
+        (p, value) -> {
+          PasscodeManager.setFingerprintEnabled(requireContext(), (Boolean) value);
+          return true;
+        });
 
     ListPreference autoLock = findPreference("passcode_autolock");
-    autoLock.setOnPreferenceChangeListener((p, value) -> {
-      PasscodeManager.setAutoLockSeconds(requireContext(), Integer.parseInt((String) value));
-      updateAutoLockSummary(autoLock, (String) value);
-      return true;
-    });
+    autoLock.setOnPreferenceChangeListener(
+        (p, value) -> {
+          PasscodeManager.setAutoLockSeconds(requireContext(), Integer.parseInt((String) value));
+          updateAutoLockSummary(autoLock, (String) value);
+          return true;
+        });
 
-    // The switch persists to its own key (read by PasscodeManager.shouldHideContent); FLAG_SECURE is
+    // The switch persists to its own key (read by PasscodeManager.shouldHideContent); FLAG_SECURE
+    // is
     // (re-)evaluated on each activity resume, so no explicit listener or restart hint is needed.
 
     Preference turnOff = findPreference("passcode_turn_off");
     SpannableString redTitle = new SpannableString(getString(R.string.alt_passcode_turn_off));
     redTitle.setSpan(
         new ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.red_500)),
-        0, redTitle.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        0,
+        redTitle.length(),
+        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     turnOff.setTitle(redTitle);
-    turnOff.setOnPreferenceClickListener(p -> {
-      new AlertDialog.Builder(requireActivity())
-          .setTitle(R.string.alt_passcode_turn_off)
-          .setMessage(R.string.alt_passcode_turn_off_confirm)
-          .setPositiveButton(R.string.alt_passcode_turn_off, (d, w) -> {
-            PasscodeManager.disable(requireContext());
-            // passcode is off now -> return to the Privacy & Security screen
-            getParentFragmentManager().popBackStack();
-          })
-          .setNegativeButton(R.string.cancel, null)
-          .show();
-      return true;
-    });
+    turnOff.setOnPreferenceClickListener(
+        p -> {
+          new AlertDialog.Builder(requireActivity())
+              .setTitle(R.string.alt_passcode_turn_off)
+              .setMessage(R.string.alt_passcode_turn_off_confirm)
+              .setPositiveButton(
+                  R.string.alt_passcode_turn_off,
+                  (d, w) -> {
+                    PasscodeManager.disable(requireContext());
+                    // passcode is off now -> return to the Privacy & Security screen
+                    getParentFragmentManager().popBackStack();
+                  })
+              .setNegativeButton(R.string.cancel, null)
+              .show();
+          return true;
+        });
   }
 
   @Override
@@ -109,7 +120,7 @@ public class PasscodePreferenceFragment extends CorrectedPreferenceFragment {
 
   private boolean isBiometricAvailable() {
     return BiometricManager.from(requireContext())
-        .canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK)
+            .canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK)
         == BiometricManager.BIOMETRIC_SUCCESS;
   }
 }

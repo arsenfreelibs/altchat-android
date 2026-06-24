@@ -7,11 +7,11 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
-import android.util.TypedValue;
 import android.view.View;
+import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -110,15 +110,20 @@ public class BackupTransferActivity extends BaseActionBarActivity {
     if (ViewUtil.isEdgeToEdgeSupported()) {
       View frag = findViewById(R.id.backup_provider_fragment);
       TypedValue tv = new TypedValue();
-      int abH = getTheme().resolveAttribute(androidx.appcompat.R.attr.actionBarSize, tv, true)
-          ? TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics())
-          : 0;
-      ViewCompat.setOnApplyWindowInsetsListener(frag, (v, wi) -> {
-        Insets ins = Insets.max(wi.getInsets(WindowInsetsCompat.Type.systemBars()),
-                                wi.getInsets(WindowInsetsCompat.Type.displayCutout()));
-        v.setPaddingRelative(ins.left, ins.top + abH, ins.right, ins.bottom);
-        return wi;
-      });
+      int abH =
+          getTheme().resolveAttribute(androidx.appcompat.R.attr.actionBarSize, tv, true)
+              ? TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics())
+              : 0;
+      ViewCompat.setOnApplyWindowInsetsListener(
+          frag,
+          (v, wi) -> {
+            Insets ins =
+                Insets.max(
+                    wi.getInsets(WindowInsetsCompat.Type.systemBars()),
+                    wi.getInsets(WindowInsetsCompat.Type.displayCutout()));
+            v.setPaddingRelative(ins.left, ins.top + abH, ins.right, ins.bottom);
+            return wi;
+          });
       ViewCompat.requestApplyInsets(frag);
     }
 

@@ -545,10 +545,16 @@ public class ConversationItem extends BaseConversationItem {
       audioViewStub.get().setPlaybackViewModel(playbackViewModel);
       audioViewStub.get().setOnActionListener(audioPlayPauseListener);
       audioViewStub.get().setAudio(new AudioSlide(context, messageRecord));
-      // Reuse dcContact (already fetched for group/self-talk senders) to avoid a redundant JNI call.
-      DcContact senderContact = dcContact != null ? dcContact : DcHelper.getContext(context).getContact(messageRecord.getFromId());
+      // Reuse dcContact (already fetched for group/self-talk senders) to avoid a redundant JNI
+      // call.
+      DcContact senderContact =
+          dcContact != null
+              ? dcContact
+              : DcHelper.getContext(context).getContact(messageRecord.getFromId());
       audioViewStub.get().setSenderName(messageRecord.getSenderName(senderContact));
-      boolean isNightMode = (context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+      boolean isNightMode =
+          (context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
+              == Configuration.UI_MODE_NIGHT_YES;
       if (isNightMode) {
         int bubbleColor = messageRecord.isOutgoing() ? outgoingBubbleColor : incomingBubbleColor;
         audioViewStub.get().setPlayIconTint(bubbleColor);

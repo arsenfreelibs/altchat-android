@@ -65,9 +65,10 @@ public abstract class BaseActionBarActivity extends AppCompatActivity {
   }
 
   private void initializeScreenshotSecurity() {
-    boolean secure = isAlwaysScreenSecure()
-        || Prefs.isScreenSecurityEnabled(this)
-        || org.thoughtcrime.securesms.passcode.PasscodeManager.shouldHideContent(this);
+    boolean secure =
+        isAlwaysScreenSecure()
+            || Prefs.isScreenSecurityEnabled(this)
+            || org.thoughtcrime.securesms.passcode.PasscodeManager.shouldHideContent(this);
     if (secure) {
       getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
     } else {

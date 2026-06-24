@@ -6,8 +6,8 @@
         android:title="@string/alt_passcode_title"
         android:icon="@drawable/ic_lock_24dp" />
 
-    <!-- Duplicated from preferences_advanced.xml (same keys) so they are reachable here without
-         touching the upstream Advanced screen; both screens stay in sync via the shared keys. -->
+    <!-- Duplicated from preferences_advanced.xml (same keys) so they are reachable here without touching
+        the upstream Advanced screen; both screens stay in sync via the shared keys. -->
     <PreferenceCategory>
         <org.thoughtcrime.securesms.components.SwitchPreferenceCompat
             android:defaultValue="false"

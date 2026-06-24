@@ -15,8 +15,8 @@ import java.nio.ShortBuffer;
 /**
  * Extracts and downsamples audio PCM data to produce a waveform suitable for display.
  *
- * <p>The resulting float[] contains {@link #BUCKET_COUNT} values in the range [0.0, 1.0],
- * where each value represents the peak amplitude of the corresponding segment.
+ * <p>The resulting float[] contains {@link #BUCKET_COUNT} values in the range [0.0, 1.0], where
+ * each value represents the peak amplitude of the corresponding segment.
  */
 public final class AudioWaveformHelper {
 
@@ -51,8 +51,10 @@ public final class AudioWaveformHelper {
       MediaFormat format = extractor.getTrackFormat(audioTrackIndex);
 
       String mime = format.getString(MediaFormat.KEY_MIME);
-      int channelCount = format.containsKey(MediaFormat.KEY_CHANNEL_COUNT)
-          ? format.getInteger(MediaFormat.KEY_CHANNEL_COUNT) : 1;
+      int channelCount =
+          format.containsKey(MediaFormat.KEY_CHANNEL_COUNT)
+              ? format.getInteger(MediaFormat.KEY_CHANNEL_COUNT)
+              : 1;
 
       codec = MediaCodec.createDecoderByType(mime);
       codec.configure(format, null, null, 0);
@@ -72,10 +74,19 @@ public final class AudioWaveformHelper {
       return new float[0];
     } finally {
       if (codec != null) {
-        try { codec.stop(); } catch (Exception ignored) {}
-        try { codec.release(); } catch (Exception ignored) {}
+        try {
+          codec.stop();
+        } catch (Exception ignored) {
+        }
+        try {
+          codec.release();
+        } catch (Exception ignored) {
+        }
       }
-      try { extractor.release(); } catch (Exception ignored) {}
+      try {
+        extractor.release();
+      } catch (Exception ignored) {
+      }
     }
   }
 
@@ -95,9 +106,7 @@ public final class AudioWaveformHelper {
    * values per frame), capped at {@link #MAX_FRAMES} mono samples.
    */
   private static float[] decodeMono(
-      @NonNull MediaExtractor extractor,
-      @NonNull MediaCodec codec,
-      int channelCount) {
+      @NonNull MediaExtractor extractor, @NonNull MediaCodec codec, int channelCount) {
 
     float[] accumulator = new float[MAX_FRAMES];
     int sampleCount = 0;
@@ -114,12 +123,10 @@ public final class AudioWaveformHelper {
           if (inputBuffer == null) continue;
           int sampleSize = extractor.readSampleData(inputBuffer, 0);
           if (sampleSize < 0) {
-            codec.queueInputBuffer(inputIndex, 0, 0, 0,
-                MediaCodec.BUFFER_FLAG_END_OF_STREAM);
+            codec.queueInputBuffer(inputIndex, 0, 0, 0, MediaCodec.BUFFER_FLAG_END_OF_STREAM);
             inputDone = true;
           } else {
-            codec.queueInputBuffer(inputIndex, 0, sampleSize,
-                extractor.getSampleTime(), 0);
+            codec.queueInputBuffer(inputIndex, 0, sampleSize, extractor.getSampleTime(), 0);
             extractor.advance();
           }
         }

@@ -21,24 +21,26 @@ public class GplayAppReviewRequester implements AppReviewRequester {
 
   @Override
   public void maybeRequestReview(Activity activity) {
-    int prev = PreferenceManager.getDefaultSharedPreferences(context)
-        .getInt(PREF_OPENS, 0);
+    int prev = PreferenceManager.getDefaultSharedPreferences(context).getInt(PREF_OPENS, 0);
     int opens = (prev >= TRIGGER_EVERY * 1000) ? 1 : prev + 1;
-    PreferenceManager.getDefaultSharedPreferences(context)
-        .edit().putInt(PREF_OPENS, opens).apply();
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(PREF_OPENS, opens).apply();
 
     if (opens % TRIGGER_EVERY != 0) return;
 
     ReviewManager manager = ReviewManagerFactory.create(context);
-    manager.requestReviewFlow().addOnCompleteListener(task -> {
-      if (!task.isSuccessful()) {
-        Log.w(TAG, "requestReviewFlow failed", task.getException());
-        return;
-      }
-      if (activity.isFinishing() || activity.isDestroyed()) return;
-      ReviewInfo reviewInfo = task.getResult();
-      manager.launchReviewFlow(activity, reviewInfo)
-          .addOnCompleteListener(t -> Log.i(TAG, "launchReviewFlow complete"));
-    });
+    manager
+        .requestReviewFlow()
+        .addOnCompleteListener(
+            task -> {
+              if (!task.isSuccessful()) {
+                Log.w(TAG, "requestReviewFlow failed", task.getException());
+                return;
+              }
+              if (activity.isFinishing() || activity.isDestroyed()) return;
+              ReviewInfo reviewInfo = task.getResult();
+              manager
+                  .launchReviewFlow(activity, reviewInfo)
+                  .addOnCompleteListener(t -> Log.i(TAG, "launchReviewFlow complete"));
+            });
   }
 }

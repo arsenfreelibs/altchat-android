@@ -22,13 +22,13 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
-import java.io.ByteArrayOutputStream;
 import com.b44t.messenger.DcBackupProvider;
 import com.b44t.messenger.DcContext;
 import com.b44t.messenger.DcEvent;
 import com.caverock.androidsvg.SVG;
 import com.caverock.androidsvg.SVGImageView;
 import com.caverock.androidsvg.SVGParseException;
+import java.io.ByteArrayOutputStream;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.connect.DcEventCenter;
 import org.thoughtcrime.securesms.connect.DcHelper;
@@ -92,7 +92,10 @@ public class BackupProviderFragment extends Fragment implements DcEventCenter.Dc
                     topText.setVisibility(View.VISIBLE);
                     try {
                       SVG svg =
-                          SVG.getFromString(injectAppIconCenter(getActivity(), QrShowFragment.fixSVG(dcBackupProvider.getQrSvg())));
+                          SVG.getFromString(
+                              injectAppIconCenter(
+                                  getActivity(),
+                                  QrShowFragment.fixSVG(dcBackupProvider.getQrSvg())));
                       qrImageView.setSVG(svg);
                       qrImageView.setVisibility(View.VISIBLE);
                     } catch (SVGParseException e) {
@@ -263,8 +266,10 @@ public class BackupProviderFragment extends Fragment implements DcEventCenter.Dc
 
     String elements =
         "<circle cx=\"256\" cy=\"256\" r=\"48\" style=\"fill:#ffffff\"/>"
-        + "<image x=\"208\" y=\"208\" width=\"96\" height=\"96\" "
-        + "xlink:href=\"data:image/png;base64," + base64 + "\"/>";
+            + "<image x=\"208\" y=\"208\" width=\"96\" height=\"96\" "
+            + "xlink:href=\"data:image/png;base64,"
+            + base64
+            + "\"/>";
 
     return svg.substring(0, logoStart) + elements + "\n</svg>";
   }

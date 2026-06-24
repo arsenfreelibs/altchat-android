@@ -1,15 +1,14 @@
 package org.thoughtcrime.securesms;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.content.Intent;
 import android.os.SystemClock;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,9 +23,9 @@ import org.thoughtcrime.securesms.util.ViewUtil;
 /**
  * The "Settings" tab fragment hosted inside {@link ConversationListActivity}.
  *
- * <p>Hosts {@link SettingsRootFragment} - extracted from the inner class in
- * {@link ApplicationPreferencesActivity} - and manages the child back stack for
- * sub-preference screens (Notifications, Appearance, etc.).
+ * <p>Hosts {@link SettingsRootFragment} - extracted from the inner class in {@link
+ * ApplicationPreferencesActivity} - and manages the child back stack for sub-preference screens
+ * (Notifications, Appearance, etc.).
  */
 public class SettingsTabFragment extends Fragment {
 
@@ -43,9 +42,10 @@ public class SettingsTabFragment extends Fragment {
 
   @Nullable
   @Override
-  public View onCreateView(@NonNull LayoutInflater inflater,
-                           @Nullable ViewGroup container,
-                           @Nullable Bundle savedInstanceState) {
+  public View onCreateView(
+      @NonNull LayoutInflater inflater,
+      @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
     return inflater.inflate(R.layout.fragment_settings_tab, container, false);
   }
 
@@ -65,29 +65,34 @@ public class SettingsTabFragment extends Fragment {
     getChildFragmentManager().addOnBackStackChangedListener(this::syncActionBar);
 
     if (savedInstanceState == null) {
-      getChildFragmentManager().beginTransaction()
+      getChildFragmentManager()
+          .beginTransaction()
           .replace(R.id.settings_container, new SettingsRootFragment())
           .commit();
     }
 
     // Starts disabled — the fragment starts hidden; onHiddenChanged drives enabled state.
-    backCallback = new OnBackPressedCallback(false) {
-      @Override
-      public void handleOnBackPressed() {
-        if (getChildFragmentManager().getBackStackEntryCount() > 0) {
-          getChildFragmentManager().popBackStack();
-        } else {
-          setEnabled(false);
-          requireActivity().getOnBackPressedDispatcher().onBackPressed();
-        }
-      }
-    };
-    requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), backCallback);
+    backCallback =
+        new OnBackPressedCallback(false) {
+          @Override
+          public void handleOnBackPressed() {
+            if (getChildFragmentManager().getBackStackEntryCount() > 0) {
+              getChildFragmentManager().popBackStack();
+            } else {
+              setEnabled(false);
+              requireActivity().getOnBackPressedDispatcher().onBackPressed();
+            }
+          }
+        };
+    requireActivity()
+        .getOnBackPressedDispatcher()
+        .addCallback(getViewLifecycleOwner(), backCallback);
   }
 
   /** Called by sub-preference screens (e.g. SettingsRootFragment) to show a child fragment. */
   public void showFragment(Fragment fragment) {
-    getChildFragmentManager().beginTransaction()
+    getChildFragmentManager()
+        .beginTransaction()
         .replace(R.id.settings_container, fragment)
         .addToBackStack(null)
         .commit();
@@ -134,11 +139,12 @@ public class SettingsTabFragment extends Fragment {
 
   private void applyActionBarState() {
     if (toolbar == null || !isAdded()) return;
-    toolbar.setNavigationOnClickListener(v -> {
-      if (getChildFragmentManager().getBackStackEntryCount() > 0) {
-        getChildFragmentManager().popBackStack();
-      }
-    });
+    toolbar.setNavigationOnClickListener(
+        v -> {
+          if (getChildFragmentManager().getBackStackEntryCount() > 0) {
+            getChildFragmentManager().popBackStack();
+          }
+        });
     ActionBar ab = ((AppCompatActivity) requireActivity()).getSupportActionBar();
     if (ab != null) {
       boolean isRoot = getChildFragmentManager().getBackStackEntryCount() == 0;
@@ -170,21 +176,22 @@ public class SettingsTabFragment extends Fragment {
       settingsTitleView.setText(R.string.menu_settings);
       settingsTitleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
       settingsTitleView.setTextColor(Color.WHITE);
-      settingsTitleView.setOnClickListener(v -> {
-        long now = SystemClock.elapsedRealtime();
-        if (now - advancedLastTapTime > 3000) {
-          advancedTapCount = 0;
-        }
-        advancedLastTapTime = now;
-        advancedTapCount++;
-        if (advancedTapCount >= 20) {
-          advancedTapCount = 0;
-          Fragment f = getChildFragmentManager().findFragmentById(R.id.settings_container);
-          if (f instanceof SettingsRootFragment) {
-            ((SettingsRootFragment) f).revealAdvancedSettings();
-          }
-        }
-      });
+      settingsTitleView.setOnClickListener(
+          v -> {
+            long now = SystemClock.elapsedRealtime();
+            if (now - advancedLastTapTime > 3000) {
+              advancedTapCount = 0;
+            }
+            advancedLastTapTime = now;
+            advancedTapCount++;
+            if (advancedTapCount >= 20) {
+              advancedTapCount = 0;
+              Fragment f = getChildFragmentManager().findFragmentById(R.id.settings_container);
+              if (f instanceof SettingsRootFragment) {
+                ((SettingsRootFragment) f).revealAdvancedSettings();
+              }
+            }
+          });
     }
     // Detach from previous parent (orphaned by the old ActionBar wrapper) before re-adding.
     if (settingsTitleView.getParent() != null) {

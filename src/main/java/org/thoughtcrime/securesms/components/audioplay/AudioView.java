@@ -106,27 +106,28 @@ public class AudioView extends FrameLayout {
       viewModel.getWaveforms().observeForever(waveformObserver);
     }
 
-    waveformView.setSeekListener(new WaveformView.SeekListener() {
-      @Override
-      public void onSeek(float progress) {
-        // Live progress update during drag
-        AudioView.this.progress = (int) (progress * duration);
-        updateTimestamp();
-      }
+    waveformView.setSeekListener(
+        new WaveformView.SeekListener() {
+          @Override
+          public void onSeek(float progress) {
+            // Live progress update during drag
+            AudioView.this.progress = (int) (progress * duration);
+            updateTimestamp();
+          }
 
-      @Override
-      public void onSeekStart() {
-        if (viewModel != null) viewModel.setUserSeeking(true);
-      }
+          @Override
+          public void onSeekStart() {
+            if (viewModel != null) viewModel.setUserSeeking(true);
+          }
 
-      @Override
-      public void onSeekEnd(float progress) {
-        if (viewModel != null) {
-          viewModel.setUserSeeking(false);
-          viewModel.seekTo((long) (progress * duration), msgId);
-        }
-      }
-    });
+          @Override
+          public void onSeekEnd(float progress) {
+            if (viewModel != null) {
+              viewModel.setUserSeeking(false);
+              viewModel.seekTo((long) (progress * duration), msgId);
+            }
+          }
+        });
 
     playPauseButton.setOnClickListener(
         v -> {

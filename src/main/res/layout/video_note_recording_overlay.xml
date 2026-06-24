@@ -7,39 +7,39 @@
     android:clickable="false"
     android:focusable="false">
 
-  <LinearLayout
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:layout_marginBottom="80dp"
-      android:clickable="false"
-      android:focusable="false"
-      android:gravity="center"
-      android:orientation="vertical">
-
-    <FrameLayout
-        android:layout_width="230dp"
-        android:layout_height="230dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="80dp"
         android:clickable="false"
-        android:focusable="false">
+        android:focusable="false"
+        android:gravity="center"
+        android:orientation="vertical">
 
-      <androidx.camera.view.PreviewView
-          android:id="@+id/video_note_preview"
-          android:layout_width="220dp"
-          android:layout_height="220dp"
-          android:layout_gravity="center"
-          android:clickable="false"
-          android:focusable="false" />
+        <FrameLayout
+            android:layout_width="230dp"
+            android:layout_height="230dp"
+            android:clickable="false"
+            android:focusable="false">
 
-      <org.thoughtcrime.securesms.components.VideoNoteProgressRing
-          android:id="@+id/video_note_recording_ring"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:clickable="false"
-          android:focusable="false" />
+            <androidx.camera.view.PreviewView
+                android:id="@+id/video_note_preview"
+                android:layout_width="220dp"
+                android:layout_height="220dp"
+                android:layout_gravity="center"
+                android:clickable="false"
+                android:focusable="false" />
 
-    </FrameLayout>
+            <org.thoughtcrime.securesms.components.VideoNoteProgressRing
+                android:id="@+id/video_note_recording_ring"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="false"
+                android:focusable="false" />
 
-  </LinearLayout>
+        </FrameLayout>
+
+    </LinearLayout>
 
 </FrameLayout>

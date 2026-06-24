@@ -14,11 +14,11 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import com.b44t.messenger.DcContext;
-import androidx.appcompat.app.AppCompatActivity;
 import org.thoughtcrime.securesms.BlockedContactsActivity;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.connect.DcHelper;
@@ -96,9 +96,7 @@ public class ChatsPreferenceFragment extends ListSummaryPreferenceFragment {
   @Override
   public void onResume() {
     super.onResume();
-    ((AppCompatActivity) requireActivity())
-        .getSupportActionBar()
-        .setTitle(R.string.pref_chats);
+    ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle(R.string.pref_chats);
 
     String value = Integer.toString(dcContext.getConfigInt(DcHelper.CONFIG_MEDIA_QUALITY));
     mediaQuality.setValue(value);

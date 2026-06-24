@@ -16,8 +16,8 @@ import org.thoughtcrime.securesms.util.ViewUtil;
 
 /**
  * Shared numeric passcode keypad (digits 0-9 + backspace) and PIN-dot helpers, used by both the
- * lock screen ({@link PasscodeActivity}) and the create/change screen ({@link PasscodeSetupActivity})
- * so their look and behaviour stay in sync.
+ * lock screen ({@link PasscodeActivity}) and the create/change screen ({@link
+ * PasscodeSetupActivity}) so their look and behaviour stay in sync.
  */
 public final class PasscodeKeypad {
 
@@ -57,9 +57,12 @@ public final class PasscodeKeypad {
     grid.addView(zero, cellParams(cellHeight));
     buttons.add(zero);
 
-    ImageButton backspace = borderlessIconButton(
-        ctx, R.drawable.ic_passcode_backspace, ctx.getString(R.string.alt_passcode_delete),
-        v -> listener.onBackspace());
+    ImageButton backspace =
+        borderlessIconButton(
+            ctx,
+            R.drawable.ic_passcode_backspace,
+            ctx.getString(R.string.alt_passcode_delete),
+            v -> listener.onBackspace());
     grid.addView(backspace, cellParams(cellHeight));
     buttons.add(backspace);
 

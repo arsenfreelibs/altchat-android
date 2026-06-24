@@ -499,10 +499,11 @@ public class InstantOnboardingActivity extends BaseActionBarActivity
     String displayName = pendingDisplayName;
     org.thoughtcrime.securesms.altplatform.storage.AltPrefs.setRegistered(
         getApplicationContext(), displayName, null);
-    executor.execute(() -> {
-      new org.thoughtcrime.securesms.altplatform.AltPlatformService(getApplicationContext())
-          .quickRegister(displayName);
-    });
+    executor.execute(
+        () -> {
+          new org.thoughtcrime.securesms.altplatform.AltPlatformService(getApplicationContext())
+              .quickRegister(displayName);
+        });
     navigateToMain();
   }
 

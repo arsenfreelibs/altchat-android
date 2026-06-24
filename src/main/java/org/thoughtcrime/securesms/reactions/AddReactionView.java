@@ -112,8 +112,8 @@ public class AddReactionView extends LinearLayout {
   }
 
   /**
-   * Show for short-tap context mode. Positions using screen-width fractions (deferred via post()
-   * so that getWidth()/getHeight() are valid) so that both this bar and the actions overlay are
+   * Show for short-tap context mode. Positions using screen-width fractions (deferred via post() so
+   * that getWidth()/getHeight() are valid) so that both this bar and the actions overlay are
    * consistently aligned with the message bubble — matching MessageContextOverlay.position().
    */
   public void showContextMode(DcMsg msgToReactTo, View itemView, AddReactionListener listener) {

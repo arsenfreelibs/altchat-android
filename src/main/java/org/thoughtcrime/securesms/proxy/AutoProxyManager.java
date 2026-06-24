@@ -33,9 +33,9 @@ import org.thoughtcrime.securesms.util.Prefs;
  * <p>Port of the iOS {@code AutoProxyManager}. All state transitions and timers run on a single
  * background thread; connectivity events are re-posted onto that thread.
  *
- * <p>The engage/disengage state machine acts on the currently selected account, but the
- * "is auto-proxy on" flag is tracked <b>per account</b> and the periodic direct-relay recheck
- * sweeps <b>all</b> engaged accounts, so a non-selected account can never get stuck on a proxy.
+ * <p>The engage/disengage state machine acts on the currently selected account, but the "is
+ * auto-proxy on" flag is tracked <b>per account</b> and the periodic direct-relay recheck sweeps
+ * <b>all</b> engaged accounts, so a non-selected account can never get stuck on a proxy.
  */
 public class AutoProxyManager implements DcEventCenter.DcEventDelegate {
 
@@ -259,7 +259,9 @@ public class AutoProxyManager implements DcEventCenter.DcEventDelegate {
     }
   }
 
-  /** All candidates dead/failed: undo the proxy (don't sit on a dead one) and pause before retry. */
+  /**
+   * All candidates dead/failed: undo the proxy (don't sit on a dead one) and pause before retry.
+   */
   private void revertAndBackoff() {
     Log.i(TAG, "no working proxy - reverting to direct, backing off " + (BACKOFF_MS / 1000) + "s");
     disengageAccount(selectedAccount(), selectedAccountId());
@@ -318,7 +320,9 @@ public class AutoProxyManager implements DcEventCenter.DcEventDelegate {
 
   // --- Proxy engage / disengage ---
 
-  /** Set the chosen proxy first in proxy_url (keeping user/bundled entries), enable it, restart IO. */
+  /**
+   * Set the chosen proxy first in proxy_url (keeping user/bundled entries), enable it, restart IO.
+   */
   private void applyProxy(DcContext acc, int accountId, String chosen) {
     Log.i(TAG, "engaging proxy #" + proxyIdx + " on account " + accountId);
     LinkedHashSet<String> proxies = new LinkedHashSet<>();

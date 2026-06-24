@@ -24,7 +24,10 @@ import org.thoughtcrime.securesms.R;
  */
 public class FilterBarView extends HorizontalScrollView {
 
-  /** Callback for a chip long-press; receives the chip view. API-level-agnostic alternative to java.util.function.Consumer. */
+  /**
+   * Callback for a chip long-press; receives the chip view. API-level-agnostic alternative to
+   * java.util.function.Consumer.
+   */
   private interface OnLongClickCallback {
     void onLongClick(@NonNull View view);
   }
@@ -154,7 +157,7 @@ public class FilterBarView extends HorizontalScrollView {
     labelView.setText(label);
 
     int primaryGreen = ContextCompat.getColor(getContext(), R.color.delta_primary);
-    int unreadBlue  = ContextCompat.getColor(getContext(), R.color.unread_count);
+    int unreadBlue = ContextCompat.getColor(getContext(), R.color.unread_count);
 
     if (isActive) {
       // Solid green background — reliable on both light and dark themes
@@ -163,7 +166,7 @@ public class FilterBarView extends HorizontalScrollView {
       labelView.setTypeface(labelView.getTypeface(), android.graphics.Typeface.BOLD);
     } else {
       // Surface background + faint stroke for dark-theme visibility
-      int bg     = resolveAttrColor(android.R.attr.colorBackground);
+      int bg = resolveAttrColor(android.R.attr.colorBackground);
       int stroke = 0x33808080;
       chip.setBackground(buildChipBg(bg, dpToPx(1), stroke));
       labelView.setTextColor(resolveAttrColor(android.R.attr.textColorPrimary));
@@ -207,13 +210,14 @@ public class FilterBarView extends HorizontalScrollView {
     labelView.setText("+");
     labelView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 18);
     labelView.setTextColor(ContextCompat.getColor(getContext(), R.color.delta_primary));
-    int bg     = resolveAttrColor(android.R.attr.colorBackground);
+    int bg = resolveAttrColor(android.R.attr.colorBackground);
     int stroke = 0x33808080;
     chip.setBackground(buildChipBg(bg, dpToPx(1), stroke));
 
-    chip.setOnClickListener(v -> {
-      if (listener != null) listener.onAddFilterTapped();
-    });
+    chip.setOnClickListener(
+        v -> {
+          if (listener != null) listener.onAddFilterTapped();
+        });
 
     chipContainer.addView(chip);
   }
@@ -228,7 +232,7 @@ public class FilterBarView extends HorizontalScrollView {
   }
 
   private int resolveAttrColor(int attr) {
-    TypedArray ta = getContext().obtainStyledAttributes(new int[]{attr});
+    TypedArray ta = getContext().obtainStyledAttributes(new int[] {attr});
     int color = ta.getColor(0, 0xFF888888);
     ta.recycle();
     return color;

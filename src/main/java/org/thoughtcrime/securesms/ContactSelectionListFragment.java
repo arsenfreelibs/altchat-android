@@ -40,6 +40,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
@@ -58,16 +60,14 @@ import java.util.concurrent.Executors;
 import org.thoughtcrime.securesms.altplatform.AltPlatformService;
 import org.thoughtcrime.securesms.altplatform.network.dto.UserProfileResponse;
 import org.thoughtcrime.securesms.altplatform.search.AltUserSearchAdapter;
-import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.connect.DcContactsLoader;
 import org.thoughtcrime.securesms.connect.DcEventCenter;
+import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.contacts.ContactSelectionListAdapter;
 import org.thoughtcrime.securesms.contacts.ContactSelectionListItem;
 import org.thoughtcrime.securesms.contacts.NewContactActivity;
 import org.thoughtcrime.securesms.mms.GlideApp;
 import org.thoughtcrime.securesms.permissions.Permissions;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.util.ViewUtil;
 
@@ -151,20 +151,24 @@ public class ContactSelectionListFragment extends Fragment
 
     // Root view: only nav bar bottom padding — keeps remote section above nav bar.
     // Keyboard padding is NOT applied here to avoid squeezing local results out of view.
-    ViewCompat.setOnApplyWindowInsetsListener(view, (v, insets) -> {
-      int sysBottom = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
-      v.setPadding(0, 0, 0, sysBottom);
-      return insets;
-    });
+    ViewCompat.setOnApplyWindowInsetsListener(
+        view,
+        (v, insets) -> {
+          int sysBottom = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
+          v.setPadding(0, 0, 0, sysBottom);
+          return insets;
+        });
     // RecyclerView: left/right system bars + IME bottom. clipToPadding=false lets items
     // scroll above the keyboard so local results remain accessible while typing.
-    ViewCompat.setOnApplyWindowInsetsListener(recyclerView, (v, insets) -> {
-      int left = insets.getInsets(WindowInsetsCompat.Type.systemBars()).left;
-      int right = insets.getInsets(WindowInsetsCompat.Type.systemBars()).right;
-      int imeBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom;
-      v.setPadding(left, 0, right, imeBottom);
-      return insets;
-    });
+    ViewCompat.setOnApplyWindowInsetsListener(
+        recyclerView,
+        (v, insets) -> {
+          int left = insets.getInsets(WindowInsetsCompat.Type.systemBars()).left;
+          int right = insets.getInsets(WindowInsetsCompat.Type.systemBars()).right;
+          int imeBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom;
+          v.setPadding(left, 0, right, imeBottom);
+          return insets;
+        });
 
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     actionModeCallback =
@@ -344,61 +348,79 @@ public class ContactSelectionListFragment extends Fragment
     altRemoteSection.setVisibility(View.VISIBLE);
     altRemoteProgress.setVisibility(View.VISIBLE);
     altRemoteEmpty.setVisibility(View.GONE);
-    remoteSearchExecutor.execute(() -> {
-      AltPlatformService service = new AltPlatformService(requireContext());
-      List<UserProfileResponse> results = service.searchUsers(query);
-      Util.runOnMain(() -> {
-        if (!isAdded()) return;
-        altRemoteProgress.setVisibility(View.GONE);
-        if (results == null) {
-          // auth/network error — hide section (user is not connected to Alt Platform)
-          altRemoteSection.setVisibility(View.GONE);
-          return;
-        }
-        altRemoteAdapter.setItems(results);
-        if (results.isEmpty()) {
-          altRemoteEmpty.setText(getString(R.string.alt_search_remote_no_results));
-          altRemoteEmpty.setVisibility(View.VISIBLE);
-        } else {
-          altRemoteEmpty.setVisibility(View.GONE);
-        }
-      });
-    });
+    remoteSearchExecutor.execute(
+        () -> {
+          AltPlatformService service = new AltPlatformService(requireContext());
+          List<UserProfileResponse> results = service.searchUsers(query);
+          Util.runOnMain(
+              () -> {
+                if (!isAdded()) return;
+                altRemoteProgress.setVisibility(View.GONE);
+                if (results == null) {
+                  // auth/network error — hide section (user is not connected to Alt Platform)
+                  altRemoteSection.setVisibility(View.GONE);
+                  return;
+                }
+                altRemoteAdapter.setItems(results);
+                if (results.isEmpty()) {
+                  altRemoteEmpty.setText(getString(R.string.alt_search_remote_no_results));
+                  altRemoteEmpty.setVisibility(View.VISIBLE);
+                } else {
+                  altRemoteEmpty.setVisibility(View.GONE);
+                }
+              });
+        });
   }
 
   private void onAltRemoteUserClick(UserProfileResponse profile) {
-    remoteSearchExecutor.execute(() -> {
-      try {
-        android.util.Log.d(TAG, "onAltRemoteUserClick: addr=" + profile.primaryAddr());
-        AltPlatformService service = new AltPlatformService(requireContext());
-        int contactId = service.addContactFromAlt(profile);
-        android.util.Log.d(TAG, "onAltRemoteUserClick: contactId=" + contactId);
-        if (contactId <= 0) {
-          Util.runOnMain(() -> {
-            if (isAdded()) android.widget.Toast.makeText(requireContext(),
-                "addContactFromAlt вернул " + contactId, android.widget.Toast.LENGTH_LONG).show();
-          });
-          return;
-        }
-        int accountId = DcHelper.getAccounts(requireContext()).getSelectedAccount().getAccountId();
-        android.util.Log.d(TAG, "onAltRemoteUserClick: accountId=" + accountId + " creating chat...");
-        int chatId = DcHelper.getRpc(requireContext()).createChatByContactId(accountId, contactId);
-        android.util.Log.d(TAG, "onAltRemoteUserClick: chatId=" + chatId);
-        Util.runOnMain(() -> {
-          if (!isAdded()) return;
-          android.content.Intent intent = new android.content.Intent(requireContext(), ConversationActivity.class);
-          intent.putExtra(ConversationActivity.CHAT_ID_EXTRA, chatId);
-          intent.putExtra(ConversationActivity.ACCOUNT_ID_EXTRA, accountId);
-          startActivity(intent);
+    remoteSearchExecutor.execute(
+        () -> {
+          try {
+            android.util.Log.d(TAG, "onAltRemoteUserClick: addr=" + profile.primaryAddr());
+            AltPlatformService service = new AltPlatformService(requireContext());
+            int contactId = service.addContactFromAlt(profile);
+            android.util.Log.d(TAG, "onAltRemoteUserClick: contactId=" + contactId);
+            if (contactId <= 0) {
+              Util.runOnMain(
+                  () -> {
+                    if (isAdded())
+                      android.widget.Toast.makeText(
+                              requireContext(),
+                              "addContactFromAlt вернул " + contactId,
+                              android.widget.Toast.LENGTH_LONG)
+                          .show();
+                  });
+              return;
+            }
+            int accountId =
+                DcHelper.getAccounts(requireContext()).getSelectedAccount().getAccountId();
+            android.util.Log.d(
+                TAG, "onAltRemoteUserClick: accountId=" + accountId + " creating chat...");
+            int chatId =
+                DcHelper.getRpc(requireContext()).createChatByContactId(accountId, contactId);
+            android.util.Log.d(TAG, "onAltRemoteUserClick: chatId=" + chatId);
+            Util.runOnMain(
+                () -> {
+                  if (!isAdded()) return;
+                  android.content.Intent intent =
+                      new android.content.Intent(requireContext(), ConversationActivity.class);
+                  intent.putExtra(ConversationActivity.CHAT_ID_EXTRA, chatId);
+                  intent.putExtra(ConversationActivity.ACCOUNT_ID_EXTRA, accountId);
+                  startActivity(intent);
+                });
+          } catch (Exception e) {
+            android.util.Log.e(TAG, "onAltRemoteUserClick FAILED: " + e.getMessage(), e);
+            Util.runOnMain(
+                () -> {
+                  if (isAdded())
+                    android.widget.Toast.makeText(
+                            requireContext(),
+                            "Ошибка: " + e.getMessage(),
+                            android.widget.Toast.LENGTH_LONG)
+                        .show();
+                });
+          }
         });
-      } catch (Exception e) {
-        android.util.Log.e(TAG, "onAltRemoteUserClick FAILED: " + e.getMessage(), e);
-        Util.runOnMain(() -> {
-          if (isAdded()) android.widget.Toast.makeText(requireContext(),
-              "Ошибка: " + e.getMessage(), android.widget.Toast.LENGTH_LONG).show();
-        });
-      }
-    });
   }
 
   @Override

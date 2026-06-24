@@ -1,11 +1,12 @@
 package org.thoughtcrime.securesms.altplatform.network;
 
 import android.content.Context;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
-
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 import org.thoughtcrime.securesms.BuildConfig;
 import org.thoughtcrime.securesms.altplatform.network.dto.AltApiResponse;
 import org.thoughtcrime.securesms.altplatform.network.dto.PrivateKeyResponse;
@@ -16,129 +17,127 @@ import org.thoughtcrime.securesms.altplatform.network.dto.UserProfileResponse;
 import org.thoughtcrime.securesms.altplatform.network.dto.VerifyRequest;
 import org.thoughtcrime.securesms.altplatform.network.dto.VerifyResponse;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * Typed HTTP service for Alt Platform API.
- * All methods are synchronous — call from background thread.
+ * Typed HTTP service for Alt Platform API. All methods are synchronous — call from background
+ * thread.
  */
 public class AltApiService {
 
-    private static final String TAG = AltApiService.class.getSimpleName();
+  private static final String TAG = AltApiService.class.getSimpleName();
 
-    private final AltApiClient client;
-    private final ObjectMapper mapper;
+  private final AltApiClient client;
+  private final ObjectMapper mapper;
 
-    public AltApiService(Context context, int accountId) {
-        this.client = new AltApiClient(context, BuildConfig.ALT_API_BASE_URL, accountId);
-        this.mapper = new ObjectMapper()
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+  public AltApiService(Context context, int accountId) {
+    this.client = new AltApiClient(context, BuildConfig.ALT_API_BASE_URL, accountId);
+    this.mapper =
+        new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+  }
+
+  public AltApiResponse<Void> register(RegisterRequest req) {
+    return postVoid("/v1/users/register", req);
+  }
+
+  public AltApiResponse<VerifyResponse> quickRegister(RegisterRequest req) {
+    return post("/v1/users/quick-register", req, VerifyResponse.class);
+  }
+
+  public AltApiResponse<VerifyResponse> verify(VerifyRequest req) {
+    return post("/v1/users/verify", req, VerifyResponse.class);
+  }
+
+  public AltApiResponse<Void> resendCode(ResendCodeRequest req) {
+    return postVoid("/v1/users/resend-code", req);
+  }
+
+  public AltApiResponse<Void> restore(RestoreRequest req) {
+    return postVoid("/v1/users/restore", req);
+  }
+
+  public AltApiResponse<PrivateKeyResponse> getPrivateKey() {
+    return get("/v1/users/me/private-key", PrivateKeyResponse.class);
+  }
+
+  public AltApiResponse<List<UserProfileResponse>> search(String query) {
+    try {
+      String encoded = URLEncoder.encode(query, "UTF-8");
+      AltApiClient.Response resp = client.get("/v1/users/search?q=" + encoded);
+      if (resp.isNetworkError()) return AltApiResponse.networkError();
+      if (resp.isSuccess()) {
+        CollectionType listType =
+            mapper
+                .getTypeFactory()
+                .constructCollectionType(ArrayList.class, UserProfileResponse.class);
+        List<UserProfileResponse> data = mapper.readValue(resp.body, listType);
+        return AltApiResponse.success(data, resp.code);
+      }
+      return AltApiResponse.error(resp.code, extractErrorCode(resp.body));
+    } catch (Exception e) {
+      android.util.Log.e(TAG, "search failed", e);
+      return AltApiResponse.networkError();
     }
+  }
 
-    public AltApiResponse<Void> register(RegisterRequest req) {
-        return postVoid("/v1/users/register", req);
+  public AltApiResponse<UserProfileResponse> getProfile(String username) {
+    return get("/v1/users/" + username, UserProfileResponse.class);
+  }
+
+  // --- helpers ---
+
+  private <T> AltApiResponse<T> post(String path, Object body, Class<T> clazz) {
+    try {
+      String json = mapper.writeValueAsString(body);
+      android.util.Log.d(TAG, "post " + path + " body=" + json);
+      AltApiClient.Response resp = client.post(path, json);
+      if (resp.isNetworkError()) return AltApiResponse.networkError();
+      android.util.Log.d(TAG, "post " + path + " resp=" + resp.code + " body=" + resp.body);
+      if (resp.isSuccess()) {
+        T data = resp.body.isEmpty() ? null : mapper.readValue(resp.body, clazz);
+        return AltApiResponse.success(data, resp.code);
+      }
+      return AltApiResponse.error(resp.code, extractErrorCode(resp.body));
+    } catch (Exception e) {
+      android.util.Log.e(TAG, "post " + path + " EXCEPTION: " + e.getMessage(), e);
+      return AltApiResponse.networkError();
     }
+  }
 
-    public AltApiResponse<VerifyResponse> quickRegister(RegisterRequest req) {
-        return post("/v1/users/quick-register", req, VerifyResponse.class);
+  private AltApiResponse<Void> postVoid(String path, Object body) {
+    try {
+      String json = mapper.writeValueAsString(body);
+      android.util.Log.d(TAG, "postVoid " + path + " body=" + json);
+      AltApiClient.Response resp = client.post(path, json);
+      if (resp.isNetworkError()) return AltApiResponse.networkError();
+      android.util.Log.d(TAG, "postVoid " + path + " resp=" + resp.code + " body=" + resp.body);
+      if (resp.isSuccess()) return AltApiResponse.success(null, resp.code);
+      return AltApiResponse.error(resp.code, extractErrorCode(resp.body));
+    } catch (Exception e) {
+      return AltApiResponse.networkError();
     }
+  }
 
-    public AltApiResponse<VerifyResponse> verify(VerifyRequest req) {
-        return post("/v1/users/verify", req, VerifyResponse.class);
+  private <T> AltApiResponse<T> get(String path, Class<T> clazz) {
+    try {
+      AltApiClient.Response resp = client.get(path);
+      if (resp.isNetworkError()) return AltApiResponse.networkError();
+      if (resp.isSuccess()) {
+        T data = resp.body.isEmpty() ? null : mapper.readValue(resp.body, clazz);
+        return AltApiResponse.success(data, resp.code);
+      }
+      return AltApiResponse.error(resp.code, extractErrorCode(resp.body));
+    } catch (Exception e) {
+      return AltApiResponse.networkError();
     }
+  }
 
-    public AltApiResponse<Void> resendCode(ResendCodeRequest req) {
-        return postVoid("/v1/users/resend-code", req);
+  private String extractErrorCode(String body) {
+    try {
+      com.fasterxml.jackson.databind.JsonNode node = mapper.readTree(body);
+      if (node.has("errorCode")) return node.get("errorCode").asText();
+      if (node.has("error")) return node.get("error").asText();
+      if (node.has("code")) return node.get("code").asText();
+    } catch (Exception ignored) {
     }
-
-    public AltApiResponse<Void> restore(RestoreRequest req) {
-        return postVoid("/v1/users/restore", req);
-    }
-
-    public AltApiResponse<PrivateKeyResponse> getPrivateKey() {
-        return get("/v1/users/me/private-key", PrivateKeyResponse.class);
-    }
-
-    public AltApiResponse<List<UserProfileResponse>> search(String query) {
-        try {
-            String encoded = URLEncoder.encode(query, "UTF-8");
-            AltApiClient.Response resp = client.get("/v1/users/search?q=" + encoded);
-            if (resp.isNetworkError()) return AltApiResponse.networkError();
-            if (resp.isSuccess()) {
-                CollectionType listType = mapper.getTypeFactory()
-                        .constructCollectionType(ArrayList.class, UserProfileResponse.class);
-                List<UserProfileResponse> data = mapper.readValue(resp.body, listType);
-                return AltApiResponse.success(data, resp.code);
-            }
-            return AltApiResponse.error(resp.code, extractErrorCode(resp.body));
-        } catch (Exception e) {
-            android.util.Log.e(TAG, "search failed", e);
-            return AltApiResponse.networkError();
-        }
-    }
-
-    public AltApiResponse<UserProfileResponse> getProfile(String username) {
-        return get("/v1/users/" + username, UserProfileResponse.class);
-    }
-
-    // --- helpers ---
-
-    private <T> AltApiResponse<T> post(String path, Object body, Class<T> clazz) {
-        try {
-            String json = mapper.writeValueAsString(body);
-            android.util.Log.d(TAG, "post " + path + " body=" + json);
-            AltApiClient.Response resp = client.post(path, json);
-            if (resp.isNetworkError()) return AltApiResponse.networkError();
-            android.util.Log.d(TAG, "post " + path + " resp=" + resp.code + " body=" + resp.body);
-            if (resp.isSuccess()) {
-                T data = resp.body.isEmpty() ? null : mapper.readValue(resp.body, clazz);
-                return AltApiResponse.success(data, resp.code);
-            }
-            return AltApiResponse.error(resp.code, extractErrorCode(resp.body));
-        } catch (Exception e) {
-            android.util.Log.e(TAG, "post " + path + " EXCEPTION: " + e.getMessage(), e);
-            return AltApiResponse.networkError();
-        }
-    }
-
-    private AltApiResponse<Void> postVoid(String path, Object body) {
-        try {
-            String json = mapper.writeValueAsString(body);
-            android.util.Log.d(TAG, "postVoid " + path + " body=" + json);
-            AltApiClient.Response resp = client.post(path, json);
-            if (resp.isNetworkError()) return AltApiResponse.networkError();
-            android.util.Log.d(TAG, "postVoid " + path + " resp=" + resp.code + " body=" + resp.body);
-            if (resp.isSuccess()) return AltApiResponse.success(null, resp.code);
-            return AltApiResponse.error(resp.code, extractErrorCode(resp.body));
-        } catch (Exception e) {
-            return AltApiResponse.networkError();
-        }
-    }
-
-    private <T> AltApiResponse<T> get(String path, Class<T> clazz) {
-        try {
-            AltApiClient.Response resp = client.get(path);
-            if (resp.isNetworkError()) return AltApiResponse.networkError();
-            if (resp.isSuccess()) {
-                T data = resp.body.isEmpty() ? null : mapper.readValue(resp.body, clazz);
-                return AltApiResponse.success(data, resp.code);
-            }
-            return AltApiResponse.error(resp.code, extractErrorCode(resp.body));
-        } catch (Exception e) {
-            return AltApiResponse.networkError();
-        }
-    }
-
-    private String extractErrorCode(String body) {
-        try {
-            com.fasterxml.jackson.databind.JsonNode node = mapper.readTree(body);
-            if (node.has("errorCode")) return node.get("errorCode").asText();
-            if (node.has("error")) return node.get("error").asText();
-            if (node.has("code")) return node.get("code").asText();
-        } catch (Exception ignored) {}
-        return "unknown_error";
-    }
+    return "unknown_error";
+  }
 }

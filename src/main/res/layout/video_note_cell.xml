@@ -1,134 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    Video note cell layout.
-
-    TextureView (sibling of CircleFrameLayout, first child = behind) receives
-    GPU-decoded video frames from ExoPlayer. It is clipped to a circle via
-    setClipToOutline(true) + oval ViewOutlineProvider set in VideoNoteView.init().
-
-    CircleFrameLayout sits on top and clips its children (thumbnail, progress ring,
-    play icon, sender name) to a circle via canvas.clipPath() on the hardware canvas.
--->
+<!-- Video note cell layout. TextureView (sibling of CircleFrameLayout, first child = behind) receives
+    GPU-decoded video frames from ExoPlayer. It is clipped to a circle via setClipToOutline(true) + oval
+    ViewOutlineProvider set in VideoNoteView.init(). CircleFrameLayout sits on top and clips its children
+    (thumbnail, progress ring, play icon, sender name) to a circle via canvas.clipPath() on the hardware
+    canvas. -->
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="200dp">
 
-  <!-- TextureView: sibling of CircleFrameLayout (NOT inside it) so it gets a
-       hardware-accelerated SurfaceTexture. setClipToOutline(true) + oval outline
-       is applied in code. Must be FIRST child so CircleFrameLayout is on top. -->
-  <TextureView
-      android:id="@+id/video_note_texture"
-      android:layout_width="200dp"
-      android:layout_height="200dp"
-      android:layout_gravity="end"
-      android:layout_marginEnd="8dp" />
+    <!-- TextureView: sibling of CircleFrameLayout (NOT inside it) so it gets a hardware-accelerated
+        SurfaceTexture. setClipToOutline(true) + oval outline is applied in code. Must be FIRST child so CircleFrameLayout
+        is on top. -->
+    <TextureView
+        android:id="@+id/video_note_texture"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="end"
+        android:layout_marginEnd="8dp" />
 
-  <org.thoughtcrime.securesms.components.CircleFrameLayout
-      android:id="@+id/video_note_circle"
-      android:layout_width="200dp"
-      android:layout_height="200dp"
-      android:layout_gravity="end"
-      android:layout_marginEnd="8dp">
+    <org.thoughtcrime.securesms.components.CircleFrameLayout
+        android:id="@+id/video_note_circle"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="end"
+        android:layout_marginEnd="8dp">
 
         <!-- Reserved for future fallback rendering (currently unused) -->
-    <ImageView
-        android:id="@+id/video_note_frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:visibility="gone" />
+        <ImageView
+            android:id="@+id/video_note_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
 
-    <!-- Thumbnail — visible at rest, hidden after first video frame is captured -->
-    <ImageView
-        android:id="@+id/video_note_thumbnail"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop" />
+        <!-- Thumbnail — visible at rest, hidden after first video frame is captured -->
+        <ImageView
+            android:id="@+id/video_note_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
 
-    <!-- Circular progress ring during playback -->
-    <org.thoughtcrime.securesms.components.VideoNoteProgressRing
-        android:id="@+id/video_note_progress_ring"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible" />
+        <!-- Circular progress ring during playback -->
+        <org.thoughtcrime.securesms.components.VideoNoteProgressRing
+            android:id="@+id/video_note_progress_ring"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
 
-    <!-- Play / pause icon -->
-    <ImageView
-        android:id="@+id/video_note_play_icon"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_gravity="center"
-        android:src="@drawable/play_icon"
-        android:tint="#FFFFFFFF" />
+        <!-- Play / pause icon -->
+        <ImageView
+            android:id="@+id/video_note_play_icon"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center"
+            android:src="@drawable/play_icon"
+            android:tint="#FFFFFFFF" />
 
-    <!-- Sender name / forwarded label -->
-    <TextView
-        android:id="@+id/video_note_sender_name"
+        <!-- Sender name / forwarded label -->
+        <TextView
+            android:id="@+id/video_note_sender_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="8dp"
+            android:background="#66000000"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:textColor="#FFFFFFFF"
+            android:textSize="11sp"
+            android:visibility="gone" />
+
+    </org.thoughtcrime.securesms.components.CircleFrameLayout>
+
+    <!-- Delivery status / time — outside the circle to avoid clip -->
+    <org.thoughtcrime.securesms.components.ConversationItemFooter
+        android:id="@+id/video_note_footer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|center_horizontal"
-        android:layout_marginTop="8dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
         android:background="#66000000"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp" />
+
+    <!-- Duration — positioned symmetrically to the left of circle center, set in code -->
+    <TextView
+        android:id="@+id/video_note_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_marginBottom="8dp"
+        android:background="#66000000"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp"
         android:textColor="#FFFFFFFF"
-        android:textSize="11sp"
+        android:textSize="12sp"
         android:visibility="gone" />
 
-  </org.thoughtcrime.securesms.components.CircleFrameLayout>
+    <org.thoughtcrime.securesms.reactions.ReactionsConversationView
+        android:id="@+id/video_note_reactions_outgoing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="-2dp"
+        android:orientation="horizontal"
+        app:message_type="outgoing" />
 
-  <!-- Delivery status / time — outside the circle to avoid clip -->
-  <org.thoughtcrime.securesms.components.ConversationItemFooter
-      android:id="@+id/video_note_footer"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="bottom|end"
-      android:layout_marginBottom="8dp"
-      android:layout_marginEnd="16dp"
-      android:background="#66000000"
-      android:paddingLeft="4dp"
-      android:paddingRight="4dp"
-      android:paddingTop="1dp"
-      android:paddingBottom="1dp" />
-
-  <!-- Duration — positioned symmetrically to the left of circle center, set in code -->
-  <TextView
-      android:id="@+id/video_note_duration"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="bottom|start"
-      android:layout_marginBottom="8dp"
-      android:background="#66000000"
-      android:paddingLeft="4dp"
-      android:paddingRight="4dp"
-      android:paddingTop="1dp"
-      android:paddingBottom="1dp"
-      android:textColor="#FFFFFFFF"
-      android:textSize="12sp"
-      android:visibility="gone" />
-
-  <org.thoughtcrime.securesms.reactions.ReactionsConversationView
-      android:id="@+id/video_note_reactions_outgoing"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="bottom|end"
-      android:layout_marginBottom="-2dp"
-      android:orientation="horizontal"
-      app:message_type="outgoing" />
-
-  <org.thoughtcrime.securesms.reactions.ReactionsConversationView
-      android:id="@+id/video_note_reactions_incoming"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="bottom|start"
-      android:layout_marginBottom="-2dp"
-      android:orientation="horizontal"
-      app:message_type="incoming" />
+    <org.thoughtcrime.securesms.reactions.ReactionsConversationView
+        android:id="@+id/video_note_reactions_incoming"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_marginBottom="-2dp"
+        android:orientation="horizontal"
+        app:message_type="incoming" />
 
 </FrameLayout>

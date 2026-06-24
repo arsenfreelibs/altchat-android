@@ -28,7 +28,6 @@ import com.b44t.messenger.DcContext;
 import com.b44t.messenger.DcEvent;
 import java.util.Arrays;
 import org.thoughtcrime.securesms.ConnectivityActivity;
-import org.thoughtcrime.securesms.accounts.AccountOperationsListener;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.components.AvatarView;
 import org.thoughtcrime.securesms.connect.AccountManager;
@@ -260,8 +259,7 @@ public class AccountSelectionListFragment extends DialogFragment
             .setView(dialogView)
             .setNegativeButton(
                 R.string.cancel,
-                (d, which) ->
-                    AccountManager.getInstance().showSwitchAccountMenu(ctx, selectOnly))
+                (d, which) -> AccountManager.getInstance().showSwitchAccountMenu(ctx, selectOnly))
             .setPositiveButton(R.string.delete, (d2, w2) -> activity.onDeleteProfile(accountId))
             .show();
     Util.redPositiveButton(dialog);
@@ -284,7 +282,8 @@ public class AccountSelectionListFragment extends DialogFragment
       int accountId = contact.getAccountId();
       if (accountId == DC_CONTACT_ID_ADD_ACCOUNT) {
         AccountManager.getInstance().switchAccountAndStartActivity(rawActivity, 0);
-      } else if (accountId != DcHelper.getAccounts(rawActivity).getSelectedAccount().getAccountId()) {
+      } else if (accountId
+          != DcHelper.getAccounts(rawActivity).getSelectedAccount().getAccountId()) {
         AccountManager.getInstance().switchAccount(rawActivity, accountId);
         listener.onProfileSwitched(accountId);
       }

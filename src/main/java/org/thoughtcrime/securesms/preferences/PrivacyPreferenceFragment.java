@@ -23,36 +23,44 @@ public class PrivacyPreferenceFragment extends CorrectedPreferenceFragment {
   public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {
     addPreferencesFromResource(R.xml.preferences_privacy);
 
-    createPasscodeLauncher = registerForActivityResult(
-        new ActivityResultContracts.StartActivityForResult(), result -> {
-          // After a passcode was just created, go straight into its settings screen.
-          if (PasscodeManager.isEnabled(requireContext())) {
-            openPasscodeSettings();
-          }
-        });
+    createPasscodeLauncher =
+        registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+              // After a passcode was just created, go straight into its settings screen.
+              if (PasscodeManager.isEnabled(requireContext())) {
+                openPasscodeSettings();
+              }
+            });
 
     Preference passcode = findPreference("preference_passcode_lock");
     if (passcode != null) {
-      passcode.setOnPreferenceClickListener(preference -> {
-        if (PasscodeManager.isEnabled(requireContext())) {
-          openPasscodeSettings();
-        } else {
-          // No passcode yet: skip the extra "Enable Passcode" step and create one directly.
-          createPasscodeLauncher.launch(PasscodeSetupActivity.getCreateIntent(requireContext()));
-        }
-        return true;
-      });
+      passcode.setOnPreferenceClickListener(
+          preference -> {
+            if (PasscodeManager.isEnabled(requireContext())) {
+              openPasscodeSettings();
+            } else {
+              // No passcode yet: skip the extra "Enable Passcode" step and create one directly.
+              createPasscodeLauncher.launch(
+                  PasscodeSetupActivity.getCreateIntent(requireContext()));
+            }
+            return true;
+          });
     }
 
     // Screen Security: mirrors the Advanced screen behaviour (restart hint on change).
     Preference screenSecurity = findPreference(Prefs.SCREEN_SECURITY_PREF);
     if (screenSecurity != null) {
-      screenSecurity.setOnPreferenceChangeListener((p, value) -> {
-        Prefs.setScreenSecurityEnabled(requireContext(), (Boolean) value);
-        Toast.makeText(requireContext(),
-            R.string.pref_screen_security_please_restart_hint, Toast.LENGTH_LONG).show();
-        return true;
-      });
+      screenSecurity.setOnPreferenceChangeListener(
+          (p, value) -> {
+            Prefs.setScreenSecurityEnabled(requireContext(), (Boolean) value);
+            Toast.makeText(
+                    requireContext(),
+                    R.string.pref_screen_security_please_restart_hint,
+                    Toast.LENGTH_LONG)
+                .show();
+            return true;
+          });
     }
   }
 
@@ -69,9 +77,10 @@ public class PrivacyPreferenceFragment extends CorrectedPreferenceFragment {
 
     Preference passcode = findPreference("preference_passcode_lock");
     if (passcode != null) {
-      passcode.setSummary(PasscodeManager.isEnabled(requireContext())
-          ? R.string.alt_passcode_summary_on
-          : R.string.alt_passcode_summary_off);
+      passcode.setSummary(
+          PasscodeManager.isEnabled(requireContext())
+              ? R.string.alt_passcode_summary_on
+              : R.string.alt_passcode_summary_off);
     }
   }
 }

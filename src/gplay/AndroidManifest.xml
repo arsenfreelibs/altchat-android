@@ -13,7 +13,8 @@
         android:name="firebase_messaging_auto_init_enabled"
         android:value="false" />
 
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_REMOTE_MESSAGING" />
+    <uses-permission
+        android:name="android.permission.FOREGROUND_SERVICE_REMOTE_MESSAGING" />
 
     <application>
         <service

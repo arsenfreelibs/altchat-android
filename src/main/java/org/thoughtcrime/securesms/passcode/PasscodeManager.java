@@ -10,7 +10,6 @@ import androidx.core.util.Consumer;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
-import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -25,49 +24,54 @@ import org.thoughtcrime.securesms.util.Util;
  * the device-level default shared preferences (the same store {@link Prefs} uses), so the passcode
  * survives account switching and is shared across all profiles.
  *
- * <p>Keys are namespaced with {@code altchat_passcode_} to avoid collisions with upstream
- * DeltaChat preferences when merging.
+ * <p>Keys are namespaced with {@code altchat_passcode_} to avoid collisions with upstream DeltaChat
+ * preferences when merging.
  */
 public final class PasscodeManager {
 
   private static final String TAG = "PasscodeManager";
 
   // --- persisted keys (device-level, namespaced for the altchat fork) ---
-  private static final String ENABLED       = "altchat_passcode_enabled";
-  private static final String HASH          = "altchat_passcode_hash";
-  private static final String SALT          = "altchat_passcode_salt";
-  private static final String AUTOLOCK      = "altchat_passcode_autolock_seconds";
-  private static final String FINGERPRINT   = "altchat_passcode_fingerprint";
-  private static final String SHOW_CONTENT  = "altchat_passcode_show_content";
-  private static final String FAILED        = "altchat_passcode_failed_attempts";
-  private static final String LOCKOUT_UNTIL = "altchat_passcode_lockout_until"; // elapsedRealtime() ms
+  private static final String ENABLED = "altchat_passcode_enabled";
+  private static final String HASH = "altchat_passcode_hash";
+  private static final String SALT = "altchat_passcode_salt";
+  private static final String AUTOLOCK = "altchat_passcode_autolock_seconds";
+  private static final String FINGERPRINT = "altchat_passcode_fingerprint";
+  private static final String SHOW_CONTENT = "altchat_passcode_show_content";
+  private static final String FAILED = "altchat_passcode_failed_attempts";
+  private static final String LOCKOUT_UNTIL =
+      "altchat_passcode_lockout_until"; // elapsedRealtime() ms
 
   // --- auto-lock, in seconds (-1 = disabled / only manual lock). The selectable option values live
-  // in res/values/arrays.xml (passcode_autolock_values); only these two are referenced from code. ---
+  // in res/values/arrays.xml (passcode_autolock_values); only these two are referenced from code.
+  // ---
   public static final int AUTOLOCK_DISABLED = -1;
-  public static final int AUTOLOCK_DEFAULT  = 60 * 60; // 1 hour
+  public static final int AUTOLOCK_DEFAULT = 60 * 60; // 1 hour
 
   private static final int PASSCODE_LENGTH = 4;
 
   // --- failed-attempt lockout ---
-  private static final int  LOCKOUT_AFTER_ATTEMPTS = 5;   // start delaying from the 5th failure
-  private static final long LOCKOUT_STEP_MS        = 30_000L; // grows per extra failure
-  private static final long LOCKOUT_MAX_MS         = 30 * 60_000L;
+  private static final int LOCKOUT_AFTER_ATTEMPTS = 5; // start delaying from the 5th failure
+  private static final long LOCKOUT_STEP_MS = 30_000L; // grows per extra failure
+  private static final long LOCKOUT_MAX_MS = 30 * 60_000L;
 
   // --- PBKDF2 parameters ---
-  private static final int    SALT_BYTES  = 16;
-  private static final int    ITERATIONS  = 120_000;
-  private static final int    KEY_BITS    = 256;
-  private static final String ALGORITHM   = "PBKDF2WithHmacSHA256";
+  private static final int SALT_BYTES = 16;
+  private static final int ITERATIONS = 120_000;
+  private static final int KEY_BITS = 256;
+  private static final String ALGORITHM = "PBKDF2WithHmacSHA256";
 
   // --- in-memory runtime state (per process) ---
   private static volatile boolean locked = false;
-  private static volatile boolean initialized = false;     // false until the first foreground check after process start
-  private static volatile long backgroundedAtElapsed = -1; // SystemClock.elapsedRealtime() when app went to background
+  private static volatile boolean initialized =
+      false; // false until the first foreground check after process start
+  private static volatile long backgroundedAtElapsed =
+      -1; // SystemClock.elapsedRealtime() when app went to background
 
   // Single background thread for the (deliberately slow) PBKDF2 hashing, so it never blocks the UI
   // thread and concurrent attempts are serialized rather than spawning a thread each.
-  private static final ExecutorService HASH_EXECUTOR = ThreadUtil.newDynamicSingleThreadedExecutor();
+  private static final ExecutorService HASH_EXECUTOR =
+      ThreadUtil.newDynamicSingleThreadedExecutor();
 
   private PasscodeManager() {}
 
@@ -90,21 +94,28 @@ public final class PasscodeManager {
     resetFailedAttempts(context);
   }
 
-  /** Stores a new passcode off the UI thread; {@code onDone} runs on the main thread when finished. */
-  public static void setPasscodeAsync(Context context, @NonNull String passcode, @NonNull Runnable onDone) {
-    HASH_EXECUTOR.execute(() -> {
-      setPasscode(context, passcode);
-      Util.runOnMain(onDone);
-    });
+  /**
+   * Stores a new passcode off the UI thread; {@code onDone} runs on the main thread when finished.
+   */
+  public static void setPasscodeAsync(
+      Context context, @NonNull String passcode, @NonNull Runnable onDone) {
+    HASH_EXECUTOR.execute(
+        () -> {
+          setPasscode(context, passcode);
+          Util.runOnMain(onDone);
+        });
   }
 
-  /** Checks the passcode off the UI thread; {@code onResult} receives the result on the main thread. */
+  /**
+   * Checks the passcode off the UI thread; {@code onResult} receives the result on the main thread.
+   */
   public static void checkPasscodeAsync(
       Context context, @NonNull String passcode, @NonNull Consumer<Boolean> onResult) {
-    HASH_EXECUTOR.execute(() -> {
-      boolean ok = checkPasscode(context, passcode);
-      Util.runOnMain(() -> onResult.accept(ok));
-    });
+    HASH_EXECUTOR.execute(
+        () -> {
+          boolean ok = checkPasscode(context, passcode);
+          Util.runOnMain(() -> onResult.accept(ok));
+        });
   }
 
   /** Constant-time check of an entered passcode against the stored hash. */
@@ -139,7 +150,9 @@ public final class PasscodeManager {
   // settings: auto-lock timeout & fingerprint
   // ---------------------------------------------------------------------------
 
-  /** @return auto-lock timeout in seconds, or {@link #AUTOLOCK_DISABLED}. */
+  /**
+   * @return auto-lock timeout in seconds, or {@link #AUTOLOCK_DISABLED}.
+   */
   public static int getAutoLockSeconds(Context context) {
     return Prefs.getIntPreference(context, AUTOLOCK, AUTOLOCK_DEFAULT);
   }
@@ -255,7 +268,8 @@ public final class PasscodeManager {
     int attempts = Prefs.getIntPreference(context, FAILED, 0) + 1;
     Prefs.setIntPreference(context, FAILED, attempts);
     if (attempts >= LOCKOUT_AFTER_ATTEMPTS) {
-      long delay = Math.min(LOCKOUT_MAX_MS, (attempts - LOCKOUT_AFTER_ATTEMPTS + 1) * LOCKOUT_STEP_MS);
+      long delay =
+          Math.min(LOCKOUT_MAX_MS, (attempts - LOCKOUT_AFTER_ATTEMPTS + 1) * LOCKOUT_STEP_MS);
       Prefs.setLongPreference(context, LOCKOUT_UNTIL, SystemClock.elapsedRealtime() + delay);
     }
   }
@@ -269,7 +283,6 @@ public final class PasscodeManager {
    * @return remaining lockout time in ms during which passcode entry must be blocked, or 0 if entry
    *     is allowed. The attempt counter persists across process restarts; the timed window is based
    *     on {@link SystemClock#elapsedRealtime()} (immune to wall-clock changes).
-   *
    *     <p>{@code elapsedRealtime()} resets on device reboot, so a deadline persisted in a previous
    *     boot session would otherwise be misread as a far-future value. A remaining time larger than
    *     the maximum possible lockout therefore means the stored deadline is stale (reboot happened)

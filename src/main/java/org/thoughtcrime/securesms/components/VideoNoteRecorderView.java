@@ -213,9 +213,7 @@ public final class VideoNoteRecorderView extends FrameLayout implements View.OnT
               Animation.ABSOLUTE, 0));
       animation.addAnimation(
           new ScaleAnimation(
-              .5f, 1f, .5f, 1f,
-              Animation.RELATIVE_TO_SELF, .5f,
-              Animation.RELATIVE_TO_SELF, .5f));
+              .5f, 1f, .5f, 1f, Animation.RELATIVE_TO_SELF, .5f, Animation.RELATIVE_TO_SELF, .5f));
       animation.setDuration(ANIMATION_DURATION);
       animation.setInterpolator(new OvershootInterpolator());
 
@@ -244,15 +242,17 @@ public final class VideoNoteRecorderView extends FrameLayout implements View.OnT
       AnimationSet animation = new AnimationSet(false);
       Animation scaleAnimation =
           new ScaleAnimation(
-              1, 0.5f, 1, 0.5f,
-              Animation.RELATIVE_TO_SELF, 0.5f,
-              Animation.RELATIVE_TO_SELF, 0.5f);
+              1, 0.5f, 1, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
       Animation translateAnimation =
           new TranslateAnimation(
-              Animation.ABSOLUTE, lastOffsetX,
-              Animation.ABSOLUTE, 0,
-              Animation.ABSOLUTE, lastOffsetY,
-              Animation.ABSOLUTE, 0);
+              Animation.ABSOLUTE,
+              lastOffsetX,
+              Animation.ABSOLUTE,
+              0,
+              Animation.ABSOLUTE,
+              lastOffsetY,
+              Animation.ABSOLUTE,
+              0);
 
       scaleAnimation.setInterpolator(new AnticipateOvershootInterpolator(1.5f));
       translateAnimation.setInterpolator(new DecelerateInterpolator());

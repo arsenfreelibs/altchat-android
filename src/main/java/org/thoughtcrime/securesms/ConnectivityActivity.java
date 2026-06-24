@@ -26,17 +26,20 @@ public class ConnectivityActivity extends WebViewActivity implements DcEventCent
     if (ViewUtil.isEdgeToEdgeSupported()) {
       View content = findViewById(R.id.content_container);
       TypedValue tv = new TypedValue();
-      final int actionBarHeight = getTheme().resolveAttribute(
-          androidx.appcompat.R.attr.actionBarSize, tv, true)
-          ? TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics())
-          : 0;
-      ViewCompat.setOnApplyWindowInsetsListener(content, (v, wi) -> {
-        Insets ins = Insets.max(
-            wi.getInsets(WindowInsetsCompat.Type.systemBars()),
-            wi.getInsets(WindowInsetsCompat.Type.displayCutout()));
-        v.setPaddingRelative(ins.left, ins.top + actionBarHeight, ins.right, ins.bottom);
-        return wi;
-      });
+      final int actionBarHeight =
+          getTheme().resolveAttribute(androidx.appcompat.R.attr.actionBarSize, tv, true)
+              ? TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics())
+              : 0;
+      ViewCompat.setOnApplyWindowInsetsListener(
+          content,
+          (v, wi) -> {
+            Insets ins =
+                Insets.max(
+                    wi.getInsets(WindowInsetsCompat.Type.systemBars()),
+                    wi.getInsets(WindowInsetsCompat.Type.displayCutout()));
+            v.setPaddingRelative(ins.left, ins.top + actionBarHeight, ins.right, ins.bottom);
+            return wi;
+          });
       ViewCompat.requestApplyInsets(content);
     }
 

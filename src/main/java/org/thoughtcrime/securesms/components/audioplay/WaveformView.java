@@ -17,8 +17,8 @@ import org.thoughtcrime.securesms.R;
  * Displays an audio waveform as 40 vertical rounded bars.
  *
  * <p>Bars to the left of the current playback position are drawn at full opacity; bars to the right
- * are drawn at 25% opacity. A placeholder (all bars at 25% height) is shown while samples are
- * still loading.
+ * are drawn at 25% opacity. A placeholder (all bars at 25% height) is shown while samples are still
+ * loading.
  *
  * <p>Supports seek-by-tap and seek-by-drag via {@link SeekListener}.
  */
@@ -30,9 +30,13 @@ public class WaveformView extends View {
   private static final int UNPLAYED_ALPHA = 64; // ~25% of 255
 
   public interface SeekListener {
-    /** @param progress value in [0.0, 1.0] */
+    /**
+     * @param progress value in [0.0, 1.0]
+     */
     void onSeek(float progress);
+
     void onSeekStart();
+
     void onSeekEnd(float progress);
   }
 

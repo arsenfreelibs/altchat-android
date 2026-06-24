@@ -65,6 +65,9 @@ public class CallActivity extends AppCompatActivity {
   public static final String ACTION_ANSWER_CALL = BuildConfig.APPLICATION_ID + ".ANSWER_CALL";
   public static final String ACTION_DECLINE_CALL = BuildConfig.APPLICATION_ID + ".DECLINE_CALL";
   public static final String ACTION_HANGUP_CALL = BuildConfig.APPLICATION_ID + ".HANGUP_CALL";
+  public static final String ACTION_CALL_BACK = BuildConfig.APPLICATION_ID + ".CALL_BACK";
+  public static final String ACTION_MESSAGE = BuildConfig.APPLICATION_ID + ".MESSAGE";
+  public static final String EXTRA_STARTS_WITH_VIDEO = "starts_with_video";
 
   // Views
 
@@ -139,7 +142,8 @@ public class CallActivity extends AppCompatActivity {
     }
 
     // CallActivity does not extend BaseActionBarActivity, so mirror its screenshot-security logic
-    // here: hide the call in the task switcher / block screenshots when either the "Screen Security"
+    // here: hide the call in the task switcher / block screenshots when either the "Screen
+    // Security"
     // setting or the passcode "Show Content" setting asks for it.
     if (Prefs.isScreenSecurityEnabled(this) || PasscodeManager.shouldHideContent(this)) {
       getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
@@ -521,16 +525,17 @@ public class CallActivity extends AppCompatActivity {
   private void startDotsAnimation(final String baseText) {
     stopDotsAnimation();
     dotsCount = 0;
-    dotsRunnable = new Runnable() {
-      @Override
-      public void run() {
-        dotsCount = (dotsCount + 1) % 4;
-        StringBuilder sb = new StringBuilder(baseText);
-        for (int i = 0; i < dotsCount; i++) sb.append('.');
-        statusText.setText(sb.toString());
-        dotsHandler.postDelayed(this, 500);
-      }
-    };
+    dotsRunnable =
+        new Runnable() {
+          @Override
+          public void run() {
+            dotsCount = (dotsCount + 1) % 4;
+            StringBuilder sb = new StringBuilder(baseText);
+            for (int i = 0; i < dotsCount; i++) sb.append('.');
+            statusText.setText(sb.toString());
+            dotsHandler.postDelayed(this, 500);
+          }
+        };
     dotsHandler.post(dotsRunnable);
   }
 
@@ -544,16 +549,17 @@ public class CallActivity extends AppCompatActivity {
   private void startCallTimer() {
     stopCallTimer();
     connectedAtMs = System.currentTimeMillis();
-    timerRunnable = new Runnable() {
-      @Override
-      public void run() {
-        long elapsed = (System.currentTimeMillis() - connectedAtMs) / 1000;
-        long minutes = elapsed / 60;
-        long seconds = elapsed % 60;
-        statusText.setText(String.format(Locale.US, "%02d:%02d", minutes, seconds));
-        timerHandler.postDelayed(this, 1000);
-      }
-    };
+    timerRunnable =
+        new Runnable() {
+          @Override
+          public void run() {
+            long elapsed = (System.currentTimeMillis() - connectedAtMs) / 1000;
+            long minutes = elapsed / 60;
+            long seconds = elapsed % 60;
+            statusText.setText(String.format(Locale.US, "%02d:%02d", minutes, seconds));
+            timerHandler.postDelayed(this, 1000);
+          }
+        };
     timerHandler.post(timerRunnable);
   }
 

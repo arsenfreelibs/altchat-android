@@ -30,6 +30,7 @@ import androidx.core.app.TaskStackBuilder;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
+import chat.delta.rpc.RpcException;
 import com.b44t.messenger.DcChat;
 import com.b44t.messenger.DcContact;
 import com.b44t.messenger.DcContext;
@@ -45,23 +46,22 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import org.json.JSONObject;
 import org.thoughtcrime.securesms.ApplicationContext;
-import org.thoughtcrime.securesms.calls.CallActivity;
 import org.thoughtcrime.securesms.ConversationActivity;
 import org.thoughtcrime.securesms.ConversationListActivity;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.ShareActivity;
+import org.thoughtcrime.securesms.calls.CallActivity;
 import org.thoughtcrime.securesms.contacts.avatars.ContactPhoto;
 import org.thoughtcrime.securesms.mms.GlideApp;
 import org.thoughtcrime.securesms.preferences.widgets.NotificationPrivacyPreference;
 import org.thoughtcrime.securesms.recipients.Recipient;
+import org.thoughtcrime.securesms.service.CallForegroundService;
 import org.thoughtcrime.securesms.util.BitmapUtil;
 import org.thoughtcrime.securesms.util.IntentUtils;
 import org.thoughtcrime.securesms.util.JsonUtils;
 import org.thoughtcrime.securesms.util.Pair;
 import org.thoughtcrime.securesms.util.Prefs;
 import org.thoughtcrime.securesms.util.Util;
-import org.thoughtcrime.securesms.service.CallForegroundService;
-import chat.delta.rpc.RpcException;
 
 public class NotificationCenter {
   private static final String TAG = "NotificationCenter";
@@ -433,6 +433,12 @@ public class NotificationCenter {
 
           DcContact sender = dcContext.getContact(dcMsg.getFromId());
           String senderName = dcMsg.getSenderName(sender);
+          String personId = accountId + "-" + dcMsg.getFromId();
+          if (dcMsg.getOverrideSenderName() != null) {
+            // we need to treat the contact as a separate Person with different ID
+            // otherwise the name will be overwritten by future notifications
+            personId += "-" + senderName;
+          }
           String text =
               privacy.isDisplayMessage()
                   ? dcMsg.getSummarytext(2000)
@@ -448,7 +454,7 @@ public class NotificationCenter {
                       .setName(senderName)
                       .setIcon(getAvatarIcon(sender))
                       .setBot(sender.isBot())
-                      .setKey(accountId + "-" + sender.getId())
+                      .setKey(personId)
                       .build(),
                   text);
 
@@ -476,12 +482,11 @@ public class NotificationCenter {
             // just do nothing.
           }
 
-          DcContact sender = dcContext.getContact(contactId);
-          String senderName = dcMsg.getSenderName(sender);
+          DcContact contact = dcContext.getContact(contactId);
           String text =
               context.getString(
                   R.string.reaction_by_other,
-                  sender.getDisplayName(),
+                  contact.getDisplayName(),
                   reaction,
                   dcMsg.getSummarytext(2000));
           DcChat dcChat = dcContext.getChat(dcMsg.getChatId());
@@ -489,10 +494,10 @@ public class NotificationCenter {
           NotifData notifData =
               new NotifData(
                   new Person.Builder()
-                      .setName(senderName)
-                      .setIcon(getAvatarIcon(sender))
-                      .setBot(sender.isBot())
-                      .setKey(accountId + "-" + sender.getId())
+                      .setName(contact.getDisplayName())
+                      .setIcon(getAvatarIcon(contact))
+                      .setBot(contact.isBot())
+                      .setKey(accountId + "-" + contactId)
                       .build(),
                   text);
 
@@ -543,10 +548,10 @@ public class NotificationCenter {
             notifData =
                 new NotifData(
                     new Person.Builder()
-                        .setName(dcMsg.getSenderName(sender))
+                        .setName(sender.getDisplayName())
                         .setIcon(getAvatarIcon(sender))
                         .setBot(sender.isBot())
-                        .setKey(dcContext.getAccountId() + "-" + sender.getId())
+                        .setKey(accountId + "-" + contactId)
                         .build(),
                     tickerLine);
           }
@@ -556,11 +561,15 @@ public class NotificationCenter {
         });
   }
 
-  public PendingIntent getOpenCallIntent(ChatData chatData, int callId, String payload, boolean autoAccept, boolean hasVideo) {
+  public PendingIntent getOpenCallIntent(
+      ChatData chatData, int callId, String payload, boolean autoAccept, boolean hasVideo) {
     Intent intent = new Intent(context, CallActivity.class);
     intent.setAction(autoAccept ? CallActivity.ACTION_ANSWER_CALL : Intent.ACTION_VIEW);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-    return PendingIntent.getActivity(context, autoAccept ? 0 : 2, intent,
+    return PendingIntent.getActivity(
+        context,
+        autoAccept ? 0 : 2,
+        intent,
         PendingIntent.FLAG_UPDATE_CURRENT | IntentUtils.FLAG_MUTABLE());
   }
 
@@ -568,8 +577,8 @@ public class NotificationCenter {
     Intent intent = new Intent(context, CallActivity.class);
     intent.setAction(CallActivity.ACTION_DECLINE_CALL);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-    return PendingIntent.getActivity(context, 1, intent,
-        PendingIntent.FLAG_UPDATE_CURRENT | IntentUtils.FLAG_MUTABLE());
+    return PendingIntent.getActivity(
+        context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT | IntentUtils.FLAG_MUTABLE());
   }
 
   public void notifyCall(int accId, int callId, String payload) {
@@ -604,31 +613,32 @@ public class NotificationCenter {
       String notificationChannel = getCallNotificationChannel(notificationManager, chatData, name);
 
       PendingIntent declineCallIntent = getDeclineCallIntent(chatData, callId);
-      PendingIntent answerCallIntent  = getOpenCallIntent(chatData, callId, payload, true, hasVideo);
-      PendingIntent openCallIntent    = getOpenCallIntent(chatData, callId, payload, false, hasVideo);
+      PendingIntent answerCallIntent = getOpenCallIntent(chatData, callId, payload, true, hasVideo);
+      PendingIntent openCallIntent = getOpenCallIntent(chatData, callId, payload, false, hasVideo);
 
       Bitmap bitmap = getAvatar(dcChat);
-      Person.Builder personBuilder = new Person.Builder()
-          .setName(name)
-          .setImportant(true);
+      Person.Builder personBuilder = new Person.Builder().setName(name).setImportant(true);
       if (bitmap != null) {
         personBuilder.setIcon(IconCompat.createWithBitmap(bitmap));
       }
       Person caller = personBuilder.build();
 
-      NotificationCompat.Builder builder = new NotificationCompat.Builder(context, notificationChannel)
-          .setSmallIcon(R.drawable.icon_notification)
-          .setColor(context.getResources().getColor(R.color.delta_primary))
-          .setPriority(NotificationCompat.PRIORITY_MAX)
-          .setCategory(NotificationCompat.CATEGORY_CALL)
-          .setOngoing(true)
-          .setOnlyAlertOnce(false)
-          .setTicker(name)
-          .setContentTitle(name)
-          .setContentText(context.getString(R.string.call_status_incoming))
-          .setFullScreenIntent(openCallIntent, true)
-          .setContentIntent(openCallIntent)
-          .setStyle(NotificationCompat.CallStyle.forIncomingCall(caller, declineCallIntent, answerCallIntent));
+      NotificationCompat.Builder builder =
+          new NotificationCompat.Builder(context, notificationChannel)
+              .setSmallIcon(R.drawable.icon_notification)
+              .setColor(context.getResources().getColor(R.color.delta_primary))
+              .setPriority(NotificationCompat.PRIORITY_MAX)
+              .setCategory(NotificationCompat.CATEGORY_CALL)
+              .setOngoing(true)
+              .setOnlyAlertOnce(false)
+              .setTicker(name)
+              .setContentTitle(name)
+              .setContentText(context.getString(R.string.call_status_incoming))
+              .setFullScreenIntent(openCallIntent, true)
+              .setContentIntent(openCallIntent)
+              .setStyle(
+                  NotificationCompat.CallStyle.forIncomingCall(
+                      caller, declineCallIntent, answerCallIntent));
 
       if (bitmap != null) {
         builder.setLargeIcon(bitmap);

@@ -1,8 +1,8 @@
 package org.thoughtcrime.securesms.preferences;
 
-import android.content.SharedPreferences;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,12 +37,13 @@ public class AppearancePreferenceFragment extends ListSummaryPreferenceFragment 
   @Override
   public void onStart() {
     super.onStart();
-    themeListener = (sharedPreferences, key) -> {
-      if (Prefs.THEME_PREF.equals(key)) {
-        DynamicTheme.setDefaultDayNightMode(requireActivity());
-        requireActivity().recreate();
-      }
-    };
+    themeListener =
+        (sharedPreferences, key) -> {
+          if (Prefs.THEME_PREF.equals(key)) {
+            DynamicTheme.setDefaultDayNightMode(requireActivity());
+            requireActivity().recreate();
+          }
+        };
     getPreferenceScreen()
         .getSharedPreferences()
         .registerOnSharedPreferenceChangeListener(themeListener);

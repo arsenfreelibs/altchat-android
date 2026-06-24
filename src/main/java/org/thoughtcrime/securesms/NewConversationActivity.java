@@ -23,8 +23,6 @@ import static org.thoughtcrime.securesms.util.ShareUtil.isRelayingMessageContent
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import chat.delta.rpc.types.SecurejoinSource;
 import chat.delta.rpc.types.SecurejoinUiPath;

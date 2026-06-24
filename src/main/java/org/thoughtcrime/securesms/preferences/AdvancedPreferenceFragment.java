@@ -19,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
 import java.io.File;
@@ -27,7 +28,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Objects;
-import androidx.appcompat.app.AppCompatActivity;
 import org.thoughtcrime.securesms.LogViewActivity;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.StatsSending;
@@ -171,8 +171,7 @@ public class AdvancedPreferenceFragment extends ListSummaryPreferenceFragment
   @Override
   public void onResume() {
     super.onResume();
-    Objects.requireNonNull(
-            ((AppCompatActivity) requireActivity()).getSupportActionBar())
+    Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar())
         .setTitle(R.string.menu_advanced);
 
     selfReportingCheckbox.setChecked(0 != dcContext.getConfigInt(CONFIG_STATS_SENDING));

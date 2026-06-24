@@ -326,7 +326,9 @@ public class ConversationAdapter<V extends View & BindableConversationItem>
       return dcMsg.isOutgoing() ? MESSAGE_TYPE_THUMBNAIL_OUTGOING : MESSAGE_TYPE_THUMBNAIL_INCOMING;
     } else if (type == DcMsg.DC_MSG_VIDEO
         && org.thoughtcrime.securesms.util.MediaUtil.VIDEO_NOTE.equals(dcMsg.getFilemime())) {
-      return dcMsg.isOutgoing() ? MESSAGE_TYPE_VIDEO_NOTE_OUTGOING : MESSAGE_TYPE_VIDEO_NOTE_INCOMING;
+      return dcMsg.isOutgoing()
+          ? MESSAGE_TYPE_VIDEO_NOTE_OUTGOING
+          : MESSAGE_TYPE_VIDEO_NOTE_INCOMING;
     } else if (type == DcMsg.DC_MSG_STICKER) {
       return dcMsg.isOutgoing() ? MESSAGE_TYPE_STICKER_OUTGOING : MESSAGE_TYPE_STICKER_INCOMING;
     } else {

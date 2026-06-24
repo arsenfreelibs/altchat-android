@@ -32,7 +32,8 @@ public class AudioMiniPlayerView extends ConstraintLayout {
     init(context);
   }
 
-  public AudioMiniPlayerView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+  public AudioMiniPlayerView(
+      @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     init(context);
   }
@@ -54,67 +55,73 @@ public class AudioMiniPlayerView extends ConstraintLayout {
     }
     this.viewModel = vm;
 
-    vm.getPlaybackState().observe(owner, state -> {
-      if (state == null
-          || state.getStatus() == AudioPlaybackState.PlaybackStatus.IDLE
-          || state.getStatus() == AudioPlaybackState.PlaybackStatus.ERROR) {
-        setVisibility(GONE);
-        return;
-      }
+    vm.getPlaybackState()
+        .observe(
+            owner,
+            state -> {
+              if (state == null
+                  || state.getStatus() == AudioPlaybackState.PlaybackStatus.IDLE
+                  || state.getStatus() == AudioPlaybackState.PlaybackStatus.ERROR) {
+                setVisibility(GONE);
+                return;
+              }
 
-      setVisibility(VISIBLE);
-      currentMsgId = state.getMsgId();
+              setVisibility(VISIBLE);
+              currentMsgId = state.getMsgId();
 
-      // Play/Pause icon
-      boolean playing = state.getStatus() == AudioPlaybackState.PlaybackStatus.PLAYING;
-      playPauseButton.setImageResource(
-          playing ? R.drawable.pause_icon : R.drawable.play_icon);
+              // Play/Pause icon
+              boolean playing = state.getStatus() == AudioPlaybackState.PlaybackStatus.PLAYING;
+              playPauseButton.setImageResource(
+                  playing ? R.drawable.pause_icon : R.drawable.play_icon);
 
-      // Title
-      String sender = state.getSenderName();
-      titleView.setText(sender != null ? sender : "");
+              // Title
+              String sender = state.getSenderName();
+              titleView.setText(sender != null ? sender : "");
 
-      // Speed label
-      float speed = state.getPlaybackSpeed();
-      if (speed >= 1.9f) {
-        speedButton.setText("2x");
-      } else if (speed >= 1.4f) {
-        speedButton.setText("1.5x");
-      } else {
-        speedButton.setText("1x");
-      }
+              // Speed label
+              float speed = state.getPlaybackSpeed();
+              if (speed >= 1.9f) {
+                speedButton.setText("2x");
+              } else if (speed >= 1.4f) {
+                speedButton.setText("1.5x");
+              } else {
+                speedButton.setText("1x");
+              }
 
-      // Progress
-      long duration = state.getDuration();
-      long position = state.getCurrentPosition();
-      if (duration > 0) {
-        progressBar.setProgress((int) (position * 10000L / duration));
-      } else {
-        progressBar.setProgress(0);
-      }
-    });
+              // Progress
+              long duration = state.getDuration();
+              long position = state.getCurrentPosition();
+              if (duration > 0) {
+                progressBar.setProgress((int) (position * 10000L / duration));
+              } else {
+                progressBar.setProgress(0);
+              }
+            });
 
-    playPauseButton.setOnClickListener(v -> {
-      if (viewModel == null || currentMsgId < 0) return;
-      AudioPlaybackState state = viewModel.getPlaybackState().getValue();
-      if (state == null) return;
-      if (state.getStatus() == AudioPlaybackState.PlaybackStatus.PLAYING) {
-        viewModel.pause(currentMsgId);
-      } else {
-        viewModel.play(currentMsgId);
-      }
-    });
+    playPauseButton.setOnClickListener(
+        v -> {
+          if (viewModel == null || currentMsgId < 0) return;
+          AudioPlaybackState state = viewModel.getPlaybackState().getValue();
+          if (state == null) return;
+          if (state.getStatus() == AudioPlaybackState.PlaybackStatus.PLAYING) {
+            viewModel.pause(currentMsgId);
+          } else {
+            viewModel.play(currentMsgId);
+          }
+        });
 
-    speedButton.setOnClickListener(v -> {
-      if (viewModel != null) {
-        viewModel.cyclePlaybackSpeed();
-      }
-    });
+    speedButton.setOnClickListener(
+        v -> {
+          if (viewModel != null) {
+            viewModel.cyclePlaybackSpeed();
+          }
+        });
 
-    closeButton.setOnClickListener(v -> {
-      if (viewModel != null && currentMsgId >= 0) {
-        viewModel.stop(currentMsgId);
-      }
-    });
+    closeButton.setOnClickListener(
+        v -> {
+          if (viewModel != null && currentMsgId >= 0) {
+            viewModel.stop(currentMsgId);
+          }
+        });
   }
 }

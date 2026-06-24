@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Preference
@@ -30,7 +31,6 @@
     </PreferenceCategory>
 
     <!-- title is set (in red) programmatically in PasscodePreferenceFragment -->
-    <Preference
-        android:key="passcode_turn_off" />
+    <Preference android:key="passcode_turn_off" />
 
 </PreferenceScreen>

@@ -17,7 +17,6 @@ import android.view.ViewOutlineProvider;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.media3.common.AudioAttributes;
@@ -26,17 +25,14 @@ import androidx.media3.common.MediaItem;
 import androidx.media3.common.Player;
 import androidx.media3.common.VideoSize;
 import androidx.media3.exoplayer.ExoPlayer;
-
 import chat.delta.rpc.RpcException;
 import chat.delta.rpc.types.Reaction;
 import chat.delta.rpc.types.Reactions;
 import com.b44t.messenger.DcChat;
 import com.b44t.messenger.DcContact;
 import com.b44t.messenger.DcMsg;
-
 import java.util.List;
 import java.util.Set;
-
 import org.thoughtcrime.securesms.components.ConversationItemFooter;
 import org.thoughtcrime.securesms.components.VideoNoteProgressRing;
 import org.thoughtcrime.securesms.components.audioplay.AudioPlaybackViewModel;
@@ -52,12 +48,10 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
   private static final int PROGRESS_UPDATE_MS = 50;
 
   private DcMsg messageRecord;
-  private @Nullable
-  ExoPlayer player;
+  private @Nullable ExoPlayer player;
   private boolean playing = false;
   private final Handler progressHandler = new Handler(Looper.getMainLooper());
-  private @Nullable
-  Runnable progressRunnable;
+  private @Nullable Runnable progressRunnable;
 
   private android.widget.FrameLayout circleContainer;
   private ImageView videoFrameView;
@@ -70,24 +64,19 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
   private ReactionsConversationView reactionsOutgoingView;
   private ReactionsConversationView reactionsIncomingView;
 
-  private @Nullable
-  Thread thumbnailThread;
+  private @Nullable Thread thumbnailThread;
   // Singleton: at most one VideoNoteView plays at a time across the entire screen.
-  @Nullable
-  private static java.lang.ref.WeakReference<VideoNoteView> sCurrentlyPlaying = null;
+  @Nullable private static java.lang.ref.WeakReference<VideoNoteView> sCurrentlyPlaying = null;
 
   private int thumbnailGeneration = 0;
   private TextureView textureView;
 
-  private @Nullable
-  BindableConversationItem.EventListener eventListener;
-  private @Nullable
-  OnClickListener adapterClickListener;
+  private @Nullable BindableConversationItem.EventListener eventListener;
+  private @Nullable OnClickListener adapterClickListener;
   private float lastTapX = Float.NaN;
   private float lastTapY = Float.NaN;
   private final Runnable clearPulseSelectionRunnable = () -> setSelected(false);
-  private @NonNull
-  Set<DcMsg> batchSelected = new java.util.HashSet<>();
+  private @NonNull Set<DcMsg> batchSelected = new java.util.HashSet<>();
 
   public VideoNoteView(Context context) {
     super(context);
@@ -109,12 +98,13 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
     textureView = findViewById(R.id.video_note_texture);
     // TextureView is a sibling of CircleFrameLayout in the root FrameLayout.
     // setClipToOutline clips it to a circle at the HWUI compositor level.
-    textureView.setOutlineProvider(new ViewOutlineProvider() {
-      @Override
-      public void getOutline(View view, Outline outline) {
-        outline.setOval(0, 0, view.getWidth(), view.getHeight());
-      }
-    });
+    textureView.setOutlineProvider(
+        new ViewOutlineProvider() {
+          @Override
+          public void getOutline(View view, Outline outline) {
+            outline.setOval(0, 0, view.getWidth(), view.getHeight());
+          }
+        });
     textureView.setClipToOutline(true);
 
     playIcon = findViewById(R.id.video_note_play_icon);
@@ -162,8 +152,7 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
           } else if (adapterClickListener != null) {
             adapterClickListener.onClick(v);
           }
-        }
-    );
+        });
   }
 
   @Override
@@ -174,27 +163,28 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
 
   @Override
   public void bind(
-    @NonNull DcMsg messageRecord,
-    @NonNull DcChat dcChat,
-    @NonNull GlideRequests glideRequests,
-    @NonNull Set<DcMsg> batchSelected,
-    @NonNull Recipient recipients,
-    boolean pulseHighlight,
-    @Nullable AudioPlaybackViewModel playbackViewModel,
-    AudioView.OnActionListener audioPlayPauseListener) {
+      @NonNull DcMsg messageRecord,
+      @NonNull DcChat dcChat,
+      @NonNull GlideRequests glideRequests,
+      @NonNull Set<DcMsg> batchSelected,
+      @NonNull Recipient recipients,
+      boolean pulseHighlight,
+      @Nullable AudioPlaybackViewModel playbackViewModel,
+      AudioView.OnActionListener audioPlayPauseListener) {
     this.messageRecord = messageRecord;
     this.batchSelected = batchSelected;
     applyInteractionState(messageRecord, pulseHighlight);
 
     // Position circle: right for outgoing, left for incoming.
-    // Footer always appears at bottom-right of the circle (same visual position for both directions).
+    // Footer always appears at bottom-right of the circle (same visual position for both
+    // directions).
     int dp8 = (int) (8 * getResources().getDisplayMetrics().density);
     int dp16 = dp8 * 2;
 
     android.widget.FrameLayout.LayoutParams lp =
-      (android.widget.FrameLayout.LayoutParams) circleContainer.getLayoutParams();
+        (android.widget.FrameLayout.LayoutParams) circleContainer.getLayoutParams();
     android.widget.FrameLayout.LayoutParams flp =
-      (android.widget.FrameLayout.LayoutParams) footer.getLayoutParams();
+        (android.widget.FrameLayout.LayoutParams) footer.getLayoutParams();
     if (messageRecord.isOutgoing()) {
       lp.gravity = android.view.Gravity.END;
       lp.rightMargin = dp8;
@@ -252,8 +242,10 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
       // Measure the footer now that its content is set, then position its right edge
       // at the same 8dp inset from the circle's right edge (= 200dp from screen left).
       footer.measure(
-          android.view.View.MeasureSpec.makeMeasureSpec(0, android.view.View.MeasureSpec.UNSPECIFIED),
-          android.view.View.MeasureSpec.makeMeasureSpec(0, android.view.View.MeasureSpec.UNSPECIFIED));
+          android.view.View.MeasureSpec.makeMeasureSpec(
+              0, android.view.View.MeasureSpec.UNSPECIFIED),
+          android.view.View.MeasureSpec.makeMeasureSpec(
+              0, android.view.View.MeasureSpec.UNSPECIFIED));
       int circleRightEdgePx = (int) ((8 + 200) * getResources().getDisplayMetrics().density);
       int insetPx = dp8;
       flp.leftMargin = circleRightEdgePx - insetPx - footer.getMeasuredWidth();
@@ -332,7 +324,8 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
     try {
       Reactions reactions =
           DcHelper.getRpc(getContext())
-              .getMessageReactions(DcHelper.getContext(getContext()).getAccountId(), current.getId());
+              .getMessageReactions(
+                  DcHelper.getContext(getContext()).getAccountId(), current.getId());
       List<Reaction> reactionList = reactions != null ? reactions.reactions : null;
       if (reactionList == null) {
         active.clear();
@@ -396,35 +389,37 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
 
     final int generation = ++thumbnailGeneration;
     thumbnailThread =
-      new Thread(
-        () -> {
-          Bitmap frame = null;
-          long durationMs = 0;
-          try (MediaMetadataRetriever mmr = new MediaMetadataRetriever()) {
-            mmr.setDataSource(filePath);
-            frame = mmr.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
-            // Do NOT apply rotation manually — getFrameAtTime() already returns
-            // a correctly-oriented frame on API 27+ (Android 8.1+)
-            String durStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-            if (durStr != null && !durStr.isEmpty()) {
-              durationMs = Long.parseLong(durStr);
-            }
-          } catch (Exception e) {
-            Log.e(TAG, "Thumbnail load error", e);
-          }
-          if (Thread.currentThread().isInterrupted()) return;
-          final Bitmap result = frame;
-          final long finalDuration = durationMs;
-          post(() -> {
-            if (generation != thumbnailGeneration) return;
-            thumbnailView.setImageBitmap(result);
-            if (finalDuration > 0) {
-              int s = (int) (finalDuration / 1000);
-              durationView.setText(String.format(java.util.Locale.US, "%d:%02d", s / 60, s % 60));
-              durationView.setVisibility(View.VISIBLE);
-            }
-          });
-        });
+        new Thread(
+            () -> {
+              Bitmap frame = null;
+              long durationMs = 0;
+              try (MediaMetadataRetriever mmr = new MediaMetadataRetriever()) {
+                mmr.setDataSource(filePath);
+                frame = mmr.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
+                // Do NOT apply rotation manually — getFrameAtTime() already returns
+                // a correctly-oriented frame on API 27+ (Android 8.1+)
+                String durStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+                if (durStr != null && !durStr.isEmpty()) {
+                  durationMs = Long.parseLong(durStr);
+                }
+              } catch (Exception e) {
+                Log.e(TAG, "Thumbnail load error", e);
+              }
+              if (Thread.currentThread().isInterrupted()) return;
+              final Bitmap result = frame;
+              final long finalDuration = durationMs;
+              post(
+                  () -> {
+                    if (generation != thumbnailGeneration) return;
+                    thumbnailView.setImageBitmap(result);
+                    if (finalDuration > 0) {
+                      int s = (int) (finalDuration / 1000);
+                      durationView.setText(
+                          String.format(java.util.Locale.US, "%d:%02d", s / 60, s % 60));
+                      durationView.setVisibility(View.VISIBLE);
+                    }
+                  });
+            });
     thumbnailThread.setDaemon(true);
     thumbnailThread.start();
   }
@@ -437,17 +432,11 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
     }
     // Spring scale animation
     animate()
-      .scaleX(1.06f)
-      .scaleY(1.06f)
-      .setDuration(80)
-      .withEndAction(
-        () ->
-          animate()
-            .scaleX(1f)
-            .scaleY(1f)
-            .setDuration(80)
-            .start())
-      .start();
+        .scaleX(1.06f)
+        .scaleY(1.06f)
+        .setDuration(80)
+        .withEndAction(() -> animate().scaleX(1f).scaleY(1f).setDuration(80).start())
+        .start();
   }
 
   private void startPlayback() {
@@ -470,34 +459,34 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
     }
 
     player =
-      new ExoPlayer.Builder(getContext())
-        .setAudioAttributes(
-          new AudioAttributes.Builder()
-            .setUsage(C.USAGE_MEDIA)
-            .setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
-            .build(),
-          true)
-        .build();
+        new ExoPlayer.Builder(getContext())
+            .setAudioAttributes(
+                new AudioAttributes.Builder()
+                    .setUsage(C.USAGE_MEDIA)
+                    .setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
+                    .build(),
+                true)
+            .build();
 
     player.addListener(
-      new Player.Listener() {
-        @Override
-        public void onPlaybackStateChanged(int state) {
-          if (state == Player.STATE_ENDED) {
-            onVideoEnded();
+        new Player.Listener() {
+          @Override
+          public void onPlaybackStateChanged(int state) {
+            if (state == Player.STATE_ENDED) {
+              onVideoEnded();
+            }
           }
-        }
 
-        @Override
-        public void onVideoSizeChanged(@NonNull VideoSize videoSize) {
-          post(() -> applyCenterCropTransform(videoSize.width, videoSize.height));
-        }
+          @Override
+          public void onVideoSizeChanged(@NonNull VideoSize videoSize) {
+            post(() -> applyCenterCropTransform(videoSize.width, videoSize.height));
+          }
 
-        @Override
-        public void onRenderedFirstFrame() {
-          post(() -> thumbnailView.setVisibility(View.INVISIBLE));
-        }
-      });
+          @Override
+          public void onRenderedFirstFrame() {
+            post(() -> thumbnailView.setVisibility(View.INVISIBLE));
+          }
+        });
 
     playing = true;
     playIcon.setVisibility(View.GONE);
@@ -578,19 +567,19 @@ public class VideoNoteView extends FrameLayout implements BindableConversationIt
 
   private void startProgressUpdates() {
     progressRunnable =
-      new Runnable() {
-        @Override
-        public void run() {
-          if (player != null && playing) {
-            long duration = player.getDuration();
-            long position = player.getCurrentPosition();
-            if (duration > 0) {
-              progressRing.setProgress((float) position / duration);
+        new Runnable() {
+          @Override
+          public void run() {
+            if (player != null && playing) {
+              long duration = player.getDuration();
+              long position = player.getCurrentPosition();
+              if (duration > 0) {
+                progressRing.setProgress((float) position / duration);
+              }
+              progressHandler.postDelayed(this, PROGRESS_UPDATE_MS);
             }
-            progressHandler.postDelayed(this, PROGRESS_UPDATE_MS);
           }
-        }
-      };
+        };
     progressHandler.post(progressRunnable);
   }
 

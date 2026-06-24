@@ -69,27 +69,30 @@ public class MessageContextOverlay extends LinearLayout {
     boolean canReply = chat.canSend() && ConversationFragment.canReplyToMsg(msg);
     actionReply.setVisibility(canReply ? VISIBLE : GONE);
     if (canReply) {
-      actionReply.setOnClickListener(v -> {
-        hide();
-        ((ConversationActivity) fragment.requireActivity()).handleReplyMessage(msg);
-      });
+      actionReply.setOnClickListener(
+          v -> {
+            hide();
+            ((ConversationActivity) fragment.requireActivity()).handleReplyMessage(msg);
+          });
     }
 
     // Copy
     String text = msg.getText();
     if (text == null) text = "";
     final String finalText = text;
-    actionCopy.setOnClickListener(v -> {
-      String copyText = finalText.isEmpty() ? msg.getSummarytext(10_000_000) : finalText;
-      Util.writeTextToClipboard(getContext(), copyText);
-      hide();
-    });
+    actionCopy.setOnClickListener(
+        v -> {
+          String copyText = finalText.isEmpty() ? msg.getSummarytext(10_000_000) : finalText;
+          Util.writeTextToClipboard(getContext(), copyText);
+          hide();
+        });
 
     // Forward
-    actionForward.setOnClickListener(v -> {
-      hide();
-      fragment.forwardSingleMessage(msg);
-    });
+    actionForward.setOnClickListener(
+        v -> {
+          hide();
+          fragment.forwardSingleMessage(msg);
+        });
 
     // Save / Unsave
     boolean canSave = msg.canSave() && !chat.isSelfTalk();
@@ -99,22 +102,26 @@ public class MessageContextOverlay extends LinearLayout {
       actionSave.setText(saved ? R.string.unsave : R.string.save);
       actionSave.setCompoundDrawablesRelativeWithIntrinsicBounds(
           saved ? R.drawable.baseline_bookmark_remove_24 : R.drawable.baseline_bookmark_border_24,
-          0, 0, 0);
+          0,
+          0,
+          0);
       if (actionSave.getCompoundDrawablesRelative()[0] != null) {
-        actionSave.getCompoundDrawablesRelative()[0]
-            .setTint(getContext().getColor(android.R.color.tab_indicator_text));
+        actionSave.getCompoundDrawablesRelative()[0].setTint(
+            getContext().getColor(android.R.color.tab_indicator_text));
       }
-      actionSave.setOnClickListener(v -> {
-        hide();
-        toggleSave(msg);
-      });
+      actionSave.setOnClickListener(
+          v -> {
+            hide();
+            toggleSave(msg);
+          });
     }
 
     // Delete
-    actionDelete.setOnClickListener(v -> {
-      hide();
-      fragment.deleteSingleMessage(msg, msg.getChatId());
-    });
+    actionDelete.setOnClickListener(
+        v -> {
+          hide();
+          fragment.deleteSingleMessage(msg, msg.getChatId());
+        });
 
     // ── Position the overlay ──────────────────────────────────────
     setVisibility(VISIBLE);
@@ -158,7 +165,8 @@ public class MessageContextOverlay extends LinearLayout {
     int parentW = ((View) getParent()).getWidth();
     int parentH = ((View) getParent()).getHeight();
 
-    // Horizontal: 18% margin from the respective edge — matches AddReactionView.positionContextMode()
+    // Horizontal: 18% margin from the respective edge — matches
+    // AddReactionView.positionContextMode()
     int hMargin = (int) (parentW * 0.18f);
     int x;
     if (msg.isOutgoing()) {
@@ -188,17 +196,18 @@ public class MessageContextOverlay extends LinearLayout {
   }
 
   private void toggleSave(DcMsg msg) {
-    Util.runOnBackground(() -> {
-      try {
-        if (msg.getSavedMsgId() != 0) {
-          rpc.deleteMessages(dcContext.getAccountId(),
-              Collections.singletonList(msg.getSavedMsgId()));
-        } else {
-          rpc.saveMsgs(dcContext.getAccountId(), Collections.singletonList(msg.getId()));
-        }
-      } catch (RpcException e) {
-        e.printStackTrace();
-      }
-    });
+    Util.runOnBackground(
+        () -> {
+          try {
+            if (msg.getSavedMsgId() != 0) {
+              rpc.deleteMessages(
+                  dcContext.getAccountId(), Collections.singletonList(msg.getSavedMsgId()));
+            } else {
+              rpc.saveMsgs(dcContext.getAccountId(), Collections.singletonList(msg.getId()));
+            }
+          } catch (RpcException e) {
+            e.printStackTrace();
+          }
+        });
   }
 }

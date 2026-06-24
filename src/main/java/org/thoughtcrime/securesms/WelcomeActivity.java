@@ -12,11 +12,10 @@ import android.text.util.Linkify;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ScrollView;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -91,8 +90,7 @@ public class WelcomeActivity extends BaseActionBarActivity
               signInDialog.dismiss();
             });
 
-    signUpButton.setOnClickListener(
-        (v) -> showTermsOfServiceDialog());
+    signUpButton.setOnClickListener((v) -> showTermsOfServiceDialog());
     signInButton.setOnClickListener((v) -> signInDialog.show());
 
     registerForEvents();
@@ -141,23 +139,30 @@ public class WelcomeActivity extends BaseActionBarActivity
     layout.addView(webView);
     layout.addView(checkBox);
 
-    AlertDialog dialog = new AlertDialog.Builder(this)
-        .setTitle(R.string.tos_title)
-        .setView(layout)
-        .setPositiveButton(R.string.tos_agree, null)
-        .setNegativeButton(R.string.tos_decline, null)
-        .create();
+    AlertDialog dialog =
+        new AlertDialog.Builder(this)
+            .setTitle(R.string.tos_title)
+            .setView(layout)
+            .setPositiveButton(R.string.tos_agree, null)
+            .setNegativeButton(R.string.tos_decline, null)
+            .create();
 
-    dialog.setOnShowListener(d -> {
-      dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
-        if (checkBox.isChecked()) {
-          dialog.dismiss();
-          startActivity(new Intent(this, InstantOnboardingActivity.class));
-        } else {
-          android.widget.Toast.makeText(this, R.string.tos_must_accept, android.widget.Toast.LENGTH_SHORT).show();
-        }
-      });
-    });
+    dialog.setOnShowListener(
+        d -> {
+          dialog
+              .getButton(AlertDialog.BUTTON_POSITIVE)
+              .setOnClickListener(
+                  v -> {
+                    if (checkBox.isChecked()) {
+                      dialog.dismiss();
+                      startActivity(new Intent(this, InstantOnboardingActivity.class));
+                    } else {
+                      android.widget.Toast.makeText(
+                              this, R.string.tos_must_accept, android.widget.Toast.LENGTH_SHORT)
+                          .show();
+                    }
+                  });
+        });
 
     dialog.show();
   }
@@ -261,7 +266,12 @@ public class WelcomeActivity extends BaseActionBarActivity
               File imexDir = DcHelper.getImexDir();
               if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 AttachmentManager.selectMediaType(
-                    this, "application/x-tar", null, PICK_BACKUP, StorageUtil.getDownloadUri());
+                    this,
+                    "application/x-tar",
+                    null,
+                    PICK_BACKUP,
+                    StorageUtil.getDownloadUri(),
+                    false);
               } else {
                 final String backupFile = dcContext.imexHasBackup(imexDir.getAbsolutePath());
                 if (backupFile != null) {

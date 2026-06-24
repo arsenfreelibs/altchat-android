@@ -29,7 +29,8 @@ import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme;
  */
 public class PasscodeActivity extends BaseActionBarActivity {
 
-  private static final int BIOMETRIC_AUTHENTICATORS = BiometricManager.Authenticators.BIOMETRIC_WEAK;
+  private static final int BIOMETRIC_AUTHENTICATORS =
+      BiometricManager.Authenticators.BIOMETRIC_WEAK;
 
   private final StringBuilder entered = new StringBuilder();
   private List<View> keypadButtons;
@@ -97,22 +98,30 @@ public class PasscodeActivity extends BaseActionBarActivity {
   private void buildKeypad() {
     GridLayout keypad = findViewById(R.id.passcode_keypad);
 
-    ImageButton biometric = PasscodeKeypad.borderlessIconButton(
-        this, R.drawable.ic_passcode_fingerprint,
-        getString(R.string.alt_passcode_use_fingerprint), v -> showBiometricPrompt());
+    ImageButton biometric =
+        PasscodeKeypad.borderlessIconButton(
+            this,
+            R.drawable.ic_passcode_fingerprint,
+            getString(R.string.alt_passcode_use_fingerprint),
+            v -> showBiometricPrompt());
     biometric.setVisibility(isBiometricAvailable() ? View.VISIBLE : View.INVISIBLE);
 
-    keypadButtons = PasscodeKeypad.build(this, keypad, new PasscodeKeypad.Listener() {
-      @Override
-      public void onDigit(int digit) {
-        PasscodeActivity.this.onDigit(digit);
-      }
+    keypadButtons =
+        PasscodeKeypad.build(
+            this,
+            keypad,
+            new PasscodeKeypad.Listener() {
+              @Override
+              public void onDigit(int digit) {
+                PasscodeActivity.this.onDigit(digit);
+              }
 
-      @Override
-      public void onBackspace() {
-        PasscodeActivity.this.onBackspace();
-      }
-    }, biometric);
+              @Override
+              public void onBackspace() {
+                PasscodeActivity.this.onBackspace();
+              }
+            },
+            biometric);
   }
 
   // ---------------------------------------------------------------------------
@@ -139,7 +148,8 @@ public class PasscodeActivity extends BaseActionBarActivity {
   }
 
   private void verify() {
-    // Hashing (PBKDF2) is too slow for the UI thread; verify off-thread and disable input meanwhile.
+    // Hashing (PBKDF2) is too slow for the UI thread; verify off-thread and disable input
+    // meanwhile.
     setKeypadEnabled(false);
     PasscodeManager.checkPasscodeAsync(this, entered.toString(), this::onVerified);
   }
@@ -194,18 +204,20 @@ public class PasscodeActivity extends BaseActionBarActivity {
     if (lockoutTimer != null) {
       lockoutTimer.cancel();
     }
-    lockoutTimer = new CountDownTimer(remaining, 1000) {
-      @Override
-      public void onTick(long millisUntilFinished) {
-        showError(getString(R.string.alt_passcode_locked_out, formatDuration(millisUntilFinished)));
-      }
+    lockoutTimer =
+        new CountDownTimer(remaining, 1000) {
+          @Override
+          public void onTick(long millisUntilFinished) {
+            showError(
+                getString(R.string.alt_passcode_locked_out, formatDuration(millisUntilFinished)));
+          }
 
-      @Override
-      public void onFinish() {
-        clearError();
-        setKeypadEnabled(true);
-      }
-    }.start();
+          @Override
+          public void onFinish() {
+            clearError();
+            setKeypadEnabled(true);
+          }
+        }.start();
   }
 
   private void setKeypadEnabled(boolean enabled) {
@@ -245,22 +257,29 @@ public class PasscodeActivity extends BaseActionBarActivity {
     if (!isBiometricAvailable()) {
       return;
     }
-    BiometricPrompt prompt = new BiometricPrompt(this, ContextCompat.getMainExecutor(this),
-        new BiometricPrompt.AuthenticationCallback() {
-          @Override
-          public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
-            PasscodeManager.unlock(PasscodeActivity.this);
-            setResult(RESULT_OK);
-            finish();
-          }
-        });
+    BiometricPrompt prompt =
+        new BiometricPrompt(
+            this,
+            ContextCompat.getMainExecutor(this),
+            new BiometricPrompt.AuthenticationCallback() {
+              @Override
+              public void onAuthenticationSucceeded(
+                  @NonNull BiometricPrompt.AuthenticationResult result) {
+                PasscodeManager.unlock(PasscodeActivity.this);
+                setResult(RESULT_OK);
+                finish();
+              }
+            });
 
-    BiometricPrompt.PromptInfo info = new BiometricPrompt.PromptInfo.Builder()
-        .setTitle(getString(R.string.alt_passcode_unlock_biometric_title, getString(R.string.app_name)))
-        .setSubtitle(getString(R.string.alt_passcode_unlock_biometric_subtitle))
-        .setNegativeButtonText(getString(R.string.alt_passcode_use_pin))
-        .setAllowedAuthenticators(BIOMETRIC_AUTHENTICATORS)
-        .build();
+    BiometricPrompt.PromptInfo info =
+        new BiometricPrompt.PromptInfo.Builder()
+            .setTitle(
+                getString(
+                    R.string.alt_passcode_unlock_biometric_title, getString(R.string.app_name)))
+            .setSubtitle(getString(R.string.alt_passcode_unlock_biometric_subtitle))
+            .setNegativeButtonText(getString(R.string.alt_passcode_use_pin))
+            .setAllowedAuthenticators(BIOMETRIC_AUTHENTICATORS)
+            .build();
     prompt.authenticate(info);
   }
 }

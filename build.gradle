@@ -142,9 +142,9 @@ android {
     android.applicationVariants.all { variant ->
         variant.outputs.all {
             outputFileName = outputFileName
-                .replace("deltachat-android", "altchat")
-                .replace("deltachat", "altchat")
-                .replace(".apk", "-${variant.versionName}.apk")
+                    .replace("deltachat-android", "altchat")
+                    .replace("deltachat", "altchat")
+                    .replace(".apk", "-${variant.versionName}.apk")
         }
     }
 
@@ -320,8 +320,24 @@ String getNdkArch() {
 // (defeats `strings` / casual APK scanners). The real creds live in the
 // gitignored proxy.properties and never enter git.
 static byte[] autoProxyKeyBytes() {
-    return [0x5b, 0x21, 0x7e, 0x3c, 0xa9, 0x14, 0x6d, 0xf0,
-            0x82, 0x39, 0xcc, 0x4f, 0x1a, 0xe7, 0x90, 0x66] as byte[]
+    return [
+        0x5b,
+        0x21,
+        0x7e,
+        0x3c,
+        0xa9,
+        0x14,
+        0x6d,
+        0xf0,
+        0x82,
+        0x39,
+        0xcc,
+        0x4f,
+        0x1a,
+        0xe7,
+        0x90,
+        0x66
+    ] as byte[]
 }
 
 String autoProxyObfKey() {

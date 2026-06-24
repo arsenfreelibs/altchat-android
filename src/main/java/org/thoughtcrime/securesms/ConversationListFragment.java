@@ -72,7 +72,7 @@ public class ConversationListFragment extends BaseConversationListFragment
 
   private static final String TAG = "ConversationListFragment";
   private static final String STATE_FILTER_TYPE = "filter_type";
-  private static final String STATE_FILTER_ID   = "filter_id";
+  private static final String STATE_FILTER_ID = "filter_id";
 
   private RecyclerView list;
   private FilterBarView filterBar;
@@ -103,7 +103,8 @@ public class ConversationListFragment extends BaseConversationListFragment
           } else if (type == ActiveFilter.Type.UNREAD) {
             activeFilter = ActiveFilter.UNREAD;
           }
-        } catch (IllegalArgumentException ignored) {}
+        } catch (IllegalArgumentException ignored) {
+        }
       }
     }
 
@@ -170,23 +171,24 @@ public class ConversationListFragment extends BaseConversationListFragment
     if (!archive && !ShareUtil.isRelayingMessageContent(getActivity())) {
       filterManager = new FilterManager(requireActivity());
       filterBar.setVisibility(View.VISIBLE);
-      filterBar.setListener(new FilterBarView.Listener() {
-        @Override
-        public void onFilterSelected(@NonNull ActiveFilter filter) {
-          activeFilter = filter;
-          loadChatlistAsync();
-        }
+      filterBar.setListener(
+          new FilterBarView.Listener() {
+            @Override
+            public void onFilterSelected(@NonNull ActiveFilter filter) {
+              activeFilter = filter;
+              loadChatlistAsync();
+            }
 
-        @Override
-        public void onAddFilterTapped() {
-          promptCreateFilter();
-        }
+            @Override
+            public void onAddFilterTapped() {
+              promptCreateFilter();
+            }
 
-        @Override
-        public void onFilterLongPressed(@NonNull ChatFilter filter, @NonNull View sourceView) {
-          promptManageFilter(filter);
-        }
-      });
+            @Override
+            public void onFilterLongPressed(@NonNull ChatFilter filter, @NonNull View sourceView) {
+              promptManageFilter(filter);
+            }
+          });
     }
 
     loadChatlistAsync();
@@ -362,11 +364,11 @@ public class ConversationListFragment extends BaseConversationListFragment
     final ActiveFilter af = activeFilter;
 
     // Load the filter map once — shared by computeFilteredIndices and badge computation
-    final Map<String, List<Integer>> chatIdsByFilter =
-        fm != null ? fm.chatIdsByFilterId() : null;
+    final Map<String, List<Integer>> chatIdsByFilter = fm != null ? fm.chatIdsByFilterId() : null;
 
     // Compute filter indices on the background thread
-    final int[] filteredIndices = computeFilteredIndices(chatlist, context, chatIdsByFilter, fm, af);
+    final int[] filteredIndices =
+        computeFilteredIndices(chatlist, context, chatIdsByFilter, fm, af);
 
     // Compute filter bar badge data on the background thread to avoid disk I/O on the main thread
     final List<ChatFilter> filterBarFilters;
@@ -380,7 +382,9 @@ public class ConversationListFragment extends BaseConversationListFragment
         int chatId = chatlist.getChatId(i);
         if (chatId <= DcChat.DC_CHAT_ID_LAST_SPECIAL) continue;
         int fresh = dcCtx.getFreshMsgCount(chatId);
-        if (fresh > 0) { allUnread += fresh; }
+        if (fresh > 0) {
+          allUnread += fresh;
+        }
       }
       Map<String, Integer> badges = new HashMap<>();
       for (ChatFilter f : filters) {
@@ -422,8 +426,11 @@ public class ConversationListFragment extends BaseConversationListFragment
           }
 
           ((ConversationListAdapter) list.getAdapter()).changeData(chatlist, filteredIndices);
-          if (filterBarFilters != null && filterBar != null && filterBar.getVisibility() == View.VISIBLE) {
-            filterBar.configure(filterBarFilters, activeFilter, filterBarBadges, filterBarAllUnread);
+          if (filterBarFilters != null
+              && filterBar != null
+              && filterBar.getVisibility() == View.VISIBLE) {
+            filterBar.configure(
+                filterBarFilters, activeFilter, filterBarBadges, filterBarAllUnread);
           }
           if (resetScrollPosition) {
             list.scrollToPosition(0);
@@ -433,10 +440,15 @@ public class ConversationListFragment extends BaseConversationListFragment
   }
 
   /**
-   * Computes which chatlist indices to show for the current activeFilter.
-   * Returns null = show all (for ALL filter or archive/forwarding modes).
+   * Computes which chatlist indices to show for the current activeFilter. Returns null = show all
+   * (for ALL filter or archive/forwarding modes).
    */
-  private int[] computeFilteredIndices(DcChatlist chatlist, Context context, Map<String, List<Integer>> chatIdsByFilter, FilterManager fm, ActiveFilter af) {
+  private int[] computeFilteredIndices(
+      DcChatlist chatlist,
+      Context context,
+      Map<String, List<Integer>> chatIdsByFilter,
+      FilterManager fm,
+      ActiveFilter af) {
     if (fm == null) return null; // archive or forwarding mode
 
     int cnt = chatlist.getCnt();
@@ -446,43 +458,46 @@ public class ConversationListFragment extends BaseConversationListFragment
       case ALL:
         return null; // show all
 
-      case UNREAD: {
-        List<Integer> indices = new ArrayList<>();
-        for (int i = 0; i < cnt; i++) {
-          int chatId = chatlist.getChatId(i);
-          // Always include archived link
-          if (chatId == DcChat.DC_CHAT_ID_ARCHIVED_LINK) {
-            indices.add(i);
-            continue;
+      case UNREAD:
+        {
+          List<Integer> indices = new ArrayList<>();
+          for (int i = 0; i < cnt; i++) {
+            int chatId = chatlist.getChatId(i);
+            // Always include archived link
+            if (chatId == DcChat.DC_CHAT_ID_ARCHIVED_LINK) {
+              indices.add(i);
+              continue;
+            }
+            if (chatId <= DcChat.DC_CHAT_ID_LAST_SPECIAL) continue;
+            if (dcContext.getFreshMsgCount(chatId) > 0) {
+              indices.add(i);
+            }
           }
-          if (chatId <= DcChat.DC_CHAT_ID_LAST_SPECIAL) continue;
-          if (dcContext.getFreshMsgCount(chatId) > 0) {
-            indices.add(i);
-          }
+          return toIntArray(indices);
         }
-        return toIntArray(indices);
-      }
 
-      case CUSTOM: {
-        String filterId = af.getFilterId();
-        if (filterId == null) return null;
-        List<Integer> assignedIds = chatIdsByFilter != null ? chatIdsByFilter.get(filterId) : null;
-        if (assignedIds == null) return new int[0];
-        Set<Integer> chatIdSet = new HashSet<>(assignedIds);
-        List<Integer> indices = new ArrayList<>();
-        for (int i = 0; i < cnt; i++) {
-          int chatId = chatlist.getChatId(i);
-          if (chatId == DcChat.DC_CHAT_ID_ARCHIVED_LINK) {
-            indices.add(i);
-            continue;
+      case CUSTOM:
+        {
+          String filterId = af.getFilterId();
+          if (filterId == null) return null;
+          List<Integer> assignedIds =
+              chatIdsByFilter != null ? chatIdsByFilter.get(filterId) : null;
+          if (assignedIds == null) return new int[0];
+          Set<Integer> chatIdSet = new HashSet<>(assignedIds);
+          List<Integer> indices = new ArrayList<>();
+          for (int i = 0; i < cnt; i++) {
+            int chatId = chatlist.getChatId(i);
+            if (chatId == DcChat.DC_CHAT_ID_ARCHIVED_LINK) {
+              indices.add(i);
+              continue;
+            }
+            if (chatId <= DcChat.DC_CHAT_ID_LAST_SPECIAL) continue;
+            if (chatIdSet.contains(chatId)) {
+              indices.add(i);
+            }
           }
-          if (chatId <= DcChat.DC_CHAT_ID_LAST_SPECIAL) continue;
-          if (chatIdSet.contains(chatId)) {
-            indices.add(i);
-          }
+          return toIntArray(indices);
         }
-        return toIntArray(indices);
-      }
 
       default:
         return null;

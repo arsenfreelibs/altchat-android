@@ -33,9 +33,7 @@ public class AutoProxyObfuscationTest {
 
   @Test
   public void roundTripsMultipleProxies() {
-    String[] urls = {
-      "http://user1:pass1@10.0.0.1:8000", "http://user2:pass2@10.0.0.2:8000"
-    };
+    String[] urls = {"http://user1:pass1@10.0.0.1:8000", "http://user2:pass2@10.0.0.2:8000"};
     byte[] blob = obfuscate(String.join("\n", urls));
     assertThat(AutoProxyObfuscation.deobfuscate(blob, KEY)).containsExactly(urls);
   }

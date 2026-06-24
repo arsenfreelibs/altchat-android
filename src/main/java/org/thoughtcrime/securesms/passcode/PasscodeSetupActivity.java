@@ -22,7 +22,11 @@ public class PasscodeSetupActivity extends BaseActionBarActivity {
   /** Pass {@code true} to require the current passcode before setting a new one. */
   public static final String EXTRA_CHANGE = "change";
 
-  private enum Step { ENTER_OLD, ENTER_NEW, CONFIRM_NEW }
+  private enum Step {
+    ENTER_OLD,
+    ENTER_NEW,
+    CONFIRM_NEW
+  }
 
   private final StringBuilder entered = new StringBuilder();
   private LinearLayout dotsContainer;
@@ -100,14 +104,17 @@ public class PasscodeSetupActivity extends BaseActionBarActivity {
       case ENTER_OLD:
         // Verifying the current passcode hashes off the UI thread (PBKDF2 is slow).
         processing = true;
-        PasscodeManager.checkPasscodeAsync(this, code, ok -> {
-          processing = false;
-          if (ok) {
-            goToStep(Step.ENTER_NEW);
-          } else {
-            rejectEntry(getString(R.string.alt_passcode_wrong));
-          }
-        });
+        PasscodeManager.checkPasscodeAsync(
+            this,
+            code,
+            ok -> {
+              processing = false;
+              if (ok) {
+                goToStep(Step.ENTER_NEW);
+              } else {
+                rejectEntry(getString(R.string.alt_passcode_wrong));
+              }
+            });
         break;
       case ENTER_NEW:
         firstEntry = code;
@@ -117,11 +124,14 @@ public class PasscodeSetupActivity extends BaseActionBarActivity {
         if (code.equals(firstEntry)) {
           // Storing the new passcode hashes off the UI thread.
           processing = true;
-          PasscodeManager.setPasscodeAsync(this, code, () -> {
-            processing = false;
-            setResult(RESULT_OK);
-            finish();
-          });
+          PasscodeManager.setPasscodeAsync(
+              this,
+              code,
+              () -> {
+                processing = false;
+                setResult(RESULT_OK);
+                finish();
+              });
         } else {
           firstEntry = null;
           goToStep(Step.ENTER_NEW);
@@ -187,16 +197,20 @@ public class PasscodeSetupActivity extends BaseActionBarActivity {
 
   private void buildKeypad() {
     GridLayout keypad = findViewById(R.id.passcode_keypad);
-    PasscodeKeypad.build(this, keypad, new PasscodeKeypad.Listener() {
-      @Override
-      public void onDigit(int digit) {
-        PasscodeSetupActivity.this.onDigit(digit);
-      }
+    PasscodeKeypad.build(
+        this,
+        keypad,
+        new PasscodeKeypad.Listener() {
+          @Override
+          public void onDigit(int digit) {
+            PasscodeSetupActivity.this.onDigit(digit);
+          }
 
-      @Override
-      public void onBackspace() {
-        PasscodeSetupActivity.this.onBackspace();
-      }
-    }, null);
+          @Override
+          public void onBackspace() {
+            PasscodeSetupActivity.this.onBackspace();
+          }
+        },
+        null);
   }
 }

@@ -114,10 +114,15 @@ public class AudioPlaybackViewModel extends ViewModel {
     mediaController.setPlaybackParameters(new PlaybackParameters(speed));
     AudioPlaybackState current = playbackState.getValue();
     if (current != null) {
-      playbackState.setValue(new AudioPlaybackState(
-          current.getMsgId(), current.getAudioUri(), current.getStatus(),
-          current.getCurrentPosition(), current.getDuration(),
-          current.getSenderName(), speed));
+      playbackState.setValue(
+          new AudioPlaybackState(
+              current.getMsgId(),
+              current.getAudioUri(),
+              current.getStatus(),
+              current.getCurrentPosition(),
+              current.getDuration(),
+              current.getSenderName(),
+              speed));
     }
   }
 
@@ -430,7 +435,8 @@ public class AudioPlaybackViewModel extends ViewModel {
     }
 
     float speed = mediaController != null ? mediaController.getPlaybackParameters().speed : 1.0f;
-    playbackState.setValue(new AudioPlaybackState(msgId, audioUri, status, position, duration, senderName, speed));
+    playbackState.setValue(
+        new AudioPlaybackState(msgId, audioUri, status, position, duration, senderName, speed));
   }
 
   private void updateCurrentAudioState(
@@ -438,7 +444,13 @@ public class AudioPlaybackViewModel extends ViewModel {
     AudioPlaybackState current = playbackState.getValue();
 
     if (current != null) {
-      updateState(current.getMsgId(), current.getAudioUri(), status, position, duration, current.getSenderName());
+      updateState(
+          current.getMsgId(),
+          current.getAudioUri(),
+          status,
+          position,
+          duration,
+          current.getSenderName());
     }
   }
 

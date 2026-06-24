@@ -23,6 +23,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -30,8 +32,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.NotificationManagerCompat;
-import android.widget.TextView;
-import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -49,7 +49,6 @@ import org.thoughtcrime.securesms.preferences.NotificationsPreferenceFragment;
 import org.thoughtcrime.securesms.preferences.widgets.ProfilePreference;
 import org.thoughtcrime.securesms.qr.BackupTransferActivity;
 import org.thoughtcrime.securesms.util.DynamicTheme;
-import org.thoughtcrime.securesms.util.IntentUtils;
 import org.thoughtcrime.securesms.util.Prefs;
 import org.thoughtcrime.securesms.util.ScreenLockUtil;
 import org.thoughtcrime.securesms.util.ViewUtil;
@@ -60,8 +59,7 @@ import org.thoughtcrime.securesms.util.ViewUtil;
  * @author Moxie Marlinspike
  */
 public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarActivity
-    implements SharedPreferences.OnSharedPreferenceChangeListener,
-        DcEventCenter.DcEventDelegate {
+    implements SharedPreferences.OnSharedPreferenceChangeListener, DcEventCenter.DcEventDelegate {
   private static final String PREFERENCE_CATEGORY_PROFILE = "preference_category_profile";
 
   private static final String PREFERENCE_CATEGORY_NOTIFICATIONS =
@@ -74,6 +72,7 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
   private static final String PREFERENCE_CATEGORY_HELP = "preference_category_help";
 
   public static final int REQUEST_CODE_SET_BACKGROUND = 11;
+
   @Override
   protected void onCreate(Bundle icicle, boolean ready) {
     setContentView(R.layout.activity_application_preferences);
@@ -87,9 +86,10 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
     if (ViewUtil.isEdgeToEdgeSupported()) {
       TypedValue tv = new TypedValue();
       boolean resolved = getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true);
-      int actionBarHeight = resolved
-          ? TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics())
-          : 0;
+      int actionBarHeight =
+          resolved
+              ? TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics())
+              : 0;
       fragmentContainer.setPadding(0, actionBarHeight, 0, 0);
     }
     ViewUtil.applyWindowInsets(fragmentContainer);
@@ -211,19 +211,20 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
         titleView.setText(R.string.menu_settings);
         titleView.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 18);
         titleView.setTextColor(android.graphics.Color.WHITE);
-        titleView.setOnClickListener(v -> {
-          long now = android.os.SystemClock.elapsedRealtime();
-          if (now - advancedLastTapTime > 3000) {
-            advancedTapCount = 0;
-          }
-          advancedLastTapTime = now;
-          advancedTapCount++;
-          if (advancedTapCount >= 20) {
-            advancedTapCount = 0;
-            findPreference(PREFERENCE_CATEGORY_ADVANCED).setVisible(true);
-            Toast.makeText(getActivity(), R.string.menu_advanced, Toast.LENGTH_SHORT).show();
-          }
-        });
+        titleView.setOnClickListener(
+            v -> {
+              long now = android.os.SystemClock.elapsedRealtime();
+              if (now - advancedLastTapTime > 3000) {
+                advancedTapCount = 0;
+              }
+              advancedLastTapTime = now;
+              advancedTapCount++;
+              if (advancedTapCount >= 20) {
+                advancedTapCount = 0;
+                findPreference(PREFERENCE_CATEGORY_ADVANCED).setVisible(true);
+                Toast.makeText(getActivity(), R.string.menu_advanced, Toast.LENGTH_SHORT).show();
+              }
+            });
         actionBar.setCustomView(titleView);
       }
       setCategorySummaries();

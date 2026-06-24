@@ -27,6 +27,7 @@ import static org.thoughtcrime.securesms.util.ShareUtil.resetRelayingMessageCont
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -50,6 +51,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.widget.TooltipCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.media3.session.MediaController;
+import androidx.media3.session.SessionToken;
 import chat.delta.rpc.types.SecurejoinSource;
 import chat.delta.rpc.types.SecurejoinUiPath;
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -57,14 +65,18 @@ import com.b44t.messenger.DcAccounts;
 import com.b44t.messenger.DcContact;
 import com.b44t.messenger.DcContext;
 import com.b44t.messenger.DcMsg;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import org.thoughtcrime.securesms.accounts.AccountOperationsListener;
 import org.thoughtcrime.securesms.components.AvatarView;
 import org.thoughtcrime.securesms.components.SearchToolbar;
+import org.thoughtcrime.securesms.components.audioplay.AudioMiniPlayerView;
+import org.thoughtcrime.securesms.components.audioplay.AudioPlaybackViewModel;
 import org.thoughtcrime.securesms.connect.AccountManager;
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.connect.DirectShareUtil;
@@ -77,11 +89,10 @@ import org.thoughtcrime.securesms.qr.QrActivity;
 import org.thoughtcrime.securesms.qr.QrCodeHandler;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.search.SearchFragment;
+import org.thoughtcrime.securesms.service.AudioPlaybackService;
 import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme;
 import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.Prefs;
-import org.thoughtcrime.securesms.util.review.AppReviewRequesterFactory;
-import org.thoughtcrime.securesms.util.update.AppUpdateCheckerFactory;
 import org.thoughtcrime.securesms.util.SaveAttachmentTask;
 import org.thoughtcrime.securesms.util.ScreenLockUtil;
 import org.thoughtcrime.securesms.util.SendRelayedMessageUtil;
@@ -89,26 +100,11 @@ import org.thoughtcrime.securesms.util.ShareUtil;
 import org.thoughtcrime.securesms.util.StorageUtil;
 import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.util.ViewUtil;
-
-import android.content.ComponentName;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.media3.session.MediaController;
-import androidx.media3.session.SessionToken;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.badge.BadgeDrawable;
-import com.google.common.util.concurrent.ListenableFuture;
-import org.thoughtcrime.securesms.accounts.AccountOperationsListener;
-import org.thoughtcrime.securesms.components.audioplay.AudioMiniPlayerView;
-import org.thoughtcrime.securesms.components.audioplay.AudioPlaybackViewModel;
-import org.thoughtcrime.securesms.service.AudioPlaybackService;
+import org.thoughtcrime.securesms.util.review.AppReviewRequesterFactory;
+import org.thoughtcrime.securesms.util.update.AppUpdateCheckerFactory;
 
 public class ConversationListActivity extends PassphraseRequiredActionBarActivity
-    implements ConversationListFragment.ConversationSelectedListener,
-               AccountOperationsListener {
+    implements ConversationListFragment.ConversationSelectedListener, AccountOperationsListener {
   private static final String TAG = "ConversationListActivity";
   private static final String OPENPGP4FPR = "openpgp4fpr";
   private static final String NDK_ARCH_WARNED = "ndk_arch_warned";
@@ -118,7 +114,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
   public static final String FROM_WELCOME_RAW_QR = "from_welcome_raw_qr";
   public static final String SHOW_SETTINGS_TAB = "show_settings_tab";
 
-  private static final String TAG_CHATS    = "tab_chats";
+  private static final String TAG_CHATS = "tab_chats";
   private static final String TAG_CONTACTS = "tab_contacts";
   private static final String TAG_SETTINGS = "tab_settings";
 
@@ -241,7 +237,8 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
       conversationListFragment.setArguments(args);
       contactsTabFragment = new ContactsTabFragment();
       settingsTabFragment = new SettingsTabFragment();
-      getSupportFragmentManager().beginTransaction()
+      getSupportFragmentManager()
+          .beginTransaction()
           .add(R.id.fragment_container, settingsTabFragment, TAG_SETTINGS)
           .add(R.id.fragment_container, contactsTabFragment, TAG_CONTACTS)
           .add(R.id.fragment_container, conversationListFragment, TAG_CHATS)
@@ -249,27 +246,30 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
           .hide(contactsTabFragment)
           .commitNow();
     } else {
-      conversationListFragment = (ConversationListFragment)
-          getSupportFragmentManager().findFragmentByTag(TAG_CHATS);
-      contactsTabFragment = (ContactsTabFragment)
-          getSupportFragmentManager().findFragmentByTag(TAG_CONTACTS);
-      settingsTabFragment = (SettingsTabFragment)
-          getSupportFragmentManager().findFragmentByTag(TAG_SETTINGS);
+      conversationListFragment =
+          (ConversationListFragment) getSupportFragmentManager().findFragmentByTag(TAG_CHATS);
+      contactsTabFragment =
+          (ContactsTabFragment) getSupportFragmentManager().findFragmentByTag(TAG_CONTACTS);
+      settingsTabFragment =
+          (SettingsTabFragment) getSupportFragmentManager().findFragmentByTag(TAG_SETTINGS);
     }
 
     initializeSearchListener();
 
     BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-    bottomNav.setOnItemSelectedListener(item -> {
-      showTab(item.getItemId());
-      return true;
-    });
-    bottomNav.setOnItemReselectedListener(item -> {
-      if (item.getItemId() == R.id.nav_settings && settingsTabFragment != null) {
-        settingsTabFragment.getChildFragmentManager()
-            .popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-      }
-    });
+    bottomNav.setOnItemSelectedListener(
+        item -> {
+          showTab(item.getItemId());
+          return true;
+        });
+    bottomNav.setOnItemReselectedListener(
+        item -> {
+          if (item.getItemId() == R.id.nav_settings && settingsTabFragment != null) {
+            settingsTabFragment
+                .getChildFragmentManager()
+                .popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+          }
+        });
     if (icicle == null) {
       bottomNav.setSelectedItemId(R.id.nav_chats);
       if (getIntent().getBooleanExtra(SHOW_SETTINGS_TAB, false)) {
@@ -471,7 +471,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
   private void showTab(int tabId) {
     activeTabId = tabId;
     androidx.fragment.app.FragmentManager fm = getSupportFragmentManager();
-    androidx.fragment.app.Fragment chats    = fm.findFragmentByTag(TAG_CHATS);
+    androidx.fragment.app.Fragment chats = fm.findFragmentByTag(TAG_CHATS);
     androidx.fragment.app.Fragment contacts = fm.findFragmentByTag(TAG_CONTACTS);
     androidx.fragment.app.Fragment settings = fm.findFragmentByTag(TAG_SETTINGS);
     if (chats == null) return;
@@ -505,11 +505,12 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
       // Defer padding until insets are available — on recreate() (theme change)
       // getRootWindowInsets() may return null synchronously before the window
       // has re-applied insets, which would reset padding to 0 and shift content.
-      fragmentContainer.post(() -> {
-        WindowInsetsCompat wi = ViewCompat.getRootWindowInsets(fragmentContainer);
-        int sbHeight = wi != null ? wi.getInsets(WindowInsetsCompat.Type.statusBars()).top : 0;
-        fragmentContainer.setPadding(0, sbHeight, 0, 0);
-      });
+      fragmentContainer.post(
+          () -> {
+            WindowInsetsCompat wi = ViewCompat.getRootWindowInsets(fragmentContainer);
+            int sbHeight = wi != null ? wi.getInsets(WindowInsetsCompat.Type.statusBars()).top : 0;
+            fragmentContainer.setPadding(0, sbHeight, 0, 0);
+          });
       // onHiddenChanged(false) is not triggered when fragment state is already
       // restored by FragmentManager during recreate() — reattach toolbar explicitly.
       if (tabId == R.id.nav_contacts && contactsTabFragment != null) {
@@ -720,8 +721,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     int itemId = item.getItemId();
     if (itemId == R.id.menu_lock_app) {
       org.thoughtcrime.securesms.passcode.PasscodeManager.lock();
-      startActivity(
-          org.thoughtcrime.securesms.passcode.PasscodeActivity.getLockIntent(this));
+      startActivity(org.thoughtcrime.securesms.passcode.PasscodeActivity.getLockIntent(this));
       return true;
     } else if (itemId == R.id.menu_qr) {
       Intent intent =

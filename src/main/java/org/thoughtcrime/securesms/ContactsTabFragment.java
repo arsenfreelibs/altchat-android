@@ -26,8 +26,8 @@ import org.thoughtcrime.securesms.qr.QrCodeHandler;
 /**
  * The "Contacts" tab fragment hosted inside {@link ConversationListActivity}.
  *
- * <p>Shows the full list of contacts via {@link ContactSelectionListFragment} and opens a chat
- * when a contact is selected, instead of navigating to a separate "new chat" screen.
+ * <p>Shows the full list of contacts via {@link ContactSelectionListFragment} and opens a chat when
+ * a contact is selected, instead of navigating to a separate "new chat" screen.
  */
 public class ContactsTabFragment extends Fragment
     implements ContactSelectionListFragment.OnContactSelectedListener {
@@ -38,9 +38,10 @@ public class ContactsTabFragment extends Fragment
 
   @Nullable
   @Override
-  public View onCreateView(@NonNull LayoutInflater inflater,
-                           @Nullable ViewGroup container,
-                           @Nullable Bundle savedInstanceState) {
+  public View onCreateView(
+      @NonNull LayoutInflater inflater,
+      @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
     return inflater.inflate(R.layout.fragment_contacts_tab, container, false);
   }
 
@@ -54,12 +55,14 @@ public class ContactsTabFragment extends Fragment
 
     if (savedInstanceState == null) {
       contactsListFragment = new ContactSelectionListFragment();
-      getChildFragmentManager().beginTransaction()
+      getChildFragmentManager()
+          .beginTransaction()
           .replace(R.id.contacts_container, contactsListFragment)
           .commit();
     } else {
-      contactsListFragment = (ContactSelectionListFragment)
-          getChildFragmentManager().findFragmentById(R.id.contacts_container);
+      contactsListFragment =
+          (ContactSelectionListFragment)
+              getChildFragmentManager().findFragmentById(R.id.contacts_container);
     }
 
     if (contactsListFragment != null) {
@@ -75,18 +78,20 @@ public class ContactsTabFragment extends Fragment
     MenuItem searchItem = toolbar.getMenu().findItem(R.id.action_search_contacts);
     searchView = (SearchView) searchItem.getActionView();
     if (searchView != null) {
-      searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-        @Override
-        public boolean onQueryTextSubmit(String query) {
-          if (contactsListFragment != null) contactsListFragment.setQueryFilter(query);
-          return true;
-        }
-        @Override
-        public boolean onQueryTextChange(String newText) {
-          if (contactsListFragment != null) contactsListFragment.setQueryFilter(newText);
-          return true;
-        }
-      });
+      searchView.setOnQueryTextListener(
+          new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+              if (contactsListFragment != null) contactsListFragment.setQueryFilter(query);
+              return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+              if (contactsListFragment != null) contactsListFragment.setQueryFilter(newText);
+              return true;
+            }
+          });
     }
   }
 
@@ -144,7 +149,8 @@ public class ContactsTabFragment extends Fragment
           .setMessage(getString(R.string.ask_start_chat_with, name))
           .setCancelable(true)
           .setNegativeButton(android.R.string.cancel, null)
-          .setPositiveButton(android.R.string.ok,
+          .setPositiveButton(
+              android.R.string.ok,
               (dialog, which) -> openConversation(dcContext.createChatByContactId(contactId)))
           .show();
     }
@@ -169,7 +175,8 @@ public class ContactsTabFragment extends Fragment
 
   private void openConversation(int chatId) {
     Intent intent = new Intent(requireActivity(), ConversationActivity.class);
-    intent.putExtra(ConversationActivity.ACCOUNT_ID_EXTRA,
+    intent.putExtra(
+        ConversationActivity.ACCOUNT_ID_EXTRA,
         DcHelper.getContext(requireActivity()).getAccountId());
     intent.putExtra(ConversationActivity.CHAT_ID_EXTRA, chatId);
     startActivity(intent);

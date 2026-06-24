@@ -75,9 +75,7 @@ public class VideoNoteRecorder {
   }
 
   private void bindAndRecord(
-      @NonNull Context context,
-      @NonNull LifecycleOwner owner,
-      @NonNull PreviewView previewView) {
+      @NonNull Context context, @NonNull LifecycleOwner owner, @NonNull PreviewView previewView) {
     if (cameraProvider == null) return;
 
     CameraSelector selector = CameraSelector.DEFAULT_FRONT_CAMERA;
@@ -89,7 +87,9 @@ public class VideoNoteRecorder {
         new Recorder.Builder()
             .setQualitySelector(
                 QualitySelector.from(
-                    Quality.SD, androidx.camera.video.FallbackStrategy.lowerQualityOrHigherThan(Quality.LOWEST)))
+                    Quality.SD,
+                    androidx.camera.video.FallbackStrategy.lowerQualityOrHigherThan(
+                        Quality.LOWEST)))
             .build();
     VideoCapture<Recorder> videoCapture = VideoCapture.withOutput(recorder);
 
@@ -111,8 +111,7 @@ public class VideoNoteRecorder {
                     if (callback != null) callback.onRecordingStarted();
                     scheduleAutoStop();
                   } else if (event instanceof VideoRecordEvent.Finalize) {
-                    VideoRecordEvent.Finalize finalizeEvent =
-                        (VideoRecordEvent.Finalize) event;
+                    VideoRecordEvent.Finalize finalizeEvent = (VideoRecordEvent.Finalize) event;
                     long durationMs =
                         finalizeEvent.getRecordingStats().getRecordedDurationNanos() / 1_000_000;
                     if (cancelled) {

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="18dp"
     android:height="18dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    <!--
-        Picture-in-Picture icon: outer rectangle with an inset mini-rectangle
-        in the bottom-right corner, representing the PiP overlay window.
-    -->
+    <!-- Picture-in-Picture icon: outer rectangle with an inset mini-rectangle in the bottom-right corner,
+        representing the PiP overlay window. -->
     <!-- Outer frame (just the border, no fill) -->
     <path
         android:fillColor="#FFFFFF"

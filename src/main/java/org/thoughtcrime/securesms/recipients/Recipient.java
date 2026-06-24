@@ -40,8 +40,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.WeakHashMap;
-import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.R;
+import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.contacts.avatars.ContactPhoto;
 import org.thoughtcrime.securesms.contacts.avatars.GeneratedContactPhoto;
 import org.thoughtcrime.securesms.contacts.avatars.GroupRecordContactPhoto;
@@ -237,7 +237,8 @@ public class Recipient {
     return buildCircleIconDrawable(context, iconRes, bgColor, 0.25f);
   }
 
-  private Drawable buildCircleIconDrawable(Context context, @DrawableRes int iconRes, int bgColor, float paddingFraction) {
+  private Drawable buildCircleIconDrawable(
+      Context context, @DrawableRes int iconRes, int bgColor, float paddingFraction) {
     int size = context.getResources().getDimensionPixelSize(R.dimen.contact_photo_target_size);
     Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
     Canvas canvas = new Canvas(bitmap);

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceManager;
 import chat.delta.rpc.Rpc;
 import chat.delta.rpc.RpcException;
@@ -141,7 +140,8 @@ public class AccountManager {
 
   public void showSwitchAccountMenu(Activity activity, boolean selectOnly) {
     AccountSelectionListFragment dialog = AccountSelectionListFragment.newInstance(selectOnly);
-    dialog.show(((androidx.fragment.app.FragmentActivity) activity).getSupportFragmentManager(), null);
+    dialog.show(
+        ((androidx.fragment.app.FragmentActivity) activity).getSupportFragmentManager(), null);
   }
 
   public void addAccountFromSecondDevice(Activity activity, String backupQr) {

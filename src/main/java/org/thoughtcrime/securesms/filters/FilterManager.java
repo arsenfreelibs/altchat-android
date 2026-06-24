@@ -2,10 +2,10 @@ package org.thoughtcrime.securesms.filters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import androidx.preference.PreferenceManager;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.preference.PreferenceManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -21,8 +21,7 @@ import org.thoughtcrime.securesms.connect.DcHelper;
  * Manages chat folder (filter) storage in SharedPreferences.
  *
  * <p>Data is account-specific. Keys: - {@code chat_custom_filters_<accountId>} → JSON array of
- * ChatFilter objects - {@code chat_filter_map_<accountId>} → JSON object mapping chatId →
- * filterId
+ * ChatFilter objects - {@code chat_filter_map_<accountId>} → JSON object mapping chatId → filterId
  */
 public class FilterManager {
 
@@ -108,8 +107,8 @@ public class FilterManager {
   }
 
   /**
-   * Loads the filter map once and returns it partitioned by filterId.
-   * Use this instead of calling {@link #chatIds(String)} in a loop to avoid O(N) disk reads.
+   * Loads the filter map once and returns it partitioned by filterId. Use this instead of calling
+   * {@link #chatIds(String)} in a loop to avoid O(N) disk reads.
    */
   public @NonNull Map<String, List<Integer>> chatIdsByFilterId() {
     Map<String, List<Integer>> result = new HashMap<>();
@@ -122,7 +121,8 @@ public class FilterManager {
       }
       try {
         list.add(Integer.parseInt(entry.getKey()));
-      } catch (NumberFormatException ignore) {}
+      } catch (NumberFormatException ignore) {
+      }
     }
     return result;
   }

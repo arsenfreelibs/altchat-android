@@ -57,7 +57,7 @@ public abstract class BaseConversationListFragment extends Fragment implements A
   // Populated once when action mode starts and on each selection change; avoids disk reads per tap.
   private boolean actionModeHasFilters = false;
   private boolean actionModeIsInFilter = false;
-  private int     actionModeSingleChatId = -1;
+  private int actionModeSingleChatId = -1;
 
   protected abstract boolean offerToArchive();
 
@@ -85,8 +85,8 @@ public abstract class BaseConversationListFragment extends Fragment implements A
     int chatId = singleChat ? sel.iterator().next().intValue() : -1;
     boolean isSpecial = chatId > 0 && chatId <= DcChat.DC_CHAT_ID_LAST_SPECIAL;
     actionModeSingleChatId = chatId;
-    actionModeHasFilters   = !fm.loadCustomFilters().isEmpty();
-    actionModeIsInFilter   = singleChat && !isSpecial && fm.filterIdForChat(chatId) != null;
+    actionModeHasFilters = !fm.loadCustomFilters().isEmpty();
+    actionModeIsInFilter = singleChat && !isSpecial && fm.filterIdForChat(chatId) != null;
   }
 
   protected void onItemClick(long chatId) {
@@ -556,18 +556,21 @@ public abstract class BaseConversationListFragment extends Fragment implements A
         muteItem.setTitle(R.string.menu_unmute);
       }
 
-      // Show folder assignment items using cached state (populated in invalidateActionModeFilterCache)
+      // Show folder assignment items using cached state (populated in
+      // invalidateActionModeFilterCache)
       if (getFilterManager() != null) {
         final Set<Long> sel = getListAdapter().getBatchSelections();
         boolean singleChat = sel.size() == 1;
-        int singleChatId   = singleChat ? sel.iterator().next().intValue() : -1;
-        boolean isSpecial  = singleChatId > 0 && singleChatId <= DcChat.DC_CHAT_ID_LAST_SPECIAL;
+        int singleChatId = singleChat ? sel.iterator().next().intValue() : -1;
+        boolean isSpecial = singleChatId > 0 && singleChatId <= DcChat.DC_CHAT_ID_LAST_SPECIAL;
         // Refresh cache if the selection changed (e.g. via select-all)
         if (singleChatId != actionModeSingleChatId) {
           invalidateActionModeFilterCache();
         }
-        menu.findItem(R.id.menu_add_to_filter).setVisible(singleChat && !isSpecial && actionModeHasFilters && !actionModeIsInFilter);
-        menu.findItem(R.id.menu_remove_from_filter).setVisible(singleChat && !isSpecial && actionModeIsInFilter);
+        menu.findItem(R.id.menu_add_to_filter)
+            .setVisible(singleChat && !isSpecial && actionModeHasFilters && !actionModeIsInFilter);
+        menu.findItem(R.id.menu_remove_from_filter)
+            .setVisible(singleChat && !isSpecial && actionModeIsInFilter);
       } else {
         menu.findItem(R.id.menu_add_to_filter).setVisible(false);
         menu.findItem(R.id.menu_remove_from_filter).setVisible(false);

@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  Fractional (percentage) insets on InsetDrawable are only supported on API 26+.
-  This v26 variant is used by the adaptive launcher icon (mipmap-anydpi-v26) and,
-  on API 26+, by Recipient's device-talk avatar. API < 26 falls back to
-  drawable/ic_launcher_fg_scaled.xml which uses a fixed inset (avoids a crash,
-  see Resources$NotFoundException / UnsupportedOperationException).
--->
-<inset xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Fractional (percentage) insets on InsetDrawable are only supported on API 26+. This v26 variant
+    is used by the adaptive launcher icon (mipmap-anydpi-v26) and, on API 26+, by Recipient's device-talk
+    avatar. API < 26 falls back to drawable/ic_launcher_fg_scaled.xml which uses a fixed inset (avoids a
+    crash, see Resources$NotFoundException / UnsupportedOperationException). -->
+<inset
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:inset="15%">
     <bitmap
         android:src="@mipmap/ic_launcher_foreground"

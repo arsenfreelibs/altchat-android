@@ -9,10 +9,10 @@ import android.widget.FrameLayout;
 /**
  * FrameLayout that clips its children to a circle via canvas.clipPath().
  *
- * No LAYER_TYPE_SOFTWARE — the RecyclerView parent no longer forces software rendering,
- * so hardware-accelerated canvas.clipPath() (supported since API 18) is used instead.
- * TextureView lives as a sibling (not inside this ViewGroup) and is clipped separately
- * via setClipToOutline(true) in VideoNoteView.init().
+ * <p>No LAYER_TYPE_SOFTWARE — the RecyclerView parent no longer forces software rendering, so
+ * hardware-accelerated canvas.clipPath() (supported since API 18) is used instead. TextureView
+ * lives as a sibling (not inside this ViewGroup) and is clipped separately via
+ * setClipToOutline(true) in VideoNoteView.init().
  */
 public class CircleFrameLayout extends FrameLayout {
 
@@ -46,5 +46,3 @@ public class CircleFrameLayout extends FrameLayout {
     canvas.restore();
   }
 }
-
-

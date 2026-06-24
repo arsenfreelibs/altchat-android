@@ -71,13 +71,14 @@ public class CreateProfileActivity extends BaseActionBarActivity {
   public void onCreate(Bundle bundle) {
     super.onCreate(bundle);
 
-    deleteProfileLockLauncher = registerForActivityResult(
-        new ActivityResultContracts.StartActivityForResult(),
-        result -> {
-          if (result.getResultCode() == RESULT_OK) {
-            deleteCurrentProfile();
-          }
-        });
+    deleteProfileLockLauncher =
+        registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+              if (result.getResultCode() == RESULT_OK) {
+                deleteCurrentProfile();
+              }
+            });
 
     setContentView(R.layout.profile_create_activity);
 
@@ -200,11 +201,15 @@ public class CreateProfileActivity extends BaseActionBarActivity {
     if (ViewUtil.isEdgeToEdgeSupported()) {
       TypedValue tv = new TypedValue();
       boolean resolved = getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true);
-      int actionBarHeight = resolved
-          ? TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics())
-          : 0;
-      container.setPadding(container.getPaddingLeft(), container.getPaddingTop() + actionBarHeight,
-          container.getPaddingRight(), container.getPaddingBottom());
+      int actionBarHeight =
+          resolved
+              ? TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics())
+              : 0;
+      container.setPadding(
+          container.getPaddingLeft(),
+          container.getPaddingTop() + actionBarHeight,
+          container.getPaddingRight(),
+          container.getPaddingBottom());
     }
     ViewUtil.applyWindowInsets(container);
 
@@ -219,16 +224,19 @@ public class CreateProfileActivity extends BaseActionBarActivity {
         .setTitle(R.string.delete_account)
         .setMessage(R.string.delete_account_ask)
         .setNegativeButton(R.string.cancel, null)
-        .setPositiveButton(R.string.delete, (d, w) -> {
-          boolean needsLock = ScreenLockUtil.applyScreenLock(
-              this,
-              getString(R.string.delete_account),
-              getString(R.string.enter_system_secret_to_continue),
-              deleteProfileLockLauncher);
-          if (!needsLock) {
-            deleteCurrentProfile();
-          }
-        })
+        .setPositiveButton(
+            R.string.delete,
+            (d, w) -> {
+              boolean needsLock =
+                  ScreenLockUtil.applyScreenLock(
+                      this,
+                      getString(R.string.delete_account),
+                      getString(R.string.enter_system_secret_to_continue),
+                      deleteProfileLockLauncher);
+              if (!needsLock) {
+                deleteCurrentProfile();
+              }
+            })
         .show();
   }
 
@@ -237,8 +245,8 @@ public class CreateProfileActivity extends BaseActionBarActivity {
     DcHelper.getNotificationCenter(this).removeAllNotifications(profileId);
     DcHelper.getAccounts(this).removeAccount(profileId);
     DcContext nextAcc = DcHelper.getAccounts(this).getSelectedAccount();
-    AccountManager.getInstance().switchAccountAndStartActivity(
-        this, nextAcc.isOk() ? nextAcc.getAccountId() : 0);
+    AccountManager.getInstance()
+        .switchAccountAndStartActivity(this, nextAcc.isOk() ? nextAcc.getAccountId() : 0);
   }
 
   private void initializeProfileName() {

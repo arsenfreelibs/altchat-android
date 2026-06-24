@@ -9,11 +9,11 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 
 /**
- * Draws three pulsing concentric mint-green rings that animate outward and fade.
- * Mirrors the iOS call screen "ringing wave" animation.
+ * Draws three pulsing concentric mint-green rings that animate outward and fade. Mirrors the iOS
+ * call screen "ringing wave" animation.
  *
- * Call {@link #startRinging()} when the call is in a ringing/connecting state,
- * and {@link #stopRinging()} once connected or ended.
+ * <p>Call {@link #startRinging()} when the call is in a ringing/connecting state, and {@link
+ * #stopRinging()} once connected or ended.
  */
 public class PulsingRingsView extends View {
 

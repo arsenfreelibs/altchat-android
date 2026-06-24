@@ -52,11 +52,15 @@ public class RegistrationQrActivity extends BaseActionBarActivity {
     if (ViewUtil.isEdgeToEdgeSupported()) {
       TypedValue tv = new TypedValue();
       boolean resolved = getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true);
-      int actionBarHeight = resolved
-          ? TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics()) : 0;
-      layoutContainer.setPadding(layoutContainer.getPaddingLeft(),
+      int actionBarHeight =
+          resolved
+              ? TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics())
+              : 0;
+      layoutContainer.setPadding(
+          layoutContainer.getPaddingLeft(),
           layoutContainer.getPaddingTop() + actionBarHeight,
-          layoutContainer.getPaddingRight(), layoutContainer.getPaddingBottom());
+          layoutContainer.getPaddingRight(),
+          layoutContainer.getPaddingBottom());
     }
     ViewUtil.applyWindowInsets(layoutContainer, true, false, true, true);
 

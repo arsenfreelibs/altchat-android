@@ -4,11 +4,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.SpannableStringBuilder;
 import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.widget.Toast;
-import android.view.View;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -31,15 +30,15 @@ import org.thoughtcrime.securesms.connect.DcEventCenter;
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.permissions.Permissions;
 import org.thoughtcrime.securesms.preferences.widgets.ProfilePreference;
-import org.thoughtcrime.securesms.qr.BackupTransferActivity;
 import org.thoughtcrime.securesms.util.ScreenLockUtil;
 
 /**
  * Root settings screen fragment.
  *
- * <p>Extracted from the {@code ApplicationPreferenceFragment} inner class in
- * {@link ApplicationPreferencesActivity} so it can also be hosted in
- * {@link org.thoughtcrime.securesms.SettingsTabFragment} inside {@link org.thoughtcrime.securesms.ConversationListActivity}.
+ * <p>Extracted from the {@code ApplicationPreferenceFragment} inner class in {@link
+ * ApplicationPreferencesActivity} so it can also be hosted in {@link
+ * org.thoughtcrime.securesms.SettingsTabFragment} inside {@link
+ * org.thoughtcrime.securesms.ConversationListActivity}.
  */
 public class SettingsRootFragment extends CorrectedPreferenceFragment
     implements DcEventCenter.DcEventDelegate {
@@ -47,7 +46,8 @@ public class SettingsRootFragment extends CorrectedPreferenceFragment
   private static final String PREFERENCE_UPDATE_AVAILABLE = "preference_update_available";
 
   private static final String PREFERENCE_CATEGORY_PROFILE = "preference_category_profile";
-  private static final String PREFERENCE_CATEGORY_NOTIFICATIONS = "preference_category_notifications";
+  private static final String PREFERENCE_CATEGORY_NOTIFICATIONS =
+      "preference_category_notifications";
   private static final String PREFERENCE_CATEGORY_APPEARANCE = "preference_category_appearance";
   private static final String PREFERENCE_CATEGORY_CHATS = "preference_category_chats";
   private static final String PREFERENCE_CATEGORY_PRIVACY = "preference_category_privacy";
@@ -62,27 +62,31 @@ public class SettingsRootFragment extends CorrectedPreferenceFragment
   public void onCreate(Bundle icicle) {
     super.onCreate(icicle);
 
-    screenLockLauncher = registerForActivityResult(
-        new ActivityResultContracts.StartActivityForResult(),
-        result -> {
-          if (result.getResultCode() == android.app.Activity.RESULT_OK) {
-            getSettingsTabFragment().showBackupProvider();
-          }
-        });
+    screenLockLauncher =
+        registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+              if (result.getResultCode() == android.app.Activity.RESULT_OK) {
+                getSettingsTabFragment().showBackupProvider();
+              }
+            });
 
     this.findPreference(PREFERENCE_UPDATE_AVAILABLE)
-        .setOnPreferenceClickListener(preference -> {
-          String pkg = requireActivity().getPackageName();
-          Intent intent = new Intent(Intent.ACTION_VIEW,
-              Uri.parse("market://details?id=" + pkg));
-          if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
-            startActivity(intent);
-          } else {
-            startActivity(new Intent(Intent.ACTION_VIEW,
-                Uri.parse("https://play.google.com/store/apps/details?id=" + pkg)));
-          }
-          return true;
-        });
+        .setOnPreferenceClickListener(
+            preference -> {
+              String pkg = requireActivity().getPackageName();
+              Intent intent =
+                  new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + pkg));
+              if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
+                startActivity(intent);
+              } else {
+                startActivity(
+                    new Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://play.google.com/store/apps/details?id=" + pkg)));
+              }
+              return true;
+            });
     this.findPreference(PREFERENCE_UPDATE_AVAILABLE).setVisible(false);
 
     this.findPreference(PREFERENCE_CATEGORY_PROFILE)
@@ -108,8 +112,11 @@ public class SettingsRootFragment extends CorrectedPreferenceFragment
     this.findPreference(PREFERENCE_CATEGORY_HELP).setEnabled(false);
 
     try {
-      String versionName = requireActivity().getPackageManager()
-          .getPackageInfo(requireActivity().getPackageName(), 0).versionName;
+      String versionName =
+          requireActivity()
+              .getPackageManager()
+              .getPackageInfo(requireActivity().getPackageName(), 0)
+              .versionName;
       this.findPreference("preference_app_version").setSummary("alt.chat v" + versionName);
     } catch (android.content.pm.PackageManager.NameNotFoundException e) {
       this.findPreference("preference_app_version").setSummary("alt.chat");
@@ -132,7 +139,8 @@ public class SettingsRootFragment extends CorrectedPreferenceFragment
     // after the fragment is committed (while the tab is still hidden), and the early
     // return below would otherwise skip this forever.
     Fragment parent = getParentFragment();
-    if (parent instanceof SettingsTabFragment && ((SettingsTabFragment) parent).isUpdateAvailable()) {
+    if (parent instanceof SettingsTabFragment
+        && ((SettingsTabFragment) parent).isUpdateAvailable()) {
       showUpdateAvailable();
     }
     if (getParentFragment() != null && getParentFragment().isHidden()) return;
@@ -158,8 +166,9 @@ public class SettingsRootFragment extends CorrectedPreferenceFragment
   public void handleEvent(@NonNull DcEvent event) {
     if (event.getId() == DcContext.DC_EVENT_CONNECTIVITY_CHANGED) {
       this.findPreference(PREFERENCE_CATEGORY_CONNECTIVITY)
-          .setSummary(DcHelper.getConnectivitySummary(
-              requireActivity(), getString(R.string.connectivity_connected)));
+          .setSummary(
+              DcHelper.getConnectivitySummary(
+                  requireActivity(), getString(R.string.connectivity_connected)));
     }
   }
 
@@ -173,15 +182,14 @@ public class SettingsRootFragment extends CorrectedPreferenceFragment
     this.findPreference(PREFERENCE_CATEGORY_CHATS)
         .setSummary(ChatsPreferenceFragment.getSummary(requireActivity()));
     this.findPreference(PREFERENCE_CATEGORY_CONNECTIVITY)
-        .setSummary(DcHelper.getConnectivitySummary(
-            requireActivity(), getString(R.string.connectivity_connected)));
+        .setSummary(
+            DcHelper.getConnectivitySummary(
+                requireActivity(), getString(R.string.connectivity_connected)));
     this.findPreference(PREFERENCE_CATEGORY_HELP)
         .setSummary(AdvancedPreferenceFragment.getVersion(requireActivity()));
   }
 
-  /**
-   * Returns the parent {@link SettingsTabFragment} when hosted inside the Settings tab.
-   */
+  /** Returns the parent {@link SettingsTabFragment} when hosted inside the Settings tab. */
   private SettingsTabFragment getSettingsTabFragment() {
     return (SettingsTabFragment) requireParentFragment();
   }
@@ -189,8 +197,7 @@ public class SettingsRootFragment extends CorrectedPreferenceFragment
   public void showUpdateAvailable() {
     Preference pref = findPreference(PREFERENCE_UPDATE_AVAILABLE);
     if (pref == null || pref.isVisible()) return;
-    SpannableStringBuilder title =
-        new SpannableStringBuilder(getString(R.string.update_available));
+    SpannableStringBuilder title = new SpannableStringBuilder(getString(R.string.update_available));
     title.append("  \u25CF"); // ● red dot
     title.setSpan(
         new ForegroundColorSpan(
@@ -231,9 +238,12 @@ public class SettingsRootFragment extends CorrectedPreferenceFragment
             new AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.notifications_disabled)
                 .setMessage(R.string.perm_explain_access_to_notifications_denied)
-                .setPositiveButton(R.string.perm_continue,
-                    (dialog, which) -> requireActivity().startActivity(
-                        Permissions.getApplicationSettingsIntent(requireActivity())))
+                .setPositiveButton(
+                    R.string.perm_continue,
+                    (dialog, which) ->
+                        requireActivity()
+                            .startActivity(
+                                Permissions.getApplicationSettingsIntent(requireActivity())))
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
           }
@@ -261,7 +271,8 @@ public class SettingsRootFragment extends CorrectedPreferenceFragment
             new AlertDialog.Builder(requireActivity())
                 .setTitle(R.string.multidevice_title)
                 .setMessage(R.string.multidevice_this_creates_a_qr_code)
-                .setPositiveButton(R.string.perm_continue,
+                .setPositiveButton(
+                    R.string.perm_continue,
                     (dialog, which) -> getSettingsTabFragment().showBackupProvider())
                 .setNegativeButton(R.string.cancel, null)
                 .show();

@@ -44,11 +44,8 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- ── Center info block: rings + avatar + name + status ─────── -->
-    <!--
-        Vertical bias 0.35: upper-center of screen, matching iOS call layout.
-        Constrained bottom to the top of call_controls_layout so it naturally
-        shifts up when call_controls_layout is visible.
-    -->
+    <!-- Vertical bias 0.35: upper-center of screen, matching iOS call layout. Constrained bottom to
+        the top of call_controls_layout so it naturally shifts up when call_controls_layout is visible. -->
 
     <LinearLayout
         android:id="@+id/center_info_block"
@@ -128,7 +125,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- ── Local video corner (top-right, when camera is ON) ────────  -->
+    <!-- ── Local video corner (top-right, when camera is ON) ──────── -->
 
     <FrameLayout
         android:id="@+id/local_video_container"
@@ -311,4 +308,3 @@
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

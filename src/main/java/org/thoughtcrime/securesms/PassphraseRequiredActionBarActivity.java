@@ -3,7 +3,6 @@ package org.thoughtcrime.securesms;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.service.GenericForegroundService;
 

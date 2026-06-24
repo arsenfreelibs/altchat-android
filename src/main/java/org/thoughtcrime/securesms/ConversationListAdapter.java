@@ -47,8 +47,10 @@ class ConversationListAdapter
   private final WeakReference<Context> context;
   private @NonNull DcContext dcContext;
   private @NonNull DcChatlist dcChatlist;
+
   /** When non-null, only the positions listed here are shown (indices into dcChatlist). */
   private @Nullable int[] filteredIndices;
+
   private final @NonNull GlideRequests glideRequests;
   private final @NonNull LayoutInflater inflater;
   private final @Nullable ItemClickListener clickListener;

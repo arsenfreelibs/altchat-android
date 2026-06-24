@@ -91,7 +91,8 @@ public class InputPanel extends ConstraintLayout
     this.buttonToggle = findViewById(R.id.button_toggle);
     this.recordingContainer = findViewById(R.id.recording_container);
     this.recordLockCancel = findViewById(R.id.record_cancel);
-    this.recordTime = new RecordTime(findViewById(R.id.record_time), findViewById(R.id.recording_dot));
+    this.recordTime =
+        new RecordTime(findViewById(R.id.record_time), findViewById(R.id.recording_dot));
     this.slideToCancel = new SlideToCancel(findViewById(R.id.slide_to_cancel));
     this.microphoneRecorderView = findViewById(R.id.recorder_view);
     this.microphoneRecorderView.setListener(this);
