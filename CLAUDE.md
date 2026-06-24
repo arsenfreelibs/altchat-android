@@ -60,6 +60,8 @@ scripts/check-upstream.sh
 - Rust crate names (`deltachat`, `deltachat-rpc-server`)
 - `i.delta.chat` protocol invitation links (used in QR/invite flow)
 - HTML anchor IDs like `#what-is-delta-chat`
+- **IMAP folder name `"DeltaChat"`** (rust `imap.rs` `if folder == "DeltaChat"`, `sql/migrations.rs` default `$.imap.folder`) — server-side mvbox folder, NOT user-facing. Renaming orphans existing users' messages and breaks cross-client sync (iOS/desktop/upstream all move mail to/from this exact folder name).
+- Logcat tags `Log.x("DeltaChat", …)` and wake-lock tag `DeltaChat:ProximityLock` — internal, never shown to users.
 
 After every merge, run:
 ```bash
