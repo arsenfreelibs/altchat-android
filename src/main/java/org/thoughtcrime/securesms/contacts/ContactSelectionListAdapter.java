@@ -303,7 +303,7 @@ public class ContactSelectionListAdapter
     } else {
       dcContact = getContact(i);
       name = dcContact.getDisplayName();
-      addr = Util.extractNick(dcContact.getAddr());
+      addr = Util.formatHandle(dcContact.getAddr());
     }
 
     viewHolder.unbind(glideRequests);

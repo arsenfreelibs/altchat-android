@@ -73,6 +73,18 @@ public class Util {
     return at > 0 ? addr.substring(0, at) : addr;
   }
 
+  /**
+   * Formats a contact's platform handle for display as a subtitle: {@code @nick}.
+   *
+   * <p>For Alt Platform accounts the unique username equals the local part of their relay address,
+   * so for both platform accounts and plain local contacts the handle is derived from the address.
+   * Returns {@code null} when no handle can be derived.
+   */
+  public static String formatHandle(String addr) {
+    String nick = extractNick(addr);
+    return (nick == null || nick.isEmpty()) ? null : "@" + nick;
+  }
+
   public static boolean isInviteURL(Uri uri) {
     return INVITE_DOMAIN.equals(uri.getHost()) && uri.getEncodedFragment() != null;
   }
