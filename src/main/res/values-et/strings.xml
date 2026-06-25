@@ -1121,7 +1121,7 @@
 
     <!-- location streaming -->
     <string name="location_streaming_notification_text">Sa jada oma asukohta teistega</string>
-    <string name="location_rationale">Jagamaks reaalajas oma asukohta teiste vestluse liikmetega, palun luba Delta Chatil kasutada sinu asukohaandmeid.\n\nEt asukoha edastamine toimiks sujuvalt, on asukohaandmed kasutusel ka siis, kui rakendus on suletud või pole kasutusel.</string>
+    <string name="location_rationale">Jagamaks reaalajas oma asukohta teiste vestluse liikmetega, palun luba Alt Chatil kasutada sinu asukohaandmeid.\n\nEt asukoha edastamine toimiks sujuvalt, on asukohaandmed kasutusel ka siis, kui rakendus on suletud või pole kasutusel.</string>
 
     <!-- permissions -->
     <string name="perm_required_title">Õigused on vajalikud</string>
@@ -1188,7 +1188,7 @@
     <string name="explain_desktop_minimized_disabled_tray_pref" tools:ignore="TypographyDashes">Kuna Alt Chat juba käivitati --minimized argumendiga, siis süsteemisalve ikooni ei saa välja lülitada.</string>
     <string name="no_spellcheck_suggestions_found">Õigekirjasoovitusi ei leidu.</string>
     <string name="show_window">Näita akent</string>
-    <string name="data_found_other_installation_message">Sinu profiilid teisest Delta Chati paigaldusest ei ole kättesaadavad -erinevad paigaldused salvestavad oma andmed eraldi kohtadesse.\n\nOlemasolevate profiilide säilitamiseks:\n1. Sulge rakendus\n2. Ava teine Delta Chat - vajadusel paigalda see uuesti siit:%1$s\n3. Tee igast profiilist varukoopia menüüs „Seadistused/Vestlused“\n4. Käivita see versioon uuesti\n5. Taasta varukoopiad valikust „Mul juba on profiil olemas“\n\nVõi jätkad ilma oma varasemate profiilideta?</string>
+    <string name="data_found_other_installation_message">Sinu profiilid teisest Alt Chati paigaldusest ei ole kättesaadavad -erinevad paigaldused salvestavad oma andmed eraldi kohtadesse.\n\nOlemasolevate profiilide säilitamiseks:\n1. Sulge rakendus\n2. Ava teine Alt Chat - vajadusel paigalda see uuesti siit:%1$s\n3. Tee igast profiilist varukoopia menüüs „Seadistused/Vestlused“\n4. Käivita see versioon uuesti\n5. Taasta varukoopiad valikust „Mul juba on profiil olemas“\n\nVõi jätkad ilma oma varasemate profiilideta?</string>
 
     <!-- title of the "keybindings" dialog (for the keybindings names as such, where possible the normal command strings are used) -->
     <string name="keybindings">Klahvide seosed</string>

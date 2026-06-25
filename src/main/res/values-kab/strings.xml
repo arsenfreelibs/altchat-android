@@ -846,7 +846,7 @@
     <string name="profile_image_delete">Kkes tugna n umaɣnu</string>
     <string name="pref_show_tray_icon">Sken Tignit n ufaggag n waddad</string>
     <string name="pref_edit_profile">Ẓreg amaɣnu</string>
-    <string name="send_stats_to_devs">Azen tidaddanin i yineflayen n DeltaChat</string>
+    <string name="send_stats_to_devs">Azen tidaddanin i yineflayen n Alt Chat</string>
     <string name="stats_device_message">Tebɣiḍ ad tεawneḍ deg usnerni n Alt Chat u ad tεawneḍ anadi s tuzna n tesnaddadin n useqdec udrigen?\n\n👉 Tekki da... 👈</string>
     <string name="stats_confirmation_dialog">Tebɣiḍ ad tεawneḍ deg usnerni n Alt Chat u ad tεawneḍ anadi s tuzna n tesnaddadin n useqdec udrigen?</string>
     <string name="stats_thanks">Tanemmirt! Tzemreḍ dima ad tessenseḍ tuzna deg \"Iɣewwaṛen -> Talqayt\".\n\nƔur-k·m ugar n 5 n tesdatin akken ad ttekkiḍ deg yiwet n tezrawt tussnant ɣef tɣellist n Alt Chat?</string>

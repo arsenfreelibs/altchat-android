@@ -1188,7 +1188,7 @@
     <string name="explain_desktop_minimized_disabled_tray_pref" tools:ignore="TypographyDashes">Het systeemvakpictogram is uitgeschakeld omdat Alt Chat is gestart met de optie --minimized</string>
     <string name="no_spellcheck_suggestions_found">Geen suggesties gevonden.</string>
     <string name="show_window">Venster tonen</string>
-    <string name="data_found_other_installation_message">Profielen uit een andere Delta Chat-installatie zijn niet beschikbaar, daar ze allen gebruikmaken van eigen opslaglocaties.\n\nWil je tóch bestaande profielen gebruiken, volg dan deze stappen:\n1. Sluit de app af\n2. Open de andere Delta Chat-installatie en herinstalleer deze zonodig vanaf %1$s\n3. Maak een reservekopie van ieder profiel via ‘Instellingen → Gesprekken’\n4. Herstart deze versie\n5. Herstel de gesprekken door te kiezen voor ‘Ik heb al een profiel’\n\nWil je doorgaan zonder bestaande profielen?</string>
+    <string name="data_found_other_installation_message">Profielen uit een andere Alt Chat-installatie zijn niet beschikbaar, daar ze allen gebruikmaken van eigen opslaglocaties.\n\nWil je tóch bestaande profielen gebruiken, volg dan deze stappen:\n1. Sluit de app af\n2. Open de andere Alt Chat-installatie en herinstalleer deze zonodig vanaf %1$s\n3. Maak een reservekopie van ieder profiel via ‘Instellingen → Gesprekken’\n4. Herstart deze versie\n5. Herstel de gesprekken door te kiezen voor ‘Ik heb al een profiel’\n\nWil je doorgaan zonder bestaande profielen?</string>
 
     <!-- title of the "keybindings" dialog (for the keybindings names as such, where possible the normal command strings are used) -->
     <string name="keybindings">Sneltoetsen</string>

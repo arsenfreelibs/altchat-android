@@ -998,12 +998,12 @@
     <!-- permissions -->
     <string name="perm_required_title">Engedély szükséges</string>
     <string name="perm_continue">Folytatás</string>
-    <string name="perm_explain_access_to_camera_denied">A fényképek-, videók- vagy QR-kódok rögzítéséhez lépjen a rendszer beállításaiba, válassza ki a „Alkalmazások és értesítések” menüpontot, válassza ki az DeltaChat alkalmazást, majd koppintson az „Engedélyek” menüpontra, és engedélyezze a hozzáférést a „Kamerához”.</string>
+    <string name="perm_explain_access_to_camera_denied">A fényképek-, videók- vagy QR-kódok rögzítéséhez lépjen a rendszer beállításaiba, válassza ki a „Alkalmazások és értesítések” menüpontot, válassza ki az Alt Chat alkalmazást, majd koppintson az „Engedélyek” menüpontra, és engedélyezze a hozzáférést a „Kamerához”.</string>
     <!-- give the user an idea where to find the "Microphone" option. the hint is only shown if access was initially denied by the user. pick up wordings really used on the systems, but do not be overly precise: things shift around often and there are too many system we support to track every detail and click path -->
-    <string name="perm_explain_access_to_mic_denied">A hangüzenetek küldéséhez lépjen a rendszer beállításaiba, válassza ki az „Alkalmazások és értesítések” menüpontot, válassza ki a DeltaChat alkalmazást, majd koppintson az „Engedélyek” menüpontra, és engedélyezze a hozzáférést a „Mikrofonhoz”.</string>
-    <string name="perm_explain_access_to_storage_denied">A fájlok fogadásához vagy küldéséhez lépjen a rendszer beállításaiba, válassza ki az „Alkalmazások és értesítések” menüpontot, válassza ki a DeltaChat alkalmazást, majd koppintson az „Engedélyek” menüpontra, és engedélyezze a hozzáférést a „Tárhelyhez”.</string>
-    <string name="perm_explain_access_to_location_denied">A hely mellékeléséhez lépjen a rendszer beállításaiba, válassza ki az „Alkalmazások és értesítések” menüpontot, válassza ki a DeltaChat alkalmazást, majd koppintson az „Engedélyek” menüpontra, és engedélyezze a hozzáférést a „Helyadatokhoz”.</string>
-    <string name="perm_explain_access_to_notifications_denied">Az értesítések fogadásához lépjen a rendszer beállításaiba, válassza ki az „Alkalmazások és értesítések” menüpontot, válassza ki a DeltaChat alkalmazást, majd koppintson az „Engedélyek” menüpontra, és engedélyezze a hozzáférést a „Értesítésekhez”.</string>
+    <string name="perm_explain_access_to_mic_denied">A hangüzenetek küldéséhez lépjen a rendszer beállításaiba, válassza ki az „Alkalmazások és értesítések” menüpontot, válassza ki az Alt Chat alkalmazást, majd koppintson az „Engedélyek” menüpontra, és engedélyezze a hozzáférést a „Mikrofonhoz”.</string>
+    <string name="perm_explain_access_to_storage_denied">A fájlok fogadásához vagy küldéséhez lépjen a rendszer beállításaiba, válassza ki az „Alkalmazások és értesítések” menüpontot, válassza ki az Alt Chat alkalmazást, majd koppintson az „Engedélyek” menüpontra, és engedélyezze a hozzáférést a „Tárhelyhez”.</string>
+    <string name="perm_explain_access_to_location_denied">A hely mellékeléséhez lépjen a rendszer beállításaiba, válassza ki az „Alkalmazások és értesítések” menüpontot, válassza ki az Alt Chat alkalmazást, majd koppintson az „Engedélyek” menüpontra, és engedélyezze a hozzáférést a „Helyadatokhoz”.</string>
+    <string name="perm_explain_access_to_notifications_denied">Az értesítések fogadásához lépjen a rendszer beállításaiba, válassza ki az „Alkalmazások és értesítések” menüpontot, válassza ki az Alt Chat alkalmazást, majd koppintson az „Engedélyek” menüpontra, és engedélyezze a hozzáférést a „Értesítésekhez”.</string>
 
     <!-- ImageEditorHud -->
     <string name="ImageEditorHud_draw_anywhere_to_blur">Rajzoljon bárhová az elmosódáshoz</string>
@@ -1088,11 +1088,11 @@
     <string name="share_account_not_configured">A profil nincs konfigurálva.</string>
     <string name="cannot_play_audio_file">A hangfájl nem játszható le.</string>
     <!-- iOS camera permission alert -->
-    <string name="perm_ios_explain_access_to_camera_denied">A fényképek-, videók- vagy QR-kódok rögzítéséhez lépjen a rendszer beállításaiba, válassza ki a „Alkalmazások és értesítések” menüpontot, válassza ki az DeltaChat alkalmazást, majd koppintson az „Engedélyek” menüpontra, és engedélyezze a hozzáférést a „Kamerához”.</string>
+    <string name="perm_ios_explain_access_to_camera_denied">A fényképek-, videók- vagy QR-kódok rögzítéséhez lépjen a rendszer beállításaiba, válassza ki a „Alkalmazások és értesítések” menüpontot, válassza ki az Alt Chat alkalmazást, majd koppintson az „Engedélyek” menüpontra, és engedélyezze a hozzáférést a „Kamerához”.</string>
     <string name="open_settings">Beállítások megnyitása</string>
     <!-- iOS device contact alert -->
     <string name="import_device_contacts">Eszköz névjegyeinek importálása</string>
-    <string name="import_device_contacts_hint">Az eszközén lévő névjegyekkel való csevegéshez lépjen a rendszer beállításaiba, válassza ki az „Alkalmazások és értesítések” menüpontot, válassza ki a DeltaChat alkalmazást, majd koppintson az „Engedélyek” menüpontra, és engedélyezze a hozzáférést a „Névjegyekhez”.</string>
+    <string name="import_device_contacts_hint">Az eszközén lévő névjegyekkel való csevegéshez lépjen a rendszer beállításaiba, válassza ki az „Alkalmazások és értesítések” menüpontot, válassza ki az Alt Chat alkalmazást, majd koppintson az „Engedélyek” menüpontra, és engedélyezze a hozzáférést a „Névjegyekhez”.</string>
     <!-- iOS notification settings -->
     <string name="disabled_in_dc">Letiltva a Alt Chatben</string>
     <string name="disabled_in_system_settings">Letilva a rendszerbeállításokban</string>
