@@ -30,6 +30,7 @@ import com.b44t.messenger.DcContext;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.google.android.material.textfield.TextInputLayout;
 import java.io.File;
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -82,7 +83,12 @@ public class CreateProfileActivity extends BaseActionBarActivity {
 
     setContentView(R.layout.profile_create_activity);
 
-    getSupportActionBar().setTitle(R.string.pref_profile_info_headline);
+    DcContext dcContext = DcHelper.getContext(this);
+    getSupportActionBar()
+        .setTitle(
+            dcContext.isTeamProfile()
+                ? R.string.team_profile
+                : R.string.pref_profile_info_headline);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
 
@@ -212,6 +218,10 @@ public class CreateProfileActivity extends BaseActionBarActivity {
           container.getPaddingBottom());
     }
     ViewUtil.applyWindowInsets(container);
+
+    boolean isTeam = DcHelper.getContext(this).isTeamProfile();
+    ((TextInputLayout) ViewUtil.findById(this, R.id.name))
+        .setHint(isTeam ? R.string.team_name : R.string.pref_your_name);
 
     loginSuccessText.setVisibility(View.GONE);
 

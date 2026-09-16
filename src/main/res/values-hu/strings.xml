@@ -265,6 +265,7 @@
     <string name="menu_send">Küldés</string>
     <string name="menu_toggle_keyboard">Váltás emodzsibillentyűzetre</string>
     <string name="menu_edit_group">Csoport szerkesztése</string>
+    <!-- deprecated: "Edit Group" dialog usually also contains the "Group Description" field, use global_menu_edit_desktop instead -->
     <string name="menu_group_name_and_image">Csoportnév és -kép</string>
     <string name="menu_show_global_map">Az összes hely megjelenítése</string>
     <string name="menu_archive_chat">Csevegés archiválása</string>
@@ -615,7 +616,7 @@
     <!-- Secondary, link-like button to open a page with other possible instances -->
     <string name="instant_onboarding_show_more_instances">Másik szolgáltató használata</string>
     <string name="instant_onboarding_other_server">Chatmail-kiszolgálók listája</string>
-    <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by the group name -->
+    <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by the group or channel name -->
     <string name="instant_onboarding_group_info">Hozzon létre egy profilt, hogy csatlakozni tudjon a(z) „%1$s” nevű csoporthoz.</string>
     <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by contact name -->
     <string name="instant_onboarding_contact_info">Hozzon létre egy profilt, hogy csevegni tudjon vele: %1$s.</string>
@@ -689,6 +690,7 @@
     <!-- first placeholder is replaced by the number of files (always 2 or more); second placeholder is replaced by a chat name -->
     <string name="ask_send_files_to_chat">%1$d fájl elküldése „%2$s” számára?</string>
     <string name="ask_send_files_to_selected_chats">%1$d fájl megosztása a vele való csevegésben: %2$d?</string>
+    <!-- deprecated -->
     <string name="videos_sent_without_recoding">(A videók eredeti, nagyméretű fájlként kerülnek elküldésre. Amennyiben azt szeretné, hogy a videók kisebb fájlként kerüljenek elküldésre, mellékelje őket külön-külön)</string>
     <string name="share_text_multiple_chats">Megosztja ezt a szöveget a vele való csevegésben: %1$d?\n\n„%2$s”</string>
     <string name="share_abort">A megosztás megszakadt a hiányzó engedélyek miatt.</string>
@@ -921,7 +923,7 @@
 
     <string name="devicemsg_self_deleted">Ön törölte a „Mentett üzenetek” csevegést.\n\nℹ️ A „Mentett üzenetek” funkció újbóli használatához hozzon létre egy új csevegést önmagával.</string>
     <!-- deprecated -->
-    <string name="devicemsg_storage_exceeding">⚠️ Az e-mail-szolgáltatójától kapott tárhelye hamarosan megtelik: %1$s%% már felhasználásra került.\n\n\nElképzelhető, hogy nem tud üzeneteket fogadni, ha a tárhelye megtelt.\n\n👉 Ellenőrizze, hogy a szolgáltatója webes felületén tudja-e törölni a DeltaChat-mappából az üzeneteket, és fontolja meg a „Beállítások / Csevegések és média / Üzenetek törlése a kiszolgálóról” engedélyezését. Az aktuális tárhelyhasználatot bármikor ellenőrizheti a „Beállítások / Tárhely” menüpontban.</string>
+    <string name="devicemsg_storage_exceeding">⚠️ Az e-mail-szolgáltatójától kapott tárhelye hamarosan megtelik: %1$s%% már felhasználásra került.\n\n\nElképzelhető, hogy nem tud üzeneteket fogadni, ha a tárhelye megtelt.\n\n👉 Ellenőrizze, hogy a szolgáltatója webes felületén tudja-e törölni a Alt Chat-mappából az üzeneteket, és fontolja meg a „Beállítások / Csevegések és média / Üzenetek törlése a kiszolgálóról” engedélyezését. Az aktuális tárhelyhasználatot bármikor ellenőrizheti a „Beállítások / Tárhely” menüpontban.</string>
     <!-- %1%s will be replaced by date and time in some human-readable format -->
     <string name="devicemsg_bad_time">⚠️ Az eszközén lévő dátum vagy idő pontatlannak tűnik (%1$s).\n\nJavítsa meg az órát ⏰🔧 az üzenetek helyes fogadásának biztosítása érdekében.</string>
     <string name="devicemsg_update_reminder">⚠️ Lehet, hogy a Alt Chat verziója elavult.\n\nEz problémákat okozhat, mivel a partnerei újabb verziókat használnak - továbbá hiányoznak a legújabb funkciók 😳\nEllenőrizze a https://get.alt.chat oldalon vagy az alkalmazásboltban a frissítéseket.</string>

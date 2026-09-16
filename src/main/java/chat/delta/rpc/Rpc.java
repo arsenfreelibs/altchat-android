@@ -143,26 +143,9 @@ public class Rpc {
     return transport.callForResult(new TypeReference<Account>(){}, "get_account_info", mapper.valueToTree(accountId));
   }
 
-  /** Get the current push notification state. */
-  public NotifyState getPushState(Integer accountId) throws RpcException {
-    return transport.callForResult(new TypeReference<NotifyState>(){}, "get_push_state", mapper.valueToTree(accountId));
-  }
-
   /** Get the combined filesize of an account in bytes */
   public Integer getAccountFileSize(Integer accountId) throws RpcException {
     return transport.callForResult(new TypeReference<Integer>(){}, "get_account_file_size", mapper.valueToTree(accountId));
-  }
-
-  /**
-   * Returns provider for the given domain.
-   * <p>
-   * This function looks up domain in offline database.
-   * <p>
-   * For compatibility, email address can be passed to this function
-   * instead of the domain.
-   */
-  public ProviderInfo getProviderInfo(Integer accountId, String email) throws RpcException {
-    return transport.callForResult(new TypeReference<ProviderInfo>(){}, "get_provider_info", mapper.valueToTree(accountId), mapper.valueToTree(email));
   }
 
   /** Checks if the context is already configured. */
@@ -289,7 +272,6 @@ public class Rpc {
    * from a server encoded in a QR code.
    * - [Self::list_transports()] to get a list of all configured transports.
    * - [Self::delete_transport()] to remove a transport.
-   * - [Self::set_transport_unpublished()] to set whether contacts see this transport.
    */
   public void addOrUpdateTransport(Integer accountId, EnteredLoginParam param) throws RpcException {
     transport.call("add_or_update_transport", mapper.valueToTree(accountId), mapper.valueToTree(param));
@@ -312,45 +294,22 @@ public class Rpc {
   /**
    * Returns the list of all email accounts that are used as a transport in the current profile.
    * Use [Self::add_or_update_transport()] to add or change a transport
-   * and [Self::delete_transport()] to delete a transport.
-   * Use [Self::list_transports_ex()] to additionally query
-   * whether the transports are marked as 'unpublished'.
+   * and [Self::delete_transport()] to remove a transport.
    */
   public java.util.List<EnteredLoginParam> listTransports(Integer accountId) throws RpcException {
     return transport.callForResult(new TypeReference<java.util.List<EnteredLoginParam>>(){}, "list_transports", mapper.valueToTree(accountId));
   }
 
   /**
-   * Returns the list of all email accounts that are used as a transport in the current profile.
-   * Use [Self::add_or_update_transport()] to add or change a transport
-   * and [Self::delete_transport()] to delete a transport.
-   */
-  public java.util.List<TransportListEntry> listTransportsEx(Integer accountId) throws RpcException {
-    return transport.callForResult(new TypeReference<java.util.List<TransportListEntry>>(){}, "list_transports_ex", mapper.valueToTree(accountId));
-  }
-
-  /**
-   * Removes the transport with the specified email address
-   * (i.e. [EnteredLoginParam::addr]).
+   * Removes a transport.
+   * UIs should call this function when the user removes a relay.
+   * <p>
+   * The last transport cannot be removed.
+   * If the removed transport was the one used for sending,
+   * another one is chosen automatically.
    */
   public void deleteTransport(Integer accountId, String addr) throws RpcException {
     transport.call("delete_transport", mapper.valueToTree(accountId), mapper.valueToTree(addr));
-  }
-
-  /**
-   * Change whether the transport is unpublished.
-   * <p>
-   * Unpublished transports are not advertised to contacts,
-   * and self-sent messages are not sent there,
-   * so that we don't cause extra messages to the corresponding inbox,
-   * but can still receive messages from contacts who don't know our new transport addresses yet.
-   * <p>
-   * The default is false, but when the user updates from a version that didn't have this flag,
-   * existing secondary transports are set to unpublished,
-   * so that an existing transport address doesn't suddenly get spammed with a lot of messages.
-   */
-  public void setTransportUnpublished(Integer accountId, String addr, Boolean unpublished) throws RpcException {
-    transport.call("set_transport_unpublished", mapper.valueToTree(accountId), mapper.valueToTree(addr), mapper.valueToTree(unpublished));
   }
 
   /** Signal an ongoing process to stop. */
@@ -547,7 +506,7 @@ public class Rpc {
    * - The chat or the contact is **not blocked**, so new messages from the user/the group may appear as a contact request
    * and the user may create the chat again.
    * - **Groups are not left** - this would
-   * be unexpected as (1) deleting a normal chat also does not prevent new mails
+   * be unexpected as (1) deleting a single chat also does not prevent new mails
    * from arriving, (2) leaving a group requires sending a message to
    * all group members - especially for groups not used for a longer time, this is
    * really unexpected when deletion results in contacting all members again,
@@ -622,7 +581,6 @@ public class Rpc {
    * to `check_qr()`.
    * <p>
    * **returns**: The chat ID of the joined chat, the UI may redirect to the this chat.
-   * A returned chat ID does not guarantee that the chat is protected or the belonging contact is verified.
    * <p>
    */
   public Integer secureJoin(Integer accountId, String qr) throws RpcException {
@@ -682,7 +640,7 @@ public class Rpc {
   /**
    * Get the contact IDs belonging to a chat.
    * <p>
-   * - for normal chats, the function always returns exactly one contact,
+   * - for single chats, the function always returns exactly one contact,
    * DC_CONTACT_ID_SELF is returned only for SELF-chats.
    * <p>
    * - for group chats all members are returned, DC_CONTACT_ID_SELF is returned
@@ -733,7 +691,9 @@ public class Rpc {
    * Create a new unencrypted group chat.
    * <p>
    * Same as [`Self::create_group_chat`], but the chat is unencrypted and can only have
-   * address-contacts.
+   * address-contacts. NB: Chats with similar names and the same members are merged on other
+   * devices, but usually users don't create such chats and look up the existing one instead, so
+   * chat split on the first device is acceptable.
    */
   public Integer createGroupChatUnencrypted(Integer accountId, String name) throws RpcException {
     return transport.callForResult(new TypeReference<Integer>(){}, "create_group_chat_unencrypted", mapper.valueToTree(accountId), mapper.valueToTree(name));
@@ -933,7 +893,7 @@ public class Rpc {
    * The concrete action depends on the type of the chat and on the users settings
    * (dc_msgs_presented() may be a better name therefore, but well. :)
    * <p>
-   * - For normal chats, the IMAP state is updated, MDN is sent
+   * - For single chats, the IMAP state is updated, MDN is sent
    * (if set_config()-options `mdns_enabled` is set)
    * and the internal state is changed to @ref DC_STATE_IN_SEEN to reflect these actions.
    * <p>
@@ -972,7 +932,7 @@ public class Rpc {
    * <p>
    * * chat_id The chat ID of which the messages IDs should be queried.
    * * _info_only: Deprecated, pass `false` here.
-   * * `add_daymarker` - If `true`, add day markers as `DC_MSG_ID_DAYMARKER` to the result,
+   * * `add_daymarker` - If `true`, add day markers as `MsgId::DAYMARKER` to the result,
    * e.g. [1234, 1237, 9, 1239]. The day marker timestamp is the midnight one for the
    * corresponding (following) day in the local timezone.
    */
@@ -1022,6 +982,16 @@ public class Rpc {
   /** Fetch info desktop needs for creating a notification for a message */
   public MessageNotificationInfo getMessageNotificationInfo(Integer accountId, Integer messageId) throws RpcException {
     return transport.callForResult(new TypeReference<MessageNotificationInfo>(){}, "get_message_notification_info", mapper.valueToTree(accountId), mapper.valueToTree(messageId));
+  }
+
+  /** Sets the "pinned" state for a message. */
+  public void setPinnedMessageState(Integer accountId, Integer messageId, Boolean pinnedState) throws RpcException {
+    transport.call("set_pinned_message_state", mapper.valueToTree(accountId), mapper.valueToTree(messageId), mapper.valueToTree(pinnedState));
+  }
+
+  /** Returns all pinned messages of a chat. */
+  public java.util.List<Integer> getPinnedMessages(Integer accountId, Integer chatId) throws RpcException {
+    return transport.callForResult(new TypeReference<java.util.List<Integer>>(){}, "get_pinned_messages", mapper.valueToTree(accountId), mapper.valueToTree(chatId));
   }
 
   /**
@@ -1247,7 +1217,7 @@ public class Rpc {
   }
 
   /**
-   * Returns the [`ChatId`] for the 1:1 chat with `contact_id` if it exists.
+   * Returns the [`ChatId`] for the single chat with `contact_id` if it exists.
    * <p>
    * If it does not exist, `None` is returned.
    */
@@ -1356,13 +1326,10 @@ public class Rpc {
   /**
    * Get the current connectivity, i.e. whether the device is connected to the IMAP server.
    * One of:
-   * - DC_CONNECTIVITY_NOT_CONNECTED (1000-1999): Show e.g. the string "Not connected" or a red dot
-   * - DC_CONNECTIVITY_CONNECTING (2000-2999): Show e.g. the string "Connecting…" or a yellow dot
-   * - DC_CONNECTIVITY_WORKING (3000-3999): Show e.g. the string "Getting new messages" or a spinning wheel
-   * - DC_CONNECTIVITY_CONNECTED (>=4000): Show e.g. the string "Connected" or a green dot
-   * <p>
-   * We don't use exact values but ranges here so that we can split up
-   * states into multiple states in the future.
+   * - DC_CONNECTIVITY_NOT_CONNECTED (1000): Show e.g. the string "Not connected" or a red dot
+   * - DC_CONNECTIVITY_CONNECTING (2000): Show e.g. the string "Connecting…" or a yellow dot
+   * - DC_CONNECTIVITY_WORKING (3000): Show e.g. the string "Getting new messages" or a spinning wheel
+   * - DC_CONNECTIVITY_CONNECTED (4000): Show e.g. the string "Connected" or a green dot
    * <p>
    * Meant as a rough overview that can be shown
    * e.g. in the title of the main screen.
@@ -1473,6 +1440,9 @@ public class Rpc {
    * Get blob encoded as base64 from a webxdc message
    * <p>
    * path is the path of the file within webxdc archive
+   * <p>
+   * If the file is `icon.png` or `icon.jpg`,
+   * loading it may fail if dimensions are unexpectedly large.
    */
   public String getWebxdcBlob(Integer accountId, Integer instanceMsgId, String path) throws RpcException {
     return transport.callForResult(new TypeReference<String>(){}, "get_webxdc_blob", mapper.valueToTree(accountId), mapper.valueToTree(instanceMsgId), mapper.valueToTree(path));
@@ -1581,7 +1551,10 @@ public class Rpc {
     return transport.callForResult(new TypeReference<Integer>(){}, "send_reaction", mapper.valueToTree(accountId), mapper.valueToTree(messageId), mapper.valueToTree(reaction));
   }
 
-  /** Returns reactions to the message. */
+  /**
+   * Returns reactions to the message.
+   * `None` when there are no reactions.
+   */
   public Reactions getMessageReactions(Integer accountId, Integer messageId) throws RpcException {
     return transport.callForResult(new TypeReference<Reactions>(){}, "get_message_reactions", mapper.valueToTree(accountId), mapper.valueToTree(messageId));
   }
@@ -1682,6 +1655,32 @@ public class Rpc {
 
   public Integer miscSendDraft(Integer accountId, Integer chatId) throws RpcException {
     return transport.callForResult(new TypeReference<Integer>(){}, "misc_send_draft", mapper.valueToTree(accountId), mapper.valueToTree(chatId));
+  }
+
+  /**
+   * Get version information of a specific client and source
+   * across all configured accounts and transports.
+   * <p>
+   * Returns the source with the highest `version_integer`.
+   * If no matching version information is available at all, `None` is returned.
+   * <p>
+   * UIs shall call the function after a reasonable time after app start,
+   * when most relays have reported the information they have, say 30 seconds.
+   * After that, once a day.
+   * (it is accepted if by the simple approach an update message is delayed.
+   * an event was considered, but that seemed more complex for few benefit:
+   * as we do not know if "late" relays will report "better" versions,
+   * also there we would work with timeouts etc.)
+   * <p>
+   * If the reported `version_integer` is larger than the running app version,
+   * the UI shall report to the user, that an update is available,
+   * and, if possible, offer a direct update by the given URL.
+   * <p>
+   * Security note: consumers need to verify themselves
+   * that downloaded app files are valid before installing them.
+   */
+  public AppSource getAppVersion(String clientId, String sourceId) throws RpcException {
+    return transport.callForResult(new TypeReference<AppSource>(){}, "get_app_version", mapper.valueToTree(clientId), mapper.valueToTree(sourceId));
   }
 
 }

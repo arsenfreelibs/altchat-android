@@ -206,6 +206,9 @@
     <string name="contact">Kontakt</string>
     <string name="bot">Robot</string>
     <string name="camera">Kaamera</string>
+    <string name="front_camera">Eeskaamera</string>
+    <string name="back_camera">Tagakaamera</string>
+    <string name="microphone">Mikrofon</string>
     <!-- As in "start a video recording" or "take a photo"; eg. the description of the "shutter button" in cameras -->
     <string name="capture">Salvesta pilt või video</string>
     <!-- Switch eg. from front to back camera -->
@@ -290,6 +293,7 @@
     <string name="menu_send">Saada</string>
     <string name="menu_toggle_keyboard">Lülita emojide klahvistik sisse/välja</string>
     <string name="menu_edit_group">Muuda gruppi</string>
+    <!-- deprecated: "Edit Group" dialog usually also contains the "Group Description" field, use global_menu_edit_desktop instead -->
     <string name="menu_group_name_and_image">Grupi nimi ja pilt</string>
     <string name="menu_show_global_map">Kõik asukohad</string>
     <string name="menu_archive_chat">Tõsta vestlus arhiivi</string>
@@ -459,14 +463,17 @@
     <!-- the first placeholder will be replaced by a date, the second placeholder by duration, example: "Thu, 08:12 pm, 2 minutes" -->
     <string name="call_date_and_duration">%1$s, %2$s</string>
     <string name="already_in_call">Kõne  juba on pooleli</string>
+    <string name="call_back">Helista tagasi</string>
     <string name="call_answered_elsewhere">Kõne on vastatud muus seadmes</string>
     <string name="call_requires_camera_permission">Videokõnede tegemiseks peab rakendusel olema õigus kasutada kaamerat</string>
     <string name="call_requires_mic_permission">Helistamiseks peab rakendusel olema õigus kasutada mikrofoni</string>
+    <string name="call_grant_mic_permission">Klõpsa lubamaks mikrofoni kasutamist</string>
     <string name="call_requires_connection">Helistamine (kõne algatamine) ei õnnestu. Palun kontrolli, et sinu nutiseadme internetiühendus toimib ja proovi uuesti.</string>
     <!-- Used e.g. in a notifications to describe an ongoing call. "Call" is a noun here, in the meaning of "This is the call with ..." where the placeholder is replaced by the name of the contact. -->
     <string name="call_with">Kõne kasutajaga %1$s</string>
     <!-- Use e.g. in a notifications during ringing. Placeholder is relaced by the name of the contact being called. -->
     <string name="calling_person">Helistan kasutajale %1$s…</string>
+    <string name="audio_output">Heliväljund</string>
 
     <!-- get confirmations -->
     <!-- confirmation for leaving groups or channels. If a subject is needed, "Are you sure you want to leave the chat?" would work as well -->
@@ -685,7 +692,7 @@
     <!-- Secondary, link-like button to open a page with other possible instances -->
     <string name="instant_onboarding_show_more_instances">Kasuta muud serverid</string>
     <string name="instant_onboarding_other_server">Edastusserverite loend</string>
-    <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by the group name -->
+    <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by the group or channel name -->
     <string name="instant_onboarding_group_info">„%1$s“ grupiga liitumiseks loo profiil.</string>
     <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by contact name -->
     <string name="instant_onboarding_contact_info">„%1$s“ kasutajaga vestlemiseks loo profiil.</string>
@@ -693,6 +700,12 @@
     <string name="instant_onboarding_confirm_contact">Kas sa soovid luua uue profiili ja alustada vestlemist %1$s kasutajaga?</string>
     <!-- Question shown when group's/channel's QR code is scanned from onboarding screen -->
     <string name="instant_onboarding_confirm_group">Kas sa soovid luua uue profiili ja liituda „%1$s“ grupiga?</string>
+
+    <string name="team">Tiim</string>
+    <string name="team_profile">Tiimiprofiil</string>
+    <string name="team_profile_explain">Tiimiprofiili hallatakse üheskoos kasutajate grupi või organisatsiooni poolt.\n\n⚠️Selline võimalus on veel katsetamisjärgus ja võib tulevikus muutuda.</string>
+    <string name="team_name">Tiimi nimi</string>
+    <string name="create_team_profile">Loo tiimiprofiil</string>
 
     <string name="welcome_chat_over_email">Turvaline hajutatud vestluslahendus</string>
     <string name="scan_invitation_code">Skaneeri kutsekoodi</string>
@@ -730,15 +743,19 @@
     <string name="remove_transport">Eemalda alusühendus</string>
     <string name="edit_transport">Muuda alusühendust</string>
     <string name="used_for_sending">Kasutatud saatmiseks</string>
+    <!-- deprecated -->
     <string name="hide_from_contacts">Peida kontaktidest</string>
+    <!-- deprecated -->
     <string name="hidden_from_contacts">Peidetud kontaktidest</string>
     <string name="enforce_e2ee">Kasuta kõikide alusühenduste (edastusserverite) puhul krüptimist</string>
     <!-- Hint for the list of relays -->
-    <string name="transport_list_hint">Sõnumid saavad kõik alusühendused (edastusserverid).\n\n⚠️ Kui muudad siin midagi, siis palun kontrolli, et kõikides sinu seadmetes on kasutusel vähemalt versioon 2.47.0. Vastasel juhul võivad vanema tarkvaraga seadmetes jääda sõnumid saabumata.</string>
+    <string name="transport_list_hint">Sõnumid saavad kõik alusühendused (edastusserverid).</string>
     <!-- shown if a QR code was scanned that can be used as a relay -->
     <string name="confirm_add_transport">Kas lisad selle alusühenduse (edastusserveri)?</string>
     <string name="invalid_transport_qr">Skaneeritud QR-koodis pole korrektset alusühendust (edastusserverid)</string>
     <!-- placeholder will be replaced by a relay server name -->
+    <string name="confirm_remove_relay_x">Kas eemaldad „%1$s“ alusühenduse (edastusserveri)?Enne lõplikku kustutamist toimub vaikne üleminek, kus kõik sinu kontaktid saavad muudatusega arvestada.</string>
+    <!-- deprecated -->
     <string name="confirm_remove_or_hide_transport_x">Kas eemaldad alusühenduse (edastusserveri) „%1$s“?\n\nKui mõni kontakt teab vaid seda ühendusviisi, siis ta ei pruugi sind kätte saada enne, kui oled talle uuesti kirjutanud.\n\nKui kahtled, siis eemakdamise asemel pigem peida see alusühendus (edastusserver).</string>
     <string name="login_certificate_checks">Sertifikaadikontrollid</string>
     <string name="login_error_mail">Palun sisesta korrektne e-posti aadress</string>
@@ -776,6 +793,7 @@
     <!-- first placeholder is replaced by the number of files (always 2 or more); second placeholder is replaced by a chat name -->
     <string name="ask_send_files_to_chat">Kas saadad %1$d faili „%2$s“ vestlusesse?</string>
     <string name="ask_send_files_to_selected_chats">Kas saadad %1$d faili „%2$d“ vestlusesse?</string>
+    <!-- deprecated -->
     <string name="videos_sent_without_recoding">(Videod saadetakse algupäraste suurte failidena. Videote mahu vähendamiseks lisa nad manustena ükshaaval)</string>
     <string name="share_text_multiple_chats">Kas saadad selle teksti %1$d vestlusesse?\n\n„%2$s“</string>
     <string name="share_abort">Puuduvate õiguste tõttu on jagamine katkestatud.</string>
@@ -969,16 +987,22 @@
     <string name="chat_description_changed_by_other">%1$s muutis vestluse kirjeldust.</string>
     <!-- %1$s will be replaced by name of the contact added to the group -->
     <string name="member_x_added">Lisandus uus liige: %1$s.</string>
+    <string name="member_you_added">Sa oled lisatud.</string>
     <!-- %1$s will be replaced by name of the contact added to the group -->
     <string name="add_member_by_you">Sina lisasid uue liikme: %1$s.</string>
     <!-- %1$s will be replaced by name of the contact added to the group, %2$s will be replaced by name of the contact who did the action -->
     <string name="add_member_by_other">%2$s lisas uue liikme: %1$s.</string>
+    <!-- %1$s will be replaced by name of the contact who did the action -->
+    <string name="add_you_by_other">%1$s lisas sinu.</string>
     <!-- %1$s will be replaced by name of the contact removed from the group -->
     <string name="remove_member_by_you">Sina eemaldasid liikme: %1$s.</string>
     <!-- %1$s will be replaced by name of the contact removed from the group, %2$s will be replaced by name of the contact who did the action -->
     <string name="remove_member_by_other">%2$s eemaldas liikme: %1$s.</string>
+    <!-- %1$s will be replaced by name of the contact who did the action -->
+    <string name="remove_you_by_other">%1$s eemaldas sinu.</string>
     <!-- %1$s will be replaced by name of the contact removed from the group; this string is used when it's unclear who did the action -->
     <string name="member_x_removed">Grupi liige „%1$s“ on eemaldatud.</string>
+    <string name="member_you_removed">Sa oled eemaldatud.</string>
     <!-- "left" in the meaning of "exited". -->
     <string name="group_left_by_you">Sa lahkusid grupist.</string>
     <!-- "left" in the meaning of "exited". -->
@@ -1217,7 +1241,7 @@
     <string name="a11y_message_context_menu_btn_label">Tegevused sõnumiga</string>
     <string name="a11y_background_preview_label">Taustapildi eelvaade</string>
     <string name="a11y_disappearing_messages_activated">Isekustuvad sõnumid on kasutusel</string>
-    <!-- The placeholder will be replaced by a link, eg. "Open https://delta.chat". Used e.g. in for accessibility. -->
+    <!-- The placeholder will be replaced by a link, eg. "Open https://alt-chat.me". Used e.g. in for accessibility. -->
     <string name="open_link">Ava %1$s</string>
 
     <!-- iOS specific strings, developers: please take care to remove strings that are no longer used! -->

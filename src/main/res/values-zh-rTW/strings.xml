@@ -266,6 +266,7 @@
     <string name="menu_send">送出</string>
     <string name="menu_toggle_keyboard">切換表情符號鍵盤</string>
     <string name="menu_edit_group">編輯群組</string>
+    <!-- deprecated: "Edit Group" dialog usually also contains the "Group Description" field, use global_menu_edit_desktop instead -->
     <string name="menu_group_name_and_image">群組名稱及圖片</string>
     <string name="menu_show_global_map">顯示所有地點</string>
     <string name="menu_archive_chat">封存對話</string>
@@ -617,7 +618,7 @@
     <!-- Secondary, link-like button to open a page with other possible instances -->
     <string name="instant_onboarding_show_more_instances">使用其他伺服器</string>
     <string name="instant_onboarding_other_server">列出 Chatmail 伺服器</string>
-    <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by the group name -->
+    <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by the group or channel name -->
     <string name="instant_onboarding_group_info">創建個人資料以加入群組 “%1$s ”</string>
     <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by contact name -->
     <string name="instant_onboarding_contact_info">創建要與%1$s聊天的個人資料。</string>
@@ -662,12 +663,14 @@
     <string name="remove_transport">移除中繼伺服器</string>
     <string name="edit_transport">編輯中繼伺服器</string>
     <string name="used_for_sending">用于发送</string>
+    <!-- deprecated -->
     <string name="hide_from_contacts">对联系人隐藏</string>
+    <!-- deprecated -->
     <string name="hidden_from_contacts">已对联系人隐藏</string>
     <!-- shown if a QR code was scanned that can be used as a relay -->
     <string name="confirm_add_transport">新增這個中繼伺服器？</string>
     <string name="invalid_transport_qr">掃描的 QR 碼不包含有效的中繼伺服器。</string>
-    <!-- placeholder will be replaced by a relay server name -->
+    <!-- deprecated -->
     <string name="confirm_remove_or_hide_transport_x">移除中继“%1$s”？\n\n仅知道此中继的联系人可能无法联系到您，直到您再次发送消息。\n\n如有疑问，请将其隐藏而非移除。</string>
     <string name="login_certificate_checks">憑證檢查</string>
     <string name="login_error_mail">請輸入有效的電子郵件位址</string>
@@ -705,6 +708,7 @@
     <!-- first placeholder is replaced by the number of files (always 2 or more); second placeholder is replaced by a chat name -->
     <string name="ask_send_files_to_chat">將%1$d個檔案傳送到「%2$s」？？</string>
     <string name="ask_send_files_to_selected_chats">將%1$d個檔案發送到%2$d個聊天？</string>
+    <!-- deprecated -->
     <string name="videos_sent_without_recoding">（影片以原始大檔的形式發送。要將影片作為較小的檔案發送，請單獨附加它們）</string>
     <string name="share_text_multiple_chats">將此文本發送到%1$d個聊天？\n\n 「%2$s」</string>
     <string name="share_abort">共享失敗。權限不足。</string>
@@ -783,7 +787,7 @@
     <string name="pref_background_btn_default">使用預設圖案</string>
     <string name="pref_background_btn_gallery">從相簿中挑選</string>
     <string name="pref_imap_folder_warn_disable_defaults">如果關閉本選項的話，請務必確定你的伺服器和其它客戶端應用程式都使用相同的設定，否則很可能不能運作。</string>
-    <!-- No need to be literal here, you can also use "Use Multiple Devices", "Support Multiple Devices" or other fitting terms. However, it should fit to the wording or your language at https://delta.chat/help -->
+    <!-- No need to be literal here, you can also use "Use Multiple Devices", "Support Multiple Devices" or other fitting terms. However, it should fit to the wording or your language at https://alt-chat.me/help -->
     <string name="pref_multidevice">多裝置模式</string>
     <string name="pref_multidevice_explain">將您的訊息與其他裝置同步。新增第二個裝置時自動啟用</string>
     <string name="pref_multidevice_change_warn">在多個裝置上使用同一的帳戶時，必須啟用多裝置模式。只有在您已從所有其他設備移除此帳戶後，才可以禁用此設定。\n\n在多個裝置上使用該帳戶時禁用多裝置模式將導致漏接訊息及其他問題。</string>

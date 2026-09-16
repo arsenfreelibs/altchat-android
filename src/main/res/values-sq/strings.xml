@@ -282,6 +282,7 @@
     <string name="menu_send">Dërgoje</string>
     <string name="menu_toggle_keyboard">Shfaq/fshih Tastierë Emoji-sh</string>
     <string name="menu_edit_group">Përpunoni Grup</string>
+    <!-- deprecated: "Edit Group" dialog usually also contains the "Group Description" field, use global_menu_edit_desktop instead -->
     <string name="menu_group_name_and_image">Emër dhe Figurë Grupi</string>
     <string name="menu_show_global_map">Krejt Vendndodhjet</string>
     <string name="menu_archive_chat">Arkivoje Fjalosjen</string>
@@ -459,7 +460,6 @@
     <string name="call_with">Thirrje me %1$s</string>
     <!-- Use e.g. in a notifications during ringing. Placeholder is relaced by the name of the contact being called. -->
     <string name="calling_person">Po thirret %1$s</string>
-
     <!-- get confirmations -->
     <!-- confirmation for leaving groups or channels. If a subject is needed, "Are you sure you want to leave the chat?" would work as well -->
     <string name="ask_leave_group">Jeni i sigurt se doni të largoheni?</string>
@@ -677,7 +677,7 @@
     <!-- Secondary, link-like button to open a page with other possible instances -->
     <string name="instant_onboarding_show_more_instances">Përdor Shërbyes Tjetër</string>
     <string name="instant_onboarding_other_server">Paraqit Shërbyes Chatmail</string>
-    <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by the group name -->
+    <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by the group or channel name -->
     <string name="instant_onboarding_group_info">Krijoni një profil, që të merrni pjesë te grupi “%1$s”.</string>
     <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by contact name -->
     <string name="instant_onboarding_contact_info">Krijoni një profil, që të bisedoni me %1$s.</string>
@@ -722,7 +722,9 @@
     <string name="remove_transport">Hiqni Rele</string>
     <string name="edit_transport">Përpunoni Rele</string>
     <string name="used_for_sending">E përdorur për dërgim</string>
+    <!-- deprecated -->
     <string name="hide_from_contacts">Fshihe prej Kontaktesh</string>
+    <!-- deprecated -->
     <string name="hidden_from_contacts">Fshehur prej kontakteve</string>
     <string name="enforce_e2ee">Detyro Fshehtëzim për Krejt Reletë</string>
     <!-- Hint for the list of relays -->
@@ -730,7 +732,7 @@
     <!-- shown if a QR code was scanned that can be used as a relay -->
     <string name="confirm_add_transport">Të shtohet kjo rele?</string>
     <string name="invalid_transport_qr">Kodi QR i skanuar s’përmban një rele të vlefshme.</string>
-    <!-- placeholder will be replaced by a relay server name -->
+    <!-- deprecated -->
     <string name="confirm_remove_or_hide_transport_x">Të hiqet releja “%1$s”?\n\nKontaktet që njohin vetëm këtë rele mund të mos ju\nkapin dot, deri sa t’u dërgoni sërish mesazh.\n\nNëse s’jeni të sigurt, fshiheni, në vend se ta hiqni.</string>
     <string name="login_certificate_checks">Kontrolle Dëshmish</string>
     <string name="login_error_mail">Ju lutemi, jepni një adresë email të vlefshme</string>
@@ -768,6 +770,7 @@
     <!-- first placeholder is replaced by the number of files (always 2 or more); second placeholder is replaced by a chat name -->
     <string name="ask_send_files_to_chat">Të dërgohen %1$d kartela te “%2$s”?</string>
     <string name="ask_send_files_to_selected_chats">Të dërgohet %1$d kartelë(a) te %2$d fjalosje?</string>
+    <!-- deprecated -->
     <string name="videos_sent_without_recoding">(Videot dërgohen si kartelat origjinale, të mëdha. Që të dërgoni video si kartela më të vogla, bashkëngjitini veç e veç)</string>
     <string name="share_text_multiple_chats">Të dërgohet ky tekst te %1$d fjalosje?\n\n“%2$s”</string>
     <string name="share_abort">Ndarja me të tjerë dështoi ngaqë mungojnë leje.</string>
@@ -1209,7 +1212,7 @@
     <string name="a11y_message_context_menu_btn_label">Veprime mesazhesh</string>
     <string name="a11y_background_preview_label">Paraparje sfondi</string>
     <string name="a11y_disappearing_messages_activated">Zhdukja e mesazheve është e aktivizuar</string>
-    <!-- The placeholder will be replaced by a link, eg. "Open https://delta.chat". Used e.g. in for accessibility. -->
+    <!-- The placeholder will be replaced by a link, eg. "Open https://alt-chat.me". Used e.g. in for accessibility. -->
     <string name="open_link">Hap %1$s</string>
 
     <!-- iOS specific strings, developers: please take care to remove strings that are no longer used! -->

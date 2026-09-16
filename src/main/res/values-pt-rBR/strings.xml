@@ -209,6 +209,7 @@
     <string name="menu_send">Enviar</string>
     <string name="menu_toggle_keyboard">Ativar teclado de emojis</string>
     <string name="menu_edit_group">Modificar grupo</string>
+    <!-- deprecated: "Edit Group" dialog usually also contains the "Group Description" field, use global_menu_edit_desktop instead -->
     <string name="menu_group_name_and_image">Nome e Imagem do grupo</string>
     <string name="menu_show_global_map">Todas as localizações</string>
     <string name="menu_archive_chat">Arquivar conversa</string>
@@ -474,6 +475,20 @@
     <string name="messages">Mensagens</string>
     <!-- Used for describing resource usage, resulting string will be eg. "1.2 GiB of 3 GiB used" -->
     <string name="part_of_total_used">%1$s de %2$s usado</string>
+
+    <!-- welcome and login -->
+    <!-- Primary button on the welcome screen, allows to create an instant profile -->
+    <string name="onboarding_create_instant_account">Criar novo perfil</string>
+    <!-- Confirmation button on the instant onboarding screen -->
+    <string name="instant_onboarding_create">Concordar &amp; Criar perfil</string>
+    <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by the group or channel name -->
+    <string name="instant_onboarding_group_info">Crie um perfil para participar do grupo \"%1$s\".</string>
+    <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by contact name -->
+    <string name="instant_onboarding_contact_info">Crie um perfil para conversa com %1$s.</string>
+    <!-- Question shown when another user's QR code is scanned from onboarding screen -->
+    <string name="instant_onboarding_confirm_contact">Crie um novo perfil e comece a conversar com %1$s?</string>
+    <!-- Question shown when group's/channel's QR code is scanned from onboarding screen -->
+    <string name="instant_onboarding_confirm_group">Criar um novo perfil e ingressar em \"%1$s\"?</string>
 
     <string name="scan_invitation_code">Escanear Código De Convite</string>
     <string name="login_title">Acessar</string>

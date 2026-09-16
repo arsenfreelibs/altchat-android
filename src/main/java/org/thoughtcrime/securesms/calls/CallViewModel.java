@@ -3,7 +3,6 @@ package org.thoughtcrime.securesms.calls;
 import android.app.Application;
 import android.graphics.drawable.Icon;
 import android.os.Build;
-import android.telecom.DisconnectCause;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -46,7 +45,6 @@ public class CallViewModel extends AndroidViewModel {
   private final MediatorLiveData<CallState> callState;
 
   // Observer References for one-time observe
-  private Observer<Boolean> answerCallObserver;
   private Observer<Boolean> startOutgoingCallObserver;
 
   private final AtomicBoolean hasCallEnded = new AtomicBoolean(false);
@@ -99,7 +97,11 @@ public class CallViewModel extends AndroidViewModel {
     callCoordinator.setActiveCallViewModel(this);
 
     if (callCoordinator.isIncomingCall()) {
-      callState.setValue(CallState.PROMPTING_USER_ACCEPT);
+      if (callCoordinator.isAnswerInProgress()) {
+        callState.setValue(CallState.CONNECTING);
+      } else {
+        callState.setValue(CallState.PROMPTING_USER_ACCEPT);
+      }
     } else {
       callState.setValue(CallState.CONNECTING);
     }
@@ -186,49 +188,8 @@ public class CallViewModel extends AndroidViewModel {
 
   public void answerCall() {
     Log.d(TAG, "answerCall");
-
-    if (!callCoordinator.isIncomingCall()) {
-      Log.w(TAG, "answerCall() called but this is not an incoming call");
-      return;
-    }
-
-    // System integration
-    callCoordinator.handleCallControlScopeAnswer();
-
-    answerCallWhenReady();
-  }
-
-  /** Answer incoming call (WebRTC only) Used when system answer already happened */
-  public void answerCallWhenReady() {
-    Log.d(TAG, "answerCallWhenReady");
-
-    if (callCoordinator.hasOngoingCall()) {
-      Log.w(TAG, "Call already ongoing, not starting duplicate");
-      return;
-    }
-
-    // Start media capture
-    callCoordinator.startMediaCapture();
-
-    // Observe media readiness — fires for both audio-only and video calls
-    LiveData<Boolean> mediaReady = callCoordinator.getMediaReady();
-
-    answerCallObserver =
-        new Observer<Boolean>() {
-          @Override
-          public void onChanged(Boolean isReady) {
-            if (Boolean.TRUE.equals(isReady)) {
-              mediaReady.removeObserver(this);
-              answerCallObserver = null;
-
-              Log.d(TAG, "Media ready, answering call (WebRTC)");
-
-              callCoordinator.answerWebRTC();
-            }
-          }
-        };
-
-    mediaReady.observeForever(answerCallObserver);
+    callCoordinator.answerCall(false);
+    callCoordinator.ensureServiceStartedFromForeground();
   }
 
   /** Start outgoing call with media capture Called by Activity for outgoing calls */
@@ -269,26 +230,15 @@ public class CallViewModel extends AndroidViewModel {
     }
   }
 
-  public void declineCall() {
-    Log.d(TAG, "declineCall");
+  public void endCall() {
+    Log.d(TAG, "endCall");
 
     if (!hasCallEnded.compareAndSet(false, true)) {
       Log.w(TAG, "Call already ended");
       return;
     }
 
-    callCoordinator.declineCall();
-  }
-
-  public void hangUp() {
-    Log.d(TAG, "hangUp");
-
-    if (!hasCallEnded.compareAndSet(false, true)) {
-      Log.w(TAG, "Call already ended");
-      return;
-    }
-
-    callCoordinator.hangUp();
+    callCoordinator.endCall(false);
   }
 
   public void toggleAudio() {
@@ -321,8 +271,8 @@ public class CallViewModel extends AndroidViewModel {
     callCoordinator.requestAudioEndpointChange(endpoint);
   }
 
-  public void switchToEarpiece(boolean shallUseEarpiece) {
-    Log.d(TAG, "switchToEarpiece: shallUseEarpiece: " + shallUseEarpiece);
+  public void switchToEarpiece(boolean audioOnly) {
+    Log.d(TAG, "switchToEarpiece: audioOnly=" + audioOnly);
 
     List<CallEndpointCompat> endpoints = availableAudioEndpoints.getValue();
 
@@ -331,16 +281,11 @@ public class CallViewModel extends AndroidViewModel {
       return;
     }
 
-    CallEndpointCompat targetEndpoint = null;
-    for (CallEndpointCompat endpoint : endpoints) {
-      boolean isEarpiece = endpoint.getType() == CallEndpointCompat.TYPE_EARPIECE;
-      if (isEarpiece == shallUseEarpiece) {
-        targetEndpoint = endpoint;
-        break;
-      }
-    }
+    CallEndpointCompat targetEndpoint =
+        CallCoordinator.findPreferredEndpoint(endpoints, !audioOnly);
 
     if (targetEndpoint != null) {
+      Log.d(TAG, "Switching to endpoint: " + targetEndpoint.getName());
       selectAudioDevice(targetEndpoint);
     }
   }
@@ -348,28 +293,6 @@ public class CallViewModel extends AndroidViewModel {
   public void setStartsWithVideo(boolean startsWithVideo) {
     Log.d(TAG, "setStartsWithVideo: " + startsWithVideo);
     callCoordinator.setStartsWithVideo(startsWithVideo);
-  }
-
-  // CallControlScope Callbacks
-
-  public void onCallAnswered() {
-    Log.d(TAG, "onCallAnswered callback from CallControlScope");
-  }
-
-  public void onCallActive() {
-    Log.d(TAG, "onCallActive callback from CallControlScope");
-  }
-
-  public void onCallInactive() {
-    Log.d(TAG, "onCallInactive callback from CallControlScope");
-  }
-
-  public void onCallDisconnected(DisconnectCause disconnectCause) {
-    Log.d(TAG, "onCallDisconnected callback from CallControlScope, cause: " + disconnectCause);
-
-    if (hasCallEnded.compareAndSet(false, true)) {
-      callState.postValue(CallState.ENDED);
-    }
   }
 
   // LiveData Getters
@@ -441,13 +364,13 @@ public class CallViewModel extends AndroidViewModel {
   public void handleNotificationDecline() {
     Log.d(TAG, "handleNotificationDecline");
 
-    declineCall();
+    endCall();
   }
 
   public void handleNotificationHangup() {
     Log.d(TAG, "handleNotificationHangup");
 
-    hangUp();
+    endCall();
   }
 
   // Cleanup
@@ -456,11 +379,6 @@ public class CallViewModel extends AndroidViewModel {
   protected void onCleared() {
     super.onCleared();
     Log.d(TAG, "CallViewModel cleared");
-
-    if (answerCallObserver != null) {
-      callCoordinator.getMediaReady().removeObserver(answerCallObserver);
-      answerCallObserver = null;
-    }
 
     if (startOutgoingCallObserver != null) {
       callCoordinator.getMediaReady().removeObserver(startOutgoingCallObserver);

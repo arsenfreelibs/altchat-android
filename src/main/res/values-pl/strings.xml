@@ -226,6 +226,9 @@
     <string name="contact">Kontakt</string>
     <string name="bot">Bot</string>
     <string name="camera">Kamera</string>
+    <string name="front_camera">Przednia kamera</string>
+    <string name="back_camera">Tylna kamera</string>
+    <string name="microphone">Mikrofon</string>
     <!-- As in "start a video recording" or "take a photo"; eg. the description of the "shutter button" in cameras -->
     <string name="capture">Zrób to</string>
     <!-- Switch eg. from front to back camera -->
@@ -312,6 +315,7 @@
     <string name="menu_send">Wyślij</string>
     <string name="menu_toggle_keyboard">Przełącz klawiaturę emoji</string>
     <string name="menu_edit_group">Edytuj grupę</string>
+    <!-- deprecated: "Edit Group" dialog usually also contains the "Group Description" field, use global_menu_edit_desktop instead -->
     <string name="menu_group_name_and_image">Nazwa grupy i obraz</string>
     <string name="menu_show_global_map">Wszystkie lokalizacje</string>
     <string name="menu_archive_chat">Archiwizuj czat</string>
@@ -484,14 +488,17 @@
     <string name="call_date_and_duration">%1$s, %2$s</string>
 
     <string name="already_in_call">Już w trakcie rozmowy</string>
+    <string name="call_back">Oddzwoń</string>
     <string name="call_answered_elsewhere">Połączenie odebrane na innym urządzeniu</string>
     <string name="call_requires_camera_permission">Do połączeń wideo wymagane jest zezwolenie na korzystanie z kamery</string>
     <string name="call_requires_mic_permission">Do połączeń wymagane jest zezwolenie na korzystanie z mikrofonu</string>
+    <string name="call_grant_mic_permission">Dotknij, aby przyznać dostęp do mikrofonu</string>
     <string name="call_requires_connection">Nie można nawiązać połączenia. Upewnij się, że urządzenie ma połączenie z internetem i spróbuj ponownie.</string>
     <!-- Used e.g. in a notifications to describe an ongoing call. "Call" is a noun here, in the meaning of "This is the call with ..." where the placeholder is replaced by the name of the contact. -->
     <string name="call_with">Rozmowa z %1$s</string>
     <!-- Use e.g. in a notifications during ringing. Placeholder is relaced by the name of the contact being called. -->
     <string name="calling_person">Dzwonię do %1$s…</string>
+    <string name="audio_output">Wyjście audio</string>
 
     <!-- get confirmations -->
     <!-- confirmation for leaving groups or channels. If a subject is needed, "Are you sure you want to leave the chat?" would work as well -->
@@ -722,14 +729,20 @@
     <!-- Secondary, link-like button to open a page with other possible instances -->
     <string name="instant_onboarding_show_more_instances">Użyj innego serwera</string>
     <string name="instant_onboarding_other_server">Lista serwerów Chatmail</string>
-    <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by the group name -->
-    <string name="instant_onboarding_group_info">Tworzy profil, aby dołączyć do grupy „%1$s”.</string>
+    <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by the group or channel name -->
+    <string name="instant_onboarding_group_info">Tworzy profil, aby dołączyć do „%1$s”.</string>
     <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by contact name -->
     <string name="instant_onboarding_contact_info">Tworzy profil, aby rozmawiać z „%1$s”.</string>
     <!-- Question shown when another user's QR code is scanned from onboarding screen -->
     <string name="instant_onboarding_confirm_contact">Utworzyć nowy profil i rozpocząć rozmowę z %1$s?</string>
     <!-- Question shown when group's/channel's QR code is scanned from onboarding screen -->
     <string name="instant_onboarding_confirm_group">Utworzyć nowy profil i dołączyć do grupy „%1$s”?</string>
+
+    <string name="team">Zespół</string>
+    <string name="team_profile">Profil zespołu</string>
+    <string name="team_profile_explain">„Profil zespołu” jest zarządzany zbiorowo przez grupę osób lub organizację.\n\n⚠️ Profile zespołu są eksperymentalne i mogą ulec zmianie.</string>
+    <string name="team_name">Nazwa zespołu</string>
+    <string name="create_team_profile">Utwórz profil zespołu</string>
 
     <string name="welcome_chat_over_email">Bezpieczny zdecentralizowany czat</string>
     <string name="scan_invitation_code">Zeskanuj kod zaproszenia</string>
@@ -767,15 +780,19 @@
     <string name="remove_transport">Usuń serwer przekaźnikowy</string>
     <string name="edit_transport">Edytuj serwer przekaźnikowy</string>
     <string name="used_for_sending">Służy do wysyłania</string>
+    <!-- deprecated -->
     <string name="hide_from_contacts">Ukryj w kontaktach</string>
+    <!-- deprecated -->
     <string name="hidden_from_contacts">Ukryty w kontaktach</string>
     <string name="enforce_e2ee">Wymuś szyfrowanie dla wszystkich przekaźników</string>
     <!-- Hint for the list of relays -->
-    <string name="transport_list_hint">Wiadomości są odbierane na wszystkich przekaźnikach.\n\n⚠️ Jeśli cokolwiek tutaj zmienisz, upewnij się, że wszystkie twoje urządzenia mają co najmniej wersję 2.47.0. W przeciwnym razie starsze urządzenia mogą nie odebrać wiadomości.</string>
+    <string name="transport_list_hint">Wiadomości są odbierane na wszystkich przekaźnikach.</string>
     <!-- shown if a QR code was scanned that can be used as a relay -->
     <string name="confirm_add_transport">Dodać ten serwer przekaźnikowy?</string>
     <string name="invalid_transport_qr">Zeskanowany kod QR zawiera nieprawidłowy serwer przekaźnikowy.</string>
     <!-- placeholder will be replaced by a relay server name -->
+    <string name="confirm_remove_relay_x">Usunąć przekaźnik „%1$s”?\n\nPrzed usunięciem dane będą stopniowo wycofywane, aby umożliwić płynne przełączenie kontaktów.</string>
+    <!-- deprecated -->
     <string name="confirm_remove_or_hide_transport_x">Usuń przekaźnik „%1$s”?\n\nKontakty, które znają tylko ten przekaźnik, mogą nie dotrzeć do ciebie, dopóki nie wyślesz do nich ponownej wiadomości.\n\nW razie wątpliwości ukryj go, zamiast usuwać.</string>
     <string name="login_certificate_checks">Sprawdzanie certyfikatów</string>
     <string name="login_error_mail">Podaj ważny adres e-mail</string>
@@ -813,6 +830,7 @@
     <!-- first placeholder is replaced by the number of files (always 2 or more); second placeholder is replaced by a chat name -->
     <string name="ask_send_files_to_chat">Wysłać %1$d pliki do „%2$s”?</string>
     <string name="ask_send_files_to_selected_chats">Wysłać %1$d pliki do %2$d czatów?</string>
+    <!-- deprecated -->
     <string name="videos_sent_without_recoding">(Wysyłanie wielu filmów spowoduje wysłanie ich w stanie „jak są”, co może być duże. Aby je zmniejszyć i zaoszczędzić dane, możesz wysłać każdy film w osobnej wiadomości)</string>
     <string name="share_text_multiple_chats">Wysłać ten tekst do %1$d czatów?\n\n\"%2$s\"</string>
     <string name="share_abort">Udostępnianie zostało przerwane z powodu brakujących uprawnień.</string>
@@ -895,7 +913,7 @@
     <string name="pref_background_btn_gallery">Wybierz z galerii</string>
     <!-- deprecated -->
     <string name="pref_imap_folder_warn_disable_defaults">Jeśli zmienisz tę opcję, upewnij się, że twój serwer i inni klienci są odpowiednio skonfigurowani.\n\nW przeciwnym razie wszystko może w ogóle nie działać.</string>
-    <!-- No need to be literal here, you can also use "Use Multiple Devices", "Support Multiple Devices" or other fitting terms. However, it should fit to the wording or your language at https://delta.chat/help -->
+    <!-- No need to be literal here, you can also use "Use Multiple Devices", "Support Multiple Devices" or other fitting terms. However, it should fit to the wording or your language at https://alt-chat.me/help -->
     <string name="pref_multidevice">Tryb wielu urządzeń</string>
     <string name="pref_multidevice_explain">Synchronizuj swoje wiadomości z innymi swoimi urządzeniami. Włączane automatycznie po dodaniu drugiego urządzenia</string>
     <string name="pref_multidevice_change_warn">Tryb wielu urządzeń musi być włączony podczas korzystania z tego samego profilu na wielu urządzeniach. Wyłącz to ustawienie tylko wtedy, gdy usuniesz ten profil ze wszystkich pozostałych urządzeń.\n\nWyłączenie trybu wielu urządzeń podczas korzystania z profilu na wielu urządzeniach spowoduje pominięcie wiadomości i inne problemy.</string>
@@ -1005,16 +1023,22 @@
     <string name="chat_description_changed_by_other">Opis czatu zmieniony przez %1$s.</string>
     <!-- %1$s will be replaced by name of the contact added to the group -->
     <string name="member_x_added">Dodano członka %1$s.</string>
+    <string name="member_you_added">Dodano cię.</string>
     <!-- %1$s will be replaced by name of the contact added to the group -->
     <string name="add_member_by_you">Dodano członka %1$s.</string>
     <!-- %1$s will be replaced by name of the contact added to the group, %2$s will be replaced by name of the contact who did the action -->
     <string name="add_member_by_other">Użytkownik %2$s dodał członka %1$s.</string>
+    <!-- %1$s will be replaced by name of the contact who did the action -->
+    <string name="add_you_by_other">Użytkownik %1$s dodał cię.</string>
     <!-- %1$s will be replaced by name of the contact removed from the group -->
     <string name="remove_member_by_you">Usunięto członka %1$s.</string>
     <!-- %1$s will be replaced by name of the contact removed from the group, %2$s will be replaced by name of the contact who did the action -->
     <string name="remove_member_by_other">Użytkownik %2$s usunął członka %1$s.</string>
+    <!-- %1$s will be replaced by name of the contact who did the action -->
+    <string name="remove_you_by_other">Użytkownik %1$s usunął cię.</string>
     <!-- %1$s will be replaced by name of the contact removed from the group; this string is used when it's unclear who did the action -->
     <string name="member_x_removed">Usunięto członka %1$s.</string>
+    <string name="member_you_removed">Usunięto cię.</string>
     <!-- "left" in the meaning of "exited". -->
     <string name="group_left_by_you">Opuszczono grupę</string>
     <!-- "left" in the meaning of "exited". -->
@@ -1253,7 +1277,7 @@
     <string name="a11y_message_context_menu_btn_label">Działania na wiadomości</string>
     <string name="a11y_background_preview_label">Podgląd tła</string>
     <string name="a11y_disappearing_messages_activated">Aktywowano znikające wiadomości</string>
-    <!-- The placeholder will be replaced by a link, eg. "Open https://delta.chat". Used e.g. in for accessibility. -->
+    <!-- The placeholder will be replaced by a link, eg. "Open https://alt-chat.me". Used e.g. in for accessibility. -->
     <string name="open_link">Otwórz %1$s</string>
 
     <!-- iOS specific strings, developers: please take care to remove strings that are no longer used! -->

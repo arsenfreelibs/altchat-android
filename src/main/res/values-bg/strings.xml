@@ -206,6 +206,7 @@
     <string name="menu_send">Изпращане</string>
     <string name="menu_toggle_keyboard">Включване/изключване на Emoji клавиатура</string>
     <string name="menu_edit_group">Редактиране на група</string>
+    <!-- deprecated: "Edit Group" dialog usually also contains the "Group Description" field, use global_menu_edit_desktop instead -->
     <string name="menu_group_name_and_image">Име и изображение на група</string>
     <string name="menu_show_global_map">Показване на всички местоположения</string>
     <string name="menu_archive_chat">Архивиране на чата</string>
@@ -493,7 +494,7 @@
     <!-- Secondary, link-like button to open a page with other possible instances -->
     <string name="instant_onboarding_show_more_instances">Да се използва друг сървър</string>
     <string name="instant_onboarding_other_server">Списък със сървъри за чат поща</string>
-    <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by the group name -->
+    <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by the group or channel name -->
     <string name="instant_onboarding_group_info">Създайте профил, за да се присъедините към групата \"%1$s\".</string>
     <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by contact name -->
     <string name="instant_onboarding_contact_info">Създайте профил, за да обменяте съобщения с %1$s.</string>

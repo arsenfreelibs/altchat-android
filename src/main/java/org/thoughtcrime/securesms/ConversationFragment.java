@@ -71,6 +71,7 @@ import org.thoughtcrime.securesms.reactions.AddReactionView;
 import org.thoughtcrime.securesms.reactions.ReactionsDetailsFragment;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.relay.EditRelayActivity;
+import org.thoughtcrime.securesms.updater.AppUpdate;
 import org.thoughtcrime.securesms.util.AccessibilityUtil;
 import org.thoughtcrime.securesms.util.Debouncer;
 import org.thoughtcrime.securesms.util.StickyHeaderDecoration;
@@ -107,6 +108,7 @@ public class ConversationFragment extends MessageSelectorFragment {
   private int contextOverlaySession;
   private TextView noMessageTextView;
   private Timer reloadTimer;
+  private ConversationScrollListener scrollListener;
 
   public boolean isPaused;
   private Debouncer markseenDebouncer;
@@ -125,7 +127,6 @@ public class ConversationFragment extends MessageSelectorFragment {
     eventCenter.addObserver(DcContext.DC_EVENT_REACTIONS_CHANGED, this);
     eventCenter.addObserver(DcContext.DC_EVENT_MSG_DELIVERED, this);
     eventCenter.addObserver(DcContext.DC_EVENT_MSG_FAILED, this);
-    eventCenter.addObserver(DcContext.DC_EVENT_MSG_READ, this);
     eventCenter.addObserver(DcContext.DC_EVENT_CHAT_MODIFIED, this);
 
     markseenDebouncer = new Debouncer(800);
@@ -385,13 +386,28 @@ public class ConversationFragment extends MessageSelectorFragment {
     this.chatId =
         this.getActivity().getIntent().getIntExtra(ConversationActivity.CHAT_ID_EXTRA, -1);
     this.recipient = Recipient.from(getActivity(), Address.fromChat((int) this.chatId));
+
+    if (chatId > 0) {
+      DcEventCenter eventCenter = DcHelper.getEventCenter(getContext());
+      eventCenter.removeObserver(DcContext.DC_EVENT_MSG_READ, this);
+      eventCenter.removeObserver(DcContext.DC_EVENT_MSG_READ_COUNT_CHANGED, this);
+      eventCenter.addObserver(
+          recipient.getChat().isOutBroadcast()
+              ? DcContext.DC_EVENT_MSG_READ_COUNT_CHANGED
+              : DcContext.DC_EVENT_MSG_READ,
+          this);
+    }
+
     this.startingPosition =
         this.getActivity()
             .getIntent()
             .getIntExtra(ConversationActivity.STARTING_POSITION_EXTRA, -1);
     this.firstLoad = true;
 
-    OnScrollListener scrollListener = new ConversationScrollListener(getActivity());
+    if (scrollListener != null) {
+      list.removeOnScrollListener(scrollListener);
+    }
+    scrollListener = new ConversationScrollListener(getActivity());
     list.addOnScrollListener(scrollListener);
   }
 
@@ -988,6 +1004,9 @@ public class ConversationFragment extends MessageSelectorFragment {
         DozeReminder.dozeReminderTapped(getContext());
       } else if (StatsSending.isStatsSendingDeviceMsg(getContext(), messageRecord)) {
         StatsSending.statsDeviceMsgTapped(getActivity());
+      } else if (AppUpdate.isUpdateDeviceMsg(
+          getContext(), getListAdapter().getChat(), messageRecord)) {
+        AppUpdate.updateDeviceMsgTapped(getActivity());
       } else if (messageRecord.getInfoType() == DcMsg.DC_INFO_WEBXDC_INFO_MESSAGE) {
         if (messageRecord.getParent() != null) {
           // if the parent webxdc message still exists
@@ -1165,7 +1184,11 @@ public class ConversationFragment extends MessageSelectorFragment {
 
     @Override
     public void onReactionClicked(DcMsg messageRecord) {
-      ReactionsDetailsFragment dialog = ReactionsDetailsFragment.newInstance(messageRecord.getId());
+      DcChat dcChat = getListAdapter().getChat();
+      boolean isBroadcast = dcChat.isInBroadcast() || dcChat.isOutBroadcast();
+
+      ReactionsDetailsFragment dialog =
+          ReactionsDetailsFragment.newInstance(messageRecord.getId(), isBroadcast);
       dialog.show(getActivity().getSupportFragmentManager(), null);
     }
 
@@ -1180,6 +1203,11 @@ public class ConversationFragment extends MessageSelectorFragment {
               })
           .setNegativeButton(R.string.cancel, null)
           .show();
+    }
+
+    @Override
+    public void onUpdateNowClicked(DcMsg messageRecord) {
+      AppUpdate.updateDeviceMsgTapped(getActivity());
     }
   }
 
@@ -1319,6 +1347,7 @@ public class ConversationFragment extends MessageSelectorFragment {
       case DcContext.DC_EVENT_MSG_DELIVERED:
       case DcContext.DC_EVENT_MSG_FAILED:
       case DcContext.DC_EVENT_MSG_READ:
+      case DcContext.DC_EVENT_MSG_READ_COUNT_CHANGED:
         if (event.getData1Int() == chatId) {
           reloadList();
         }

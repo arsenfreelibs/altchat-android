@@ -261,6 +261,7 @@
     <string name="menu_send">Send</string>
     <string name="menu_toggle_keyboard">Slå på/av emoji-tastatur</string>
     <string name="menu_edit_group">Rediger gruppe</string>
+    <!-- deprecated: "Edit Group" dialog usually also contains the "Group Description" field, use global_menu_edit_desktop instead -->
     <string name="menu_group_name_and_image">Gruppenavn og bilde</string>
     <string name="menu_show_global_map">Vis alle posisjoner</string>
     <string name="menu_archive_chat">Arkiver chat</string>
@@ -389,19 +390,13 @@
     <string name="declined_call">Avvist anrop</string>
     <string name="canceled_call">Avbrutt anrop</string>
     <string name="missed_call">Ubesvart anrop</string>
-    <!-- Status labels shown on the call screen overlay -->
-    <string name="call_status_ringing">Ringer…</string>
-    <string name="call_status_connecting">Kobler til…</string>
-    <string name="call_status_incoming">Innkommende anrop</string>
-    <!-- Accessibility labels for call screen overlay buttons -->
-    <string name="call_btn_answer">Svar på anrop</string>
-    <string name="call_btn_speaker">Høyttaler</string>
-    <string name="call_btn_camera">Kamera</string>
-    <string name="call_btn_mic">Mikrofon</string>
-    <string name="call_btn_end">Avslutt anrop</string>
-    <!-- the first placeholder will be replaced by a date, the second placeholder by duration, example: "Thu, 08:12 pm, 2 minutes" -->
-    <string name="call_date_and_duration">%1$s, %2$s</string>
-
+    <string name="already_in_call">Allerede i en samtale</string>
+    <string name="call_answered_elsewhere">Samtale besvart på en annen enhet</string>
+    <string name="call_requires_mic_permission">Mikrofontillatelse er nødvendig for samtaler</string>
+    <!-- Used e.g. in a notifications to describe an ongoing call. "Call" is a noun here, in the meaning of "This is the call with ..." where the placeholder is replaced by the name of the contact. -->
+    <string name="call_with">Samtale med %1$s</string>
+    <!-- Use e.g. in a notifications during ringing. Placeholder is relaced by the name of the contact being called. -->
+    <string name="calling_person">Ringer %1$s...</string>
     <!-- get confirmations -->
     <!-- confirmation for leaving groups or channels. If a subject is needed, "Are you sure you want to leave the chat?" would work as well -->
     <string name="ask_leave_group">Er du sikker på at du vil forlate?</string>
@@ -630,4 +625,15 @@
     <string name="name_desktop">Navn</string>
     <string name="export_backup_desktop">Eksporter sikkerhetskopi</string>
         <string name="alt_search_tab_title">Søk</string>
+
+    <!-- Alt Chat: fork-specific strings (restored after upstream merge) -->
+    <string name="call_status_ringing">Ringer…</string>
+    <string name="call_status_connecting">Kobler til…</string>
+    <string name="call_status_incoming">Innkommende anrop</string>
+    <string name="call_btn_answer">Svar på anrop</string>
+    <string name="call_btn_speaker">Høyttaler</string>
+    <string name="call_btn_camera">Kamera</string>
+    <string name="call_btn_mic">Mikrofon</string>
+    <string name="call_btn_end">Avslutt anrop</string>
+    <string name="call_date_and_duration">%1$s, %2$s</string>
 </resources>

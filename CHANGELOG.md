@@ -2,9 +2,80 @@
 
 ## Unreleased
 
+* Add speed button for voice message playback
+* Improve a11y on Conversation List
+* Target SDK 37
+* Fix: support scanning a channel-invite while creating a new profile
+* Fix: random long delay when reopening a WebXDC app
+* Update to core 2.60.0
+
+## v2.59.1
+2026-08
+
+* Fix potential crashes under certain conditions when placing a call
+* Update translations
+
+## v2.59.0
+2026-08
+
+* Fix multi-device synchronization of read messages even if "Read Receipts" are disabled
+* Add self-updater for installations that are *not* installed from either Google Play or F-Droid
+* Update translations
+* Update to core 2.59.0
+
+## v2.58.0
+2026-08
+
+* Add support for reactions in channels
+* Improve reactions details overview
+* Allow channel owners to mute their channel
+* Fix: Mic will stay active during a call when screen is off on Android 14+
+* Fix: allow to pick image without requiring storage permission
+* Fix: avoid overflow with big numbers in badge counters
+* Fix: make video players truly fullscreen
+* Fix: avoid ending search mode when a new message arrive to the chat
+* Fix: Recording now request and respect audio focus
+* Fix: If one relay is connected, assume overall connectivity
+* Show phased out relays in connectivity view as such
+* Sending relay is a per-device setting now
+* Collect call information from all relays
+* Reduce traffic (no unnecessary keys attached to group chats, improve read receipts)
+* Send messages to up to 5 relays
+* Update to core 2.58.0
+
+## v2.57.0
+2026-07
+
+* properly update message views counter for channel owner
+* Fix: Call now tries to reconnect when network changes instead of closing
+* Update to core 2.57.0
+
+## v2.56.0
+2026-07
+
+* Add new experimental "Team Profile" mode in profile creation
+* Update to core 2.56.0
+
+## v2.55.0
+2026-07
+
 * Allow to select multiple files for sending
 * Add notifications for missed calls
+* Video call preview now accurately shows what is sent to remote
+* Enhance display of messages with long links
+* Show in title if an app is still in draft mode
+* Remove "hide relay" option
+* Fix: don't send images pasted from clipboard as sticker
 * Fix: properly hide draft attachment during in-chat search
+* Fix: close mini-apps and chats if they are deleted
+* Fix: cancel in-chat search when back is pressed, instead of directly returning to chatlist
+* Fix: "go to bottom" floating button not appearing sometimes when user jumped to message
+* Fix: incoming call ringtone now respects user's notification channel sound setting instead of the system default
+* Fix: Calls now prioritize headset before earpiece
+* Fix: Calls now respect remote controls (Bluetooth, Auto, etc.)
+* Fix: Call now show a notification for missing mic permission when answered with remote controls
+* Fix: Allow fullscreen image preview on Android 15+
+* Update to core 2.55.0
 
 ## v2.53.0
 2026-06

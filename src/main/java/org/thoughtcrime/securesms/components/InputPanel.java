@@ -321,7 +321,7 @@ public class InputPanel extends ConstraintLayout
         }
       };
 
-  public void onPause() {
+  public void cancelRecording() {
     this.microphoneRecorderView.cancelAction();
     this.videoNoteRecorderView.cancelAction();
   }
@@ -336,6 +336,10 @@ public class InputPanel extends ConstraintLayout
 
   public void finishVideoNoteRecording() {
     this.videoNoteRecorderView.finishAction();
+  }
+
+  public void onPause() {
+    cancelRecording();
   }
 
   public void setEnabled(boolean enabled) {
@@ -584,6 +588,6 @@ public class InputPanel extends ConstraintLayout
   }
 
   public interface MediaListener {
-    void onMediaSelected(@NonNull Uri uri, String contentType);
+    void onMediaSelected(@NonNull Uri uri, String contentType, boolean isSticker);
   }
 }

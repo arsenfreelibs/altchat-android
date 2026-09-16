@@ -79,6 +79,9 @@ public class AccountSelectionListItem extends LinearLayout {
         name = Util.extractNick(self.getAddr());
       }
       addrOrTag = dcContext.getConfig(CONFIG_PRIVATE_TAG);
+      if (TextUtils.isEmpty(addrOrTag) && dcContext.isTeamProfile()) {
+        addrOrTag = getContext().getString(R.string.team);
+      }
       unreadCount = dcContext.getFreshMsgs().length;
       recipient = new Recipient(getContext(), self, name);
       this.contactPhotoImage.setConnectivity(dcContext.getConnectivity());
@@ -123,6 +126,7 @@ public class AccountSelectionListItem extends LinearLayout {
                           ? R.color.unread_count_muted_dark
                           : R.color.unread_count_muted)
                       : R.color.unread_count);
+      String badgeText = Util.humanReadableCount(unreadCount);
       unreadIndicator.setImageDrawable(
           TextDrawable.builder()
               .beginConfig()
@@ -131,7 +135,7 @@ public class AccountSelectionListItem extends LinearLayout {
               .textColor(Color.WHITE)
               .bold()
               .endConfig()
-              .buildRound(String.valueOf(unreadCount), color));
+              .buildRound(badgeText, color));
       unreadIndicator.setVisibility(View.VISIBLE);
     }
   }

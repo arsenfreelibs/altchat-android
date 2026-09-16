@@ -186,6 +186,7 @@
     <string name="menu_send">Enviar</string>
     <string name="menu_toggle_keyboard">Alternar teclado emoji</string>
     <string name="menu_edit_group">Editar grupo</string>
+    <!-- deprecated: "Edit Group" dialog usually also contains the "Group Description" field, use global_menu_edit_desktop instead -->
     <string name="menu_group_name_and_image">Nome e imagem de grupo</string>
     <string name="menu_archive_chat">Arquivar chat</string>
     <string name="menu_unarchive_chat">Desarquivar chat</string>
@@ -238,6 +239,21 @@
         <item quantity="many">Enviar %d ficheiros para %s?</item>
         <item quantity="other">Enviar %d ficheiros para %s?</item>
     </plurals>
+    <!-- the action "to call someone", used as a tooltip for the "phone" icon. not: "the call" -->
+    <string name="start_call">Ligar</string>
+    <!-- the action "to answer" or to "accept" or to "pick up" a call. not: "the answer" -->
+    <string name="answer_call">Atender</string>
+    <!-- the action to end a call -->
+    <string name="end_call2">Desligar Chamada</string>
+    <string name="call_ringing">A chamar...</string>
+    <string name="already_in_call">Já em chamada</string>
+    <string name="call_answered_elsewhere">Chamada atendida noutro dispositivo</string>
+    <string name="call_requires_camera_permission">É necessária a permssão de acesso à câmara para fazer vídeochamadas</string>
+    <string name="call_requires_mic_permission">É necessária a permssão de acesso ao microfone para fazer chamadas</string>
+    <!-- Used e.g. in a notifications to describe an ongoing call. "Call" is a noun here, in the meaning of "This is the call with ..." where the placeholder is replaced by the name of the contact. -->
+    <string name="call_with">Chamada com %1$s</string>
+    <!-- Use e.g. in a notifications during ringing. Placeholder is relaced by the name of the contact being called. -->
+    <string name="calling_person">A chamar %1$s…</string>
     <plurals name="ask_delete_messages">
         <item quantity="one">Apagar %d mensagem?</item>
         <item quantity="many">Apagar %d mensagens?</item>
@@ -331,6 +347,10 @@
     <string name="login_smtp_server">SMTP servidor</string>
     <string name="login_smtp_port">SMTP porto</string>
     <string name="login_smtp_security">SMTP segurança</string>
+    <!-- Hint for the list of relays -->
+    <string name="transport_list_hint">Mensagens são recebidas em todos os relays.\n\n⚠️ Se alterares alguma coisa aqui, confirma que todos os teus dispositivos estão pelo menos na versão 2.47.0. Caso contrário, dispositivos mais desactualizados podem perder mensagens.</string>
+    <!-- deprecated -->
+    <string name="confirm_remove_or_hide_transport_x">Remover relay \"%1$s\"?\n\nContactos que conheçam apenas este relay não serão capazes de te contactar até lhes enviares uma nova mensagem.\n\nEm caso de dúvida, oculta-o em vez de o remover.</string>
     <string name="login_error_mail">Por favor insira um endereço de e-mail válido</string>
     <string name="login_error_server">Por favor insira um servidor ou endereço IP válido</string>
     <string name="login_error_port">Por favor, insira um porto válido (1-65535)</string>

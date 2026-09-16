@@ -1,6 +1,7 @@
 package org.thoughtcrime.securesms.connect;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import chat.delta.rpc.Rpc;
@@ -143,7 +145,6 @@ public class DcHelper {
     dcContext.setStockTranslation(90, context.getString(R.string.reply_noun));
     dcContext.setStockTranslation(91, context.getString(R.string.devicemsg_self_deleted));
     dcContext.setStockTranslation(97, context.getString(R.string.forwarded));
-    dcContext.setStockTranslation(98, context.getString(R.string.devicemsg_storage_exceeding));
     dcContext.setStockTranslation(103, context.getString(R.string.incoming_messages));
     dcContext.setStockTranslation(104, context.getString(R.string.outgoing_messages));
     dcContext.setStockTranslation(107, context.getString(R.string.connectivity_connected));
@@ -152,7 +153,6 @@ public class DcHelper {
     dcContext.setStockTranslation(110, context.getString(R.string.sending));
     dcContext.setStockTranslation(111, context.getString(R.string.last_msg_sent_successfully));
     dcContext.setStockTranslation(112, context.getString(R.string.error_x));
-    dcContext.setStockTranslation(113, context.getString(R.string.not_supported_by_provider));
     dcContext.setStockTranslation(114, context.getString(R.string.messages));
     dcContext.setStockTranslation(116, context.getString(R.string.part_of_total_used));
     dcContext.setStockTranslation(117, context.getString(R.string.secure_join_started));
@@ -215,6 +215,10 @@ public class DcHelper {
     dcContext.setStockTranslation(176, context.getString(R.string.reaction_by_you));
     dcContext.setStockTranslation(177, context.getString(R.string.reaction_by_other));
     dcContext.setStockTranslation(178, context.getString(R.string.member_x_removed));
+    dcContext.setStockTranslation(179, context.getString(R.string.remove_you_by_other));
+    dcContext.setStockTranslation(180, context.getString(R.string.add_you_by_other));
+    dcContext.setStockTranslation(181, context.getString(R.string.member_you_removed));
+    dcContext.setStockTranslation(182, context.getString(R.string.member_you_added));
     dcContext.setStockTranslation(190, context.getString(R.string.secure_join_wait));
     dcContext.setStockTranslation(193, context.getString(R.string.donate_device_msg));
     dcContext.setStockTranslation(196, context.getString(R.string.declined_call));
@@ -357,14 +361,35 @@ public class DcHelper {
     activity.startActivity(intent);
   }
 
+  public static boolean canInstallApks(Activity activity) {
+    return Build.VERSION.SDK_INT < Build.VERSION_CODES.O
+        || activity.getPackageManager().canRequestPackageInstalls();
+  }
+
+  @RequiresApi(api = Build.VERSION_CODES.O)
+  public static void requestInstallApksPermission(Activity activity) {
+    activity.startActivity(
+        new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
+            .setData(Uri.parse(String.format("package:%s", activity.getPackageName()))));
+  }
+
+  public static void installApk(Activity activity, Uri apkUri) {
+    Intent intent = new Intent(Intent.ACTION_VIEW);
+    intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+    try {
+      startActivity(activity, intent);
+    } catch (ActivityNotFoundException e) {
+      Log.i(TAG, "no installer found", e);
+      Toast.makeText(activity, R.string.no_app_to_handle_data, Toast.LENGTH_LONG).show();
+    }
+  }
+
   private static void startActivity(Activity activity, Intent intent) {
     // request for permission to install apks on API 26+ if intent mimetype is an apk
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-        && "application/vnd.android.package-archive".equals(intent.getType())
-        && !activity.getPackageManager().canRequestPackageInstalls()) {
-      activity.startActivity(
-          new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
-              .setData(Uri.parse(String.format("package:%s", activity.getPackageName()))));
+    if ("application/vnd.android.package-archive".equals(intent.getType())
+        && !canInstallApks(activity)) {
+      requestInstallApksPermission(activity);
       return;
     }
     activity.startActivity(intent);

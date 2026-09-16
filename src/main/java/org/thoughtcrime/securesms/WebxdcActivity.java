@@ -1,6 +1,8 @@
 package org.thoughtcrime.securesms;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -53,23 +55,27 @@ import org.json.JSONObject;
 import org.thoughtcrime.securesms.connect.AccountManager;
 import org.thoughtcrime.securesms.connect.DcEventCenter;
 import org.thoughtcrime.securesms.connect.DcHelper;
+import org.thoughtcrime.securesms.permissions.LocalNetworkPermission;
+import org.thoughtcrime.securesms.permissions.Permissions;
 import org.thoughtcrime.securesms.util.IntentUtils;
 import org.thoughtcrime.securesms.util.JsonUtils;
 import org.thoughtcrime.securesms.util.MediaUtil;
+import org.thoughtcrime.securesms.util.Prefs;
 import org.thoughtcrime.securesms.util.Util;
 
 public class WebxdcActivity extends WebViewActivity implements DcEventCenter.DcEventDelegate {
   private static final String TAG = "WebxdcActivity";
   private static final String EXTRA_ACCOUNT_ID = "accountId";
+  private static final String EXTRA_CHAT_ID = "chatId";
   private static final String EXTRA_APP_MSG_ID = "appMessageId";
   private static final String EXTRA_HIDE_ACTION_BAR = "hideActionBar";
   private static final String EXTRA_HREF = "href";
   private static final int REQUEST_CODE_FILE_PICKER = 51426;
-  private static long lastOpenTime = 0;
 
   private ValueCallback<Uri[]> filePathCallback;
   private DcContext dcContext;
   private Rpc rpc;
+  private int chatId;
   private DcMsg dcAppMsg;
   private String baseURL;
   private String sourceCodeUrl = "";
@@ -102,7 +108,7 @@ public class WebxdcActivity extends WebViewActivity implements DcEventCenter.DcE
         return;
       }
     }
-    openWebxdcActivity(context, msgId, true, "");
+    openWebxdcActivity(context, msgId, chatId, true, "");
   }
 
   public static void openWebxdcActivity(Context context, DcMsg instance) {
@@ -110,22 +116,23 @@ public class WebxdcActivity extends WebViewActivity implements DcEventCenter.DcE
   }
 
   public static void openWebxdcActivity(Context context, @NonNull DcMsg instance, String href) {
-    openWebxdcActivity(context, instance.getId(), false, href);
+    openWebxdcActivity(context, instance.getId(), instance.getChatId(), false, href);
   }
 
   public static void openWebxdcActivity(
-      Context context, int msgId, boolean hideActionBar, String href) {
+      Context context, int msgId, int chatId, boolean hideActionBar, String href) {
     if (!Util.isClickedRecently()) {
-      context.startActivity(getWebxdcIntent(context, msgId, hideActionBar, href));
+      context.startActivity(getWebxdcIntent(context, msgId, chatId, hideActionBar, href));
     }
   }
 
   private static Intent getWebxdcIntent(
-      Context context, int msgId, boolean hideActionBar, String href) {
+      Context context, int msgId, int chatId, boolean hideActionBar, String href) {
     DcContext dcContext = DcHelper.getContext(context);
     Intent intent = new Intent(context, WebxdcActivity.class);
     intent.setAction(Intent.ACTION_VIEW);
     intent.putExtra(EXTRA_ACCOUNT_ID, dcContext.getAccountId());
+    intent.putExtra(EXTRA_CHAT_ID, chatId);
     intent.putExtra(EXTRA_APP_MSG_ID, msgId);
     intent.putExtra(EXTRA_HIDE_ACTION_BAR, hideActionBar);
     intent.putExtra(EXTRA_HREF, href);
@@ -135,17 +142,28 @@ public class WebxdcActivity extends WebViewActivity implements DcEventCenter.DcE
   private static Intent[] getWebxdcIntentWithParentStack(Context context, int msgId) {
     DcContext dcContext = DcHelper.getContext(context);
 
+    int chatId = dcContext.getMsg(msgId).getChatId();
     final Intent chatIntent =
         new Intent(context, ConversationActivity.class)
-            .putExtra(ConversationActivity.CHAT_ID_EXTRA, dcContext.getMsg(msgId).getChatId())
+            .putExtra(ConversationActivity.CHAT_ID_EXTRA, chatId)
             .setAction(Intent.ACTION_VIEW);
 
-    final Intent webxdcIntent = getWebxdcIntent(context, msgId, false, "");
+    final Intent webxdcIntent = getWebxdcIntent(context, msgId, chatId, false, "");
 
     return TaskStackBuilder.create(context)
         .addNextIntentWithParentStack(chatIntent)
         .addNextIntent(webxdcIntent)
         .getIntents();
+  }
+
+  private String buildBootstrapUrl(boolean blockedByHolder, String encodedHref) {
+    return this.baseURL
+        + "/webxdc_bootstrap324567869.html?i="
+        + (internetAccess ? "1" : "0")
+        + "&h="
+        + (blockedByHolder ? "1" : "0")
+        + "&href="
+        + encodedHref;
   }
 
   @Override
@@ -191,12 +209,6 @@ public class WebxdcActivity extends WebViewActivity implements DcEventCenter.DcE
           }
         });
 
-    DcEventCenter eventCenter =
-        DcHelper.getEventCenter(WebxdcActivity.this.getApplicationContext());
-    eventCenter.addObserver(DcContext.DC_EVENT_WEBXDC_STATUS_UPDATE, this);
-    eventCenter.addObserver(DcContext.DC_EVENT_MSGS_CHANGED, this);
-    eventCenter.addObserver(DcContext.DC_EVENT_WEBXDC_REALTIME_DATA, this);
-
     int appMessageId = b.getInt(EXTRA_APP_MSG_ID);
     int accountId = b.getInt(EXTRA_ACCOUNT_ID);
     this.dcContext = DcHelper.getContext(getApplicationContext());
@@ -211,6 +223,15 @@ public class WebxdcActivity extends WebViewActivity implements DcEventCenter.DcE
       finish();
       return;
     }
+    chatId = b.getInt(EXTRA_CHAT_ID, dcAppMsg.getChatId());
+
+    DcEventCenter eventCenter =
+        DcHelper.getEventCenter(WebxdcActivity.this.getApplicationContext());
+    eventCenter.addObserver(DcContext.DC_EVENT_WEBXDC_STATUS_UPDATE, this);
+    eventCenter.addObserver(DcContext.DC_EVENT_MSGS_CHANGED, this);
+    eventCenter.addObserver(DcContext.DC_EVENT_MSG_DELETED, this);
+    eventCenter.addObserver(DcContext.DC_EVENT_CHAT_DELETED, this);
+    eventCenter.addObserver(DcContext.DC_EVENT_WEBXDC_REALTIME_DATA, this);
 
     // `msg_id` in the subdomain makes sure, different apps using same files do not share the same
     // cache entry
@@ -265,23 +286,28 @@ public class WebxdcActivity extends WebViewActivity implements DcEventCenter.DcE
     } catch (UnsupportedEncodingException e) {
       e.printStackTrace();
     }
+    final String finalEncodedHref = encodedHref;
 
-    long timeDelta = System.currentTimeMillis() - lastOpenTime;
-    final String url =
-        this.baseURL
-            + "/webxdc_bootstrap324567869.html?i="
-            + (internetAccess ? "1" : "0")
-            + "&href="
-            + encodedHref;
-    Util.runOnAnyBackgroundThread(
-        () -> {
-          if (timeDelta < 2000) {
-            // this is to avoid getting stuck in the FILL500 in some devices if the
-            // previous webview was not destroyed yet and a new app is opened too soon
-            Util.sleep(1000);
-          }
-          Util.runOnMain(() -> webView.loadUrl(url));
-        });
+    if (internetAccess) {
+      webView.loadUrl(buildBootstrapUrl(false, finalEncodedHref));
+    } else {
+      // Wait until the state of the RTCPeerConnection budget is settled.
+      final WebRtcHolder holder = WebRtcHolder.getInstance(this);
+      holder.awaitSettled(
+          () -> {
+            if (isFinishing() || isDestroyed() || webView == null) {
+              return;
+            }
+            if (!holder.isSettled()) {
+              Log.e(TAG, "Cannot block WebRTC (" + holder.getState() + "), refusing to load");
+              finish();
+              return;
+            }
+            webView.loadUrl(
+                buildBootstrapUrl(
+                    holder.getState() == WebRtcHolder.State.CONFIRMED, finalEncodedHref));
+          });
+    }
 
     Util.runOnAnyBackgroundThread(
         () -> {
@@ -308,7 +334,6 @@ public class WebxdcActivity extends WebViewActivity implements DcEventCenter.DcE
 
   @Override
   protected void onDestroy() {
-    lastOpenTime = System.currentTimeMillis();
     DcHelper.getEventCenter(this.getApplicationContext()).removeObservers(this);
     leaveRealtimeChannel();
     tts.shutdown();
@@ -321,6 +346,9 @@ public class WebxdcActivity extends WebViewActivity implements DcEventCenter.DcE
     menu.clear();
     this.getMenuInflater().inflate(R.menu.webxdc, menu);
     menu.findItem(R.id.source_code).setVisible(!sourceCodeUrl.isEmpty());
+    boolean isDraft = dcAppMsg.getState() == DcMsg.DC_STATE_OUT_DRAFT;
+    menu.findItem(R.id.menu_add_to_home_screen).setVisible(!isDraft);
+    menu.findItem(R.id.show_in_chat).setVisible(!isDraft);
     return true;
   }
 
@@ -510,12 +538,23 @@ public class WebxdcActivity extends WebViewActivity implements DcEventCenter.DcE
               Log.e(TAG, "RPC Error", e);
             }
           });
+    } else if ((eventId == DcContext.DC_EVENT_MSG_DELETED
+            && event.getData2Int() == dcAppMsg.getId())
+        || (eventId == DcContext.DC_EVENT_CHAT_DELETED && event.getData1Int() == chatId)) {
+      finish();
     }
   }
 
   private void updateTitleAndMenu(WebxdcMessageInfo info, DcChat chat) {
-    final String docName = TextUtils.isEmpty(info.document) ? info.name : info.document;
-    getSupportActionBar().setTitle(docName + " – " + chat.getName());
+    final String title;
+    if (dcAppMsg.getState() == DcMsg.DC_STATE_OUT_DRAFT) {
+      title = getString(R.string.draft);
+    } else {
+      final String docName = TextUtils.isEmpty(info.document) ? info.name : info.document;
+      title = docName + " – " + chat.getName();
+    }
+    getSupportActionBar().setTitle(title);
+
     String currSourceCodeUrl = info.sourceCodeUrl != null ? info.sourceCodeUrl : "";
     if (!sourceCodeUrl.equals(currSourceCodeUrl)) {
       sourceCodeUrl = currSourceCodeUrl;
@@ -608,13 +647,39 @@ public class WebxdcActivity extends WebViewActivity implements DcEventCenter.DcE
   }
 
   private void leaveRealtimeChannel() {
-    int accountId = dcContext.getAccountId();
-    int msgId = dcAppMsg.getId();
-    try {
-      rpc.leaveWebxdcRealtime(accountId, msgId);
-    } catch (RpcException e) {
-      e.printStackTrace();
-    }
+    final Rpc rpc = this.rpc;
+    final int accountId = dcContext.getAccountId();
+    final int msgId = dcAppMsg.getId();
+    Util.runOnAnyBackgroundThread(
+        () -> {
+          try {
+            rpc.leaveWebxdcRealtime(accountId, msgId);
+          } catch (RpcException e) {
+            e.printStackTrace();
+          }
+        });
+  }
+
+  @NonNull
+  private Runnable getAdvertise() {
+    final int accountId = WebxdcActivity.this.dcContext.getAccountId();
+    final int msgId = WebxdcActivity.this.dcAppMsg.getId();
+    return () ->
+        Util.runOnAnyBackgroundThread(
+            () -> {
+              try {
+                this.rpc.sendWebxdcRealtimeAdvertisement(accountId, msgId);
+              } catch (RpcException e) {
+                e.printStackTrace();
+              }
+            });
+  }
+
+  @Override
+  public void onRequestPermissionsResult(
+      int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    Permissions.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
   }
 
   class InternalJSApi {
@@ -715,18 +780,37 @@ public class WebxdcActivity extends WebViewActivity implements DcEventCenter.DcE
       }
     }
 
-    /**
-     * @noinspection unused
-     */
     @JavascriptInterface
     public void sendRealtimeAdvertisement() {
-      int accountId = WebxdcActivity.this.dcContext.getAccountId();
-      int msgId = WebxdcActivity.this.dcAppMsg.getId();
-      try {
-        WebxdcActivity.this.rpc.sendWebxdcRealtimeAdvertisement(accountId, msgId);
-      } catch (RpcException e) {
-        e.printStackTrace();
-      }
+      final Runnable doAdvertise = getAdvertise();
+
+      Util.runOnMain(
+          () -> {
+            if (isFinishing() || isDestroyed()) {
+              return;
+            }
+            if (!LocalNetworkPermission.isNeeded()
+                || LocalNetworkPermission.hasPermission(WebxdcActivity.this)
+                || Prefs.getBooleanPreference(
+                    WebxdcActivity.this, Prefs.ASKED_FOR_LOCAL_NETWORK_PERMISSION, false)) {
+              doAdvertise.run();
+              return;
+            }
+            Prefs.setBooleanPreference(
+                WebxdcActivity.this, Prefs.ASKED_FOR_LOCAL_NETWORK_PERMISSION, true);
+            new AlertDialog.Builder(WebxdcActivity.this)
+                .setMessage(R.string.perm_explain_local_network_denied)
+                .setPositiveButton(R.string.perm_continue, null)
+                .setOnDismissListener(
+                    d ->
+                        Permissions.with(WebxdcActivity.this)
+                            .request(Manifest.permission.ACCESS_LOCAL_NETWORK)
+                            .ifNecessary()
+                            .onAllGranted(doAdvertise)
+                            .onAnyDenied(doAdvertise)
+                            .execute())
+                .show();
+          });
     }
 
     /**

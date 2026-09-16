@@ -26,10 +26,11 @@ scripts/check-upstream.sh
 [ ] 2. Rust: проверить брендинг (grep), починить если нужно
 [ ] 3. Rust: push origin develop
 [ ] 4. Android: обновить submodule pointer → git add + commit
-[ ] 5. Android: пересобрать .so (scripts/ndk-make.sh)
-[ ] 6. Android: fetch + merge upstream/main в origin/main
-[ ] 7. Android: проверить брендинг (grep), починить если нужно
-[ ] 8. Android: push origin main
+[ ] 5. Android: fetch + merge upstream/main в origin/main
+[ ] 6. Android: пересобрать .so (scripts/ndk-make.sh) — ТОЛЬКО после мержа android:
+       jni/dc_wrapper.c — файл upstream и должен соответствовать новому deltachat.h
+[ ] 7. Android: проверить брендинг (grep) + ./gradlew spotlessApply compileFossDebugJavaWithJavac compileGplayDebugJavaWithJavac testFossDebugUnitTest
+[ ] 8. Android: push origin main (и обновить сабмодуль в iOS-форке)
 ```
 
 Детальные команды — в секциях ниже.
@@ -58,7 +59,14 @@ scripts/check-upstream.sh
 **Do NOT change:**
 - `github.com/deltachat/` links (source code references)
 - Rust crate names (`deltachat`, `deltachat-rpc-server`)
-- `i.delta.chat` protocol invitation links (used in QR/invite flow)
+- **IMAP ID `("name", "Delta Chat")`** в rust `imap/client.rs` — идентификатор клиента для сервера.
+- **Default ICE-серверы** `nine.testrun.org` / `turn.delta.chat` в rust `calls.rs` — рабочая инфраструктура звонков; менять только когда будет свой STUN/TURN.
+- **`NOTIFIERS_PUBLIC_KEY` в rust `push.rs`** — это НАШ ключ для `notifications.alt-to.online`, отличается от upstream. Взять upstream-версию файла целиком = сломать push. Проверять после каждого мержа.
+- Логтеги и тестовые фикстуры с "Delta Chat" (rust `*_tests.rs`, `e2ee.rs`, `dehtml.rs` …) — не пользовательские.
+
+**Инвайт-ссылки:** форк использует `https://alt-chat.me/#…` вместо `https://i.delta.chat/#…` (rust `securejoin.rs`, `qr.rs`, Android `AndroidManifest.xml` host). Это согласованное решение, при мерже сохранять наш домен, но брать новые параметры upstream (например `{r_param}`).
+
+**Известное расхождение:** в `strings.xml` (34 локали, ~90 строк) используется домен `alt.chat` / `get.alt.chat` (ранний наивный sed), а канонический домен — `alt-chat.me`. Решение о единой замене отложено.
 - HTML anchor IDs like `#what-is-delta-chat`
 - **IMAP folder name `"DeltaChat"`** (rust `imap.rs` `if folder == "DeltaChat"`, `sql/migrations.rs` default `$.imap.folder`) — server-side mvbox folder, NOT user-facing. Renaming orphans existing users' messages and breaks cross-client sync (iOS/desktop/upstream all move mail to/from this exact folder name).
 - Logcat tags `Log.x("DeltaChat", …)` and wake-lock tag `DeltaChat:ProximityLock` — internal, never shown to users.
@@ -106,6 +114,13 @@ git -C jni/deltachat-core-rust push origin develop
 | `src/imex.rs` | "newer version of Delta Chat" + test assertions → "Alt Chat" |
 | `src/webxdc.rs` | "requires a newer Delta Chat version" → "Alt Chat version" |
 | `src/qr/dclogin_scheme.rs` | "DeltaChat does not understand this QR Code" → "Alt Chat" |
+| `src/tools.rs` | "bug in the Delta Chat core" → "Alt Chat core" (появилось upstream 2026-08) |
+| `src/mimeparser.rs` | "re-installed Delta Chat … re-setup Delta Chat" → "Alt Chat" |
+| `src/imap.rs` | "Please report this bug to …" → `child.aplic@gmail.com` (без точки в конце, как у upstream) |
+| `src/securejoin.rs` | хост инвайт-ссылок → `https://alt-chat.me/#`, параметры upstream сохранить |
+| `src/stock_str.rs` | `get.delta.chat` → `get.alt-chat.me`, `delta.chat/donate` → `alt-chat.me/donate` |
+| `src/webxdc/webxdc_tests.rs`, `src/receive_imf/receive_imf_tests.rs`, `src/imex.rs` (тесты) | assert'ы должны ждать "Alt Chat" |
+| `src/contact/contact_tests.rs` | `test_get_contacts`: форк ищет по адресу как подстроке (`alice@` → 1), upstream ждёт 0 — оставлять ожидание форка |
 
 ---
 
@@ -138,17 +153,38 @@ git merge upstream/main
 # 3. Conflict resolution strategy:
 
 #    ALWAYS use --ours (keep ours):
-#    - src/main/res/values*/strings.xml  (all language variants)
 #    - src/main/assets/help/**/*.html
 #    - jni/deltachat-core-rust  (submodule pointer)
 #    - build.gradle versionCode/versionName (we use our own versioning)
+#
+#    strings.xml — НЕ file-level --ours (теряются новые ключи upstream → R.string.* не компилируется):
+#    1) в конфликтных хунках взять upstream (theirs), 2) scripts/merge/rebrand-strings.py по ВСЕМ
+#    values*/strings.xml (авто-смерженные переводы приносят "Delta Chat" обратно),
+#    3) scripts/merge/restore-fork-strings.py — возвращает наши ключи (alt_*, tos_*, пасскод…),
+#    выпавшие вместе с хунками, 4) проверить дубли name= (aapt падает на дублях).
 
 #    HYBRID merge (take upstream improvements + keep our features):
 #    - ConversationActivity.java  → keep cancelAudioNoteAutoFinish()
 #    - ConversationListFragment.java → keep filteredIndices/queryFilter/filterBar logic
 #    - InputPanel.java → keep recordingDotView fadeout
 #    - AudioView.java → take upstream improvements, check for updateTimestampsAndSeekBar
-#    - AudioPlaybackViewModel.java → take upstream media stop/clear
+#    - AudioPlaybackViewModel.java → take upstream media stop/clear; ОДИН cyclePlaybackSpeed():
+#      upstream-версия, но через наш setPlaybackSpeed() (мини-плеер читает скорость из AudioPlaybackState)
+#    - AudioView.java + audio_view.xml → наша WaveformView (SeekBar upstream НЕ брать), плюс
+#      upstream speed-кнопка/recording-state/footer; applyRecordingState → waveformView.setTouchEnabled
+#    - activity_call.xml → наша раскладка (glow, rings, center_info_block); upstream ссылается на
+#      @id/top_bar и caller_icon_container, которых у нас нет → их хунки не брать
+#    - CallActivity.java → оба: наши glow/dots/timer/updateButtonBackground + upstream setupAccessibility
+#      (следить за закрывающей скобкой между методами)
+#    - CallCoordinator.java / CallViewModel.java → upstream (сессии, telecom, реконнект); наш
+#      hasAnsweredLocally-guard от multi-device echo убран в мерже 2026-09
+#    - Prefs.isReliableService() → наша версия (default ON)
+#    - AudioRecorder.java → upstream + наш guard "size == 0 → discard"
+#    - InputPanel.java → наш videoNoteListener + upstream переименование onPause()→cancelRecording()
+#    - updater/AppUpdate.java → SELF_UPDATE_SUPPORTED = false (self-updater upstream отключён:
+#      у нас свой util/update/AppUpdateChecker)
+#    - build.gradle → androidComponents-блок с заменой на "altchat", camerax/navigation наши,
+#      desugaring/zxing от upstream
 
 # 4. After merge: scan for branding leaks (see above)
 

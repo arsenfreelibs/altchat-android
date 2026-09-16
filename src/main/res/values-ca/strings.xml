@@ -198,6 +198,9 @@
     <string name="contact">Contacte</string>
     <string name="bot">Bot</string>
     <string name="camera">Càmera</string>
+    <string name="front_camera">Càmera frontal</string>
+    <string name="back_camera">Càmera darrera</string>
+    <string name="microphone">Micrófon</string>
     <!-- As in "start a video recording" or "take a photo"; eg. the description of the "shutter button" in cameras -->
     <string name="capture">Captura</string>
     <string name="switch_camera">Canvia la càmera</string>
@@ -279,6 +282,7 @@
     <string name="menu_send">Envia</string>
     <string name="menu_toggle_keyboard">Canvia al teclat d\'emojis</string>
     <string name="menu_edit_group">Edita el grup</string>
+    <!-- deprecated: "Edit Group" dialog usually also contains the "Group Description" field, use global_menu_edit_desktop instead -->
     <string name="menu_group_name_and_image">Nom i imatge del grup</string>
     <string name="menu_show_global_map">Totes les ubicacions</string>
     <string name="menu_archive_chat">Arxiva el xat</string>
@@ -443,6 +447,18 @@
     <!-- the first placeholder will be replaced by a date, the second placeholder by duration, example: "Thu, 08:12 pm, 2 minutes" -->
     <string name="call_date_and_duration">%1$s, %2$s</string>
     <string name="already_in_call">En una trucada</string>
+    <string name="call_back">Torna la trucada</string>
+    <string name="call_answered_elsewhere">Trucada agafada en un altre dispositiu</string>
+    <string name="call_requires_camera_permission">Permís de Càmera és necessari per a video trucades</string>
+    <string name="call_requires_mic_permission">Permís de Micrófon necessari per a trucades.</string>
+    <string name="call_grant_mic_permission">Prem per donar accés al micrófon</string>
+    <string name="call_requires_connection">No es pot iniciar la trucada. Assegura\'t que el teu dispositiu té connexió a internet i torna-ho a intentar.</string>
+    <!-- Used e.g. in a notifications to describe an ongoing call. "Call" is a noun here, in the meaning of "This is the call with ..." where the placeholder is replaced by the name of the contact. -->
+    <string name="call_with">Truca amb %1$s</string>
+    <!-- Use e.g. in a notifications during ringing. Placeholder is relaced by the name of the contact being called. -->
+    <string name="calling_person">Trucant %1$s…</string>
+    <string name="audio_output">Sortida d\'àudio</string>
+
     <!-- get confirmations -->
     <!-- confirmation for leaving groups or channels. If a subject is needed, "Are you sure you want to leave the chat?" would work as well -->
     <string name="ask_leave_group">Segur que vols sortir?</string>
@@ -649,7 +665,7 @@
     <!-- Secondary, link-like button to open a page with other possible instances -->
     <string name="instant_onboarding_show_more_instances">Usa un altre servidor</string>
     <string name="instant_onboarding_other_server">Llista els servidors chatmail</string>
-    <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by the group name -->
+    <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by the group or channel name -->
     <string name="instant_onboarding_group_info">Creeu un perfil per unir-vos al grup \"%1$s\".</string>
     <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by contact name -->
     <string name="instant_onboarding_contact_info">Crea un perfil per a xatejar amb %1$s</string>
@@ -657,6 +673,12 @@
     <string name="instant_onboarding_confirm_contact">Voleu crear un perfil nou i començar a xatejar amb %1$s?</string>
     <!-- Question shown when group's/channel's QR code is scanned from onboarding screen -->
     <string name="instant_onboarding_confirm_group">Voleu crear un perfil nou i unir-vos al grup de xat «%1$s»?</string>
+
+    <string name="team">Equip</string>
+    <string name="team_profile">Perfil d\'equip</string>
+    <string name="team_profile_explain">Un \"perfil d\'equip\" és gestionat col·lectivament per un grup de persones o una organització.\n\n⚠️ Els perfils d\'equip són experimentals i poden canviar o ser esborrats en un futur.</string>
+    <string name="team_name">Nom de l\'equip</string>
+    <string name="create_team_profile">Crea perfil d\'equi</string>
 
     <string name="welcome_chat_over_email">Xat segur i descentralitzat</string>
     <string name="scan_invitation_code">Escaneja el Codi d\'Invitació</string>
@@ -694,7 +716,9 @@
     <string name="remove_transport">Elimina Retransmissors</string>
     <string name="edit_transport">Edita Retransmissor</string>
     <string name="used_for_sending">Utilitzat per enviar</string>
+    <!-- deprecated -->
     <string name="hide_from_contacts">Amagar als contactes</string>
+    <!-- deprecated -->
     <string name="hidden_from_contacts">Amagat als contactes</string>
     <!-- Hint for the list of relays -->
     <string name="transport_list_hint">Els missatges es reben en tots els retransmissors.  ⚠️ Si canvies qualsevol cosa aquí, assegura\'t que tots els teus dispositius funcionin com a mínim amb la versió 2.47.0. Sinó, els dispositius més antics podrien no rebre els missatges.</string>
@@ -702,6 +726,8 @@
     <string name="confirm_add_transport">Afegir aquest retransmissor?</string>
     <string name="invalid_transport_qr">El codi QR escanejat no conté un retransmissor vàlid.</string>
     <!-- placeholder will be replaced by a relay server name -->
+    <string name="confirm_remove_relay_x">Esborrar retransmissor \"%1$s\"?</string>
+    <!-- deprecated -->
     <string name="confirm_remove_or_hide_transport_x">Esborrar el retransmissor \"%1$s\"?\n\nEls contactes que només coneixen aquest retransmissor no et podran contactar fins que els escriguis de nou.\n\nSi no ho tens clar, amaga\'l enlloc d\'esborrar-lo.</string>
     <string name="login_certificate_checks">El certificat coincideix</string>
     <string name="login_error_mail">Si us plau poseu una adreça d\'email vàlida</string>
@@ -739,6 +765,7 @@
     <!-- first placeholder is replaced by the number of files (always 2 or more); second placeholder is replaced by a chat name -->
     <string name="ask_send_files_to_chat">Voleu enviar %1$d fitxers a \"%2$s\"?</string>
     <string name="ask_send_files_to_selected_chats">Voleu enviar %1$d fitxer(s) a %2$d xats?</string>
+    <!-- deprecated -->
     <string name="videos_sent_without_recoding">(Els vídeos s\'envien en el format original, fitxers grans. Per a enviar vídeos en fitxers més petits, adjunteu-los per separat)</string>
     <string name="share_text_multiple_chats">Voleu enviar aquest text a %1$d xats?\n\n«%2$s»</string>
     <string name="share_abort">S\'ha avortat la compartició per falta de permisos.</string>
@@ -916,16 +943,22 @@
     <string name="chat_description_changed_by_other">Descripció del xat modificada per %1$s.</string>
     <!-- %1$s will be replaced by name of the contact added to the group -->
     <string name="member_x_added">S\'ha afegit el membre %1$s.</string>
+    <string name="member_you_added">T\'han afegit.</string>
     <!-- %1$s will be replaced by name of the contact added to the group -->
     <string name="add_member_by_you">Heu afegit el membre %1$s.</string>
     <!-- %1$s will be replaced by name of the contact added to the group, %2$s will be replaced by name of the contact who did the action -->
     <string name="add_member_by_other">Membre %1$s afegit per %2$s.</string>
+    <!-- %1$s will be replaced by name of the contact who did the action -->
+    <string name="add_you_by_other">%1$s t\'ha afegit.</string>
     <!-- %1$s will be replaced by name of the contact removed from the group -->
     <string name="remove_member_by_you">Heu eliminat el membre %1$s.</string>
     <!-- %1$s will be replaced by name of the contact removed from the group, %2$s will be replaced by name of the contact who did the action -->
     <string name="remove_member_by_other">Membre %1$s eliminat per %2$s.</string>
+    <!-- %1$s will be replaced by name of the contact who did the action -->
+    <string name="remove_you_by_other">%1$s t\'ha expulsat.</string>
     <!-- %1$s will be replaced by name of the contact removed from the group; this string is used when it's unclear who did the action -->
     <string name="member_x_removed">Membre %1$s eliminat.</string>
+    <string name="member_you_removed">Has estat expulsat.</string>
     <!-- "left" in the meaning of "exited". -->
     <string name="group_left_by_you">Heu abandonat el grup.</string>
     <!-- "left" in the meaning of "exited". -->
@@ -1090,7 +1123,7 @@
     <string name="global_menu_preferences_language_desktop">Trieu l\'idioma...</string>
     <string name="global_menu_file_desktop">Arxiva</string>
     <string name="global_menu_file_quit_desktop">Surt</string>
-    <string name="global_menu_edit_desktop">Modifica</string>
+    <string name="global_menu_edit_desktop">Edita</string>
     <string name="global_menu_edit_undo_desktop">Desfés</string>
     <string name="global_menu_edit_redo_desktop">Refés</string>
     <string name="global_menu_edit_cut_desktop">Retalla</string>

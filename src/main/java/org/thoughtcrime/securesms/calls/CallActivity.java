@@ -8,6 +8,7 @@ import android.app.PictureInPictureParams;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -48,6 +49,7 @@ import org.thoughtcrime.securesms.BuildConfig;
 import org.thoughtcrime.securesms.EglUtils;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.passcode.PasscodeManager;
+import org.thoughtcrime.securesms.permissions.LocalNetworkPermission;
 import org.thoughtcrime.securesms.util.Prefs;
 import org.webrtc.RendererCommon;
 import org.webrtc.SurfaceViewRenderer;
@@ -61,12 +63,12 @@ public class CallActivity extends AppCompatActivity {
   private static final int MIC_PERMISSION_REQUEST_CODE = 1001;
   private static final int CAMERA_PERMISSION_REQUEST_CODE = 1002;
   private static final int CAMERA_MID_CALL_PERMISSION_REQUEST_CODE = 1003;
+  private static final int LOCAL_NETWORK_PERMISSION_REQUEST_CODE = 1004;
 
   public static final String ACTION_ANSWER_CALL = BuildConfig.APPLICATION_ID + ".ANSWER_CALL";
   public static final String ACTION_DECLINE_CALL = BuildConfig.APPLICATION_ID + ".DECLINE_CALL";
   public static final String ACTION_HANGUP_CALL = BuildConfig.APPLICATION_ID + ".HANGUP_CALL";
   public static final String ACTION_CALL_BACK = BuildConfig.APPLICATION_ID + ".CALL_BACK";
-  public static final String ACTION_MESSAGE = BuildConfig.APPLICATION_ID + ".MESSAGE";
   public static final String EXTRA_STARTS_WITH_VIDEO = "starts_with_video";
 
   // Views
@@ -121,6 +123,7 @@ public class CallActivity extends AppCompatActivity {
   private boolean pausedWhileAwaitingPermission = false;
   private boolean intentHandled = false;
   private boolean doNotAutoFinish = false;
+  private boolean localNetworkAsked = false;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -128,15 +131,9 @@ public class CallActivity extends AppCompatActivity {
 
     // Destructive actions need nothing
     String action = getIntent() != null ? getIntent().getAction() : null;
-    if (ACTION_DECLINE_CALL.equals(action)) {
-      Log.d(TAG, "Handling DECLINE_CALL action from notification");
-      CallCoordinator.getInstance(getApplication()).declineCall();
-      finish();
-      return;
-    }
-    if (ACTION_HANGUP_CALL.equals(action)) {
-      Log.d(TAG, "Handling HANGUP_CALL action from notification");
-      CallCoordinator.getInstance(getApplication()).hangUp();
+    if (ACTION_DECLINE_CALL.equals(action) || ACTION_HANGUP_CALL.equals(action)) {
+      Log.d(TAG, "Handling " + action + " action from notification");
+      CallCoordinator.getInstance(getApplication()).endCall(false);
       finish();
       return;
     }
@@ -152,6 +149,8 @@ public class CallActivity extends AppCompatActivity {
     setContentView(R.layout.activity_call);
 
     setupWindowFlags();
+
+    setVolumeControlStream(AudioManager.STREAM_VOICE_CALL);
 
     initializeViews();
 
@@ -198,6 +197,11 @@ public class CallActivity extends AppCompatActivity {
       return;
     }
 
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CINNAMON_BUN
+        && maybeAskLocalNetworkPermission()) {
+      return;
+    }
+
     handleIntents(getIntent());
     intentHandled = true;
   }
@@ -212,24 +216,12 @@ public class CallActivity extends AppCompatActivity {
     String action = intent.getAction();
     Log.d(TAG, "handleIntents: action=" + action);
 
-    // Destructive actions without ViewModel
-    if (ACTION_DECLINE_CALL.equals(action)) {
-      Log.d(TAG, "Handling DECLINE_CALL action");
+    if (ACTION_DECLINE_CALL.equals(action) || ACTION_HANGUP_CALL.equals(action)) {
+      Log.d(TAG, "Handling " + action + " action");
       if (viewModel != null) {
-        viewModel.handleNotificationDecline();
+        viewModel.endCall();
       } else {
-        coordinator.declineCall();
-      }
-      finish();
-      return;
-    }
-
-    if (ACTION_HANGUP_CALL.equals(action)) {
-      Log.d(TAG, "Handling HANGUP_CALL action");
-      if (viewModel != null) {
-        viewModel.handleNotificationHangup();
-      } else {
-        coordinator.hangUp();
+        coordinator.endCall(false);
       }
       finish();
       return;
@@ -257,6 +249,16 @@ public class CallActivity extends AppCompatActivity {
       Log.d(TAG, "Starting outgoing call");
       coordinator.ensureServiceStarted();
       viewModel.startOutgoingCallWhenReady();
+    } else if (coordinator.isAnswerInProgress()) {
+      if (!hasMicrophonePermission()) {
+        Log.d(TAG, "Headset answered but mic permission missing");
+        awaitingPermissionResult = true;
+        ActivityCompat.requestPermissions(
+            this, new String[] {Manifest.permission.RECORD_AUDIO}, MIC_PERMISSION_REQUEST_CODE);
+        return;
+      }
+      Log.d(TAG, "Completing answer after permission grant");
+      coordinator.answerAfterPermissions();
     }
   }
 
@@ -367,6 +369,7 @@ public class CallActivity extends AppCompatActivity {
     setupGlowAnimation();
 
     setupButtonListeners();
+    setupAccessibility();
   }
 
   private void initializeVideoRenderers() {
@@ -395,7 +398,7 @@ public class CallActivity extends AppCompatActivity {
     declineButton.setOnClickListener(
         v -> {
           if (viewModel != null) {
-            viewModel.declineCall();
+            viewModel.endCall();
           }
           finish();
         });
@@ -403,7 +406,7 @@ public class CallActivity extends AppCompatActivity {
     endCallButton.setOnClickListener(
         v -> {
           if (viewModel != null) {
-            viewModel.hangUp();
+            viewModel.endCall();
           }
           finish();
         });
@@ -576,6 +579,13 @@ public class CallActivity extends AppCompatActivity {
         active ? R.drawable.call_button_active_green : R.drawable.call_button_inactive);
   }
 
+  private void setupAccessibility() {
+    muteButton.setContentDescription(getString(R.string.microphone));
+    videoButton.setContentDescription(getString(R.string.camera));
+    switchCameraButton.setContentDescription(getString(R.string.switch_camera));
+    speakerButton.setContentDescription(getString(R.string.audio_output));
+  }
+
   private void initializeViewModel() {
     viewModel = new ViewModelProvider(this).get(CallViewModel.class);
 
@@ -623,9 +633,11 @@ public class CallActivity extends AppCompatActivity {
         .observe(
             this,
             enabled -> {
-              muteButton.setSelected(!enabled);
               muteButton.setImageResource(enabled ? R.drawable.ic_mic_on : R.drawable.ic_mic_off);
               updateButtonBackground(muteButton, !enabled);
+
+              ViewCompat.setStateDescription(
+                  muteButton, getString(enabled ? R.string.on : R.string.off));
             });
 
     viewModel
@@ -633,10 +645,22 @@ public class CallActivity extends AppCompatActivity {
         .observe(
             this,
             enabled -> {
-              videoButton.setSelected(!enabled);
               videoButton.setImageResource(
                   enabled ? R.drawable.ic_videocam_on : R.drawable.ic_videocam_off);
               updateButtonBackground(videoButton, enabled);
+
+              ViewCompat.setStateDescription(
+                  videoButton, getString(enabled ? R.string.on : R.string.off));
+            });
+
+    viewModel
+        .getIsFrontCamera()
+        .observe(
+            this,
+            isFront -> {
+              ViewCompat.setStateDescription(
+                  switchCameraButton,
+                  getString(isFront ? R.string.front_camera : R.string.back_camera));
             });
 
     viewModel
@@ -646,6 +670,9 @@ public class CallActivity extends AppCompatActivity {
             endpoint -> {
               updateSpeakerButton(endpoint);
               updateProximityWakeLock();
+
+              ViewCompat.setStateDescription(
+                  speakerButton, endpoint != null ? endpoint.getName() : null);
             });
 
     viewModel
@@ -897,12 +924,11 @@ public class CallActivity extends AppCompatActivity {
     VideoTrack remoteTrack = viewModel.getRemoteVideoTrack().getValue();
 
     boolean isFront = Boolean.TRUE.equals(viewModel.getIsFrontCamera().getValue());
-
+    boolean active =
+        state == CallViewModel.CallState.CONNECTED || state == CallViewModel.CallState.RECONNECTING;
     boolean showFullScreen = false;
 
-    if (state == CallViewModel.CallState.CONNECTED
-        && remoteTrack != null
-        && Boolean.TRUE.equals(remoteVideoEnabled)) {
+    if (active && remoteTrack != null && Boolean.TRUE.equals(remoteVideoEnabled)) {
       remoteVideoView.setMirror(false);
       remoteTrack.addSink(remoteVideoView);
       showFullScreen = true;
@@ -923,7 +949,7 @@ public class CallActivity extends AppCompatActivity {
     if (ringsView != null) ringsView.setVisibility(avatarVisibility);
 
     boolean showCorner =
-        state == CallViewModel.CallState.CONNECTED
+        active
             && localTrack != null
             && Boolean.TRUE.equals(videoEnabled)
             && !isInPictureInPictureMode();
@@ -971,11 +997,7 @@ public class CallActivity extends AppCompatActivity {
     CallCoordinator coordinator = CallCoordinator.getInstance(getApplication());
 
     if (coordinator.hasActiveCall() && !coordinator.hasOngoingCall()) {
-      if (coordinator.isIncomingCall()) {
-        coordinator.declineCall();
-      } else {
-        coordinator.hangUp();
-      }
+      coordinator.endCall(false);
     }
 
     if (!shouldShowRequestPermissionRationale(Manifest.permission.RECORD_AUDIO)) {
@@ -1002,8 +1024,38 @@ public class CallActivity extends AppCompatActivity {
       return;
     }
 
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CINNAMON_BUN
+        && maybeAskLocalNetworkPermission()) {
+      return;
+    }
+
     handleIntents(getIntent());
     intentHandled = true;
+  }
+
+  @RequiresApi(api = Build.VERSION_CODES.CINNAMON_BUN)
+  private boolean maybeAskLocalNetworkPermission() {
+    if (localNetworkAsked
+        || LocalNetworkPermission.hasPermission(this)
+        || Prefs.getBooleanPreference(this, Prefs.ASKED_FOR_LOCAL_NETWORK_PERMISSION, false)) {
+      return false;
+    }
+    localNetworkAsked = true;
+    Prefs.setBooleanPreference(this, Prefs.ASKED_FOR_LOCAL_NETWORK_PERMISSION, true);
+    new AlertDialog.Builder(this)
+        .setMessage(R.string.perm_explain_local_network_denied)
+        .setPositiveButton(R.string.perm_continue, null)
+        .setOnDismissListener(
+            dialog -> {
+              if (isFinishing() || isDestroyed()) return;
+              awaitingPermissionResult = true;
+              ActivityCompat.requestPermissions(
+                  this,
+                  new String[] {Manifest.permission.ACCESS_LOCAL_NETWORK},
+                  LOCAL_NETWORK_PERMISSION_REQUEST_CODE);
+            })
+        .show();
+    return true;
   }
 
   @Override
@@ -1032,6 +1084,11 @@ public class CallActivity extends AppCompatActivity {
       return;
     }
 
+    if (requestCode == LOCAL_NETWORK_PERMISSION_REQUEST_CODE) {
+      proceedAfterPermissions();
+      return;
+    }
+
     if (requestCode == MIC_PERMISSION_REQUEST_CODE) {
       boolean micGranted =
           grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
@@ -1041,6 +1098,10 @@ public class CallActivity extends AppCompatActivity {
         return;
       }
 
+      if (coordinator.isAnswerInProgress()) {
+        coordinator.answerAfterPermissions();
+        return;
+      }
     } else if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
       boolean cameraGranted =
           grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
@@ -1122,6 +1183,10 @@ public class CallActivity extends AppCompatActivity {
 
           case INITIALIZING:
           case PROMPTING_USER_ACCEPT:
+            // Let's just ignore the hint in these cases, as it's most likely
+            // unwanted, and caused issues on some setups.
+            break;
+
           case ENDED:
           case ANSWERED_ELSEWHERE:
           case ERROR:
@@ -1175,7 +1240,7 @@ public class CallActivity extends AppCompatActivity {
 
     if (proximityWakeLock != null && proximityWakeLock.isHeld()) {
       proximityWakeLock.release();
-      Log.d(TAG, "Proximity wake lock released in onDestroy");
+      Log.d(TAG, "Proximity wake lock released in onPause");
     }
   }
 
@@ -1205,6 +1270,8 @@ public class CallActivity extends AppCompatActivity {
 
       proceedAfterPermissions();
     }
+
+    CallCoordinator.getInstance(this).ensureServiceStartedFromForeground();
   }
 
   @Override

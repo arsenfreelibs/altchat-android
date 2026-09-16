@@ -9,8 +9,8 @@
         android:layout_marginBottom="4dp">
 
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <ImageView
@@ -30,19 +30,20 @@
                 android:contentDescription="@string/menu_play" />
 
             <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
+                <!-- Alt Chat: waveform instead of upstream's SeekBar -->
                 <org.thoughtcrime.securesms.components.audioplay.WaveformView
                     android:id="@+id/waveform"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/waveform_height"
                     android:layout_gravity="center_vertical"
                     android:layout_marginBottom="2dp" />
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
                     android:orientation="horizontal">
@@ -77,6 +78,46 @@
                 </LinearLayout>
 
             </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- upstream: playback-speed button + message footer inside the audio widget -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/speed"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/speed_button_background"
+                android:gravity="center"
+                android:minHeight="0dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/audio_icon"
+                style="@style/Signal.Text.Caption"
+                android:autoLink="none"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="1x"
+                android:visibility="invisible" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <org.thoughtcrime.securesms.components.ConversationItemFooter
+                android:id="@+id/footer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
 
         </LinearLayout>
 

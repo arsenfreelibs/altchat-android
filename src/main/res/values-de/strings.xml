@@ -206,6 +206,9 @@
     <string name="contact">Kontakt</string>
     <string name="bot">Bot</string>
     <string name="camera">Kamera</string>
+    <string name="front_camera">Frontkamera</string>
+    <string name="back_camera">Rückkamera</string>
+    <string name="microphone">Mikrofon</string>
     <!-- As in "start a video recording" or "take a photo"; eg. the description of the "shutter button" in cameras -->
     <string name="capture">Aufnehmen</string>
     <!-- Switch eg. from front to back camera -->
@@ -290,6 +293,7 @@
     <string name="menu_send">Senden</string>
     <string name="menu_toggle_keyboard">Emojis einblenden</string>
     <string name="menu_edit_group">Gruppe bearbeiten</string>
+    <!-- deprecated: "Edit Group" dialog usually also contains the "Group Description" field, use global_menu_edit_desktop instead -->
     <string name="menu_group_name_and_image">Gruppenname und -bild</string>
     <string name="menu_show_global_map">Alle Standorte</string>
     <string name="menu_archive_chat">Chat archivieren</string>
@@ -459,14 +463,17 @@
     <!-- the first placeholder will be replaced by a date, the second placeholder by duration, example: "Thu, 08:12 pm, 2 minutes" -->
     <string name="call_date_and_duration">%1$s, %2$s</string>
     <string name="already_in_call">Bereits im Anruf</string>
+    <string name="call_back">Zurückrufen</string>
     <string name="call_answered_elsewhere">Anruf auf einem anderen Gerät beantwortet</string>
     <string name="call_requires_camera_permission">Kamerazugriff für Videoanrufe erforderlich</string>
     <string name="call_requires_mic_permission">Mikrofonzugriff für Anrufe erforderlich</string>
+    <string name="call_grant_mic_permission">Tippen für Mikrofonzugriff</string>
     <string name="call_requires_connection">Anruf kann nicht gestartet werden. Stelle sicher, dass dein Gerät mit dem Internet verbunden ist, und versuche es erneut.</string>
     <!-- Used e.g. in a notifications to describe an ongoing call. "Call" is a noun here, in the meaning of "This is the call with ..." where the placeholder is replaced by the name of the contact. -->
     <string name="call_with">Anruf mit %1$s</string>
     <!-- Use e.g. in a notifications during ringing. Placeholder is relaced by the name of the contact being called. -->
     <string name="calling_person">%1$s anrufen…</string>
+    <string name="audio_output">Audioausgang</string>
 
     <!-- get confirmations -->
     <!-- confirmation for leaving groups or channels. If a subject is needed, "Are you sure you want to leave the chat?" would work as well -->
@@ -685,14 +692,20 @@
     <!-- Secondary, link-like button to open a page with other possible instances -->
     <string name="instant_onboarding_show_more_instances">Anderen Server verwenden</string>
     <string name="instant_onboarding_other_server">Chatmail-Server anzeigen</string>
-    <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by the group name -->
-    <string name="instant_onboarding_group_info">Erstelle ein Profil, um der Gruppe \"%1$s\" beizutreten.</string>
+    <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by the group or channel name -->
+    <string name="instant_onboarding_group_info">Erstelle ein Profil, um \"%1$s\" beizutreten.</string>
     <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by contact name -->
     <string name="instant_onboarding_contact_info">Erstelle ein Profil, um mit %1$s zu chatten.</string>
     <!-- Question shown when another user's QR code is scanned from onboarding screen -->
     <string name="instant_onboarding_confirm_contact">Ein neues Profil erstellen und mit %1$s chatten?</string>
     <!-- Question shown when group's/channel's QR code is scanned from onboarding screen -->
     <string name="instant_onboarding_confirm_group">Ein neues Profil erstellen und \"%1$s\" beitreten?</string>
+
+    <string name="team">Team</string>
+    <string name="team_profile">Teamprofil</string>
+    <string name="team_profile_explain">Ein „Teamprofil“ wird gemeinsam von einer Gruppe oder einer Organisation verwaltet.\n\n⚠️ Teamprofil-Funktionen sind experimentell und können sich ändern.</string>
+    <string name="team_name">Teamname</string>
+    <string name="create_team_profile">Teamprofil erstellen</string>
 
     <string name="welcome_chat_over_email">Sicherer dezentraler Chat</string>
     <string name="scan_invitation_code">Einladungscode scannen</string>
@@ -730,15 +743,19 @@
     <string name="remove_transport">Relay entfernen</string>
     <string name="edit_transport">Relay bearbeiten</string>
     <string name="used_for_sending">Zum Senden verwendet</string>
+    <!-- deprecated -->
     <string name="hide_from_contacts">Vor Kontakten verstecken</string>
+    <!-- deprecated -->
     <string name="hidden_from_contacts">Vor Kontakten versteckt</string>
     <string name="enforce_e2ee">Verschlüsselung für alle Relays erzwingen</string>
     <!-- Hint for the list of relays -->
-    <string name="transport_list_hint">Nachrichten werden auf allen Relays empfangen.\n\n⚠️ Wenn Sie hier Änderungen vornehmen, stellen Sie sicher, dass auf allen Ihren Geräten mindestens Version 2.47.0 installiert ist. Andernfalls könnten auf älteren Versionen Nachrichten verloren gehen.</string>
+    <string name="transport_list_hint">Nachrichten werden auf allen Relays empfangen.</string>
     <!-- shown if a QR code was scanned that can be used as a relay -->
     <string name="confirm_add_transport">Relay hinzufügen?</string>
     <string name="invalid_transport_qr">Der gescannte QR-Code enthält keine gültiges Relay.</string>
     <!-- placeholder will be replaced by a relay server name -->
+    <string name="confirm_remove_relay_x">Relay \"%1$s\" entfernen?\n\nVor dem endgültigen Löschen wird es schrittweise deaktiviert, um deinen Kontakten einen nahtlosen Übergang zu ermöglichen.</string>
+    <!-- deprecated -->
     <string name="confirm_remove_or_hide_transport_x">Relay \"%1$s\" entfernen?\n\nKontakte, die nur dieses Relay kennen, erreichen dich möglicherweise erst wieder, wenn du ihnen erneut eine Nachricht schickst.\n\nIm Zweifelsfall, verstecke das Relay anstelle es zu löschen.</string>
     <string name="login_certificate_checks">Zertifikatsüberprüfung</string>
     <string name="login_error_mail">Bitte eine gültige E-Mail-Adresse eingeben</string>
@@ -776,6 +793,7 @@
     <!-- first placeholder is replaced by the number of files (always 2 or more); second placeholder is replaced by a chat name -->
     <string name="ask_send_files_to_chat">%1$d Dateien an \"%2$s\" senden?</string>
     <string name="ask_send_files_to_selected_chats">%1$d Datei(en) an %2$d Chats senden?</string>
+    <!-- deprecated -->
     <string name="videos_sent_without_recoding">(Videos werden als große Originaldateien versandt. Um Videos als kleinere Dateien zu versenden, hänge sie einzeln an)</string>
     <string name="share_text_multiple_chats">Den folgenden Text an %1$d Chats senden?\n\n\"%2$s\"</string>
     <string name="share_abort">Teilen aufgrund fehlender Berechtigungen abgebrochen.</string>
@@ -969,16 +987,22 @@
     <string name="chat_description_changed_by_other">Chat-Beschreibung geändert von %1$s.</string>
     <!-- %1$s will be replaced by name of the contact added to the group -->
     <string name="member_x_added">%1$s hinzugefügt.</string>
+    <string name="member_you_added">Du wurdest hinzugefügt.</string>
     <!-- %1$s will be replaced by name of the contact added to the group -->
     <string name="add_member_by_you">%1$s hinzugefügt.</string>
     <!-- %1$s will be replaced by name of the contact added to the group, %2$s will be replaced by name of the contact who did the action -->
     <string name="add_member_by_other">%1$s hinzugefügt von %2$s.</string>
+    <!-- %1$s will be replaced by name of the contact who did the action -->
+    <string name="add_you_by_other">Du wurdest von %1$s hinzugefügt.</string>
     <!-- %1$s will be replaced by name of the contact removed from the group -->
     <string name="remove_member_by_you">Du hast %1$s entfernt.</string>
     <!-- %1$s will be replaced by name of the contact removed from the group, %2$s will be replaced by name of the contact who did the action -->
     <string name="remove_member_by_other">%1$s entfernt von %2$s.</string>
+    <!-- %1$s will be replaced by name of the contact who did the action -->
+    <string name="remove_you_by_other">Du wurdest von %1$s entfernt.</string>
     <!-- %1$s will be replaced by name of the contact removed from the group; this string is used when it's unclear who did the action -->
     <string name="member_x_removed">%1$s entfernt.</string>
+    <string name="member_you_removed">Du wurdest entfernt.</string>
     <!-- "left" in the meaning of "exited". -->
     <string name="group_left_by_you">Du hast die Gruppe verlassen.</string>
     <!-- "left" in the meaning of "exited". -->
@@ -1040,7 +1064,7 @@
     <string name="devicemsg_storage_exceeding">⚠️ Der Speicherplatz deines Anbieters ist bald erschöpft; bereits %1$s%% sind verbraucht.\n\nDu kannst möglicherweise keine Nachrichten mehr empfangen, wenn der Speicherplatz komplett verbraucht ist.\n\n👉 Bitte prüfe, ob du alte Daten im Webinterface des Anbieters löschen kannst, und erwäge, \"Einstellungen / Chats / Alte Nachrichten löschen\" zu aktivieren. Den aktuellen Speicherverbrauch kannst du jederzeit unter \"Einstellungen / Verbindungsstatus\" überprüfen.</string>
     <!-- %1%s will be replaced by date and time in some human-readable format -->
     <string name="devicemsg_bad_time">⚠️ Dein Gerät scheint ein falsches Datum oder eine falsche Uhrzeit (%1$s) zu verwenden.\n\nStelle deine Uhr ⏰🔧 richtig ein, um sicherzustellen, dass deine Nachrichten korrekt empfangen werden.</string>
-    <string name="devicemsg_update_reminder">⚠️ Deine Delta-Chat-Version ist möglicherweise veraltet.\n\nDies kann zu Problemen führen, wenn deine Chat-PartnerInnen neuere Versionen verwenden - und dir die neuesten Funktionen fehlen. 😳\nBitte überprüfe https://get.alt.chat oder den App-Store auf Updates.</string>
+    <string name="devicemsg_update_reminder">⚠️ Deine Alt Chat-Version ist möglicherweise veraltet.\n\nDies kann zu Problemen führen, wenn deine Chat-PartnerInnen neuere Versionen verwenden - und dir die neuesten Funktionen fehlen. 😳\nBitte überprüfe https://get.alt.chat oder den App-Store auf Updates.</string>
 
     <!-- Some options as "Add Second Device" or "Backup" may require the system PIN/Fingerprint/Gesture/Etc. to be entered in a system dialog. This hint is added to the system dialog, below a title as "Add Second Device" or "Backup". -->
     <string name="enter_system_secret_to_continue">Entsperren zum Fortfahren</string>
@@ -1217,7 +1241,7 @@
     <string name="a11y_message_context_menu_btn_label">Nachrichtaktionen</string>
     <string name="a11y_background_preview_label">Vorschau für Hintergrundbild</string>
     <string name="a11y_disappearing_messages_activated">Verschwindende Nachrichten eingeschaltet</string>
-    <!-- The placeholder will be replaced by a link, eg. "Open https://delta.chat". Used e.g. in for accessibility. -->
+    <!-- The placeholder will be replaced by a link, eg. "Open https://alt-chat.me". Used e.g. in for accessibility. -->
     <string name="open_link">Öffne %1$s</string>
 
     <!-- iOS specific strings, developers: please take care to remove strings that are no longer used! -->
@@ -1268,7 +1292,7 @@
     <string name="pref_reliable_service">Hintergrundverbindung erzwingen</string>
     <string name="pref_reliable_service_explain">Verursacht eine permanente Benachrichtigung</string>
 
-    <string name="pref_background_notifications_rationale">Um die Verbindung aufrechtzuerhalten und Nachrichten im Hintergrund zu empfangen, ignorieren im nächsten Schritt die \"Akku-Optimierungen\".\n\nAlt Chat verbraucht nur minimale Ressourcen und achtet darauf, den Akku zu schonen.</string>
+    <string name="pref_background_notifications_rationale">Um die Verbindung aufrechtzuerhalten und Nachrichten im Hintergrund zu empfangen, ignoriere im nächsten Schritt die \"Akku-Optimierungen\".\n\nAlt Chat verbraucht nur minimale Ressourcen und achtet darauf, den Akku zu schonen.</string>
     <!-- disabling "Reliable service" will hide a the maybe annoying permanent-notification with the drawback that new-message-notifications get potentially unreliable -->
     <string name="perm_enable_bg_reminder_title">Tippen hier, um Nachrichten zu empfangen, während Alt Chat im Hintergrund läuft.</string>
     <string name="perm_enable_bg_already_done">Du hast Alt Chat bereits erlaubt, Nachrichten im Hintergrund zu empfangen.\n\nFalls keine Nachrichten eingehen, überprüfe bitte auch die Systemeinstellungen.</string>

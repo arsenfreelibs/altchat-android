@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- common strings without special context -->
     <string name="app_name">Alt Chat</string>
-    <string name="ok">OK</string>
+    <string name="ok">De acordo</string>
     <string name="cancel">Cancelar</string>
     <string name="clear_search">Eliminar busca</string>
     <!-- a noun, used on a button, short for "show link" -->
@@ -184,6 +184,9 @@
     <string name="contact">Contacto</string>
     <string name="bot">Robot</string>
     <string name="camera">Cámara</string>
+    <string name="front_camera">Cámara frontal</string>
+    <string name="back_camera">Cámara traseira</string>
+    <string name="microphone">Micrófono</string>
     <!-- As in "start a video recording" or "take a photo"; eg. the description of the "shutter button" in cameras -->
     <string name="capture">Capturar</string>
     <string name="switch_camera">Cambiar de cámara</string>
@@ -255,6 +258,7 @@
     <string name="menu_send">Enviar</string>
     <string name="menu_toggle_keyboard">Activar teclado emoji</string>
     <string name="menu_edit_group">Editar grupo</string>
+    <!-- deprecated: "Edit Group" dialog usually also contains the "Group Description" field, use global_menu_edit_desktop instead -->
     <string name="menu_group_name_and_image">Nome e imaxe do grupo</string>
     <string name="menu_show_global_map">Mostrar todas as localizacións</string>
     <string name="menu_archive_chat">Arquivar conversa</string>
@@ -371,6 +375,52 @@
     </plurals>
     <string name="file_saved_to">Ficheiro gardado en \"%1$s\".</string>
 
+    <!-- the action "to call someone", used as a tooltip for the "phone" icon. not: "the call" -->
+    <string name="start_call">Chamar</string>
+    <!-- Menu item to start an audio call; verbs as "start" are probably superfluous in many translations -->
+    <string name="start_audio_call">Chamada de voz</string>
+    <!-- Menu item to start a video call; verbs as "start" are probably superfluous in many translations -->
+    <string name="start_video_call">Videochamada </string>
+    <!-- the action "to answer" or to "accept" or to "pick up" a call. not: "the answer" -->
+    <string name="answer_call">Responder</string>
+    <!-- the action "to decline" a call, not: "the decline" -->
+    <string name="end_call">Rexeitar</string>
+    <!-- the action to end a call -->
+    <string name="end_call2">Finalizar a chamada</string>
+    <!-- Used in call bubbles, summaries, notifications -->
+    <string name="audio_call">Chamada de voz</string>
+    <!-- Used in call bubbles, summaries, notifications -->
+    <string name="video_call">Videochamada</string>
+    <string name="call_initializing">Inicializando…</string>
+    <string name="call_incoming">Chamada entrante</string>
+    <string name="call_ringing">Soando...</string>
+    <string name="call_reconnecting">Reconectando...</string>
+    <string name="call_ended">Chamada finalizada</string>
+    <string name="call_failed">Fallou a chamada</string>
+    <!-- deprecated, use "Audio call" instead -->
+    <string name="outgoing_audio_call">Chamada de voz saínte</string>
+    <!-- deprecated, use "Video call" instead -->
+    <string name="outgoing_video_call">Videochamada saínte</string>
+    <!-- deprecated, use "Audio call" instead -->
+    <string name="incoming_audio_call">Chamada de voz entrante</string>
+    <!-- deprecated, use "Video call" instead -->
+    <string name="incoming_video_call">Videochamada entrante</string>
+    <string name="declined_call">Chamada rexeitada</string>
+    <string name="canceled_call">Chamada cancelada</string>
+    <string name="missed_call">Chamada perdida</string>
+    <string name="already_in_call">Xa nunha chamada</string>
+    <string name="call_back">Devolver a chamada</string>
+    <string name="call_answered_elsewhere">Chamada respondida noutro dispositivo</string>
+    <string name="call_requires_camera_permission">É preciso o permiso da cámara para as videochamadas</string>
+    <string name="call_requires_mic_permission">É preciso permiso para o micrófono para as chamadas</string>
+    <string name="call_grant_mic_permission">Prema para outorgar acceso ao micrófono</string>
+    <string name="call_requires_connection">Non se pode iniciar a chamada. Asegúrate de que o teu dispositivo teña conexión a Internet e téntao de novo.</string>
+    <!-- Used e.g. in a notifications to describe an ongoing call. "Call" is a noun here, in the meaning of "This is the call with ..." where the placeholder is replaced by the name of the contact. -->
+    <string name="call_with">Chamada con %1$s</string>
+    <!-- Use e.g. in a notifications during ringing. Placeholder is relaced by the name of the contact being called. -->
+    <string name="calling_person">Chamando a %1$s...</string>
+    <string name="audio_output">Saída do son</string>
+
     <!-- get confirmations -->
     <!-- confirmation for leaving groups or channels. If a subject is needed, "Are you sure you want to leave the chat?" would work as well -->
     <string name="ask_leave_group">Tes a certeza de querer saír?</string>
@@ -385,7 +435,7 @@
         <item quantity="other">Eliminar %d mensaxes en todos os teus dispositivos?</item>
     </plurals>
     <string name="ask_forward">Reenviar mensaxes a %1$s?</string>
-    <string name="ask_forward_multiple">¿Reenviar mensaxes a %1$d conversas?</string>
+    <string name="ask_forward_multiple">Reenviar mensaxes a %1$d conversas?</string>
     <string name="ask_export_attachment">Exportar anexo? Ao exportar anexos outras aplicacións no dispositivo terán acceso a eles.\n\nGardar?</string>
     <string name="ask_block_contact">Bloquear este contacto? Non recibirás mensaxes de este contacto.</string>
     <string name="ask_unblock_contact">Desbloquear contacto? Voltarás a poder recibir mensaxes de este contacto.</string>
@@ -484,9 +534,10 @@
     <string name="change_group_image">Cambiar imaxe do grupo</string>
     <string name="group_create_button">Crear grupo</string>
     <!-- deprecated, use please_enter_chat_name -->
-    <string name="group_please_enter_group_name">Por favor, introduce un nome para o grupo</string>
-    <string name="group_add_members">Engadir membros</string>
-    <string name="group_self_not_in_group">Debes ser membro do grupo para executar esta acción.</string>
+    <string name="group_please_enter_group_name">Por favor, escribe un nome para o grupo</string>
+    <string name="please_enter_chat_name">Escribe un nome.</string>
+    <string name="group_add_members">Engadir participantes</string>
+    <string name="group_self_not_in_group">Debes ser parte do grupo para executar esta acción.</string>
     <string name="profile_encryption">Cifrado</string>
     <string name="profile_shared_chats">Conversas compartidas</string>
     <!-- Separator between the list of actual members and past members -->
@@ -508,7 +559,7 @@
     <string name="all_apps_empty_hint">Aquí estarán as apps compartidas en calquera conversa.</string>
     <string name="media_preview">Vista previa dos medios</string>
     <!-- option to show images in the gallery with the correct width/height aspect (instead of square); other gallery apps may be a source of inspiration for translation :) -->
-    <string name="aspect_ratio_grid">Grella de relación de aspecto</string>
+    <string name="aspect_ratio_grid">Grella de proporcións</string>
     <!-- option to show images in the gallery as square (instead of using correct width/height) -->
     <string name="square_grid">Grella cadrada</string>
     <string name="send_message">Enviar mensaxe</string>
@@ -576,7 +627,7 @@
     <!-- Secondary, link-like button to open a page with other possible instances -->
     <string name="instant_onboarding_show_more_instances">Usar outro servidor</string>
     <string name="instant_onboarding_other_server">Lista de servidores Chatmail</string>
-    <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by the group name -->
+    <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by the group or channel name -->
     <string name="instant_onboarding_group_info">Crear un perfil para unirse ao grupo \"%1$s\".</string>
     <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by contact name -->
     <string name="instant_onboarding_contact_info">Crear un perfil para conversar con %1$s.</string>
@@ -584,6 +635,12 @@
     <string name="instant_onboarding_confirm_contact">Queres crear un novo perfil e comezar a conversar con %1$s?</string>
     <!-- Question shown when group's/channel's QR code is scanned from onboarding screen -->
     <string name="instant_onboarding_confirm_group">Queres crear un novo perfil e unirte ao grupo \"%1$s\"?</string>
+
+    <string name="team">Equipo</string>
+    <string name="team_profile">Perfil do equipo</string>
+    <string name="team_profile_explain">Un \"perfil do equipo\" é xestionado colectivamente por un conxunto de persoas dunha organización.\n\nOs perfís de equipo son experimentais e están expostos a cambios.</string>
+    <string name="team_name">Nome do equipo</string>
+    <string name="create_team_profile">Crear perfil do equipo</string>
 
     <string name="welcome_chat_over_email">Conversas Seguras e Descentralizadas</string>
     <string name="scan_invitation_code">Escanear código de convite</string>
@@ -600,22 +657,45 @@
     <string name="login_smtp_port">Porto SMTP</string>
     <string name="login_smtp_security">Seguridade SMTP</string>
     <!-- the word "Proxy" might be left untranslated unless the destination language has a well-known term for a "Proxy Server", acting intermediary between the app and the server -->
-    <string name="proxy_settings">Proxy</string>
-    <string name="proxy_use_proxy">Usar Proxy</string>
-    <string name="proxy_add">Engadir Proxy</string>
-    <string name="proxy_add_explain">Tipos de proxy compatibles: HTTP(S), SOCKS5 e Shadowsocks.</string>
-    <string name="proxy_add_url_hint">Escribe aquí a ligazón ao proxy</string>
-    <string name="proxy_invalid">Proxy non compatible ou non válido</string>
-    <string name="proxy_list_header">Proxis gardados</string>
-    <string name="proxy_delete">Eliminar Proxy</string>
+    <string name="proxy_settings">Mandatario</string>
+    <string name="proxy_use_proxy">Usar mandatario</string>
+    <string name="proxy_add">Engadir mandatario</string>
+    <string name="proxy_add_explain">Tipos de mandatarios compatibles: HTTP(S), SOCKS5 e Shadowsocks.</string>
+    <string name="proxy_add_url_hint">Escribe aquí a ligazón ao mandatario</string>
+    <string name="proxy_invalid">Mandatario incompatible ou non válido</string>
+    <string name="proxy_list_header">Proxys gardados</string>
+    <string name="proxy_delete">Eliminar mandatario</string>
     <string name="proxy_delete_explain">Tes certeza de querer eliminar \"%1$s\"?</string>
-    <string name="proxy_use_proxy_confirm">Queres usar o proxy \"%1$s\"?</string>
+    <string name="proxy_use_proxy_confirm">Queres usar o mandatario \"%1$s\"?</string>
+    <string name="proxy_share_explain">As túas amizades poden engadir este mandatario escaneando o código QR.</string>
     <string name="proxy_share_link">Compartir ligazón</string>
+    <string name="proxy_enabled">Mandatario activado</string>
+    <string name="proxy_enabled_hint">Estás a usar un mandatario. Se tes problemas para conectar, proba cun mandatario diferente.</string>
+    <!-- "Relay" refers to the relay servers used; please chose a common term in your language, no need to be literal. If in doubt, stay with "Relay" -->
+    <string name="transports">Repetidores</string>
+    <string name="add_transport">Engadir repetidor</string>
+    <string name="remove_transport">Eliminar repetidor</string>
+    <string name="edit_transport">Editar repetidor</string>
+    <string name="used_for_sending">Usado para enviar</string>
+    <!-- deprecated -->
+    <string name="hide_from_contacts">Ocultar dos contactos</string>
+    <!-- deprecated -->
+    <string name="hidden_from_contacts">Oculto dos contactos</string>
+    <string name="enforce_e2ee">Aplicar o cifrado para todos os repetidores</string>
+    <!-- Hint for the list of relays -->
+    <string name="transport_list_hint">As mensaxes recíbense en todos os repetidores.\n\n⚠️ Se cambias algo aquí, asegúrate de que todos os teus dispositivos executen polo menos a versión 2.47.0. Se non, os dispositivos máis antigos poden perder mensaxes.</string>
+    <!-- shown if a QR code was scanned that can be used as a relay -->
+    <string name="confirm_add_transport">Engadir este repetidor?</string>
+    <string name="invalid_transport_qr">O código QR escaneado non contén un repetidor válido.</string>
+    <!-- placeholder will be replaced by a relay server name -->
+    <string name="confirm_remove_relay_x">Eliminar repetidor \"%1$s\"?\n\nAntes da eliminación, será retirado gradualmente de modo que os seus contactos podan mudarse mainamente</string>
+    <!-- deprecated -->
+    <string name="confirm_remove_or_hide_transport_x">Eliminar o repetidor \"%1$s\"?\n\nOs contactos que só coñecen este retransmisor poden non contactar contigo ata que lles envíes unha nova mensaxe.\n\nEn caso de dúbida, ocúltao en lugar de eliminalo.</string>
     <string name="login_certificate_checks">Comprobacións do certificado</string>
-    <string name="login_error_mail">Introduce un enderezo de correo válido</string>
-    <string name="login_error_server">Introduce un servidor válido / enderezo IP</string>
-    <string name="login_error_port">Introduce un porto (1–65535)</string>
-    <string name="login_error_required_fields">Introduce un enderezo de correo válido e o contrasinal</string>
+    <string name="login_error_mail">Escribe un enderezo de correo válido</string>
+    <string name="login_error_server">Introduce un servidor / enderezo IP válido</string>
+    <string name="login_error_port">Introduce un porto válido (1–65535)</string>
+    <string name="login_error_required_fields">Escribe un enderezo de correo válido e un contrasinal</string>
     <string name="import_backup_title">Importar respaldo</string>
     <string name="import_backup_ask">Atopouse un respaldo en \"%1$s\".\n\nQueres importar e utilizar os seus datos e axustes?</string>
     <string name="import_backup_no_backup_found">Non se atoparon respaldos.\n\nCopia o respaldo a \"%1$s\" e inténtao outra vez.</string>
@@ -641,6 +721,8 @@
     <!-- first placeholder is replaced by the number of files (always 2 or more); second placeholder is replaced by a chat name -->
     <string name="ask_send_files_to_chat">Enviar %1$d ficheiros para \"%2$s\"?</string>
     <string name="ask_send_files_to_selected_chats">Enviar %1$d ficheiro(s) a %2$d conversas?</string>
+    <!-- deprecated -->
+    <string name="videos_sent_without_recoding">(Ao enviar varios vídeos, enviaranse tal cal, o que pode ser excesivo. Para facelos máis pequenos e aforrar datos, podes enviar cada vídeo na súa propia mensaxe)</string>
     <string name="share_text_multiple_chats">Enviar este texto a %1$d conversas?\n\n\"%2$s\"</string>
     <string name="share_abort">Cancelouse a compartición debido a falta de permisos.</string>
 
@@ -680,15 +762,17 @@
     <!-- Translators: as in "opposite of dark" -->
     <string name="pref_light_theme">Claro</string>
     <string name="pref_dark_theme">Escuro</string>
-    <string name="pref_appearance">Aspecto</string>
+    <string name="pref_appearance">Aparencia</string>
     <string name="pref_theme">Decorado</string>
     <string name="pref_language">Idioma</string>
     <string name="pref_use_system_ui_font">Utilizar Fonte do Sistema</string>
     <string name="pref_incognito_keyboard">Teclado incógnito</string>
     <!-- Translators: Must indicate that there is no guarantee as the system may not honor our request. -->
     <string name="pref_incognito_keyboard_explain">Solicitar que o teclado non aprenda palabras escritas</string>
-    <string name="pref_read_receipts">Confirmación de lectura</string>
-    <string name="pref_read_receipts_explain">Se a confirmación de lectura está desactivada, non poderás ver as confirmacións dos demais.</string>
+    <string name="pref_read_receipts">Recibos de lectura</string>
+    <string name="pref_read_receipts_explain">Se a confirmación de lectura está desactivada, non poderás ver as confirmacións das demais persoas.</string>
+    <!-- Title above a list of contacts who read a message -->
+    <string name="read_by">Lido por</string>
     <string name="pref_server">Servidor</string>
     <string name="pref_manage_keys">Xestión das chaves</string>
     <string name="pref_chats">Conversas</string>
@@ -783,17 +867,28 @@
     <!-- %1$s will be replaced by name of the contact who did the action -->
     <string name="group_image_changed_by_other">Imaxe do grupo cambiada por %1$s.</string>
     <!-- %1$s will be replaced by name of the contact added to the group -->
-    <string name="member_x_added">Membro %1$s adicionado/a.</string>
+    <string name="member_x_added">Engadiuse a %1$s.</string>
+    <string name="member_you_added">Engadíronte.</string>
     <!-- %1$s will be replaced by name of the contact added to the group -->
     <string name="add_member_by_you">Engadiches un membro %1$s.</string>
     <!-- %1$s will be replaced by name of the contact added to the group, %2$s will be replaced by name of the contact who did the action -->
-    <string name="add_member_by_other">%1$s engadido por %2$s.</string>
+    <string name="add_member_by_other">%2$s engadiu a %1$s.</string>
+    <!-- %1$s will be replaced by name of the contact who did the action -->
+    <string name="add_you_by_other">Engadido/a por %1$s.</string>
     <!-- %1$s will be replaced by name of the contact removed from the group -->
     <string name="remove_member_by_you">Eliminaches a %1$s.</string>
     <!-- %1$s will be replaced by name of the contact removed from the group, %2$s will be replaced by name of the contact who did the action -->
-    <string name="remove_member_by_other">%1$s eliminado por %2$s.</string>
+    <string name="remove_member_by_other">%2$seliminou a %1$s.</string>
+    <!-- %1$s will be replaced by name of the contact who did the action -->
+    <string name="remove_you_by_other">Borrado/a por %1$s.</string>
     <!-- %1$s will be replaced by name of the contact removed from the group; this string is used when it's unclear who did the action -->
     <string name="member_x_removed">Eliminouse a %1$s.</string>
+    <string name="member_you_removed">Borráronte.</string>
+    <!-- "left" in the meaning of "exited". -->
+    <string name="group_left_by_you">Abandonaches o grupo.</string>
+    <!-- "left" in the meaning of "exited". -->
+    <string name="channel_left_by_you">Abandonaches a canle.</string>
+    <string name="you_joined_the_channel">Unícheste á canle.</string>
     <!-- "left" in the meaning of "exited"; %1$s will be replaced by name of the contact leaving the group -->
     <string name="group_left_by_other">%1$s deixou o grupo.</string>
     <string name="group_image_deleted_by_you">Eliminaches a imaxe do grupo</string>
@@ -865,9 +960,9 @@
     <string name="revive_verifycontact_explain">Este código QR podía ser escaneado por outras persoas para contactar contigo.\n\nO código QR non está activo neste dispositio.</string>
     <string name="revive_qr_code">Activar código QR</string>
     <string name="qrshow_title">Código QR de convite</string>
-    <string name="qrshow_x_joining">%1$s uneuse.</string>
-    <string name="qrshow_x_verified">%1$s verificado.</string>
-    <string name="qrshow_x_has_joined_group">%1$s uneuse ao grupo.</string>
+    <string name="qrshow_x_joining">%1$s uniuse.</string>
+    <string name="qrshow_x_verified">%1$spresentouse.</string>
+    <string name="qrshow_x_has_joined_group">%1$s uniuse ao grupo.</string>
     <string name="qrshow_join_group_title">Código QR de convite</string>
     <!-- This text is shown inside the "QR code card" with very limited space; please formulate the text as short as possible therefore. The placeholder will be replaced by the group name, eg. "Scan to join group \"Testing group\"" -->
     <string name="qrshow_join_group_hint">Escanea esto para unirte ao grupo \"%1$s\".</string>
@@ -877,7 +972,7 @@
     <string name="qrshow_join_contact_no_connection_toast">Sen conexión a internet, non se pode facer o axuste por código QR</string>
     <string name="qraccount_ask_create_and_login">Crear un novo enderezo de correo en \"%1$s\" e acceder ali?</string>
     <string name="set_name_and_avatar_explain">Define un nome recoñecíbel polos teus contactos. Tamén podes definir unha imaxe de perfil.</string>
-    <string name="please_enter_name">Por favor introduce un nome.</string>
+    <string name="please_enter_name">Por favor escribe un nome.</string>
     <string name="qraccount_qr_code_cannot_be_used">O código QR escaneado non se pode utilizar para crear unha nova conta.</string>
     <!-- first placeholder will be replaced by name of the inviter, second placeholder will be replaced by the name of the inviter. -->
     <string name="secure_join_started">%1$s convidoute a este grupo.\n\nAgardando a que responda o dispositivo de %2$s ...</string>

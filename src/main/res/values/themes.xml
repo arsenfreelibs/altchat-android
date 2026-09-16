@@ -80,9 +80,6 @@
 
         <!-- light theme -->
         <item name="conversation_background">@color/gray10</item>
-        <item name="conversation_transport_sms_indicator">@drawable/ic_send_sms_insecure</item>
-        <item name="conversation_transport_push_indicator">@drawable/ic_send_push</item>
-        <item name="conversation_transport_popup_background">@color/white</item>
         <item name="conversation_emoji_toggle">@drawable/ic_mood_grey600_24dp</item>
         <item name="conversation_keyboard_toggle">@drawable/ic_keyboard_grey600_24dp</item>
         <item name="conversation_attach_camera">@drawable/ic_photo_camera_light</item>
@@ -159,9 +156,7 @@
         name="TextSecure.DarkTheme"
         parent="@style/Theme.MaterialComponents.Bridge">
         <item name="theme_type">dark</item>
-        <item
-            name="android:navigationBarColor"
-            tools:targetApi="21">@color/black</item>
+        <item name="android:navigationBarColor">@color/black</item>
         <item name="actionBarStyle">@style/TextSecure.DarkActionBar</item>
         <item name="actionBarTabBarStyle">@style/TextSecure.DarkActionBar.TabBar</item>
         <item name="colorPrimary">@color/gray95</item>
@@ -226,9 +221,6 @@
 
         <!-- dark theme -->
         <item name="conversation_background">@color/black</item>
-        <item name="conversation_transport_sms_indicator">@drawable/ic_send_sms_insecure_dark</item>
-        <item name="conversation_transport_push_indicator">@drawable/ic_send_push</item>
-        <item name="conversation_transport_popup_background">@color/black</item>
         <item name="conversation_emoji_toggle">@drawable/ic_mood_white_24dp</item>
         <item name="conversation_keyboard_toggle">@drawable/ic_keyboard_white_24dp</item>
         <item name="conversation_attach_camera">@drawable/ic_photo_camera_dark</item>
@@ -268,6 +260,14 @@
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.Fix</item>
         <item name="search_toolbar_background">@color/black</item>
         <item name="search_background">@color/black</item>
+    </style>
+
+    <style
+        name="TextSecure.DarkNoActionBar.MediaPreview"
+        parent="@style/TextSecure.DarkNoActionBar">
+        <item
+            name="android:windowLayoutInDisplayCutoutMode"
+            tools:targetApi="28">shortEdges</item>
     </style>
 
     <style

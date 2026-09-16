@@ -276,6 +276,7 @@
     <string name="menu_send">Skicka</string>
     <string name="menu_toggle_keyboard">Byt emoji-tangentbord</string>
     <string name="menu_edit_group">Redigera grupp</string>
+    <!-- deprecated: "Edit Group" dialog usually also contains the "Group Description" field, use global_menu_edit_desktop instead -->
     <string name="menu_group_name_and_image">Gruppnamn och bild</string>
     <string name="menu_show_global_map">Visa alla platser</string>
     <string name="menu_archive_chat">Arkivera chatt</string>
@@ -640,7 +641,7 @@
     <!-- Secondary, link-like button to open a page with other possible instances -->
     <string name="instant_onboarding_show_more_instances">Använd annan server</string>
     <string name="instant_onboarding_other_server">Lista chatmail-servrar</string>
-    <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by the group name -->
+    <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by the group or channel name -->
     <string name="instant_onboarding_group_info">Skapa en profil för att ansluta till gruppen \"%1$s\".</string>
     <!-- Hint about what happens when "Create Profile" button in pressed; the placeholder will be replaced by contact name -->
     <string name="instant_onboarding_contact_info">Skapa en profil för att chatta med %1$s.</string>
@@ -723,6 +724,7 @@
     <!-- first placeholder is replaced by the number of files (always 2 or more); second placeholder is replaced by a chat name -->
     <string name="ask_send_files_to_chat">Vill du skicka %1$d filer till \"%2$s\"?</string>
     <string name="ask_send_files_to_selected_chats">Vill du skicka %1$d fil(er) till %2$d chattar?</string>
+    <!-- deprecated -->
     <string name="videos_sent_without_recoding">(Om du skickar flera videor skickas de i befintligt skick, vilket kan vara stort. Om du vill göra dem mindre och spara data kan du skicka varje video i ett eget meddelande)</string>
     <string name="share_text_multiple_chats">Vill du skicka denna text till %1$d chattar?\n\n\"%2$s\"</string>
     <string name="share_abort">Delningen avbröts på grund av saknad behörighet.</string>
@@ -801,7 +803,7 @@
     <string name="pref_background_btn_default">Använd standardbild</string>
     <string name="pref_background_btn_gallery">Välj från galleriet</string>
     <string name="pref_imap_folder_warn_disable_defaults">Om du inaktiverar det här alternativet, tillse att servern och dina andra klienter är konfigurerade i enlighet med detta.\n\nAnnars kanske saker och ting inte fungerar alls.</string>
-    <!-- No need to be literal here, you can also use "Use Multiple Devices", "Support Multiple Devices" or other fitting terms. However, it should fit to the wording or your language at https://delta.chat/help -->
+    <!-- No need to be literal here, you can also use "Use Multiple Devices", "Support Multiple Devices" or other fitting terms. However, it should fit to the wording or your language at https://alt-chat.me/help -->
     <string name="pref_multidevice">Flerenhetsläge</string>
     <string name="pref_multidevice_explain">Synkronisera dina meddelanden med dina andra enheter. Aktiveras automatiskt när du lägger till en andra enhet</string>
     <string name="pref_multidevice_change_warn">Flerenhetsläge måste vara aktiverat när du använder samma profil på flera enheter. Inaktivera endast den här inställningen om du har tagit bort profilen från alla andra enheter.\n\nInaktiverar du flerenhetsläget när du använder profilen på flera enheter kommer du att missa meddelanden och få andra problem.</string>
