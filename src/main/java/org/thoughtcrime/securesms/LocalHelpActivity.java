@@ -103,13 +103,13 @@ public class LocalHelpActivity extends WebViewActivity {
       webView.scrollTo(0, 0);
       return true;
     } else if (itemId == R.id.learn_more) {
-      openOnlineUrl("https://delta.chat");
+      openOnlineUrl("https://alt-chat.me");
       return true;
     } else if (itemId == R.id.privacy_policy) {
-      openOnlineUrl("https://delta.chat/gdpr");
+      openOnlineUrl("https://alt-chat.me/gdpr");
       return true;
     } else if (itemId == R.id.contribute) {
-      openOnlineUrl("https://delta.chat/contribute");
+      openOnlineUrl("https://alt-chat.me/contribute");
       return true;
     } else if (itemId == R.id.report_issue) {
       openOnlineUrl("https://github.com/deltachat/deltachat-android/issues");

@@ -366,7 +366,7 @@
     <string name="filter_assign_to_folder">加入資料夾</string>
     <string name="filter_remove_from_folder">從資料夾移除</string>
     <string name="donate">捐贈</string>
-    <string name="donate_device_msg">❤️ 您似乎很喜歡 Delta Chat！\n\n請考慮捐款以幫助Delta Chat確保對每個人保持免費。/n/n雖然 Delta Chat 可以免費使用並且是開源的，但開發需要資金。幫助我們保持 Delta Chat 的獨立性，並在未來讓它更棒。\n\nhttps://delta.chat/donate</string>
+    <string name="donate_device_msg">❤️ 您似乎很喜歡 Alt Chat！\n\n請考慮捐款以幫助Alt Chat確保對每個人保持免費。/n/n雖然 Alt Chat 可以免費使用並且是開源的，但開發需要資金。幫助我們保持 Alt Chat 的獨立性，並在未來讓它更棒。\n\nhttps://alt-chat.me/donate</string>
 
     <string name="mute_for_one_hour">靜音1小時</string>
     <string name="mute_for_eight_hours">靜音8小時</string>
