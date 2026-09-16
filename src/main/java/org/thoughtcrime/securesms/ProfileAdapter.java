@@ -399,27 +399,9 @@ public class ProfileAdapter extends RecyclerView.Adapter {
       }
     }
 
-    if (dcContact != null && !isDeviceTalk && !isSelfTalk) {
-      int verifierId = dcContact.getVerifierId();
-      if (verifierId != 0) {
-        String introducedBy;
-        if (verifierId == DcContact.DC_CONTACT_ID_SELF) {
-          introducedBy = context.getString(R.string.verified_by_you);
-        } else {
-          introducedBy =
-              context.getString(
-                  R.string.verified_by, dcContext.getContact(verifierId).getDisplayName());
-        }
-        itemData.add(
-            new ItemData(
-                ITEM_INTRODUCED_BY,
-                introducedBy,
-                dcContact.isVerified() ? R.drawable.ic_verified : 0));
-      } else if (dcContact.isVerified()) {
-        String introducedBy = context.getString(R.string.verified_by_unknown);
-        itemData.add(new ItemData(ITEM_INTRODUCED_BY, introducedBy, R.drawable.ic_verified));
-      }
-    }
+    // Core no longer tracks contact verification (chatmail/core b1da53a56, after 2.60.0):
+    // dc_contact_is_verified()/dc_contact_get_verifier_id() are gone, so the
+    // "Introduced by" row and the verified checkmark are not shown anymore.
 
     notifyDataSetChanged();
   }

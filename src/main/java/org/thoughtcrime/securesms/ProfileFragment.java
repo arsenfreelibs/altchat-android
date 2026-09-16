@@ -273,13 +273,8 @@ public class ProfileFragment extends Fragment
   }
 
   private void onVerifiedByClicked() {
-    DcContact dcContact = dcContext.getContact(contactId);
-    int verifierId = dcContact.getVerifierId();
-    if (verifierId != 0 && verifierId != DcContact.DC_CONTACT_ID_SELF) {
-      Intent intent = new Intent(getContext(), ProfileActivity.class);
-      intent.putExtra(ProfileActivity.CONTACT_ID_EXTRA, verifierId);
-      startActivity(intent);
-    }
+    // Core no longer exposes a verifier (chatmail/core b1da53a56); the "Introduced by" row is
+    // not added anymore, so there is nothing to open here.
   }
 
   private void onSendMessage() {

@@ -185,6 +185,9 @@ git merge upstream/main
 #      у нас свой util/update/AppUpdateChecker)
 #    - build.gradle → androidComponents-блок с заменой на "altchat", camerax/navigation наши,
 #      desugaring/zxing от upstream
+#    - jni/dc_wrapper.c + DcContact.java + ProfileAdapter/ProfileFragment/DcHelper → core после 2.60
+#      убрал dc_contact_is_verified()/dc_contact_get_verifier_id() (chatmail/core b1da53a56). Мы уже
+#      выкинули JNI-методы и «Introduced by»; когда upstream android сделает то же — брать upstream.
 
 # 4. After merge: scan for branding leaks (see above)
 
