@@ -49,3 +49,9 @@ jni/arm64-v8a
 *~
 # Auto-proxy credentials (gitignored; see proxy.properties.example)
 proxy.properties
+
+# Debug logs exported from the app; may contain push tokens and account addresses
+docs/*.txt
+
+# Editor/IDE local settings
+.vscode/
